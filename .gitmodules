@@ -1,0 +1,3 @@
+[submodule "lib/shinka-evolve"]
+	path = lib/shinka-evolve
+	url = https://github.com/elianaive/ShinkaEvolve-Concept.git

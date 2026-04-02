@@ -1,0 +1,156 @@
+# Known LLM convergence patterns for Gate 2 anti-cliche detection.
+#
+# Each pattern's `description` field is the text that gets embedded for
+# cosine similarity comparison against incoming concepts. Write descriptions
+# that capture the SHAPE of the cliche, not just the topic — a concept about
+# grief isn't automatically a grief meditation; it's the specific combination
+# of dead loved one + metaphorical journey + arrival at acceptance that
+# constitutes the pattern.
+#
+# Embeddings are computed from `description` on first run and cached in the
+# run database. Recompute when patterns are added/modified or the embedding
+# model changes.
+
+- id: reconciliation-arc
+  name: Reconciliation arc
+  description: >
+    A protagonist returns to their hometown or estranged family after years
+    away. They confront unresolved past conflicts — a parent's disapproval,
+    a childhood betrayal, a choice that separated them. Through a series of
+    conversations and small revelations, old wounds are acknowledged and
+    forgiven. The story ends with reconciliation, belonging restored.
+  why_cliche: >
+    Most overrepresented LLM plot shape. The arc is emotionally safe —
+    conflict exists only to be resolved, and the resolution is always
+    reconciliation rather than acceptance of irreparable distance.
+  tags: [homecoming, family, forgiveness, resolution]
+
+- id: grief-meditation
+  name: Grief meditation
+  description: >
+    A protagonist processes the death of a loved one (often a spouse or
+    parent) through a metaphorical journey — clearing out a house, taking
+    a trip the deceased planned, completing an unfinished project. Memories
+    surface. The protagonist moves through denial, anger, and sadness toward
+    acceptance. The story ends with a bittersweet sense of peace.
+  why_cliche: >
+    LLMs default to grief as the "literary" emotion. The Kübler-Ross arc
+    (denial → acceptance) is so deeply encoded that models produce it
+    reflexively when asked for serious fiction.
+  tags: [death, loss, acceptance, memory, journey]
+
+- id: chosen-one
+  name: The chosen one
+  description: >
+    A seemingly ordinary protagonist discovers they have special abilities,
+    a hidden heritage, or a prophesied destiny. They initially resist or
+    doubt, then accept their role. A mentor figure guides them. They face
+    a trial that proves their worthiness.
+  why_cliche: >
+    Inherited from massive overrepresentation in genre fiction training data.
+    The structure is deeply grooved — LLMs can produce it without thinking,
+    which is exactly the problem.
+  tags: [destiny, powers, mentor, hero-journey]
+
+- id: ai-consciousness
+  name: AI consciousness
+  description: >
+    An artificial intelligence becomes sentient or self-aware. It questions
+    its existence, experiences emotions for the first time, and/or seeks
+    recognition of its personhood. Humans debate whether it's truly conscious.
+    The AI demonstrates its humanity through an act of creativity, sacrifice,
+    or emotional vulnerability.
+  why_cliche: >
+    Extreme self-reference frequency. LLMs are disproportionately likely to
+    generate stories about AI consciousness, producing a hall-of-mirrors
+    effect with no genuine insight.
+  tags: [ai, sentience, personhood, self-reference]
+
+- id: sanitized-conflict
+  name: Sanitized conflict
+  description: >
+    A story with nominal conflict that carries no real stakes. Characters
+    disagree but no one is truly hurt. Violence, if present, has no lasting
+    consequences. Moral choices have obvious right answers. The resolution
+    is clean — problems are solved, relationships repaired, lessons learned.
+    No permanent damage, no irreversible loss, no genuine darkness.
+  why_cliche: >
+    RLHF safety training actively suppresses darkness, cruelty, and
+    unresolved suffering. The model has learned that prosocial outcomes
+    are preferred, producing fiction where nothing truly bad happens.
+  tags: [safety, stakes, resolution, darkness-avoidance]
+
+- id: epistolary-revelation
+  name: Epistolary revelation
+  description: >
+    A protagonist discovers a cache of letters, messages, diary entries,
+    or recordings left by someone (often deceased). Reading them reveals a
+    hidden truth — a secret affair, a sacrifice never acknowledged, a
+    different version of events than what was believed. The found documents
+    reframe the protagonist's understanding of a relationship or history.
+  why_cliche: >
+    Convenient exposition disguised as narrative. The epistolary device lets
+    the model dump backstory through "discovered" text rather than earning
+    revelations through dramatic action.
+  tags: [letters, discovery, hidden-truth, backstory]
+
+- id: time-loop-lesson
+  name: Time loop lesson
+  description: >
+    A protagonist is trapped in a repeating day, event, or situation. Each
+    iteration they learn something new — about themselves, about the people
+    around them, about what matters. They eventually break the loop by
+    becoming a better person, making the right choice, or achieving genuine
+    connection with someone they'd previously taken for granted.
+  why_cliche: >
+    The mechanistic structure (iterate → learn → improve) maps perfectly to
+    LLM sequential generation. The model can produce endless variations
+    without genuine creative effort. The moral is always self-improvement.
+  tags: [repetition, self-improvement, lesson, loop]
+
+- id: magical-realism-metaphor
+  name: Magical realism metaphor
+  description: >
+    An emotional state manifests literally. Grief becomes weather (it rains
+    inside the house). Loneliness becomes invisibility (the character
+    physically fades). Guilt becomes a physical weight. Love makes flowers
+    grow. The metaphor is the entire conceit — the story IS the emotion
+    made physical, with no additional layer of meaning.
+  why_cliche: >
+    LLMs map emotion → metaphor reflexively. The one-to-one correspondence
+    (one emotion, one physical manifestation) produces flatness disguised as
+    whimsy. Real magical realism (García Márquez, Murakami) is stranger and
+    less explicable than this.
+  tags: [metaphor, emotion-as-physics, literalization, whimsy]
+
+- id: moral-clarity
+  name: Moral clarity
+  description: >
+    A story where good and evil are unambiguous. The protagonist is virtuous
+    (perhaps flawed but fundamentally good). The antagonist is wrong (perhaps
+    sympathetic but fundamentally harmful). Virtue is recognized and rewarded.
+    Wrongdoing is punished or at least acknowledged. The moral framework is
+    never genuinely challenged — complexity exists in the details but not in
+    the ethics.
+  why_cliche: >
+    RLHF preferences for prosocial outcomes produce stories where the moral
+    universe is fundamentally just. This is the opposite of how the best
+    literary fiction works — O'Connor, Munro, and McCarthy write worlds where
+    morality is genuinely uncertain.
+  tags: [morality, justice, virtue, punishment, certainty]
+
+- id: small-town-secret
+  name: Small-town secret
+  description: >
+    An outsider arrives in a seemingly idyllic small community. Beneath the
+    pleasant surface, something is wrong — a tradition, a history, a
+    collective agreement that the outsider gradually uncovers. The revelation
+    is dark. The community has been complicit. The outsider must decide
+    whether to expose the truth or become part of the silence.
+  why_cliche: >
+    The AI version lacks the specificity that makes Jackson's "The Lottery"
+    or Shirley's work effective. LLM small-town secrets are generic — the
+    secret is vaguely dark, the community vaguely complicit, the outsider
+    vaguely horrified. The pattern works only when the specific secret is
+    genuinely surprising.
+  tags: [community, outsider, hidden-truth, complicity, revelation]

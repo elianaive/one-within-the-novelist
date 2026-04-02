@@ -1,0 +1,158 @@
+import json
+
+import pytest
+from pydantic import ValidationError
+
+from owtn.models.stage_1.classification import ConstraintDensity
+from owtn.models.stage_1.concept_genome import ConceptGenome
+
+
+HILLS_GENOME = {
+    "premise": "Two people at a train station discuss something they never name.",
+    "target_effect": "The weight of what remains unsaid — dread, helplessness, the slow realization that silence is a form of violence.",
+    "character_seeds": [
+        {
+            "label": "the man",
+            "sketch": "Confident on the surface, steering the conversation with practiced ease.",
+            "want": "For her to agree without him having to say what he wants.",
+        },
+        {
+            "label": "the woman",
+            "sketch": "Deflecting with imagery — the hills, the drinks, the beaded curtain.",
+            "want": "To not have this conversation.",
+        },
+    ],
+    "setting_seeds": "A train station in Spain. Hot. A bar with a beaded curtain. Two lines of rails in the sun.",
+    "thematic_tension": "autonomy vs. obligation",
+    "constraints": [
+        "The word 'abortion' never appears.",
+        "No interiority — only dialogue and physical action.",
+        "Single scene, near-real-time.",
+    ],
+    "style_hint": "Spare, concrete, almost journalistic. The horror is in the contrast between flat tone and devastating content.",
+}
+
+
+class TestParsing:
+    def test_full_genome(self):
+        genome = ConceptGenome.model_validate(HILLS_GENOME)
+        assert genome.premise.startswith("Two people")
+        assert len(genome.character_seeds) == 2
+        assert genome.character_seeds[0].label == "the man"
+        assert genome.character_seeds[0].wound is None
+        assert genome.character_seeds[0].want is not None
+
+    def test_minimal_genome(self):
+        genome = ConceptGenome(
+            premise="A lighthouse keeper discovers the light has been signaling someone.",
+            target_effect="Creeping dread and the vertigo of complicity.",
+        )
+        assert genome.character_seeds is None
+        assert genome.constraints is None
+
+    def test_from_code_string(self):
+        code = json.dumps(HILLS_GENOME)
+        genome = ConceptGenome.from_code_string(code)
+        assert genome.thematic_tension == "autonomy vs. obligation"
+
+    def test_round_trip(self):
+        genome = ConceptGenome.model_validate(HILLS_GENOME)
+        serialized = genome.model_dump_json()
+        restored = ConceptGenome.model_validate_json(serialized)
+        assert restored == genome
+
+
+class TestValidation:
+    def test_missing_premise(self):
+        with pytest.raises(ValidationError):
+            ConceptGenome(
+                premise=None,
+                target_effect="Something unsettling.",
+            )
+
+    def test_premise_too_short(self):
+        with pytest.raises(ValidationError):
+            ConceptGenome(premise="Too short.", target_effect="Something unsettling and heavy.")
+
+    def test_target_effect_too_short(self):
+        with pytest.raises(ValidationError):
+            ConceptGenome(
+                premise="A lighthouse keeper discovers the light has been signaling someone.",
+                target_effect="Bad.",
+            )
+
+    def test_character_seed_missing_label(self):
+        with pytest.raises(ValidationError):
+            ConceptGenome(
+                premise="A lighthouse keeper discovers the light has been signaling someone.",
+                target_effect="Creeping dread and complicity.",
+                character_seeds=[{"sketch": "Nervous, watchful."}],
+            )
+
+
+class TestConstraintDensity:
+    def test_unconstrained_none(self):
+        genome = ConceptGenome(
+            premise="A lighthouse keeper discovers the light has been signaling someone.",
+            target_effect="Creeping dread and the vertigo of complicity.",
+        )
+        assert genome.classify_constraint_density() == ConstraintDensity.UNCONSTRAINED
+
+    def test_unconstrained_empty(self):
+        genome = ConceptGenome(
+            premise="A lighthouse keeper discovers the light has been signaling someone.",
+            target_effect="Creeping dread and the vertigo of complicity.",
+            constraints=[],
+        )
+        assert genome.classify_constraint_density() == ConstraintDensity.UNCONSTRAINED
+
+    def test_moderate(self):
+        genome = ConceptGenome(
+            premise="A lighthouse keeper discovers the light has been signaling someone.",
+            target_effect="Creeping dread and the vertigo of complicity.",
+            constraints=["No dialogue."],
+        )
+        assert genome.classify_constraint_density() == ConstraintDensity.MODERATE
+
+    def test_heavy(self):
+        genome = ConceptGenome.model_validate(HILLS_GENOME)
+        assert genome.classify_constraint_density() == ConstraintDensity.HEAVY
+
+    def test_whitespace_only_skipped(self):
+        genome = ConceptGenome(
+            premise="A lighthouse keeper discovers the light has been signaling someone.",
+            target_effect="Creeping dread and the vertigo of complicity.",
+            constraints=["  ", "", "\t"],
+        )
+        assert genome.classify_constraint_density() == ConstraintDensity.UNCONSTRAINED
+
+    def test_whitespace_mixed_with_real(self):
+        genome = ConceptGenome(
+            premise="A lighthouse keeper discovers the light has been signaling someone.",
+            target_effect="Creeping dread and the vertigo of complicity.",
+            constraints=["No dialogue.", "  ", ""],
+        )
+        assert genome.classify_constraint_density() == ConstraintDensity.MODERATE
+
+
+class TestPromptFields:
+    def test_full_genome_fields(self):
+        genome = ConceptGenome.model_validate(HILLS_GENOME)
+        fields = genome.to_prompt_fields()
+        assert fields["premise"] == genome.premise
+        assert fields["target_effect"] == genome.target_effect
+        assert "the man" in fields["character_seeds"]
+        assert "want:" in fields["character_seeds"]
+        assert fields["thematic_tension"] == "autonomy vs. obligation"
+        assert "- The word" in fields["constraints"]
+        assert fields["style_hint"].startswith("Spare")
+
+    def test_minimal_genome_fields(self):
+        genome = ConceptGenome(
+            premise="A lighthouse keeper discovers the light has been signaling someone.",
+            target_effect="Creeping dread and the vertigo of complicity.",
+        )
+        fields = genome.to_prompt_fields()
+        assert fields["character_seeds"] == ""
+        assert fields["setting_seeds"] == ""
+        assert fields["constraints"] == ""

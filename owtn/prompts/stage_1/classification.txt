@@ -1,0 +1,45 @@
+You are classifying a story concept into behavioral dimensions for a MAP-Elites quality-diversity archive.
+
+CONCEPT GENOME:
+{genome_json}
+
+JUDGE SCORES (0-5 scale):
+{scores_json}
+
+Classify this concept on exactly 4 dimensions. For each, pick ONE value from the allowed set and rate your confidence.
+
+CONCEPT_TYPE — where does this story's primary energy come from?
+- thought_experiment: speculative/philosophical "what if" explored for consequences
+- situation_with_reveal: normal surface hiding something; energy from hidden information
+- voice_constraint: a restriction on expression IS the story; constraints field dominates
+- character_collision: incompatible people forced together; the encounter is the engine
+- atmospheric_associative: meaning from mood, imagery, juxtaposition; not plot or argument
+- constraint_driven: a formal rule generates the narrative content (not just restricts voice)
+
+ARC_SHAPE — what emotional trajectory does the concept imply?
+- rise: negative → positive
+- fall: positive/neutral → negative
+- fall_rise: worse before better
+- rise_fall: better before collapse
+- rise_fall_rise: recovery after fall
+- fall_rise_fall: brief hope crushed
+
+TONAL_REGISTER — what is the concept's dominant mode?
+- comedic: humor, absurdity, wit (even if dark)
+- tragic: irreversible loss, weight, gravity
+- ironic: gap between appearance and reality
+- earnest: sincere, direct, vulnerable
+- surreal: dream logic, impossible juxtaposition
+- matter_of_fact: extraordinary content, flat delivery
+
+THEMATIC_DOMAIN — what is the concept fundamentally about?
+- interpersonal: relationships, the space between people
+- societal: institutions, communities, power structures
+- philosophical: epistemology, ethics, identity, nature of reality
+- existential: mortality, meaning, isolation, transcendence
+- mundane_elevated: everyday experience revealed as extraordinary
+
+For each dimension, pick the value that best describes the concept's PRIMARY energy source. If uncertain, state low confidence.
+
+Respond with JSON only:
+{{"concept_type": "<value>", "concept_type_confidence": "<low|medium|high>", "arc_shape": "<value>", "arc_shape_confidence": "<low|medium|high>", "tonal_register": "<value>", "tonal_register_confidence": "<low|medium|high>", "thematic_domain": "<value>", "thematic_domain_confidence": "<low|medium|high>"}}

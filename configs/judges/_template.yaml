@@ -1,0 +1,64 @@
+# Judge Template
+#
+# Copy this file, rename to <id>.yaml, and fill in the fields.
+# Then add the id to a stage config's judges.panel list.
+#
+# See docs/stage-1/judges.md for the full schema and design rationale.
+# See docs/judging/overview.md for the 6-field architecture.
+
+# Kebab-case, must match filename (without .yaml)
+id: ""
+
+# Display name used in the judge prompt ("You are {name}.")
+name: ""
+
+# Who is this judge? 1 paragraph. Not a demographic profile — a person
+# with specific taste, experience, and blind spots. What do they reach
+# for when they pick up a story? What makes them put one down?
+# Include evaluative contrasts: not "they value X" but "not X, but Y."
+# Use > (folded scalar). No hard line-wrapping — one paragraph = one line.
+identity: >
+
+# Ranked list of 3-5 priorities. What this judge cares about most.
+# The ranking creates implicit dimension weighting — the LLM will
+# naturally emphasize what's listed first. Include at least one
+# negative preference (what they're hostile toward).
+# IMPORTANT: Each value should include application rationale — not just
+# what the judge values, but how they apply it and what it looks like
+# in practice. "Grip — I'll forgive almost anything if the pull is
+# strong enough" not just "Grip."
+values:
+  - ""
+  - ""
+  - ""
+
+# 1-3 evaluative demonstrations. NOT just taste references ("I like
+# Author X") — show the judge EVALUATING. What would they say about
+# a specific concept? How do they articulate why something works or
+# fails? Research shows exemplars are the strongest calibration signal,
+# stronger than identity + values combined. Make them count.
+# Write in the judge's first-person voice.
+exemplars:
+  - ""
+
+# lenient / moderate / demanding
+# At least 30% of any panel should be demanding.
+# These map to calibration instructions in the judge prompt:
+#   lenient:   "You focus on what works. A 3/5 means significant problems."
+#   moderate:  "You identify strengths and weaknesses equally. A 3/5 means
+#              competent but unremarkable."
+#   demanding: "You focus on what doesn't work. A 4/5 is exceptional praise.
+#              You are not cruel, but you are exacting."
+harshness: "moderate"
+
+# primary / secondary / contrarian
+# Primary: highest weight in selection. Drives evolutionary pressure.
+# Secondary: moderate weight. General reader quality check.
+# Contrarian: zero/minimal weight. Tracked for diversity analysis.
+#   Prevents echo chamber convergence.
+priority: "primary"
+
+# Which LLM model(s) run this judge. List format — the system picks
+# randomly per evaluation call. Must differ from the generation model
+# family (enforced at startup).
+model: ["gpt-4.1"]

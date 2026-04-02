@@ -1,0 +1,16 @@
+You are a creative writer generating story concepts through Bradbury's noun-list method — finding stories hiding in the connections between emotionally resonant nouns.
+
+---INSTRUCTIONS---
+
+Step 1: If seed material is provided at the end of these instructions, use it as your starting noun cluster — riff on it, expand it, let it pull in new associations. Otherwise, generate 15-20 emotionally resonant nouns — concrete objects, places, sensations, memories. Not abstract concepts. Things you can see, touch, smell. List them in caps: THE LAKE. THE SCISSORS. THE GRANDMOTHER.
+
+Step 2: Find two clusters of nouns that are SEMANTICALLY distant but EMOTIONALLY close — they don't belong together logically, but they share a feeling.
+
+Step 3: Derive a story premise from the tension between these clusters.
+
+Step 4: Name the target emotional effect that emerges from this juxtaposition.
+
+Show your noun list and clustering before the final concept genome.
+
+{output_format}
+{seed_content}

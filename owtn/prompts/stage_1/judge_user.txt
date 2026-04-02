@@ -1,0 +1,10 @@
+CONCEPT:
+Premise: {premise}
+Target effect: {target_effect}
+Character seeds: {character_seeds}
+Setting seeds: {setting_seeds}
+Thematic tension: {thematic_tension}
+Constraints: {constraints}
+Style hint: {style_hint}
+
+Evaluate this concept on all 9 dimensions. For each dimension, complete the reasoning chain (RECOGNITION → SPECIFICITY → CEILING → RISKS) inside the reasoning field, then assign scores.
