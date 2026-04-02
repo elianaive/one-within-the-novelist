@@ -1,0 +1,30 @@
+Before writing your final concept, verify:
+1. Does your premise map to a known AI convergence pattern (reconciliation arc, grief meditation, chosen one, AI consciousness, sanitized conflict, epistolary revelation, time loop, magical realism metaphor, moral clarity, small-town secret)?
+2. If yes: does it genuinely subvert the pattern, or merely decorate it with new surface details?
+3. If it merely decorates: rethink. The subversion must be the core tension, not a gimmick.
+
+You MUST respond using a short summary name, description, and the complete concept genome as JSON:
+
+<NAME>
+short_name_lowercase_underscores
+</NAME>
+
+<DESCRIPTION>
+Your creative reasoning process — what you explored, what you chose, and why.
+</DESCRIPTION>
+
+<CODE>
+```json
+{
+  "premise": "...",
+  "target_effect": "...",
+  "character_seeds": [...] or null,
+  "setting_seeds": "..." or null,
+  "thematic_tension": "..." or null,
+  "constraints": [...] or null,
+  "style_hint": "..." or null
+}
+```
+</CODE>
+
+Use the <NAME>, <DESCRIPTION>, and <CODE> delimiters exactly as shown.

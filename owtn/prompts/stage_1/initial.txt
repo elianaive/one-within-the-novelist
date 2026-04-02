@@ -1,0 +1,7 @@
+# Task
+
+Generate an original story concept for an evolutionary fiction pipeline.
+
+{operator_instructions}
+
+This is the first generation — there is no parent concept to evolve from. Create something from scratch.

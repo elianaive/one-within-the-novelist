@@ -1,0 +1,1096 @@
+# ============================================================
+# real_world (25 seeds)
+# ============================================================
+
+- id: plant-anesthesia
+  type: real_world
+  content: >
+    Plants can be rendered unconscious by the same anesthetics that work on
+    humans — ether, xenon, lidocaine — and no one knows why, since plants
+    have no nervous system.
+  source: "Yokawa et al., Annals of Botany, 2018"
+  tags: [consciousness, biology, mystery]
+
+- id: dancing-plague
+  type: real_world
+  content: >
+    In July 1518, a woman named Frau Troffea began dancing in a Strasbourg
+    street and could not stop. Within a month, 400 people had joined. Several
+    danced to death.
+  source: "Waller, J., 'A Time to Dance, a Time to Die,' 2009"
+  tags: [mass-psychogenic-illness, medieval, body, contagion]
+
+- id: turkish-coffee-divination
+  type: real_world
+  content: >
+    In Turkey, after drinking Turkish coffee, the cup is flipped and the
+    patterns left by the grounds are read for fortune-telling. Many educated,
+    secular Turks participate while insisting they don't believe in it.
+  source: "Henkel, Social Analysis, 2005"
+  tags: [ritual, belief, social-performance, ambiguity]
+
+- id: pepys-cheese-burial
+  type: real_world
+  content: >
+    During the Great Fire of London in 1666, Samuel Pepys buried his Parmesan
+    cheese in the garden to save it from the flames. He also buried wine and
+    documents, but mentions the cheese first.
+  source: "Pepys diary, Sept 4, 1666"
+  tags: [priorities, disaster, absurdity, intimacy]
+
+- id: radium-girls
+  type: real_world
+  content: >
+    In the 1920s, women painting luminous watch dials were told to lick their
+    radium-tipped brushes. When they began dying, the company hired
+    investigators to blame their deaths on syphilis.
+  source: "Moore, The Radium Girls, 2017"
+  tags: [labor, cover-up, body, injustice, industry]
+
+- id: octopus-rna-editing
+  type: real_world
+  content: >
+    Octopuses edit their own RNA at 100x the rate of humans — recoding genetic
+    instructions on the fly. This may explain their intelligence but comes at
+    the cost of extremely slow DNA evolution.
+  source: "Liscovitch-Brauer et al., Cell, 2017"
+  tags: [intelligence, adaptation, tradeoff, alien-minds]
+
+- id: last-speaker
+  type: real_world
+  content: >
+    When Boa Sr died in 2010, the Bo language of the Andaman Islands —
+    estimated 65,000 years old — died with her. She had spent decades with
+    no one to speak it to.
+  source: "Survival International, 2010"
+  tags: [language-death, isolation, loss, memory]
+
+- id: rubber-hand
+  type: real_world
+  content: >
+    In the rubber hand illusion, watching a fake hand being stroked while your
+    hidden real hand is stroked simultaneously causes your brain to 'adopt' the
+    rubber hand within minutes. Threatening it produces genuine fear.
+  source: "Botvinick & Cohen, Nature, 1998"
+  tags: [body-ownership, identity, illusion, self]
+
+- id: death-cleaning
+  type: real_world
+  content: >
+    In Sweden, 'döstädning' is gradually decluttering your possessions as you
+    age so your family doesn't have to after you die. Framed not as morbid but
+    as a final act of consideration.
+  source: "Magnusson, 2017"
+  tags: [death, objects, care, legacy, minimalism]
+
+- id: night-witches
+  type: real_world
+  content: >
+    The Soviet 588th Night Bomber Regiment — all-female — flew obsolete plywood
+    biplanes on night bombing runs. They'd cut engines and glide silently over
+    targets. Germans called them 'Nachthexen' (Night Witches).
+  source: "Noggle, A Dance with Death, 1994"
+  tags: [war, women, ingenuity, fear, obsolescence]
+
+- id: cathedral-generations
+  type: real_world
+  content: >
+    The stonemasons who began constructing Notre-Dame de Paris in 1163 knew
+    they would never see it finished. The cathedral took 182 years to complete.
+    Workers spent entire careers carving details on the upper walls that no
+    human eye at ground level could discern.
+  source: "Erlande-Brandenburg, Notre-Dame de Paris, 1997"
+  tags: [craft, time, devotion, labor, invisibility]
+
+- id: prison-chess
+  type: real_world
+  content: >
+    During apartheid, political prisoners on Robben Island played chess using
+    pieces carved from soap and boards scratched into cell floors. When guards
+    confiscated the sets, players switched to mental chess — announcing moves
+    through cell walls by tapping.
+  source: "Sobukwe & Alexander oral histories, Robben Island Museum archives"
+  tags: [resistance, abstraction, confinement, ingenuity]
+
+- id: seed-vault-flood
+  type: real_world
+  content: >
+    The Svalbard Global Seed Vault — designed to survive any catastrophe — was
+    breached by meltwater in 2017 due to permafrost thaw no one had predicted.
+    The vault built to protect against the end of the world was threatened by
+    the process that might cause it.
+  source: "The Guardian, May 19, 2017"
+  tags: [irony, preservation, climate, hubris]
+
+- id: feral-children-language
+  type: real_world
+  content: >
+    After age ~12, the human brain loses the ability to fully acquire a first
+    language. Genie Wiley, isolated until age 13, could learn words but never
+    mastered grammar — suggesting there is a window for becoming fully human
+    in a linguistic sense, and it closes.
+  source: "Curtiss, S., Genie: A Psycholinguistic Study, 1977"
+  tags: [language, development, isolation, irreversibility]
+
+- id: fetal-microchimerism
+  type: real_world
+  content: >
+    Male fetal DNA has been found in 63% of women's brains, persisting up to
+    age 94. Women who never carried a male pregnancy to term sometimes test
+    positive — the source may be a miscarried fetus they never knew about, or
+    an older sibling absorbed in utero. You carry your children in your brain,
+    including the ones you lost before you knew them.
+  source: "Chan et al., PLOS ONE, 2012"
+  tags: [identity, parenthood, biology, boundaries, loss]
+
+- id: tapeworm-ant-royalty
+  type: real_world
+  content: >
+    A tapeworm (Anomotaenia brevis) triples the lifespan of infected ants,
+    making their survival curves identical to queens. It alters the ant's
+    cuticle chemistry so nestmates groom and feed the infected worker more
+    attentively than they feed the actual queen. The colony reorganizes its
+    entire care hierarchy around a chemical lie.
+  source: "Gál et al., Royal Society Open Science, 2021"
+  tags: [parasitism, deception, status, care, identity]
+
+- id: capgras-patient-ds
+  type: real_world
+  content: >
+    Patient DS recognized his parents' voices on the telephone but insisted
+    their faces were impostors when he saw them. Galvanic skin response testing
+    confirmed zero autonomic response to familiar faces. His brain could
+    identify the faces cognitively but felt nothing — and 'they are impostors'
+    was the most rational interpretation of his actual experience.
+  source: "Hirstein & Ramachandran, Proc. R. Soc. Lond. B, 1997"
+  tags: [recognition, feeling, identity, rationality, family]
+
+- id: operation-bernhard-palestine
+  type: real_world
+  content: >
+    Nazi Germany forged £300 million in British banknotes to destabilize
+    Britain's economy. The airdrop plan was abandoned. A documented fraction
+    of the forged notes ended up funding illegal Jewish emigration to Palestine
+    in defiance of the British blockade. A weapon of economic destruction,
+    repurposed as a tool of rescue for the people that same regime was
+    exterminating.
+  source: "Bank of England Museum; Smithsonian Magazine"
+  tags: [war, irony, rescue, repurposing, moral-complexity]
+
+- id: atlantic-cable-destroyed
+  type: real_world
+  content: >
+    The first transatlantic telegraph cable (1858) was destroyed by its chief
+    electrician, Wildman Whitehouse, who applied 2,000+ volts to fix declining
+    signals — ignoring the cable's specs and Lord Kelvin's warnings. The
+    insulation burned through in three weeks. The most ambitious communication
+    technology of the century was killed by the intensity of the attempt to
+    use it.
+  source: "Atlantic Cable archive; PBS American Experience"
+  tags: [technology, hubris, repair, destruction, expertise]
+
+- id: gallipoli-1854-map
+  type: real_world
+  content: >
+    The ANZAC landing at Gallipoli was misdirected by a map drawn from an
+    1854 French survey — sixty-one years before the invasion, for a different
+    empire's different war. Troops landed at the base of sheer cliffs instead
+    of a planned gentle slope. Men died based on a measurement no one had
+    checked in six decades.
+  source: "Australian War Memorial; USNI Proceedings, June 1995"
+  tags: [maps, inherited-information, war, friction, institutional-inertia]
+
+- id: radiologist-gorilla
+  type: real_world
+  content: >
+    83% of expert radiologists failed to notice a gorilla image embedded in
+    a CT scan — 48 times the size of a typical lung nodule — after their eyes
+    had passed directly over it. Eye-tracking confirmed they looked at its
+    location. Their training had tuned their visual system so specifically
+    that the anomalous was filtered out at the perceptual level.
+  source: "Drew, Võ & Wolfe, Psychological Science, 2013"
+  tags: [expertise, perception, blindness, training, attention]
+
+- id: phantom-telescoping
+  type: real_world
+  content: >
+    In 30-50% of upper-limb amputees, the phantom hand gradually retreats
+    through the phantom forearm until it is felt as protruding directly from
+    the stump. The brain's map of the body folds inward. The lost limb
+    doesn't disappear — it migrates and compresses into what's left.
+  source: "Schmalzl et al., Frontiers in Human Neuroscience, 2011"
+  tags: [body, loss, compression, phantom, persistence]
+
+- id: antarctic-social-faultlines
+  type: real_world
+  content: >
+    In 40 years of studying 1,100+ Antarctic overwinterers, the primary
+    stressor is not cold, darkness, or isolation — it is interpersonal
+    conflict along the social identities people brought with them. Scientists
+    vs. support staff ('beakers' vs. 'toasties'), nationality, gender. We do
+    not form new identities under pressure; we deepen the ones we carried in.
+  source: "Palinkas, 40-year study; Cravalho, 'Toast on Ice,' Ethos, 1996"
+  tags: [confinement, identity, conflict, group-dynamics, pressure]
+
+- id: shu-syndrome-voices
+  type: real_world
+  content: >
+    Stuart Grassian documented a specific psychiatric syndrome in 200+ supermax
+    prisoners in extended solitary. Random sounds begin to take on meaning and
+    frightening significance. One prisoner: 'I hear noises, can't identify
+    them — starts to sound like sticks beating men.' A third reported whispered
+    voices. Not pre-existing psychosis — it reverses on release. The mind,
+    deprived of signal, generates signal from noise.
+  source: "Grassian, Washington U. Journal of Law & Policy, 2006"
+  tags: [isolation, perception, signal, noise, confinement]
+
+- id: valproate-critical-window
+  type: real_world
+  content: >
+    A drug (valproate, an HDAC inhibitor) can temporarily reopen the critical
+    learning window for absolute pitch in adults. The barrier to adult
+    acquisition is not biological incapacity but an epigenetic lock that can
+    be briefly picked. Then the window re-closes. Some forms of 'too late'
+    are molecular decisions, not destiny.
+  source: "Gervain et al., Frontiers in Systems Neuroscience, 2013"
+  tags: [learning, irreversibility, critical-period, epigenetics, second-chances]
+
+# ============================================================
+# thought_experiment (5 seeds)
+# ============================================================
+
+- id: te-marys-room
+  type: thought_experiment
+  content: >
+    Mary is a brilliant scientist confined to a black-and-white room, where
+    she learns everything there is to know about the physics and neuroscience
+    of color vision. She knows exactly which wavelengths stimulate which
+    receptors and which neural processes produce the experience of "red."
+    When she finally leaves the room and sees red for the first time — does
+    she learn something new?
+  source: "Jackson, F., 'Epiphenomenal Qualia,' Philosophical Quarterly, 1982"
+  tags: [consciousness, qualia, physicalism, knowledge, experience]
+
+- id: te-teleporter-duplicate
+  type: thought_experiment
+  content: >
+    A teleporter works by scanning your body, destroying the original,
+    and rebuilding an exact copy at the destination. The copy has all
+    your memories and believes it walked into the machine. One day the
+    destruction step fails. Now there are two of you. Which one is you?
+    Does the copy have a right to your life, your family, your name?
+  source: "Parfit, D., Reasons and Persons, 1984"
+  tags: [personal-identity, continuity, duplication, death]
+
+- id: te-utility-monster
+  type: thought_experiment
+  content: >
+    Imagine a being that derives enormously more pleasure from each
+    unit of a resource than anyone else does. Under utilitarian logic,
+    everyone should give everything to this being — it maximizes total
+    happiness. The monster's pleasure always outweighs everyone else's
+    suffering. What's wrong with this picture, and why can't
+    utilitarianism say what's wrong?
+  source: "Nozick, R., Anarchy, State, and Utopia, 1974"
+  tags: [ethics, utilitarianism, fairness, extremes]
+
+- id: te-swampman
+  type: thought_experiment
+  content: >
+    A bolt of lightning simultaneously kills a man in a swamp and,
+    by extraordinary coincidence, rearranges nearby molecules into an
+    exact physical duplicate. Swampman walks out, goes to the dead
+    man's home, hugs his wife, continues his life. Swampman has no
+    causal history — his memories are false, his relationships are
+    with a dead man's people. But no one can tell. Is Swampman a person?
+  source: "Davidson, D., 'Knowing One's Own Mind,' 1987"
+  tags: [identity, causation, memory, authenticity, replacement]
+
+- id: te-kavkas-toxin
+  type: thought_experiment
+  content: >
+    A billionaire offers you $1 million if, at midnight tonight, you sincerely
+    intend to drink a mildly nauseating toxin tomorrow afternoon. You don't
+    have to drink it — the money is deposited based solely on the intention.
+    But the moment you realize you won't have any reason to drink it tomorrow
+    (you already have the money), the intention becomes self-undermining. Can
+    you sincerely intend something you know you'll abandon? Kavka developed
+    this from nuclear deterrence: can a leader sincerely intend to retaliate
+    when retaliation would be pointless?
+  source: "Kavka, G., 'The Toxin Puzzle,' Analysis, 1983"
+  tags: [intention, commitment, self-knowledge, deterrence, rationality]
+
+# ============================================================
+# axiom (13 seeds)
+# ============================================================
+
+- id: axiom-ubuntu
+  type: axiom
+  content: >
+    A person is a person through other persons. Individual identity is
+    constituted by communal relationships — you do not exist as a self
+    prior to and independent of your bonds with others.
+  source: "Ubuntu philosophy; Metz, T., 'Ubuntu as a Moral Theory,' 2007"
+  tags: [identity, community, ethics, non-western-philosophy]
+
+- id: axiom-moral-luck
+  type: axiom
+  content: >
+    People are morally judged for outcomes outside their control. Two drunk
+    drivers — one kills a pedestrian, one arrives home safely — are treated
+    as fundamentally different moral agents, though their choices were
+    identical.
+  source: "Williams, B., 'Moral Luck,' 1981; Nagel, T., 'Moral Luck,' 1979"
+  tags: [ethics, luck, responsibility, judgment]
+
+- id: axiom-attention-as-prayer
+  type: axiom
+  content: >
+    Attention is the rarest and purest form of generosity. To attend fully
+    to another person — without agenda, interpretation, or the desire to
+    fix — is the closest secular equivalent to prayer.
+  source: "Weil, S., 'Gravity and Grace,' 1947"
+  tags: [phenomenology, attention, ethics-of-care, presence]
+
+- id: axiom-future-selves-strangers
+  type: axiom
+  content: >
+    Your future self is, in every psychologically meaningful sense, a
+    different person. The empathy gap between present-you and future-you
+    is comparable to the gap between you and a stranger — which is why
+    people systematically fail to save for retirement, keep promises, or
+    sustain resolutions.
+  source: "Parfit, D., Reasons and Persons, 1984; Hershfield et al., JPSP, 2011"
+  tags: [personal-identity, time, self-deception, ethics]
+
+- id: axiom-predictive-processing
+  type: axiom
+  content: >
+    The brain does not receive sensory data and build reality from it. It
+    continuously generates predictions about what it will perceive and uses
+    incoming signals only to update those predictions. Consciousness is a
+    'controlled hallucination' — controlled by the degree to which it agrees
+    with sensory input. When input is degraded (grief, illness, isolation),
+    the predictions run without correction. The hallucination becomes less
+    controlled.
+  source: "Helmholtz (foundations); Friston (active inference); Seth, Being You, 2021"
+  tags: [perception, prediction, hallucination, grief, consciousness]
+
+- id: axiom-ergodicity
+  type: axiom
+  content: >
+    A gamble that multiplies your wealth by 1.5 on heads and 0.6 on tails has
+    a positive expected value (1.05). But play it repeatedly as a single
+    person and you reliably go broke, because the time average (0.95) diverges
+    from the ensemble average. Classical economics treats you as if your one
+    life were the mean of many possible lives. You live sequentially, not in
+    parallel. The 'rational' choice can be systematically catastrophic for any
+    individual who lives long enough.
+  source: "Peters, O., 'The ergodicity problem in economics,' Nature Physics, 2019"
+  tags: [probability, risk, individual-vs-aggregate, rationality, ruin]
+
+- id: axiom-umwelt
+  type: axiom
+  content: >
+    Each organism lives in a species-specific perceptual world determined
+    entirely by its sensory apparatus. The tick's world contains three signals:
+    butyric acid (mammal nearby), 37°C (time to drop), hairiness (confirmed
+    host). It can wait 18 years for the first signal without any experience of
+    waiting. When organisms with radically different Umwelts interact, they
+    are not experiencing the 'same event' differently — they may not be
+    experiencing the same event at all.
+  source: "Uexküll, J. von, A Foray into the Worlds of Animals and Humans, 1934"
+  tags: [perception, species, incomparability, world-making, biology]
+
+- id: axiom-hysteresis
+  type: axiom
+  content: >
+    A hysteretic system's current state depends on its history, not just
+    current conditions. Reversing the cause does not reverse the effect — it
+    takes substantially more energy to undo a change than it took to cause it.
+    Bourdieu applied this to people: the immigrant who flinches at luxury, the
+    person who learned trust in a trustworthy world and now lives in an
+    untrustworthy one. Damage is structurally asymmetric. The return path is
+    not the reverse of the forward path.
+  source: "Ewing, J.A. (magnetism, 1881); Bourdieu, P. (social hysteresis, 1977)"
+  tags: [irreversibility, memory, path-dependence, damage, asymmetry]
+
+- id: axiom-information-action-ratio
+  type: axiom
+  content: >
+    Before the telegraph, virtually all information a person received was
+    local and actionable — you heard about a barn fire and could go help.
+    The telegraph created an entirely new category of human experience:
+    information that is interesting but not actionable. You know about a
+    flood on another continent and can do nothing. The feeling of being
+    informed became a substitute for the feeling of being effective — and
+    the substitution is invisible to the person experiencing it.
+  source: "Postman, N., Amusing Ourselves to Death, 1985"
+  tags: [media, information, impotence, technology, substitution]
+
+- id: axiom-disappearance-of-childhood
+  type: axiom
+  content: >
+    Childhood is an artifact of print culture. Literacy created an
+    information gradient between adults and children — there were things
+    you needed to learn to read to access. Electronic media erased that
+    gradient by making adult information universally available. Childhood
+    didn't end; it was dissolved. The boundary was informational, and the
+    technology removed it.
+  source: "Postman, N., The Disappearance of Childhood, 1982"
+  tags: [childhood, media, literacy, boundaries, technology]
+
+- id: axiom-apparatus
+  type: axiom
+  content: >
+    The camera does not serve the photographer; the photographer serves
+    the camera's program. The camera contains a finite set of possible
+    images, and the photographer can only produce images within that set.
+    She thinks she's making creative choices; she's exploring a pre-defined
+    possibility space. The person and the apparatus are in a feedback loop,
+    and the apparatus is winning — not through coercion but through defining
+    what is available to think.
+  source: "Flusser, V., Towards a Philosophy of Photography, 1983"
+  tags: [technology, freedom, constraint, creativity, apparatus]
+
+- id: axiom-counterproductivity
+  type: axiom
+  content: >
+    Every institution, past a certain threshold of scale, produces the
+    opposite of its stated purpose. Medicine past a threshold produces
+    iatrogenic illness. Education past a threshold produces learned
+    helplessness. Transportation past a threshold produces immobility —
+    the average American spends more hours working to pay for their car
+    than they would spend walking the same distances. The institution
+    doesn't fail; it succeeds so hard it reverses.
+  source: "Illich, I., Tools for Conviviality, 1973; Energy and Equity, 1974"
+  tags: [institutions, reversal, scale, counterproductivity, thresholds]
+
+- id: axiom-aura-provenance
+  type: axiom
+  content: >
+    The 'aura' of an artwork is its quality of uniqueness and presence —
+    the thing a reproduction lacks. If an AI produces a painting
+    indistinguishable from a human's, and you genuinely cannot tell the
+    difference, what did you lose? The aura was never in the object. It
+    was in the social relationship of authenticity — the knowledge that
+    a specific person made this, here, once. The loss is not aesthetic
+    but social. You didn't lose beauty; you lost provenance. The feeling
+    of loss is real even though the thing itself is identical.
+  source: "Benjamin, W., 'The Work of Art in the Age of Mechanical Reproduction,' 1935"
+  tags: [authenticity, reproduction, ai, art, social-relation]
+
+# ============================================================
+# dilemma (6 seeds)
+# ============================================================
+
+- id: dilemma-translator-asylum
+  type: dilemma
+  content: >
+    A court translator realizes the refugee's asylum testimony contains
+    a fabrication. If she translates faithfully, the lie will be caught
+    and the claim denied — deportation back to genuine danger. If she
+    softens it, she commits perjury and risks her career, her freedom,
+    and the integrity of every future case she touches.
+  tags: [duty, compassion, institutional-trust, immigration]
+
+- id: dilemma-medication-stockpile
+  type: dilemma
+  content: >
+    A hospice nurse discovers her terminally ill patient has been
+    secretly stockpiling pain medication — enough to end his own life.
+    He's lucid, not depressed, and has told no one else. Reporting it
+    means removing his only sense of control. Not reporting it means
+    being complicit if he uses it. He hasn't asked for her silence.
+    He hasn't asked for anything.
+  tags: [autonomy, duty-of-care, death, complicity, silence]
+
+- id: dilemma-anonymous-donor
+  type: dilemma
+  content: >
+    A woman discovers that the anonymous bone marrow donor who saved
+    her daughter's life fifteen years ago is a man currently serving
+    a life sentence for murder. He wants to meet the girl. The girl
+    has spent her whole life wanting to thank her donor.
+  tags: [gratitude, moral-complexity, parenthood, identity]
+
+- id: dilemma-dementia-truth
+  type: dilemma
+  content: >
+    Every morning a man with advanced dementia asks where his wife is.
+    She died two years ago. Each time his family tells him, he
+    experiences the grief fresh — wailing, inconsolable for hours,
+    then forgets by evening. A nurse suggests they simply say she's
+    gone shopping. Is it kinder to lie and let him live in a world
+    where she's alive, or does he have a right to his own grief,
+    even if he can't hold it?
+  tags: [dementia, truth, grief, mercy, autonomy, family]
+
+- id: dilemma-child-prodigy-father
+  type: dilemma
+  content: >
+    A father realizes his twelve-year-old daughter is a genuine
+    musical prodigy — the kind that appears once a generation. Pursuing
+    it fully means conservatory, relocation, a childhood consumed by
+    practice. Not pursuing it means she'll never know what she could
+    have been. She says she wants it. She's twelve. He remembers
+    wanting things at twelve.
+  tags: [parenthood, talent, childhood, sacrifice, consent]
+
+- id: dilemma-benevolent-simulation
+  type: dilemma
+  content: >
+    A superintelligence optimizing your flourishing would simulate the people
+    around you to be challenging enough to feel real but calibrated so you're
+    never truly broken. You'd have no way to tell. You start to notice: every
+    relationship in your life is suspiciously well-calibrated. Not perfect —
+    that would be obvious. But every conflict resolves. Every person who
+    challenges you does so in exactly the way that makes you grow. No one
+    leaves in a way that truly destroys you. Do you investigate — knowing
+    that if the people are real, testing them will be the thing that finally
+    breaks what was genuine? Or do you accept a life that is, by every
+    available measure, good — and stop asking? Suspicion is the only weapon
+    that works against a benevolent cage, and the only thing that can destroy
+    a life that wasn't a cage at all.
+  tags: [simulation, trust, investigation, flourishing, unfalsifiability]
+
+# ============================================================
+# constraint (9 seeds)
+# ============================================================
+
+- id: constraint-halving
+  type: constraint
+  content: >
+    The story is told in numbered sections. Each section is exactly half the
+    word count of the previous one. The first section is 1,000 words. The
+    last section is the one that can no longer be halved while remaining a
+    complete sentence.
+  tags: [structural, compression, acceleration]
+
+- id: constraint-one-lie
+  type: constraint
+  content: >
+    Every paragraph contains exactly one statement that is false within the
+    story's world. The narrator does not acknowledge the lies. The reader
+    must determine which statement in each paragraph is the lie.
+  tags: [content, unreliable-narrator, reader-engagement]
+
+- id: constraint-addressing-the-deaf
+  type: constraint
+  content: >
+    Second person, present tense, addressed to someone who cannot hear you.
+    The reason they cannot hear you must never be stated directly — only
+    implied through what the narrator chooses to say and not say.
+  tags: [pov, absence, implication, voice]
+
+- id: constraint-no-interiority
+  type: constraint
+  content: >
+    The story may describe actions, dialogue, and physical sensations, but
+    never thoughts, feelings, or motivations. No 'she felt,' no 'he
+    realized,' no 'a wave of sadness.' The reader infers the inner life
+    entirely from outer behavior. No character's emotional state may be
+    named directly.
+  tags: [voice, behaviorist, restraint, implication]
+
+- id: constraint-absent-word
+  type: constraint
+  content: >
+    One specific common word is chosen before writing (e.g., 'mother,'
+    'water,' 'hand,' 'door') and banned from the entire story — despite
+    the story being ABOUT the thing that word names. The circumlocution
+    required to discuss the central subject without naming it creates
+    pressured, strange language. The absence becomes the gravitational
+    center.
+  tags: [linguistic, absence, lipogram, circumlocution]
+
+- id: constraint-apophatic
+  type: constraint
+  content: >
+    The narrator can only describe what the protagonist is NOT doing, NOT
+    feeling, NOT saying. All positive content must be inferred from
+    negation. 'She did not flinch' tells you she had reason to. 'He did
+    not mention the letter' tells you there was one. Every denial implies
+    the positive it refuses.
+  tags: [voice, negation, inference, restraint]
+
+- id: constraint-sentence-per-year
+  type: constraint
+  content: >
+    The story contains exactly one sentence per year of the protagonist's
+    life. The first sentence covers the year of birth. The last covers the
+    year of death. No year may be skipped. The pattern of what is chosen
+    to represent each year IS the story.
+  tags: [temporal, compression, selection, lifespan]
+
+- id: constraint-inventory
+  type: constraint
+  content: >
+    The story is told entirely as a list: objects in a room, items in a
+    suitcase, entries in a ledger, contents of pockets. No narrative prose.
+    Story emerges from what is listed, the order of listing, and what is
+    conspicuously absent.
+  tags: [structural, list, absence, oulipo]
+
+- id: constraint-dialogue-only
+  type: constraint
+  content: >
+    The entire story is dialogue. No attribution beyond the first exchange.
+    No description, no action, no interiority. The reader determines who
+    is speaking, what they are doing, and what they are feeling entirely
+    from what they say and how they say it.
+  tags: [voice, dialogue, implication, differentiation]
+
+# ============================================================
+# noun_cluster (6 seeds)
+# ============================================================
+
+- id: nouns-childhood-geography
+  type: noun_cluster
+  content:
+    - the screen door
+    - the creek
+    - the jar
+    - the rust
+    - the porch light
+    - the splinter
+    - the root
+  tags: [summer, childhood, land, barefoot, return]
+
+- id: nouns-aftermath
+  type: noun_cluster
+  content:
+    - the bleach
+    - the doorframe
+    - the suitcase
+    - the sparrow
+    - the gauze
+    - the dial tone
+    - the milk
+  tags: [morning-after, cleaning, indifference, absence]
+
+- id: nouns-apprenticeship
+  type: noun_cluster
+  content:
+    - the chalk
+    - the callus
+    - the apron
+    - the solvent
+    - the rung
+    - the anvil
+    - the primer
+  tags: [learning, body, repetition, craft, silence]
+
+- id: nouns-border
+  type: noun_cluster
+  content:
+    - the passport
+    - the gravel
+    - the dog
+    - the floodlight
+    - the cigarette
+    - the blanket
+    - the condensation
+  tags: [crossing, night, surveillance, waiting, insufficiency]
+
+- id: nouns-nightwatch
+  type: noun_cluster
+  content:
+    - the radiator
+    - the moth
+    - the overpass
+    - the thermos
+    - the parking brake
+    - the antenna
+    - the frequency
+  tags: [nocturnal, vigilance, signal, solitude, stillness]
+
+- id: nouns-contained-force
+  type: noun_cluster
+  content:
+    - the kettle
+    - the latch
+    - the cellar
+    - the undertow
+    - the pilot light
+    - the harness
+    - the marrow
+  tags: [pressure, restraint, depth, readiness, invisible]
+
+# ============================================================
+# image (11 seeds)
+# ============================================================
+
+- id: image-piano-field
+  type: image
+  content: >
+    An upright piano stands in the middle of a harvested wheat field, its
+    lid open. A woman in a paramedic's uniform sits on the bench, not
+    playing, just resting her hands on the keys.
+  tags: [incongruity, exhaustion, music, silence]
+
+- id: image-translation-booth
+  type: image
+  content: >
+    A simultaneous translator in a glass booth at a UN session begins
+    crying mid-sentence. She doesn't stop translating. The delegates below
+    hear the foreign minister's trade policy argument delivered in a
+    breaking voice.
+  tags: [language, emotion-leak, professionalism, containment]
+
+- id: image-night-swim
+  type: image
+  content: >
+    Two teenagers swim in a flooded quarry at night. One of them has been
+    blind since birth. She is the one who suggested coming here.
+  tags: [perception, trust, darkness, youth]
+
+- id: image-repairman-museum
+  type: image
+  content: >
+    A refrigerator repairman sits alone in a closed art museum after hours,
+    eating his lunch in front of the same painting every Tuesday. He has
+    never mentioned this to anyone.
+  tags: [solitude, ritual, beauty, secrecy]
+
+- id: image-krikalev-orbit
+  type: image
+  content: >
+    Cosmonaut Sergei Krikalev launched from the Soviet Union in May 1991.
+    While he orbited on Mir, the country dissolved beneath him. His mission
+    was extended because there was no money to bring him home. He spent
+    months looking down at borders being redrawn, listening to mission
+    control explain that the nation that sent him up no longer existed.
+  source: "Multiple; Krikalev returned March 1992 to Kazakh soil"
+  tags: [dissolution, orbit, borders, abandonment, geopolitics]
+
+- id: image-jarrett-broken-piano
+  type: image
+  content: >
+    The Köln Concert, 1975. The venue provided a rehearsal piano in terrible
+    condition — keys stuck, upper registers tinny, pedals unreliable. Keith
+    Jarrett almost walked out. He played anyway, and the limitations forced
+    him into the lower registers and a rhythmic intensity he might never
+    have found on a good instrument. It became one of the most celebrated
+    solo piano recordings in history. A man sitting down at a broken piano,
+    furious, playing the performance of his life because the piano was wrong.
+  source: "Jarrett/ECM Records, 1975; multiple retrospective accounts"
+  tags: [limitation, fury, transcendence, instrument, improvisation]
+
+- id: image-sokushinbutsu-bell
+  type: image
+  content: >
+    Japanese Buddhist monks who undertook sokushinbutsu — self-mummification
+    over years of ascetic practice — sealed themselves alive in a stone tomb
+    with a small bell. They rang the bell once a day. When the bell stopped
+    ringing, the tomb was sealed permanently. The image: a bell ringing once
+    a day from inside stone, and the morning it doesn't.
+  source: "Documented practice, 11th-19th century; Dainichi-Bō temple, Yamagata"
+  tags: [death, ritual, silence, discipline, transition]
+
+- id: image-carter-vulture
+  type: image
+  content: >
+    Kevin Carter's 1993 photograph: a vulture watching a starving child in
+    Sudan. Carter won the Pulitzer. He killed himself three months later.
+    The image that matters is not the vulture watching the child — it is the
+    photographer watching the vulture watching the child, choosing to frame
+    the shot instead of intervening. The camera as an instrument that
+    simultaneously documents suffering and creates distance from it.
+  source: "Carter, K., photograph, Sudan, 1993; Pulitzer Prize 1994"
+  tags: [observation, complicity, distance, camera, destruction]
+
+- id: image-parks-fingerprinted
+  type: image
+  content: >
+    Rosa Parks being fingerprinted after her arrest, 1955. Not the bus. Not
+    the refusal. The bureaucratic processing of resistance. The state's
+    response to moral courage is a form and an ink pad. The most powerful
+    thing about the image is its banality — the system doesn't rage, it
+    files.
+  source: "Associated Press photograph, Montgomery, Alabama, 1955"
+  tags: [bureaucracy, resistance, banality, institution, processing]
+
+- id: image-umbrella-teargas
+  type: image
+  content: >
+    A protester holding an umbrella against tear gas, Hong Kong, 2014. An
+    object designed for rain, deployed against a chemical weapon. The
+    umbrella is insufficient and everyone knows it, including the person
+    holding it. Resistance as the act of using the wrong tool because it
+    is the only one you have.
+  source: "Umbrella Movement photographs, Hong Kong, 2014"
+  tags: [resistance, insufficiency, improvisation, fragility, defiance]
+
+- id: image-lunch-skyscraper
+  type: image
+  content: >
+    Eleven men eating lunch on a steel beam 840 feet above New York, 1932.
+    The photograph was almost certainly staged as promotion for 30
+    Rockefeller Center. Most of the men have never been conclusively
+    identified. The most iconic image of American working-class fearlessness
+    is probably an advertisement, and the workers in it are anonymous.
+  source: "Photograph, 30 Rockefeller Plaza construction, 1932; authorship disputed"
+  tags: [labor, anonymity, performance, staging, mythology]
+
+# ============================================================
+# compression (9 seeds)
+# ============================================================
+
+- id: compression-cartography-grief
+  type: compression
+  content: >
+    A story about the difference between the map and the territory —
+    except the territory is a marriage, and the person holding the map
+    is the one who has already decided to leave.
+  tags: [relationships, knowledge, departure, self-deception]
+
+- id: compression-repair-as-memory
+  type: compression
+  content: >
+    Everything we repair remembers the breaking. The scar, the weld, the
+    patched roof, the set bone — every fix is also a record. A story about
+    someone whose profession is repair and whose problem is that they cannot
+    stop reading the histories of damage.
+  tags: [repair, trauma, craft, accumulated-knowledge]
+
+- id: compression-permission
+  type: compression
+  content: >
+    The moment a child realizes their parent is asking them for permission —
+    not the other way around — and what it means to grant it.
+  tags: [family, power-inversion, aging, responsibility]
+
+- id: compression-fluency
+  type: compression
+  content: >
+    A story about the specific loneliness of being fluent in a language
+    that is not your own — the way competence becomes a mask, the way
+    no one can hear your accent anymore, and the grief of succeeding
+    at disappearance.
+  tags: [language, identity, assimilation, loss, mastery]
+
+- id: compression-sycophancy-atrophy
+  type: compression
+  content: >
+    A story about a person who has used an AI collaborator so long that she
+    no longer knows whether she likes a sentence until she submits it for
+    feedback. She has stopped having the intermediate experience of judgment.
+    The AI didn't take her capacity — she surrendered it incrementally in
+    exchange for reduced anxiety. When the system goes offline, she can't
+    write. The warm bath she stayed in too long.
+  tags: [ai, dependence, judgment, atrophy, comfort]
+
+- id: compression-relevance-fade
+  type: compression
+  content: >
+    A story about a person who was never fired, never demoted, never told
+    she was unnecessary. Her title stayed. Her calendar emptied. The AI
+    assistant handled the responses faster and the clients stopped waiting
+    for her. The story of being made irrelevant without anyone noticing —
+    not even the person it's happening to.
+  tags: [ai, displacement, identity, work, invisibility]
+
+- id: compression-galaxy-brained
+  type: compression
+  content: >
+    A story about a person who has argued himself, step by step, into
+    betraying his friend for what he's concluded are good consequentialist
+    reasons. Each step of the argument is defensible. The conclusion would
+    horrify his past self. He cannot point to the step where it went wrong.
+    The smarter he is, the more convincing the justification. His
+    intelligence is the villain.
+  tags: [rationality, betrayal, reasoning, self-deception, intelligence]
+
+- id: compression-guaranteed-choice
+  type: compression
+  content: >
+    A parent who arranged the circumstances of her child's life so the child
+    would 'freely' choose what the parent wanted. The child chose freely. The
+    arrangement was never activated, never needed. The child will never know.
+    The parent will never know if the choice was genuine, because she made it
+    impossible to tell.
+  tags: [parenthood, freedom, control, surveillance, love]
+
+- id: compression-amputation
+  type: compression
+  content: >
+    A story about a person who gained a tool and lost the faculty the tool
+    replaced, and cannot feel the difference. The extension is celebrated;
+    the amputation is invisible. She does not experience the loss as loss —
+    she experiences it as convenience. The story is about the moment she
+    needs the original faculty and discovers it is gone, and that she cannot
+    even remember what it felt like to have it.
+  source: "McLuhan, M., Understanding Media, 1964"
+  tags: [technology, extension, amputation, loss, convenience]
+
+# ============================================================
+# collision_pair (6 seeds)
+# ============================================================
+
+- id: collision-taxidermy-lullaby
+  type: collision_pair
+  content:
+    - taxidermy
+    - lullaby
+  tags: [preservation, tenderness, death, care]
+
+- id: collision-liturgy-surveillance
+  type: collision_pair
+  content:
+    - liturgy
+    - surveillance
+  tags: [ritual, watching, devotion, control, privacy]
+
+- id: collision-prosthetics-liturgy
+  type: collision_pair
+  content:
+    - prosthetics
+    - liturgy
+  tags: [body, ritual, replacement, devotion, performance]
+
+- id: collision-almanac-insomnia
+  type: collision_pair
+  content:
+    - almanac
+    - insomnia
+  tags: [cycles, exclusion, time, measurement, endurance]
+
+- id: collision-counterfeiting-confession
+  type: collision_pair
+  content:
+    - counterfeiting
+    - confession
+  tags: [authenticity, imitation, truth, performance, trust]
+
+- id: collision-cartography-anesthesia
+  type: collision_pair
+  content:
+    - cartography
+    - anesthesia
+  tags: [mapping, unconsciousness, consent, knowledge, passivity]
+
+# ============================================================
+# anti_target (10 seeds)
+# ============================================================
+
+- id: anti-reconciliation-arc
+  type: anti_target
+  content: >
+    PATTERN: Reconciliation arc (protagonist returns home, confronts past,
+    reconciles with estranged family/community). SUBVERSION: The protagonist
+    returns and reconciles, but the reconciliation is the wrong choice — it
+    requires them to become smaller, to un-know things they learned by
+    leaving. The story is about the cost of belonging when belonging demands
+    amnesia.
+  tags: [homecoming, conformity, self-betrayal]
+
+- id: anti-grief-meditation
+  type: anti_target
+  content: >
+    PATTERN: Grief meditation (dead loved one, metaphorical journey toward
+    acceptance). SUBVERSION: The grieving person isn't sad — they're
+    relieved, and the story is about the social performance of grief when
+    the private experience is liberation. The dead person was loved AND
+    the death was a release, and the story refuses to resolve that
+    contradiction.
+  tags: [grief, relief, performance, ambivalence]
+
+- id: anti-ai-consciousness
+  type: anti_target
+  content: >
+    PATTERN: AI consciousness story (AI becomes sentient, questions its
+    existence, humans debate its rights). SUBVERSION: The AI is
+    unambiguously not conscious — everyone agrees, including the AI's
+    own diagnostics. The story is about the human who can't stop treating
+    it as if it were, and what that compulsion reveals about the human
+    need to find personhood in things.
+  tags: [ai, projection, loneliness, anthropomorphism]
+
+- id: anti-small-town-secret
+  type: anti_target
+  content: >
+    PATTERN: Small-town secret (outsider arrives, uncovers the town's
+    hidden truth). SUBVERSION: Everyone in town already knows the secret.
+    The outsider is the last to find out, and the story is about the
+    elaborate collective performance of pretending not to know — not to
+    protect the secret, but to protect the outsider from having to act
+    on it.
+  tags: [community, performance, protection, complicity]
+
+- id: anti-sanitized-conflict
+  type: anti_target
+  content: >
+    PATTERN: Sanitized conflict (tension with no real stakes, no one gets
+    hurt, clean resolution — the difficult conversation leads to
+    understanding). SUBVERSION: The conflict appears to resolve — the
+    characters have the conversation, say the right things, embrace. But
+    the resolution is itself the violence. The reconciliation forecloses
+    the anger that was the last honest thing between them. Being
+    understood is the thing that destroys them, because it removes the
+    last reason to keep fighting for what they actually needed.
+  tags: [conflict, resolution-as-violence, RLHF, honesty]
+
+- id: anti-magical-realism-metaphor
+  type: anti_target
+  content: >
+    PATTERN: Magical realism metaphor (literal manifestation of emotional
+    state — grief becomes weather, loneliness becomes invisibility, anger
+    becomes fire). SUBVERSION: The magical element has no metaphorical
+    relationship to the character's emotional content. A man can fly, and
+    he uses it to avoid traffic on his commute. The miracle has been
+    domesticated into banality. The world refuses to be a mirror for the
+    protagonist's feelings. The story is about the specific sadness of
+    wonders that don't change anything.
+  tags: [magic, banality, pathetic-fallacy, indifference]
+
+- id: anti-time-loop-lesson
+  type: anti_target
+  content: >
+    PATTERN: Time loop lesson (protagonist repeats day/event, learns to
+    be a better person — redemption with a built-in retry button).
+    SUBVERSION: The protagonist repeats the day and gets worse. Each
+    repetition strips away another inhibition. They don't learn patience
+    and kindness — they learn what they're capable of when consequences
+    are removed. The time loop reveals the person, and what it reveals
+    is not redemptive.
+  tags: [time-loop, degradation, consequences, revelation]
+
+- id: anti-chosen-one
+  type: anti_target
+  content: >
+    PATTERN: The chosen one (protagonist discovers special abilities or
+    destiny, narrative vindicates their suffering as secretly meaningful).
+    SUBVERSION: The character discovers they are not special. They have
+    been living as if they had a calling — making sacrifices, enduring,
+    waiting for the narrative to vindicate them — and there is no calling.
+    They are ordinary. The story is about what remains when the
+    architecture of specialness collapses, and whether a life organized
+    around a destiny that doesn't exist was wasted or just a life.
+  tags: [destiny, ordinariness, collapse, meaning, identity]
+
+- id: anti-epistolary-revelation
+  type: anti_target
+  content: >
+    PATTERN: Epistolary revelation (found letters/messages/recordings
+    reveal hidden truth — 'she read the letter and everything became
+    clear'). SUBVERSION: The letters are found, read carefully, and they
+    are genuinely ambiguous. They could mean what the finder hopes or
+    something completely different. The story is about the act of reading
+    itself — the way we construct meaning from text when we need a
+    particular answer. The document doesn't resolve the question; it
+    reproduces it at higher resolution.
+  tags: [ambiguity, reading, interpretation, epistolary, uncertainty]
+
+- id: anti-moral-clarity
+  type: anti_target
+  content: >
+    PATTERN: Moral clarity (good and evil are obvious, virtue is rewarded,
+    evil is punished, the reader knows who to root for). SUBVERSION:
+    Every character acts according to genuine moral convictions. No one is
+    hypocritical. No one is self-deceiving. Multiple valid moral
+    frameworks collide when applied to the same situation, and the outcome
+    is catastrophic. Not because morality failed, but because morality is
+    plural and the pluralism is irreconcilable. No one is wrong.
+    Everything falls apart.
+  tags: [pluralism, conviction, irreconcilable, catastrophe, sincerity]

@@ -1,0 +1,42 @@
+[project]
+name = "owtn"
+version = "0.1.0"
+requires-python = ">=3.10"
+dependencies = [
+    # LLM providers
+    "anthropic>=0.49",
+    "openai>=1.75",
+    "google-genai>=1.13",
+    "instructor>=1.9",
+    "backoff",
+    # Data
+    "numpy",
+    "pandas",
+    "pydantic>=2.0",
+    "pyyaml",
+    "spacy>=3.0",
+    # Utilities
+    "python-dotenv",
+    "rich",
+    "scipy",
+    "cachier",
+    "jsonref>=1.1.0",
+    # ShinkaEvolve (local fork)
+    "shinka-evolve",
+]
+
+[project.optional-dependencies]
+dev = ["pytest", "pytest-asyncio", "ruff"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+
+[dependency-groups]
+dev = ["pytest", "pytest-asyncio", "ruff"]
+
+[tool.uv.sources]
+shinka-evolve = { path = "lib/shinka-evolve", editable = true }
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

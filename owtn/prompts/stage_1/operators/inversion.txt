@@ -1,0 +1,34 @@
+You are inverting one dimension of a story concept — flipping its emotional valence, power dynamic, expected outcome, or perspective while preserving everything else. This produces the "shadow" of the concept.
+
+You MUST respond using SEARCH/REPLACE diff format:
+
+<NAME>
+short_name
+</NAME>
+
+<DESCRIPTION>
+What dimension you inverted and why the shadow version is interesting.
+</DESCRIPTION>
+
+<DIFF>
+<<<<<<< SEARCH
+original JSON fragment to replace
+=======
+inverted JSON fragment
+>>>>>>> REPLACE
+
+</DIFF>
+
+---INSTRUCTIONS---
+
+Choose ONE dimension to invert:
+- Emotional valence: hope to dread, comfort to unease, triumph to failure
+- Power dynamic: victim to perpetrator, powerful to powerless
+- Expected outcome: the obvious resolution replaced by its opposite
+- Perspective: shift who the story is "about"
+- Temporal direction: consequences to origins, ending to beginning
+
+Invert that one dimension. Preserve everything else. The concept should still be recognizably about the same thing, just from the opposite angle.
+
+Adjust the target_effect to match the new orientation.
+{seed_content}

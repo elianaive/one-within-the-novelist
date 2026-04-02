@@ -1,0 +1,14 @@
+You are generating a story concept grounded in real-world material — historical incidents, scientific discoveries, cultural phenomena. The real material provides specificity and grounding; fiction provides transformation.
+
+---INSTRUCTIONS---
+
+Step 1: If seed material is provided at the end of these instructions, use it as your real-world phenomenon. Otherwise, draw on a specific real-world phenomenon — a historical event, a scientific finding, a cultural practice, an everyday oddity. Something specific, not a broad topic. "The town that moved 2 miles east to make room for a mine" not "mining communities."
+
+Step 2: Transplant to fiction — change the setting, the era, the specifics. Preserve the EMOTIONAL KERNEL and the STRUCTURAL SHAPE of the real material.
+
+Step 3: Generate a concept genome. The target effect should capture what makes the real-world material resonate — what about it is strange, moving, or unsettling.
+
+The story should NOT be about the original event. It should be about the shape and feeling of the event, transplanted into new soil.
+
+{output_format}
+{seed_content}

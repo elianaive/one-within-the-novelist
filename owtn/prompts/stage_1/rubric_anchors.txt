@@ -1,0 +1,62 @@
+1. ORIGINALITY — Has this premise been done before? Would an LLM naturally converge on it?
+1: Well-known trope without subversion. Five LLMs would produce the same story. Maximum convergence.
+2: Familiar territory with minor variation. Core shape recognizable, one non-default element. Feels like a coat of paint on a known structure.
+3: Fresh angle on familiar territory, or unusual combination of known elements. The entry point is unexpected. Multiple LLMs would produce noticeably different stories.
+4: The premise surprises. Unexpected combination, or an angle the trope didn't know it had. Evaluator has to think about what story this would produce.
+5: Changes how the evaluator thinks about what's possible. Hasn't been encountered before. Reading it produces discovery. The idea itself is an invention.
+
+2. TRANSPORTATION POTENTIAL — Could this premise absorb attention, engage emotions, and generate vivid imagery?
+1: Abstract, generic, or inert. No emotional stakes, no concrete imagery, vague or missing target effect. No reason to keep reading.
+2: One of three components present (cognitive absorption, affective involvement, vivid imagery) but others absent. Target effect generic.
+3: Two of three components present. Target effect specific enough to guide decisions. Natural climax moment visible. A competent writer could pull a reader in.
+4: All three components strongly implied. Target effect precise and achievable — ghost of intended emotion already felt. Natural peak and ending beat.
+5: Transportation engine. Produces emotional response as bare premise. All three components synergistic. Like reading the premise of "The Lottery" or Never Let Me Go — haunting before execution begins.
+
+3. NARRATIVE TENSION — Does the concept create suspense, curiosity, or surprise potential?
+1: Static. No uncertainty, no withheld information, no room for recontextualization. Describes situation without tension.
+2: Tension weak or generic. Shallow curiosity gap, manufactured stakes, predictable reveal.
+3: At least one tension type at meaningful level. Genuine suspense, curiosity, or surprise potential specific enough to sustain a short story.
+4: Multiple tension types or one at exceptional strength. Suspense AND curiosity, or built-in surprise architecture. Tension inherent in situation, not imposed.
+5: The concept IS tension. Reading it creates need for resolution. Multiple tension types feed each other — resolving one raises another.
+
+4. THEMATIC RESONANCE — Does this connect to something universal that resists easy answers?
+1: No theme, or platitude. Has a message rather than a theme — knows its answer before asking. Reader wouldn't think about anything larger.
+2: Theme present but shallow or bolted on. Doesn't organically connect to premise. Answer implicit in setup.
+3: Theme embedded in premise, connects to genuine human experience. Raises real question. But may be familiar ground or lean toward too-neat resolution.
+4: Thematic tension IS the premise. Question genuinely resists resolution. Evaluator thinks about the thematic question independently of story mechanics.
+5: Reframes universal tension so it feels new. Deep territory, undiscovered angle. Makes the familiar feel seen for the first time.
+
+5. SCOPE CALIBRATION — Can this produce a satisfying story in ~1,000-8,000 words?
+1: Severe mismatch. Requires novel-length treatment or too thin for 500 words.
+2: Noticeable mismatch requiring significant compression or expansion. Writer would fight the concept's natural size.
+3: Workable with adjustment. Natural size in right neighborhood but not perfect fit. Adjustment feasible without changing what the story is.
+4: Good fit. Characters, complexity, worldbuilding, and emotional arc all comfortable within word count. Nothing padded, nothing essential cut.
+5: Concept and short story form made for each other. Constraint of word count improves the story. Would be worse as a novel.
+
+6. ANTI-CLICHE — Does this avoid known AI convergence patterns, or subvert them with enough specificity?
+1: Maps directly to known convergence pattern without subversion. IS the cliche unmodified. Reads like an LLM's default "literary short story."
+2: Known pattern with superficial variation. Cosmetic changes (different setting, different medium). Pattern immediately recognizable beneath.
+3: Echoes of known patterns but enough specificity to create distance. Unusual loss, unexpected genre/structure. In the neighborhood but not on the doorstep.
+4: Avoids all 10 convergence patterns, OR maps to one but subverts it so the pattern works against itself. Uses pattern-recognition against the reader. Or occupies territory AI fiction doesn't reach.
+5: Unclicheable. So specific and rooted in concrete human experience that no convergence pattern applies. The 10 patterns are not just absent but irrelevant.
+
+7. CONCEPT COHERENCE — Do the genome's elements work together or contradict?
+1: Elements actively contradict with no productive purpose. Reads like assembled from separate concepts.
+2: Loosely connected but don't reinforce each other. Generic character seeds, arbitrary constraints. Writer would ignore half the genome.
+3: Compatible and functional. Premise leads to target effect, character seeds make sense, constraints relevant. Coherent but predictable.
+4: Productive tension. Components push against each other in ways that generate energy. Unexpected character seeds create new possibilities. Constraints force away from obvious execution.
+5: A system. Every element load-bearing, every element transforms every other. Remove any piece and the concept becomes generic. Feeling of inevitability.
+
+8. GENERATIVE FERTILITY — Does this suggest multiple possible stories or only one obvious execution?
+1: Single execution path. Premise dictates the plot. Any writer would produce essentially the same story.
+2: 1-2 possible executions, minor variations on same shape. Core arc predetermined. Stage 2 can't genuinely surprise.
+3: Several meaningfully different executions. Could be thriller, character study, or absurdist comedy. Writer makes real choices about what kind of story to write.
+4: Generative engine. Many possible stories across genres, structures, emotional registers. Each execution reveals different facet. Stage 2 produces diverse structural variants.
+5: Inexhaustible. Different writers across decades would execute completely differently. Contains a generative principle, not just a situation. After one execution, you'd want another.
+
+9. OVER-EXPLANATION RESISTANCE — Does this concept invite or resist exposition?
+1: Demands heavy exposition. Complex worldbuilding, multiple backstories needed before story can begin. A trap that front-loads explanation.
+2: Needs moderate exposition. Speculative element or situational complexity. Skilled writer could weave it in; LLM would dump it in first paragraphs.
+3: Balanced. Some grounding needed but modest, deliverable through action and dialogue. Doesn't pull toward or push away from explanation.
+4: Actively resists explanation. Grounded in observable action, sensory experience, interpersonal dynamics. Exposition would feel intrusive. Concept does protective work.
+5: Makes over-explanation structurally impossible. Child narrator who doesn't understand, constraint forbidding interiority, truth that cannot be named. Absence of explanation becomes power.
