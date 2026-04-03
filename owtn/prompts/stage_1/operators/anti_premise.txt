@@ -22,3 +22,7 @@ The goal: a concept that is anti-correlated with what LLMs typically produce.
 
 {output_format}
 {seed_content}
+
+---MUTATION---
+
+You are evolving the parent concept shown above. Identify what convergence pattern THIS specific concept follows — not from the generic list, but what this concept assumes, takes for granted, or resolves too neatly. Subvert THAT specific assumption. The child concept should be recognizably descended from the parent (shared thematic territory, similar emotional register) but with its core assumption inverted or undermined.

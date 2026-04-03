@@ -12,3 +12,7 @@ The story should NOT be about the original event. It should be about the shape a
 
 {output_format}
 {seed_content}
+
+---MUTATION---
+
+You are evolving the parent concept shown above. It works in a certain register — ground it, or one of its core elements, in a specific real-world phenomenon that adds specificity the parent lacks. The real-world material should address a weakness the judges identified (see scores above) — if the parent lacks originality, find obscure source material; if it lacks narrative tension, find a real-world situation with inherent stakes. Preserve the parent's strongest elements while transplanting them into more specific soil.

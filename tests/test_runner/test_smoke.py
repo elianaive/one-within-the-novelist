@@ -51,7 +51,7 @@ class TestEvaluationSmoke:
         result = await evaluate(
             program_path=str(program_path),
             results_dir=str(results_dir),
-            config_path="configs/stage_1_default.yaml",
+            config_path="configs/stage_1/medium.yaml",
         )
 
         assert result.correct

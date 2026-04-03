@@ -4,7 +4,7 @@ from pydantic import ValidationError
 from owtn.models.stage_1.config import StageConfig
 
 
-CONFIG_PATH = "configs/stage_1_default.yaml"
+CONFIG_PATH = "configs/stage_1/medium.yaml"
 
 
 class TestStageConfig:
@@ -35,9 +35,8 @@ class TestStageConfig:
 
     def test_llm(self):
         config = StageConfig.from_yaml(CONFIG_PATH)
-        assert "claude-sonnet-4-20250514" in config.llm.generation_models
+        assert "claude-sonnet-4-6" in config.llm.generation_models
         assert config.llm.generation_model_family == "anthropic"
-        assert "gpt-4.1" in config.llm.judge_models
         assert config.llm.embedding_model == "text-embedding-3-small"
 
     def test_judges(self):

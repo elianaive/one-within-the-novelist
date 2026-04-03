@@ -39,8 +39,8 @@ def test_cold_start_distribution():
 
 
 def test_build_shinka_configs():
-    cfg = StageConfig.from_yaml("configs/stage_1_default.yaml")
-    evo, db, job = _build_shinka_configs(cfg)
+    cfg = StageConfig.from_yaml("configs/stage_1/medium.yaml")
+    evo, db, job = _build_shinka_configs(cfg, "configs/stage_1/medium.yaml")
 
     assert evo.language == "json"
     assert len(evo.patch_types) == 11

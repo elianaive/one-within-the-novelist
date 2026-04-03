@@ -2,11 +2,13 @@ import hashlib
 import json
 import logging
 import os
+import time
 from datetime import timedelta
 from typing import Dict, List, Optional
 
 from pydantic import BaseModel
 
+from . import call_logger
 from .client import get_async_client_llm, get_client_llm
 from .providers import (
     QueryResult,
@@ -23,6 +25,30 @@ from .providers import (
 )
 
 logger = logging.getLogger(__name__)
+
+
+def _log_result(result: QueryResult, provider: str, msg: str, system_msg: str, duration: float, kwargs: dict) -> None:
+    try:
+        content = result.content if isinstance(result.content, str) else str(result.content)
+        call_logger.log_call(
+            model=result.model_name,
+            provider=provider,
+            system_msg=system_msg,
+            user_msg=msg,
+            content=content,
+            input_tokens=result.input_tokens,
+            output_tokens=result.output_tokens,
+            thinking_tokens=result.thinking_tokens,
+            cache_read_tokens=result.cache_read_tokens,
+            cache_creation_tokens=result.cache_creation_tokens,
+            cost=result.cost or 0.0,
+            duration_s=duration,
+            thought=result.thought or "",
+            kwargs=kwargs,
+        )
+    except Exception as e:
+        logger.warning("LLM call logging failed: %s", e)
+
 
 CACHE_ENABLED = os.environ.get("OWTN_CACHE_ENABLED", "").lower() in ("1", "true")
 
@@ -98,6 +124,7 @@ def query(
         query_fn = query_local_openai
     else:
         raise ValueError(f"Model {model_name} not supported.")
+    t0 = time.perf_counter()
     result = query_fn(
         client,
         model_name,
@@ -108,6 +135,7 @@ def query(
         model_posteriors=model_posteriors,
         **kwargs,
     )
+    _log_result(result, provider, msg, system_msg, time.perf_counter() - t0, kwargs)
     return result
 
 
@@ -137,6 +165,7 @@ async def query_async(
         query_fn = query_local_openai_async
     else:
         raise ValueError(f"Model {model_name} not supported.")
+    t0 = time.perf_counter()
     result = await query_fn(
         client,
         model_name,
@@ -147,6 +176,7 @@ async def query_async(
         model_posteriors=model_posteriors,
         **kwargs,
     )
+    _log_result(result, provider, msg, system_msg, time.perf_counter() - t0, kwargs)
     return result
 
 

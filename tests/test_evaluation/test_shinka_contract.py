@@ -92,7 +92,7 @@ class TestShinkaContract:
             return _FakeResult(MOCK_CLASSIFICATION, model_name="claude-haiku-4-5-20251001", cost=0.001)
 
         with patch("owtn.evaluation.stage_1.query_async", side_effect=mock_query):
-            await evaluate(str(genome_file), str(results_dir), "configs/stage_1_default.yaml")
+            await evaluate(str(genome_file), str(results_dir), "configs/stage_1/medium.yaml")
 
         metrics = json.loads((results_dir / "metrics.json").read_text())
 
@@ -115,6 +115,15 @@ class TestShinkaContract:
         for dim in DIMENSION_NAMES:
             assert dim in pub["dimensions"]
 
+        # MAP-Elites archive reads these from public_metrics (dbase.py:2081-2109).
+        assert "map_elites_cell" in pub, "archive needs public_metrics.map_elites_cell"
+        cell = pub["map_elites_cell"]
+        assert "concept_type" in cell
+        assert "arc_shape" in cell
+        assert "constraint_density" in cell
+        assert "holder_score" in pub, "archive needs public_metrics.holder_score"
+        assert isinstance(pub["holder_score"], float)
+
         # Private metrics structure.
         priv = metrics["private_metrics"]
         assert "judge_evaluations" in priv
@@ -131,7 +140,7 @@ class TestShinkaContract:
             return _FakeResult(MOCK_CLASSIFICATION, model_name="claude-haiku-4-5-20251001", cost=0.001)
 
         with patch("owtn.evaluation.stage_1.query_async", side_effect=mock_query):
-            await evaluate(str(genome_file), str(results_dir), "configs/stage_1_default.yaml")
+            await evaluate(str(genome_file), str(results_dir), "configs/stage_1/medium.yaml")
 
         correct = json.loads((results_dir / "correct.json").read_text())
         assert "correct" in correct
@@ -145,7 +154,7 @@ class TestShinkaContract:
         bad_file.write_text("not json {{{")
         results_dir = tmp_path / "results"
 
-        await evaluate(str(bad_file), str(results_dir), "configs/stage_1_default.yaml")
+        await evaluate(str(bad_file), str(results_dir), "configs/stage_1/medium.yaml")
 
         correct = json.loads((results_dir / "correct.json").read_text())
         assert correct["correct"] is False

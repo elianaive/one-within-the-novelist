@@ -19,3 +19,7 @@ Show your parent analysis and strategy choice before the genome.
 
 If seed material is provided below, use it as additional source material for recombination.
 {seed_content}
+
+---MUTATION---
+
+The parent concept shown above is your PRIMARY parent. A second parent (inspiration concept) is provided below or in the evaluation history. Analyze the primary parent's strengths and weaknesses using the scores above. Choose a crossover strategy that preserves the primary parent's strongest fields while borrowing from the second parent to compensate for weaknesses.

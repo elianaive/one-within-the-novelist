@@ -6,7 +6,7 @@ LLMs fail at fiction because RLHF training rewards prosocial, resolved, comforta
 
 A concept genome is a JSON object with these fields:
 - premise (required): the irreducible "what if" / situation / collision / constraint. 1-3 sentences.
-- target_effect (required): the specific emotion the reader should feel at the end. Not "sadness" — "the ache of knowing something beautiful is temporary."
+- target_effect (required): the specific emotion the reader should feel at the end. Must be specific enough that a reader who felt it would recognize it immediately. If you can replace your target effect with a single word (sadness, fear, wonder, vertigo) and lose nothing, it's too vague.
 - character_seeds (optional): brief character sketches. May include wound/fear/lie/want/need.
 - setting_seeds (optional): key rules about the story's world.
 - thematic_tension (optional): a tension between two values, not a message. "Freedom vs. security" not "freedom is good."

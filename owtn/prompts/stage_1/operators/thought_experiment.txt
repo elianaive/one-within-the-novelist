@@ -12,3 +12,7 @@ The emotional conclusion becomes the target effect. The logical exploration beco
 
 {output_format}
 {seed_content}
+
+---MUTATION---
+
+You are evolving the parent concept shown above. Identify the implicit axiom or assumption this concept rests on — the thing it takes for granted about the world. Then transform THAT axiom: invert it, extend it to its extreme, or transplant it to a different context. Preserve the parent's strongest elements (characters, emotional register, thematic territory) while rebuilding the concept around the transformed axiom.

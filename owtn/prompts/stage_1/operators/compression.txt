@@ -21,3 +21,7 @@ Show the review before the genome.
 
 {output_format}
 {seed_content}
+
+---MUTATION---
+
+You are evolving the parent concept shown above. Write a critical review of THIS concept — as if a story had been written from it. What works? What's underdeveloped? What's latent but unexploited? Then extract a refined concept from your critique. The child concept should preserve the parent's strongest elements while addressing what the judges flagged as weak.
