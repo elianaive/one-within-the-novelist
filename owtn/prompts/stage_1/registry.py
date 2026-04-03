@@ -14,6 +14,22 @@ from owtn.models.stage_1.seed_bank import OPERATOR_SEED_TYPES, SeedBank
 _PROMPTS_DIR = Path(__file__).resolve().parent
 _OPERATORS_DIR = _PROMPTS_DIR / "operators"
 
+# Tonal targets for diversity steering. Each entry is a short creative direction
+# that pushes the LLM toward a different emotional register. Assigned per-concept
+# to prevent the population from collapsing into a single aesthetic.
+TONAL_TARGETS = [
+    "Write in the register of DREAD — something closing in, inevitable, quiet horror. The reader should want to stop reading and not be able to.",
+    "Write in the register of COMEDY — genuine humor, wit, absurdist logic, or the kind of joke that makes you see something true. Solemnity is not depth.",
+    "Write in the register of TENDERNESS — unguarded, specific, earned warmth. Not sentimentality. The kind of gentleness that only works because it's precise.",
+    "Write in the register of FURY — real anger, not melodrama. A situation so unjust the reader's jaw tightens. The story should vibrate with it.",
+    "Write in the register of WONDER — genuine astonishment, the feeling of encountering something that shouldn't exist but does. Curiosity as an engine.",
+    "Write in the register of ABSURDITY — dream logic, Kafka's bureaucratic nightmare, Barthelme's debris. The premise should be impossible and emotionally true.",
+    "Write in the register of MELANCHOLY — not sadness, but the particular ache of time passing. Nostalgia with teeth. Things that were and won't be again.",
+    "Write in the register of GIDDINESS — the rush of transgression, getting away with it, the thrill of a plan working or spectacularly failing. Energy, not stillness.",
+    "Write in the register of FLATNESS — affectless, procedural, Carver-esque. The emotional weight is in what's not said. Restraint as power.",
+    "Write in the register of REVULSION — not gore, but moral or existential disgust. Something the reader can't unsee. Discomfort that produces insight.",
+]
+
 
 @dataclass(frozen=True)
 class OperatorDef:
@@ -22,7 +38,8 @@ class OperatorDef:
     needs_inspiration: bool  # cross-type: needs a second parent
     seed_types: list[str]
     sys_format: str  # appended to base system message
-    operator_instructions: str  # fills {operator_instructions} in iteration.txt
+    operator_instructions: str  # fills {operator_instructions} in templates
+    mutation_preamble: str = ""  # prepended to instructions in mutation mode
 
 
 OPERATOR_DEFS: dict[str, dict] = {
@@ -80,6 +97,13 @@ def load_registry() -> dict[str, OperatorDef]:
             sys_format = ""
             operator_body = instructions
 
+        # Split mutation preamble from operator body.
+        mutation_preamble = ""
+        mutation_break = operator_body.find("\n\n---MUTATION---\n\n")
+        if mutation_break > 0:
+            mutation_preamble = operator_body[mutation_break + len("\n\n---MUTATION---\n\n"):]
+            operator_body = operator_body[:mutation_break]
+
         registry[name] = OperatorDef(
             name=name,
             routing=defn["routing"],
@@ -87,6 +111,7 @@ def load_registry() -> dict[str, OperatorDef]:
             seed_types=seed_types,
             sys_format=sys_format,
             operator_instructions=operator_body,
+            mutation_preamble=mutation_preamble,
         )
     return registry
 
@@ -122,6 +147,7 @@ def build_operator_prompt(
     seed_bank: SeedBank | None = None,
     exclude_seed_ids: set[str] | None = None,
     steering: str = "",
+    tonal_steering: str = "",
     is_initial: bool = False,
 ) -> tuple[str, str]:
     """Build complete system and user messages for an operator.
@@ -143,8 +169,17 @@ def build_operator_prompt(
     if op.sys_format:
         system_msg += "\n\n" + op.sys_format
 
-    # Resolve {seed_content} in operator instructions.
-    instructions = op.operator_instructions.replace("{seed_content}", seed_text)
+    # Resolve {seed_content} and {tonal_steering} in operator instructions.
+    tonal_section = f"\n3. Tonal target: {tonal_steering}" if tonal_steering else ""
+    instructions = (
+        op.operator_instructions
+        .replace("{seed_content}", seed_text)
+        .replace("{tonal_steering}", tonal_section)
+    )
+
+    # In mutation mode, prepend the mutation preamble to anchor to the parent.
+    if not is_initial and op.mutation_preamble:
+        instructions = op.mutation_preamble + "\n\n" + instructions
 
     # User message: initial or iteration template.
     if is_initial:

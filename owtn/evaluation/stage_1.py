@@ -23,6 +23,7 @@ from owtn.evaluation.prompts import (
     build_judge_user,
 )
 from owtn.judging.scoring import aggregate_judge_scores, holder_mean
+from owtn.llm.call_logger import llm_context
 from owtn.llm.query import query_async
 from owtn.models.judge import JudgePersona, load_panel
 from owtn.models.stage_1.classification import ClassificationResult, Confidence
@@ -90,6 +91,8 @@ async def _eval_one_judge(
     config: StageConfig,
 ) -> JudgeEvaluation:
     """Run a single judge evaluation."""
+    llm_context.set({"role": "judge", "judge_id": judge.id})
+
     system_msg = build_judge_system(judge)
     user_msg = build_judge_user(genome)
 
@@ -123,6 +126,8 @@ async def _classify_concept(
     config: StageConfig,
 ) -> ClassificationResult:
     """Classify concept into MAP-Elites dimensions."""
+    llm_context.set({"role": "classifier"})
+
     prompt = build_classification_prompt(genome, avg_scores)
 
     result = await query_async(
@@ -223,6 +228,12 @@ async def evaluate(
             "dimensions": avg_scores,
             "cell_key": [v.value for v in classification.cell_key()],
             "classification": classification.model_dump(mode="json"),
+            "map_elites_cell": {
+                "concept_type": classification.concept_type.value,
+                "arc_shape": classification.arc_shape.value,
+                "constraint_density": classification.constraint_density.value,
+            },
+            "holder_score": agg.holder_score,
         },
         private_metrics={
             "anti_cliche": anti_cliche,

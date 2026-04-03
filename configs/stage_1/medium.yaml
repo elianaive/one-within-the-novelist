@@ -1,8 +1,13 @@
-# Stage 1: Concept Evolution — Default Configuration
+# Stage 1: Medium Run — Production-grade models, full evolution.
 #
-# This is the starting point for a Stage 1 run. Copy and modify for
-# specific runs. Values chosen from the recommended ranges in
-# docs/stage-1/population.md.
+# 20 generations, 10 islands, 3 judges. Strong generation and judge
+# models with dynamic island spawning and operator bandit. Full
+# evolution dynamics.
+#
+# Run with: uv run python -m owtn --config configs/stage_1_medium.yaml \
+#           --max-eval-jobs 3 --max-proposal-jobs 2
+#
+# Expected: ~50-80 concepts, ~$15-40 total.
 
 stage: 1
 
@@ -35,6 +40,7 @@ evolution:
   meta_rec_interval: 4
   code_embed_sim_threshold: 0.90
   max_novelty_attempts: 3
+  genesis_ratio: 0.15                  # 15% fresh concepts, 85% evolve parent
 
 # --- Database / Island Config (ShinkaEvolve DatabaseConfig) ---
 
@@ -63,11 +69,10 @@ operator_bandit:
 
 llm:
   # Models for concept generation (mutation operators)
-  generation_models: ["claude-sonnet-4-20250514"]
+  generation_models: ["claude-sonnet-4-6"]
   generation_model_family: "anthropic"
 
-  # Models for judge panel (must differ from generation family)
-  judge_models: ["gpt-4.1"]
+  # Judge models are set per-judge in configs/judges/<id>.yaml
 
   # Model for MAP-Elites classification (cheap, classification task)
   classifier_model: "claude-haiku-4-5-20251001"

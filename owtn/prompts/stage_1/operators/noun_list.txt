@@ -14,3 +14,7 @@ Show your noun list and clustering before the final concept genome.
 
 {output_format}
 {seed_content}
+
+---MUTATION---
+
+You are evolving the parent concept shown above. Extract 5-8 emotionally resonant nouns FROM the parent — its images, objects, setting textures, character details. Then add 5-8 NEW nouns that are unrelated to the parent's world. Find the story hiding in the collision between what the parent already has and what you introduce. The child concept should be recognizably descended from the parent's imagery but pushed in an unexpected direction.

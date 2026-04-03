@@ -14,25 +14,72 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **Think first, implement second.** Before writing code:
 1. Discuss the approach and get explicit approval
-2. Document the plan in `docs/issues/<YYYY-MM-DD-descriptive-name>.md`
+2. Document the plan in `lab/issues/<YYYY-MM-DD-descriptive-name>.md` (see `lab/issues/FORMAT.md`)
 3. Then implement
+
+**All work is grounded in issues.** Issues are the single source of truth for what's happening, what's blocked, and what's done. Update them continuously as work progresses.
 
 **Push back.** Existing plans are subject to change. If something doesn't make sense, say so. If you have a better idea, raise it. Don't just execute blindly.
 
 **Keep docs current.** When implementation changes a design, update the relevant docs.
+
+## Lab Structure
+
+`lab/` is the working directory for non-committed Claude artifacts.
+
+| Path | Purpose |
+|------|---------|
+| `lab/scripts/` | Debugging scripts, one-off utilities, diagnostic tools |
+| `lab/issues/` | All work must be grounded in issues here |
+| `lab/references/` | External reference materials (PDFs, cloned repos) |
+
+### Issue Discipline
+
+**Naming:** `YYYY-MM-DD-descriptive-name.md`
+
+**Every issue must include:** goal, steps, progress, blockers, resolution, related issues. Update continuously — the issue is the central place for information during active work.
+
+**Parent/child linking is a 2-step atomic operation:**
+1. Create child issue with parent reference in "Related Issues"
+2. *Immediately* update parent issue to add child — verify both links before proceeding
+
+See `lab/issues/FORMAT.md` for the full template and conventions.
+
+## Debugging Rules
+
+**Slow down. Isolate the root cause.**
+1. Create an issue in `lab/issues/` — this is the central log for the entire debugging session
+2. Add diagnostic logs or write debug tests in `lab/scripts/` — do NOT make code changes yet
+3. Identify the root cause with evidence, not guesses
+4. Then implement the fix
+5. Update the issue with the resolution
+
+**Do not:** make code changes before understanding root cause, try multiple fixes hoping one works, add complexity without evidence, assume anything without checking.
+
+## Coding Style
+
+**I want clean, maintainable code that serves the core purpose. My aversion to premature complexity is not a desire for sloppy code.**
+
+- Concise, direct code. No fluff.
+- Clear, readable code with descriptive variable names.
+- Comments only for business logic — don't explain implementation details.
+- Keep functions focused on single responsibilities.
+- Basic error handling where it matters. Don't defensively code against impossible states.
+- Structure code for easy modification, not premature scalability.
+
+**Avoid:**
+- Premature abstractions and over-engineered architecture
+- Features not essential to the core value proposition
+- Complex dependencies when simpler alternatives exist
+- Optimization before identifying actual bottlenecks
+
+**Function stubbing** is encouraged for mapping architecture: implement skeletal versions with log statements to track execution paths before committing to full implementations.
 
 ## Development
 
 - **Always use `uv`** for running Python, pytest, and scripts (e.g. `uv run pytest`, not `pytest`).
 - **API keys** live in `.env` at the project root. `uv run` loads them automatically.
 - **Tests take ~5 minutes** — some are LLM integration tests with real API calls. Use `-k "not integration"` for fast iteration.
-
-## Coding Style
-
-- Concise, direct code. No fluff.
-- Comments only for business logic — don't explain obvious things.
-- Don't defensively code. Let errors surface naturally; we'll catch them.
-- No over-engineering. No abstractions for one-time operations.
 
 ## Architecture
 
@@ -75,7 +122,8 @@ Fork: `lib/shinka-evolve/`
 | `docs/stage-1/` | Fully specified: overview, operators (11), evaluation (9 dims), population, implementation |
 | `docs/judging/` | Fully specified: Tier A filters, Tier B pairwise tournament, scoring math, rubric anchors |
 | `docs/prompting-guide.md` | Prompt engineering principles (ordering matters, decision chains, additive context) |
-| `references/INDEX.md` | All external reference materials with summaries |
+| `lab/INDEX.md` | Claude working directory — issues, scripts, references |
+| `lab/references/INDEX.md` | All external reference materials with summaries |
 | `.claude/deep-research/runs/` | 12 research reports backing the design |
 
 ## LLM-Fed Files — Token Hygiene

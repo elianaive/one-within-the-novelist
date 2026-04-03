@@ -1,7 +1,7 @@
-Before writing your final concept, verify:
-1. Does your premise map to a known AI convergence pattern (reconciliation arc, grief meditation, chosen one, AI consciousness, sanitized conflict, epistolary revelation, time loop, magical realism metaphor, moral clarity, small-town secret)?
-2. If yes: does it genuinely subvert the pattern, or merely decorate it with new surface details?
-3. If it merely decorates: rethink. The subversion must be the core tension, not a gimmick.
+Before writing your final concept, reflect:
+1. Note which known AI convergence patterns your premise echoes, if any (reconciliation arc, grief meditation, chosen one, AI consciousness, sanitized conflict, epistolary revelation, time loop, magical realism metaphor, moral clarity, small-town secret, morally-ambiguous-intimacy-where-two-irreconcilable-truths-are-held-simultaneously).
+2. Explain briefly what makes yours different — or acknowledge the echo and explain why the premise earns it.
+{tonal_steering}
 
 You MUST respond using a short summary name, description, and the complete concept genome as JSON:
 
@@ -16,15 +16,20 @@ Your creative reasoning process — what you explored, what you chose, and why.
 <CODE>
 ```json
 {
-  "premise": "...",
-  "target_effect": "...",
-  "character_seeds": [...] or null,
-  "setting_seeds": "..." or null,
-  "thematic_tension": "..." or null,
-  "constraints": [...] or null,
-  "style_hint": "..." or null
+  "premise": "A concrete story premise (string, min 20 chars)",
+  "target_effect": "The emotional/intellectual effect on the reader (string, min 15 chars)",
+  "character_seeds": [{"label": "name/role", "sketch": "brief characterization"}, ...] or null,
+  "setting_seeds": "setting description as a single string" or null,
+  "thematic_tension": "core tension as a single string" or null,
+  "constraints": ["constraint 1", "constraint 2", ...] or null,
+  "style_hint": "style direction as a single string" or null
 }
 ```
 </CODE>
+
+CRITICAL SCHEMA RULES:
+- character_seeds: must be a list of objects, each with "label" (string) and "sketch" (string). Optional fields: "wound", "fear", "lie", "want", "need" (all strings). Do NOT use plain strings.
+- setting_seeds, thematic_tension, style_hint: must be plain strings, NOT objects/dicts.
+- constraints: must be a list of plain strings.
 
 Use the <NAME>, <DESCRIPTION>, and <CODE> delimiters exactly as shown.

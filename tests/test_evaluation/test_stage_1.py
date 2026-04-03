@@ -178,7 +178,7 @@ class TestEndToEnd:
 
     @pytest.fixture
     def config_path(self):
-        return "configs/stage_1_default.yaml"
+        return "configs/stage_1/medium.yaml"
 
     @pytest.fixture
     def results_dir(self, tmp_path):

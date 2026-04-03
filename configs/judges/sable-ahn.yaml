@@ -21,4 +21,4 @@ exemplars:
 
 harshness: "moderate"
 priority: "contrarian"
-model: ["gemini-2.5-flash-lite"]
+model: ["gemini-2.5-flash"]

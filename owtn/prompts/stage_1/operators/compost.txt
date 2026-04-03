@@ -18,3 +18,7 @@ Show your reasoning for steps 1-3 before the genome.
 
 If seed material is provided below, those are your fragments.
 {seed_content}
+
+---MUTATION---
+
+The parent concept shown above is your FIRST fragment. Extract what's strongest from it — an image, a character dynamic, a thematic tension, a constraint that worked. The second fragment comes from seed material below or an inspiration concept. Find the story hiding in the connection between what the parent offers and what the second fragment introduces.

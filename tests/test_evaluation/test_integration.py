@@ -66,7 +66,7 @@ SAMPLE_CONCEPTS = {
 }
 
 
-CONFIG_PATH = "configs/stage_1_default.yaml"
+CONFIG_PATH = "configs/stage_1/medium.yaml"
 
 
 @pytest.fixture

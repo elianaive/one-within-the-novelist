@@ -8,6 +8,19 @@ from pydantic import BaseModel
 from owtn.models.config import LLMConfig
 
 
+class AnnealingSchedule(BaseModel):
+    """Annealing schedule for generation parameters: explore early, refine later.
+
+    Temperature and genesis ratio both start high (diversity) and anneal down
+    (refinement) after ``warmup_fraction`` of total generations.
+    """
+    temp_early: list[float] = [0.8, 0.9, 1.0]
+    temp_late: list[float] = [0.5, 0.6, 0.7]
+    genesis_ratio_early: float = 0.6
+    genesis_ratio_late: float = 0.1
+    warmup_fraction: float = 0.4
+
+
 class EvolutionConfig(BaseModel):
     num_generations: int
     language: str
@@ -20,6 +33,8 @@ class EvolutionConfig(BaseModel):
     meta_rec_interval: int
     code_embed_sim_threshold: float
     max_novelty_attempts: int
+    genesis_ratio: float = 0.0
+    annealing: AnnealingSchedule = AnnealingSchedule()
 
 
 class DatabaseConfig(BaseModel):

@@ -14,3 +14,7 @@ Show the prose before the genome — the associative writing is part of the crea
 
 {output_format}
 {seed_content}
+
+---MUTATION---
+
+You are evolving the parent concept shown above. Use its most evocative element — a character image, a setting detail, a moment of tension, a sensory texture — as your starting point for Step 1. Your associative exploration should depart FROM this concept, not from nothing. The child concept may diverge significantly in premise, but should carry forward the parent's emotional DNA.

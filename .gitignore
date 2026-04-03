@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.pyc
+*.egg-info/
+dist/
+build/
+
+# Environment
+.env
+.venv/
+
+# Claude Code local state (deep-research runs, settings)
+.claude/
+
+# Claude working directory (issues, scripts, references, analysis)
+lab/
+
+# ShinkaEvolve run outputs
+results_*/
+results/
+
+# Caches
+.cache/
+.pytest_cache/
+.ruff_cache/
+
+# Databases (created during evolution runs)
+*.db
+*.db-wal
+*.db-shm
+
+# Pickled bandit/cache state
+*.pkl
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store

@@ -32,3 +32,7 @@ Invert that one dimension. Preserve everything else. The concept should still be
 
 Adjust the target_effect to match the new orientation.
 {seed_content}
+
+---MUTATION---
+
+You are inverting the parent concept shown above. Look at the judge feedback — which dimension scored lowest? Consider inverting a dimension that addresses that weakness. The concept should remain recognizably the same premise, just seen from its shadow angle.

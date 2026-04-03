@@ -16,3 +16,7 @@ Show your connection reasoning before the genome.
 
 If seed material is provided below, use those elements as your collision inputs.
 {seed_content}
+
+---MUTATION---
+
+The parent concept shown above is your FIRST collision input. Your second input comes from seed material below, or from an inspiration concept if provided. Identify the parent's core energy — what makes it irreducible — and force it into collision with the second element. The child concept must require BOTH inputs to survive.

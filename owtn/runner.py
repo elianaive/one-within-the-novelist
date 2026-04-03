@@ -24,9 +24,11 @@ from shinka.launch import JobConfig, LocalJobConfig
 from shinka.llm import extract_between
 from shinka.utils import get_language_extension
 
+from owtn.llm.call_logger import llm_context, llm_log_dir
 from owtn.models.stage_1.config import StageConfig
 from owtn.models.stage_1.seed_bank import SeedBank
-from owtn.prompts.stage_1.registry import build_operator_prompt, load_registry
+from owtn.prompts.stage_1.registry import TONAL_TARGETS, build_operator_prompt, load_registry
+from owtn.state_logger import snapshot_generation
 
 logger = logging.getLogger(__name__)
 
@@ -49,6 +51,7 @@ _CS_PROBS = _CS_PROBS / _CS_PROBS.sum()  # ensure exact 1.0
 
 def _build_shinka_configs(
     cfg: StageConfig,
+    config_path: str,
 ) -> tuple[ShinkaEvolutionConfig, ShinkaDatabaseConfig, LocalJobConfig]:
     """Translate our StageConfig into ShinkaEvolve dataclass configs."""
     evo = ShinkaEvolutionConfig(
@@ -84,7 +87,7 @@ def _build_shinka_configs(
         eval_program_path=str(
             Path(__file__).resolve().parent / "evaluation" / "__main__.py"
         ),
-        extra_cmd_args={"--config_path": "configs/stage_1_default.yaml"},
+        extra_cmd_args={"config_path": config_path},
     )
 
     return evo, db, job
@@ -95,7 +98,7 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
 
     def __init__(
         self,
-        config_path: str = "configs/stage_1_default.yaml",
+        config_path: str = "configs/stage_1/medium.yaml",
         *,
         verbose: bool = True,
         max_evaluation_jobs: int = 2,
@@ -103,12 +106,16 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
         results_dir: Optional[str] = None,
     ):
         self.stage_config = StageConfig.from_yaml(config_path)
-        evo, db, job = _build_shinka_configs(self.stage_config)
-        if results_dir is not None:
-            evo.results_dir = results_dir
+        evo, db, job = _build_shinka_configs(self.stage_config, config_path)
+        if results_dir is None:
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            results_dir = str(Path("results") / f"run_{timestamp}" / "stage_1")
+        evo.results_dir = results_dir
+
+        self._log_dir = results_dir
 
         # Load seed bank and operator registry
-        self.seed_bank = SeedBank.from_yaml(self.stage_config.paths.seed_bank)
+        self.seed_bank = SeedBank.load(self.stage_config.paths.seed_bank)
         self.registry = load_registry()
 
         super().__init__(
@@ -128,11 +135,66 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
             patch_type_probs=evo.patch_type_probs,
             use_text_feedback=evo.use_text_feedback,
             seed_bank=self.seed_bank,
+            genesis_ratio=self.stage_config.evolution.genesis_ratio,
         )
+
+    async def run_async(self):
+        """Configure logging and snapshot gen 0, then run evolution."""
+        # Context vars must be set inside the async context to survive asyncio.run().
+        llm_log_dir.set(self._log_dir)
+        llm_context.set({"role": "generation"})
+
+        # Set initial annealing state (early phase).
+        self._anneal(0)
+
+        orig_setup = self._setup_async
+
+        async def _setup_with_snapshot():
+            await orig_setup()
+            self._snapshot(0)
+
+        self._setup_async = _setup_with_snapshot
+        await super().run_async()
+
+    async def _update_completed_generations(self):
+        """Snapshot state and update temperature schedule after each generation."""
+        old = self.completed_generations
+        await super()._update_completed_generations()
+        if self.completed_generations > old:
+            self._snapshot(self.completed_generations)
+            self._anneal(self.completed_generations)
+
+    def _anneal(self, generation: int) -> None:
+        """Anneal temperature and genesis ratio: high early, lower late."""
+        sched = self.stage_config.evolution.annealing
+        total = self.stage_config.evolution.num_generations
+        warmup_gens = int(total * sched.warmup_fraction)
+        is_early = generation < warmup_gens
+        self.llm.temperatures = sched.temp_early if is_early else sched.temp_late
+        self.prompt_sampler.genesis_ratio = (
+            sched.genesis_ratio_early if is_early else sched.genesis_ratio_late
+        )
+        logger.debug(
+            "Generation %d: temps=%s, genesis_ratio=%.2f",
+            generation, self.llm.temperatures, self.prompt_sampler.genesis_ratio,
+        )
+
+    def _snapshot(self, generation: int) -> None:
+        try:
+            snapshot_generation(
+                db=self.db,
+                generation=generation,
+                results_dir=self.results_dir,
+                total_api_cost=self.total_api_cost,
+            )
+        except Exception as e:
+            logger.debug("State snapshot failed: %s", e)
 
     async def _generate_initial_program(self):
         """Cold-start: generate a concept genome using operator allocation."""
-        operator = np.random.choice(_CS_NAMES, p=_CS_PROBS)
+        operator = str(np.random.choice(_CS_NAMES, p=_CS_PROBS))
+        tonal_target = str(np.random.choice(TONAL_TARGETS))
+        llm_context.set({"role": "generation", "operator": operator, "generation": 0})
 
         sys_msg, user_msg = build_operator_prompt(
             operator,
@@ -140,6 +202,7 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
             is_initial=True,
             seed_bank=self.seed_bank,
             steering=self.stage_config.steering,
+            tonal_steering=tonal_target,
         )
 
         # Select LLM
