@@ -1,16 +1,15 @@
-Before writing your final concept, reflect:
-1. Note which known AI convergence patterns your premise echoes, if any (reconciliation arc, grief meditation, chosen one, AI consciousness, sanitized conflict, epistolary revelation, time loop, magical realism metaphor, moral clarity, small-town secret, morally-ambiguous-intimacy-where-two-irreconcilable-truths-are-held-simultaneously).
-2. Explain briefly what makes yours different — or acknowledge the echo and explain why the premise earns it.
 {tonal_steering}
 
-You MUST respond using a short summary name, description, and the complete concept genome as JSON:
+In your DESCRIPTION below, explore at least 3 different directions this concept could go. For each, note the core surprise and the feeling it produces. Then choose the most unexpected one and develop it fully as your genome.
+
+Respond with a short name, your exploration, and the concept genome as JSON:
 
 <NAME>
 short_name_lowercase_underscores
 </NAME>
 
 <DESCRIPTION>
-Your creative reasoning process — what you explored, what you chose, and why.
+Your exploration of different directions, and why you chose the one you did.
 </DESCRIPTION>
 
 <CODE>
@@ -27,9 +26,9 @@ Your creative reasoning process — what you explored, what you chose, and why.
 ```
 </CODE>
 
-CRITICAL SCHEMA RULES:
-- character_seeds: must be a list of objects, each with "label" (string) and "sketch" (string). Optional fields: "wound", "fear", "lie", "want", "need" (all strings). Do NOT use plain strings.
-- setting_seeds, thematic_tension, style_hint: must be plain strings, NOT objects/dicts.
-- constraints: must be a list of plain strings.
+Schema notes:
+- character_seeds: a list of objects, each with "label" (string) and "sketch" (string). Optional fields: "wound", "fear", "lie", "want", "need" (all strings). Do NOT use plain strings.
+- setting_seeds, thematic_tension, style_hint: plain strings, NOT objects/dicts.
+- constraints: a list of plain strings.
 
 Use the <NAME>, <DESCRIPTION>, and <CODE> delimiters exactly as shown.
