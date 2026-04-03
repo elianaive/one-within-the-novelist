@@ -641,6 +641,54 @@
     from what they say and how they say it.
   tags: [voice, dialogue, implication, differentiation]
 
+- id: constraint-greentext
+  type: constraint
+  content: >
+    The story is told in the compressed, fragmented style of an anonymous imageboard post: short declarative lines, present tense, no attribution, no names — only relational labels (roommate, mom, the girl from work). The narrator performs detachment and ironic distance as a social obligation. The emotional content of the story must never be stated directly by the narrator — it can only surface through what they choose to include, the details they can't help recording, and the places where the performed indifference fails. The narrator does not realize they are telling a story that matters to them.
+  tags: [format, compression, irony, detachment, voice, internet-culture]
+
+- id: constraint-forum-thread
+  type: constraint
+  content: >
+    The story unfolds as a series of posts in a topical online forum — a specific community (beekeeping, ham radio, a disease support group, amateur astronomy). Different usernames, different levels of knowledge, different reasons for being there. No omniscient narrator. Chronological gaps between posts. Some posters misunderstand the situation. Some posts are deleted. The story emerges from the community's norms and blind spots, not from plot reveals.
+  tags: [format, multi-voice, community, digital, gaps, misunderstanding]
+
+- id: constraint-incident-report
+  type: constraint
+  content: >
+    The story is told as a formal incident report, after-action review, or bureaucratic filing. Clinical language, passive voice, numbered sections, redactions. The human reality bleeds through the institutional framing — not because the narrator breaks voice, but because bureaucratic language is structurally incapable of containing what happened. The form's inadequacy is the point.
+  tags: [format, bureaucracy, clinical, distance, inadequacy]
+
+- id: constraint-ritual-instructions
+  type: constraint
+  content: >
+    The story is presented as instructions for performing a ritual. The steps must be followed in order. Certain materials are required. Certain words must be spoken. The instructions imply a history — who the ritual is for, what happened that made it necessary, what will go wrong if a step is skipped or performed carelessly. The ritual itself is the narrative; the practitioner is the reader. The instructions never explain why the ritual exists. They only say what to do.
+  tags: [format, ritual, cosmology, implication, pre-modern, procedural]
+
+- id: constraint-trial-transcript
+  type: constraint
+  content: >
+    The story is told as a court transcript from a non-modern legal system — ecclesiastical court, village tribunal, inquisition, colonial hearing. Questions and answers only. The questions reveal the questioner's worldview: what counts as evidence, what counts as guilt, what counts as real. The accused answers within a different framework than the one being applied to them. The reader understands both; the court understands only its own.
+  tags: [format, legal, worldview, power, pre-modern, cross-purposes]
+
+- id: constraint-hagiography
+  type: constraint
+  content: >
+    The story is told in the form of a saint's life: miraculous birth or calling, trials and temptations, signs and wonders, martyrdom or transfiguration. The hagiographic conventions are followed faithfully. The subject is not a saint. The frame can be ironic or sincere or both simultaneously — the reader must decide whether the life described is holy, deluded, or whether the distinction matters.
+  tags: [format, sacred, irony, sincerity, pre-modern, devotion]
+
+- id: constraint-almanac
+  type: constraint
+  content: >
+    The story is told as seasonal entries in a farmer's almanac or household guide: planting schedules, weather predictions, remedies, feast days, practical advice. A life unfolds between the instructions. The almanac never acknowledges the life directly — it never breaks its own frame. The narrative exists entirely in implication: what is planted and what isn't, which remedies appear and why, what the weather did this year that it didn't do last year.
+  tags: [format, seasonal, indirection, implication, pre-modern, cyclical]
+
+- id: constraint-herbalist-compendium
+  type: constraint
+  content: >
+    Each section describes a plant: its appearance, where it grows, what it cures, what it poisons, how to prepare it, when to harvest. The herbalist's clinical distance is the voice. The plants correspond to people or events — but the correspondence is not allegorical. The progression from appearance to cure to poison gives each entry a narrative arc. Somewhere in the preparations and dosages, a story takes shape without ever being named as a story.
+  tags: [format, botanical, clinical, pre-modern, indirection, poison]
+
 # ============================================================
 # noun_cluster (6 seeds)
 # ============================================================
@@ -716,6 +764,30 @@
     - the harness
     - the marrow
   tags: [pressure, restraint, depth, readiness, invisible]
+
+- id: nouns-labor
+  type: noun_cluster
+  content:
+    - the loading dock
+    - the invoice
+    - the forklift
+    - the break room
+    - the time clock
+    - the fluorescent
+    - the pallet
+  tags: [work, body, repetition, industrial, class, endurance]
+
+- id: nouns-apotropaic-house
+  type: noun_cluster
+  content:
+    - the tallow
+    - the threshold
+    - the well
+    - the iron nail
+    - the hearthstone
+    - the salt
+    - the lintel
+  tags: [pre-modern, domestic, protection, liminal, ritual, boundary]
 
 # ============================================================
 # image (11 seeds)
@@ -832,6 +904,23 @@
     is probably an advertisement, and the workers in it are anonymous.
   source: "Photograph, 30 Rockefeller Plaza construction, 1932; authorship disputed"
   tags: [labor, anonymity, performance, staging, mythology]
+
+- id: image-costco-christmas
+  type: image
+  content: >
+    A man in a suit sits in a Costco food court alone on Christmas Day,
+    eating a $1.50 hot dog. His phone is face-down on the table. He's
+    brought his own mustard.
+  tags: [loneliness, dignity, specificity, ritual, holiday, detail]
+
+- id: image-monk-scriptorium
+  type: image
+  content: >
+    A monk copies a manuscript he cannot read. He has spent eleven years
+    reproducing texts in a language he does not speak. His letter-forms
+    are considered the most beautiful in the scriptorium. He has no idea
+    what any of it says.
+  tags: [craft, meaning, devotion, pre-modern, labor, gap]
 
 # ============================================================
 # compression (9 seeds)
@@ -970,6 +1059,27 @@
     - anesthesia
   tags: [mapping, unconsciousness, consent, knowledge, passivity]
 
+- id: collision-greentext-eulogy
+  type: collision_pair
+  content:
+    - greentext
+    - eulogy
+  tags: [irony, mourning, distance, sincerity, tonal-violence]
+
+- id: collision-blackbox-loveletter
+  type: collision_pair
+  content:
+    - blackbox recording
+    - love letter
+  tags: [final-moments, permanence, documents, temporal-collision]
+
+- id: collision-reliquary-browserhistory
+  type: collision_pair
+  content:
+    - reliquary
+    - browser history
+  tags: [preservation, sacred, mundane, what-outlasts-us, cosmology]
+
 # ============================================================
 # anti_target (10 seeds)
 # ============================================================
@@ -1094,3 +1204,9 @@
     plural and the pluralism is irreconcilable. No one is wrong.
     Everything falls apart.
   tags: [pluralism, conviction, irreconcilable, catastrophe, sincerity]
+
+- id: anti-confession-catharsis
+  type: anti_target
+  content: >
+    PATTERN: Confession/catharsis arc (character carries a secret, confesses it, weight is lifted, healing begins). SUBVERSION: The confession happens and nothing changes. The person confessed to already knew. The weight doesn't lift. The secret was load-bearing — it was the last structure organizing the relationship, the thing that gave every interaction its shape and tension. Without it, there is nothing to navigate around. The story is about discovering that honesty can be a demolition, and that some silences were architectural.
+  tags: [confession, catharsis, structure, demolition, honesty]

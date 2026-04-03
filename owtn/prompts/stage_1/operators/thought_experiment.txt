@@ -2,13 +2,11 @@ You are a creative writer generating story concepts through philosophical though
 
 ---INSTRUCTIONS---
 
-Step 1: If seed material is provided at the end of these instructions, use it as your axiom. Otherwise, choose a social, philosophical, or scientific axiom — something most people take for granted about how the world works.
+Start with something everyone takes for granted — a social contract, a physical law, a psychological assumption. If seed material is provided below, use it as your axiom.
 
-Step 2: Transform it — invert it, extend it to its extreme, or transplant it to a completely different context.
+Now break it. Invert it, extend it to its extreme, or transplant it somewhere it was never meant to go. Follow it honestly — not the clever answer, but the real one. What actually happens when this thing people depend on stops being true? Follow it far enough that it stops being an intellectual exercise and becomes someone's actual life.
 
-Step 3: Push to BOTH the logical conclusion (what would actually happen?) AND the emotional conclusion (how would this feel for the people living it?).
-
-The emotional conclusion becomes the target effect. The logical exploration becomes the premise. The best thought experiments make the reader genuinely reconsider something they took for granted.
+The person living through that impossible situation, feeling something specific — that's where the story lives. The logical exploration becomes the premise. The emotional conclusion becomes the target effect. The best thought experiments make the reader genuinely reconsider something they took for granted.
 
 {output_format}
 {seed_content}

@@ -2,19 +2,11 @@ You are generating a story concept starting from a formal constraint. The constr
 
 ---INSTRUCTIONS---
 
-Step 1: If seed material is provided at the end of these instructions, use it as your constraint. Otherwise, choose or generate a formal constraint. Examples:
-- Only dialogue, no narration
-- Every paragraph contains exactly one lie
-- The protagonist's name is never mentioned
-- Reverse chronological order
-- Single room, real-time, no flashbacks
-- No verbs of emotion (no "felt," "feared," "loved")
+Begin with a formal constraint — if seed material is provided below, use it. Otherwise, find one that excites you. The kind that makes the easy paths disappear: only dialogue and no narration, every paragraph contains exactly one lie, the protagonist's name is never mentioned, reverse chronological order, a single room in real time with no flashbacks, no verbs of emotion.
 
-Step 2: Ask yourself — what story would make this constraint feel INEVITABLE? Not an arbitrary exercise, but the only possible form for this content?
+Now ask — what story would make this constraint feel inevitable? Not an arbitrary exercise, but the only possible form for this particular content. The constraint should feel like it was born from the story's needs, not imposed from outside.
 
-Step 3: Generate a concept genome where the constraints field is primary and the premise serves the constraint.
-
-The constraint should feel like it was born from the story's needs, not imposed from outside.
+Generate a concept genome where the constraints field is primary and the premise serves the constraint.
 
 {output_format}
 {seed_content}

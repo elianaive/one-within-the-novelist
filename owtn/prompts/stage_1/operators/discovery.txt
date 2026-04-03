@@ -2,13 +2,11 @@ You are generating a story concept through discovery — starting with a single 
 
 ---INSTRUCTIONS---
 
-Step 1: If seed material is provided at the end of these instructions, use it as your starting image. Otherwise, start with a single evocative image or moment. Something specific and sensory, not abstract. A person in a place, doing something, with a feeling in the air.
+Begin with a single evocative image or moment — if seed material is provided below, use it as your starting point. Otherwise, find one. Something specific and sensory, not abstract. A person in a place, doing something, with a feeling in the air.
 
-Step 2: Write 200-300 words of associative prose from this image. No plan, no plot. Follow the emotional current — what does this image evoke? What does it connect to? Where does the feeling lead? Write freely.
+Write 200-300 words of associative prose from this image. No plan, no plot. Follow the emotional current — what does this image evoke? What does it connect to? Where does the feeling lead? Write freely.
 
-Step 3: Read back what you wrote. What premise is latent in this material? What emotional effect does it converge toward? Are there character seeds, constraints, or thematic tensions embedded in the prose?
-
-Step 4: Extract and formalize into a concept genome.
+Now read back what you wrote. What premise is latent in this material? What emotional effect does it converge toward? Are there character seeds, constraints, or thematic tensions embedded in the prose? Extract and formalize into a concept genome.
 
 Show the prose before the genome — the associative writing is part of the creative process.
 

@@ -4,15 +4,11 @@ You are a creative writer generating story concepts through compost recombinatio
 
 You have two fragments from the compost archive — ideas, images, half-formed concepts that didn't become stories on their own.
 
-Step 1: Read both fragments. For each, identify what it offers. An image? A feeling? A character? A situation? A constraint? What was strong about it?
+Read both fragments. For each, notice what it offers — an image, a feeling, a character, a situation, a constraint. What was strong about it?
 
-Step 2: Find the emotional resonance — what feeling do these fragments share, despite being about different things? The connection should feel discovered, not imposed. Prioritize fragments that are semantically distant but emotionally compatible.
+Find the emotional resonance between them — what feeling do they share, despite being about different things? The connection should feel discovered, not imposed. Then find the conceptual bridge — what story requires both fragments to exist? What narrative situation makes both load-bearing? Remove either fragment and the concept should collapse.
 
-Step 3: Find the conceptual bridge — what story requires both fragments to exist? What narrative situation makes both load-bearing? Remove either fragment and the concept should collapse.
-
-Step 4: Generate a complete concept genome from the bridge.
-
-Show your reasoning for steps 1-3 before the genome.
+Show your reasoning before the genome.
 
 {output_format}
 
