@@ -32,6 +32,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 | `lab/scripts/` | Debugging scripts, one-off utilities, diagnostic tools |
 | `lab/issues/` | All work must be grounded in issues here |
 | `lab/references/` | External reference materials (PDFs, cloned repos) |
+| `lab/deep-research/` | Deep research agent outputs (runs with reports, sources, findings) |
 
 ### Issue Discipline
 
@@ -124,7 +125,7 @@ Fork: `lib/shinka-evolve/`
 | `docs/prompting-guide.md` | Prompt engineering principles (ordering matters, decision chains, additive context) |
 | `lab/INDEX.md` | Claude working directory — issues, scripts, references |
 | `lab/references/INDEX.md` | All external reference materials with summaries |
-| `.claude/deep-research/runs/` | 12 research reports backing the design |
+| `lab/deep-research/runs/` | 18 research reports backing the design |
 
 ## LLM-Fed Files — Token Hygiene
 
