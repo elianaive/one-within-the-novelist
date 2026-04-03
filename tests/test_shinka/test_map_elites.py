@@ -1,4 +1,4 @@
-"""Tests for Edit 6: MAP-Elites archive in dbase.py."""
+"""Tests for MAP-Elites archive logic."""
 
 import json
 import sqlite3

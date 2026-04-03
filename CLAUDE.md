@@ -80,7 +80,28 @@ See `lab/issues/FORMAT.md` for the full template and conventions.
 
 - **Always use `uv`** for running Python, pytest, and scripts (e.g. `uv run pytest`, not `pytest`).
 - **API keys** live in `.env` at the project root. `uv run` loads them automatically.
-- **Tests take ~5 minutes** — some are LLM integration tests with real API calls. Use `-k "not integration"` for fast iteration.
+- **Tests:** `uv run pytest tests/ -m "not live_api"` for fast offline tests (~2s). Tests marked `live_api` make real API calls and cost money — run the full suite with `uv run pytest tests/`.
+
+## Test Organization
+
+Tests live in `tests/`, organized by module:
+
+| Directory | What it tests |
+|-----------|--------------|
+| `test_evaluation/` | Gate validation, prompt assembly, mocked pipeline E2E, ShinkaEvolve contract, live API smoke test |
+| `test_judging/` | Tier A filters (anti-patterns, vocabulary, structural, statistical, ngrams), scoring math |
+| `test_llm/` | Query routing, cache keys, model resolution, pricing, prompt caching, QueryResult serialization |
+| `test_models/` | Pydantic models: ConceptGenome, classification, config, seed bank, judge personas |
+| `test_prompts/` | Operator registry structure, routing, seed types, prompt building, defaults/async_apply sync |
+| `test_runner/` | Cold-start operator distribution, config building |
+| `test_shinka/` | ShinkaEvolve integration: sampler dispatch, MAP-Elites archive, JSON patch application, program loading |
+
+**Shared fixtures** in `tests/conftest.py`: canonical test genomes (`HILLS_GENOME`, `MINIMAL_GENOME`), mock judge scores, `FakeQueryResult`, `genome_file`/`results_dir`/`mock_query_async` fixtures. Use these — don't redefine test data locally.
+
+**Test principles:**
+- Don't assert on LLM output content — it's non-deterministic. Assert structural validity only (correct fields, score ranges, files written).
+- Mark tests requiring API keys with `@pytest.mark.live_api`.
+- One concern per test file. Name files for what they test, not implementation history.
 
 ## Architecture
 

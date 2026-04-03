@@ -1,4 +1,4 @@
-"""Tests for Edit 4: Sampler dispatch in sampler.py."""
+"""Tests for sampler operator dispatch."""
 
 from unittest.mock import MagicMock
 

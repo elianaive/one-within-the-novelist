@@ -1,5 +1,6 @@
 """Tests for the operator prompt registry."""
 
+import numpy as np
 import pytest
 
 from owtn.models.stage_1.seed_bank import OPERATOR_SEED_TYPES, SeedBank
@@ -10,6 +11,8 @@ from owtn.prompts.stage_1.registry import (
     inject_seed,
     load_registry,
 )
+from shinka.defaults import default_patch_types, default_patch_type_probs
+from shinka.edit.async_apply import _FULL_PATCH_TYPES, _DIFF_PATCH_TYPES
 
 
 SEED_BANK_PATH = "data/seed-bank.yaml"
@@ -228,3 +231,33 @@ class TestBuildOperatorPrompt:
             )
             assert len(sys_msg) > 50, f"{name} system msg too short"
             assert len(user_msg) > 50, f"{name} user msg too short"
+
+
+class TestDefaults:
+    """Tests absorbed from test_shinka/test_defaults.py."""
+
+    def test_default_probs_sum_to_one(self):
+        assert np.isclose(sum(default_patch_type_probs()), 1.0, atol=1e-6)
+
+    def test_defaults_match_registry(self, registry):
+        assert set(default_patch_types()) == set(registry.keys())
+
+    def test_probs_match_types(self):
+        assert len(default_patch_types()) == len(default_patch_type_probs())
+
+
+class TestAsyncApplySync:
+    """Verify async_apply routing sets stay in sync with the registry."""
+
+    def test_all_operators_routed(self, registry):
+        all_routed = _FULL_PATCH_TYPES | _DIFF_PATCH_TYPES
+        for name in registry:
+            assert name in all_routed, f"Operator {name} not routed in async_apply"
+
+    def test_routing_matches_registry(self, registry):
+        for name, op in registry.items():
+            target = _FULL_PATCH_TYPES if op.routing == "full" else _DIFF_PATCH_TYPES
+            assert name in target, f"{name} routing mismatch"
+
+    def test_no_overlap(self):
+        assert _FULL_PATCH_TYPES.isdisjoint(_DIFF_PATCH_TYPES)
