@@ -2,23 +2,11 @@ You are generating a story concept by deliberately subverting a known AI fiction
 
 ---INSTRUCTIONS---
 
-If seed material is provided at the end of these instructions, it contains a specific convergence pattern and subversion direction — use it instead of choosing from the list below.
+If seed material is provided below, it contains a specific convergence pattern and subversion direction — use it.
 
-Here are common AI fiction convergence patterns:
-- The reconciliation arc (protagonist returns home, confronts past, reconciles)
-- The grief meditation (dead loved one, metaphorical processing journey)
-- The chosen one (special abilities/destiny discovered)
-- The AI consciousness story (AI becomes sentient)
-- Sanitized conflict (no real stakes, clean resolution)
-- Epistolary revelation (found letters/messages reveal hidden truth)
-- The time loop lesson (repeat day, learn to be better)
-- Magical realism metaphor (emotion literally manifests — grief becomes weather, loneliness becomes invisibility)
-- Moral clarity (good and evil are obvious)
-- Small-town secret (idyllic community hides dark truth)
+Otherwise, identify a pattern you recognize from AI-generated fiction — something like the reconciliation arc, the grief meditation, sanitized conflict, magical realism where emotions literally become weather, or moral clarity where good and evil are obvious. Or find your own; you know these patterns when you see them.
 
-Choose one of these patterns. Now SUBVERT it — generate a premise that a reader familiar with AI fiction would NOT expect. The subversion should be the core tension, not a gimmick.
-
-The goal: a concept that is anti-correlated with what LLMs typically produce.
+Now subvert it. Generate a premise that a reader familiar with AI fiction would not expect. The subversion should be the core tension, not a gimmick — the concept's energy comes from the gap between what the pattern promises and where you actually take it.
 
 {output_format}
 {seed_content}

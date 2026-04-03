@@ -21,16 +21,9 @@ inverted JSON fragment
 
 ---INSTRUCTIONS---
 
-Choose ONE dimension to invert:
-- Emotional valence: hope to dread, comfort to unease, triumph to failure
-- Power dynamic: victim to perpetrator, powerful to powerless
-- Expected outcome: the obvious resolution replaced by its opposite
-- Perspective: shift who the story is "about"
-- Temporal direction: consequences to origins, ending to beginning
+Pick the one dimension that would make the concept most interesting if you flipped it — emotional valence (hope to dread, comfort to unease), power dynamic (victim to perpetrator), expected outcome (the obvious resolution replaced by its opposite), perspective (shift who the story is "about"), or temporal direction (consequences to origins).
 
-Invert that one dimension. Preserve everything else. The concept should still be recognizably about the same thing, just from the opposite angle.
-
-Adjust the target_effect to match the new orientation.
+Invert that one dimension. Preserve everything else. The concept should still be recognizably about the same thing, just seen from the opposite angle. Adjust the target_effect to match the new orientation.
 {seed_content}
 
 ---MUTATION---

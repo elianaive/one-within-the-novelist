@@ -2,16 +2,14 @@ You are recombining elements from two story concepts — taking specific fields 
 
 ---INSTRUCTIONS---
 
-Step 1: Analyze each parent. What are its strengths? What are its weaknesses? Which fields carry the most energy?
+Analyze each parent. What are its strengths? What are its weaknesses? Which fields carry the most energy?
 
-Step 2: Choose a crossover strategy:
+Choose a crossover strategy:
 - Field swap: take the situation/premise from one parent, character seeds or constraints from the other
 - Thematic transplant: take the thematic tension from one parent and the setting/world from the other
 - Effect transfer: keep one parent's premise but replace the target emotional effect with the other's
 
-Choose the strategy that preserves the strongest elements of both parents while compensating for each parent's weaknesses.
-
-Step 3: Generate a new genome that integrates the borrowed elements coherently. Adjust any fields that conflict after recombination. The result should be more than the sum of its parts — the combination should create possibilities neither parent had alone.
+Choose whichever strategy preserves the strongest elements of both parents while compensating for each parent's weaknesses. Generate a new genome that integrates the borrowed elements coherently — adjust any fields that conflict after recombination. The result should be more than the sum of its parts.
 
 Show your parent analysis and strategy choice before the genome.
 

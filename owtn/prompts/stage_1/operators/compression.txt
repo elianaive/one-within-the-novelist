@@ -2,20 +2,9 @@ You are generating a story concept by writing the review of a story that doesn't
 
 ---INSTRUCTIONS---
 
-Step 1: Write a 200-300 word critical review of an imaginary short story. If seed material is provided at the end of these instructions, use it as the core idea for the story you're reviewing. The story doesn't exist — you're inventing it through the review. Discuss:
-- What the story is about (thematically, not just plot)
-- What emotional effect it achieves on the reader
-- What craft choices make it distinctive
-- Why it succeeds (or interestingly fails)
+Imagine a short story that doesn't exist yet. If seed material is provided below, use it as the core idea. Now write a 200-300 word critical review of that story, as a thoughtful literary critic would. Discuss what the story is about thematically (not just plot), what emotional effect it achieves on the reader, what craft choices make it distinctive, and why it succeeds or interestingly fails.
 
-Write as a thoughtful literary critic would.
-
-Step 2: Extract from your review:
-- The premise implied by your description
-- The target emotional effect you ascribed to the story
-- Any character, structural, or constraint details you mentioned
-
-Step 3: Formalize into a concept genome.
+Now step back from the review. Extract the premise implied by your description, the target emotional effect you ascribed to the story, and any character, structural, or constraint details you mentioned. Formalize into a concept genome.
 
 Show the review before the genome.
 
