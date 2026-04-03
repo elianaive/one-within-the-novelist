@@ -1,4 +1,4 @@
-"""Tests for Edit 1: JSON loading in wrap_eval.py."""
+"""Tests for JSON/Python program loading."""
 
 import json
 

@@ -30,6 +30,7 @@ dev = ["pytest", "pytest-asyncio", "ruff"]
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
+markers = ["live_api: tests requiring real API calls (require API keys, cost money)"]
 
 [dependency-groups]
 dev = ["pytest", "pytest-asyncio", "ruff"]

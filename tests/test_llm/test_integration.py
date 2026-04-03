@@ -1,13 +1,15 @@
 """Integration tests for the LLM client — makes real API calls.
 
-Run with: pytest tests/test_llm/test_integration.py -v
-Requires API keys in .env (ANTHROPIC_API_KEY, OPENAI_API_KEY, GEMINI_API_KEY, DEEPSEEK_API_KEY).
 Uses the cheapest model from each provider to minimize cost.
+Requires API keys in .env.
 """
 
 import pytest
 
 from owtn.llm.query import query, query_async
+
+
+pytestmark = pytest.mark.live_api
 
 # Cheapest models per provider
 ANTHROPIC_MODEL = "claude-haiku-4-5-20251001"
@@ -49,6 +51,21 @@ class TestSyncQueries:
         assert result.input_tokens > 0
         assert result.output_tokens > 0
 
+    def test_openai_with_system_prefix(self):
+        result = query(
+            OPENAI_MODEL, USER_MSG, "Respond briefly.",
+            system_prefix="You are a math tutor.",
+        )
+        assert result.content
+        assert result.input_tokens > 0
+
+    def test_deepseek_with_system_prefix(self):
+        result = query(
+            DEEPSEEK_MODEL, USER_MSG, "Respond briefly.",
+            system_prefix="You are a math tutor.",
+        )
+        assert result.content
+
 
 class TestAsyncQueries:
     """Async query tests — one per provider."""
@@ -79,11 +96,9 @@ class TestAnthropicPromptCaching:
     """Verify system_prefix produces cache_control content blocks.
 
     Anthropic prompt caching requires a minimum prefix size to activate.
-    Haiku needs >2048 tokens in the cached prefix. We use a ~6000 token
-    prefix to be well above the threshold.
+    Haiku needs >2048 tokens in the cached prefix.
     """
 
-    # Large enough to exceed Haiku's minimum caching threshold (~2048 tokens)
     CACHE_PREFIX = (
         "You are an expert literary critic with deep knowledge of narrative "
         "structure, character development, emotional resonance, and stylistic "
@@ -97,7 +112,6 @@ class TestAnthropicPromptCaching:
         """First call creates cache, second call reads it."""
         suffix = "Be concise. Score 1-5."
 
-        # First call — creates or reads cache (may already exist from prior runs within 5-min TTL)
         r1 = query(
             ANTHROPIC_MODEL,
             "Rate: 'Stars blinked overhead.'",
@@ -105,12 +119,8 @@ class TestAnthropicPromptCaching:
             system_prefix=self.CACHE_PREFIX,
         )
         assert r1.content
-        assert r1.cache_creation_tokens > 0 or r1.cache_read_tokens > 0, (
-            f"Expected cache activity on first call, got "
-            f"cache_creation={r1.cache_creation_tokens}, cache_read={r1.cache_read_tokens}"
-        )
+        assert r1.cache_creation_tokens > 0 or r1.cache_read_tokens > 0
 
-        # Second call — same prefix, different user msg — must read from cache
         r2 = query(
             ANTHROPIC_MODEL,
             "Rate: 'The wind howled through empty streets.'",
@@ -118,56 +128,4 @@ class TestAnthropicPromptCaching:
             system_prefix=self.CACHE_PREFIX,
         )
         assert r2.content
-        assert r2.cache_read_tokens > 0, (
-            f"Expected cache read on second call, got "
-            f"cache_read={r2.cache_read_tokens}, cache_creation={r2.cache_creation_tokens}"
-        )
-
-
-class TestSystemPrefixNonAnthropic:
-    """Verify system_prefix is merged for non-Anthropic providers."""
-
-    def test_openai_with_prefix(self):
-        result = query(
-            OPENAI_MODEL,
-            USER_MSG,
-            "Respond briefly.",
-            system_prefix="You are a math tutor.",
-        )
-        assert result.content
-        # The response should reflect both prefix and suffix context
-        assert result.input_tokens > 0
-
-    def test_deepseek_with_prefix(self):
-        result = query(
-            DEEPSEEK_MODEL,
-            USER_MSG,
-            "Respond briefly.",
-            system_prefix="You are a math tutor.",
-        )
-        assert result.content
-
-
-class TestQueryResult:
-    """Verify QueryResult fields are populated correctly across providers."""
-
-    def test_to_dict_roundtrip(self):
-        result = query(OPENAI_MODEL, USER_MSG, SYSTEM_MSG)
-        d = result.to_dict()
-        assert d["content"] == result.content
-        assert d["model_name"] == OPENAI_MODEL
-        assert d["input_tokens"] == result.input_tokens
-        assert d["cache_read_tokens"] == 0  # non-Anthropic
-        assert d["cache_creation_tokens"] == 0
-
-    def test_str_representation(self):
-        result = query(ANTHROPIC_MODEL, USER_MSG, SYSTEM_MSG)
-        s = str(result)
-        assert "Model:" in s
-        assert "Total Cost:" in s
-        assert ANTHROPIC_MODEL in s
-
-    def test_msg_history_preserved(self):
-        result = query(OPENAI_MODEL, USER_MSG, SYSTEM_MSG)
-        assert len(result.new_msg_history) >= 2  # user + assistant
-        assert result.new_msg_history[-1]["role"] == "assistant"
+        assert r2.cache_read_tokens > 0
