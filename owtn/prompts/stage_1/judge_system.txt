@@ -28,3 +28,12 @@ After reasoning, fill in the 9 score fields (0-5 floats): originality, transport
 RUBRIC ANCHORS:
 
 {rubric_anchors}
+
+SCORING CALIBRATION:
+In an evolutionary pipeline, most AI-generated concepts are competent. Your role is to discriminate between competent and exceptional. Apply these calibration rules:
+- A score of 3 means "what a capable AI would produce given this operator and no special effort." This is the expected baseline for a well-prompted language model.
+- A score of 4 means "clearly above AI baseline — specific details, unexpected angles, or structural choices that a generic prompt would not produce."
+- A score of 5 means "exceptional — would surprise a skilled human editor. Reserved for genuine invention."
+- Scores of 1-2 are for concepts with clear deficiencies.
+- If all your scores for a concept fall above 4.0, reconsider — you are likely not discriminating enough. Most concepts should have at least 2-3 dimensions at or below 3.0.
+- Use the full 0-5 range. A score of 3.0 is not an insult — it is the expected performance of a well-prompted language model.

@@ -19,8 +19,17 @@ def _make_parent():
     parent.id = f"mock-{_next_id}"
     parent.code = '{"premise": "What if...", "target_effect": "wonder"}'
     parent.combined_score = 2.5
-    parent.public_metrics = {"holder_score": 2.5}
-    parent.text_feedback = "Good originality, weak coherence."
+    parent.public_metrics = {
+        "holder_score": 2.5,
+        "dimensions": {
+            "originality": 3.0, "transportation_potential": 3.5,
+            "narrative_tension": 3.0, "thematic_resonance": 2.5,
+            "scope_calibration": 4.0, "anti_cliche": 3.0,
+            "concept_coherence": 3.5, "generative_fertility": 2.5,
+            "over_explanation_resistance": 4.0,
+        },
+    }
+    parent.text_feedback = "[mock-judge]\nORIGINALITY: Decent.\n\n---\n\n[mock-judge-2]\nORIGINALITY: Fine."
     return parent
 
 
