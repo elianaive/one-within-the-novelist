@@ -161,8 +161,11 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
         old = self.completed_generations
         await super()._update_completed_generations()
         if self.completed_generations > old:
-            self._snapshot(self.completed_generations)
-            self._anneal(self.completed_generations)
+            # completed_generations is a count (1 after gen 0, 2 after gen 1, etc.)
+            # The generation number that just finished is count - 1.
+            gen = self.completed_generations - 1
+            self._snapshot(gen)
+            self._anneal(gen)
 
     def _anneal(self, generation: int) -> None:
         """Anneal temperature and genesis ratio: high early, lower late."""
@@ -190,8 +193,11 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
         except Exception as e:
             logger.debug("State snapshot failed: %s", e)
 
-    async def _generate_initial_program(self):
-        """Cold-start: generate a concept genome using operator allocation."""
+    async def _generate_one_concept(self) -> tuple[str, str, str, float, dict]:
+        """Generate a single concept genome with fresh random rolls.
+
+        Returns (code, patch_name, patch_description, total_costs, llm_metadata).
+        """
         operator = str(np.random.choice(_CS_NAMES, p=_CS_PROBS))
         tonal_target = str(np.random.choice(TONAL_TARGETS))
         llm_context.set({"role": "generation", "operator": operator, "generation": 0})
@@ -205,7 +211,6 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
             tonal_steering=tonal_target,
         )
 
-        # Select LLM
         model_sample_probs = None
         model_posterior = None
         if self.llm_selection is not None:
@@ -245,7 +250,6 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
 
             total_costs += response.cost or 0.0
 
-            # Extract JSON from ```json ... ``` code fence
             initial_code = extract_between(
                 response.content, "```json", "```", False,
             )
@@ -257,9 +261,6 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
                 patch_description = extract_between(
                     response.content, "<DESCRIPTION>", "</DESCRIPTION>", False,
                 )
-
-                # No EVOLVE-BLOCK wrapping — JSON has no valid comment syntax.
-                # apply_full.py already handles JSON without markers.
 
                 logger.info(
                     f"  INITIAL [{operator}] ATTEMPT {attempt + 1}/"
@@ -289,14 +290,7 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
                     "diff_summary": {},
                 }
 
-                await self._setup_initial_program_with_metadata(
-                    initial_code,
-                    patch_name,
-                    patch_description,
-                    total_costs,
-                    llm_metadata,
-                )
-                return
+                return initial_code, patch_name, patch_description, total_costs, llm_metadata
             else:
                 error_msg = "Could not extract JSON from response."
                 logger.info(
@@ -321,3 +315,97 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
             f"LLM failed to generate a valid initial concept after "
             f"{self.evo_config.max_patch_attempts} attempts."
         )
+
+    async def _generate_initial_program(self):
+        """Cold-start: generate a unique concept for each island."""
+        import asyncio
+
+        num_islands = self.stage_config.database.num_islands
+
+        # Generate unique concepts — one per island, each with fresh random rolls.
+        concepts = []
+        for i in range(num_islands):
+            logger.info(f"  Generating initial concept for island {i+1}/{num_islands}...")
+            concepts.append(await self._generate_one_concept())
+
+        # Island 0: use the standard setup path (creates Gen 0 dir, evals, etc.)
+        code, name, desc, cost, meta = concepts[0]
+        await self._setup_initial_program_with_metadata(code, name, desc, cost, meta)
+
+        if num_islands <= 1:
+            return
+
+        # The standard path copied island 0's concept to all other islands.
+        # Delete those copies — we have unique concepts for each.
+        self.db.cursor.execute(
+            "DELETE FROM programs WHERE json_extract(metadata, '$._is_island_copy') = 1"
+        )
+        self.db.cursor.execute(
+            "DELETE FROM map_elites_cells WHERE program_id NOT IN (SELECT id FROM programs)"
+        )
+        self.db.conn.commit()
+        logger.info(
+            f"  Deleted island copies; generating unique concepts for "
+            f"islands 1-{num_islands - 1}."
+        )
+
+        # Islands 1+: evaluate each unique concept and add to DB directly.
+        # Each concept gets its own subdir in Gen 0 for proper audit trail.
+        gen_dir = f"{self.results_dir}/{FOLDER_PREFIX}_0"
+
+        for island_idx in range(1, num_islands):
+            code, name, desc, cost, meta = concepts[island_idx]
+
+            # Write to island-specific file so we don't overwrite island 0's main.json.
+            island_dir = f"{gen_dir}/island_{island_idx}"
+            island_results = f"{island_dir}/results"
+            Path(island_dir).mkdir(parents=True, exist_ok=True)
+            Path(island_results).mkdir(parents=True, exist_ok=True)
+
+            exec_fname = f"{island_dir}/main.{self.lang_ext}"
+            await write_file_async(exec_fname, code)
+
+            # Evaluate.
+            loop = asyncio.get_event_loop()
+            try:
+                results, rtime = await loop.run_in_executor(
+                    None, self.scheduler.run, exec_fname, island_results,
+                )
+                logger.info(
+                    f"  Island {island_idx} concept evaluated in {rtime:.2f}s"
+                )
+            except Exception as e:
+                logger.warning(f"  Island {island_idx} evaluation failed: {e}")
+                results = {}
+
+            # Extract metrics.
+            correct_val = results.get("correct", {}).get("correct", False)
+            metrics_val = results.get("metrics", {})
+
+            # Compute embedding.
+            code_embedding, e_cost = await self._get_code_embedding_async(exec_fname)
+
+            # Build program.
+            meta["embed_cost"] = e_cost
+            meta["novelty_cost"] = 0.0
+            program = Program(
+                id=str(uuid.uuid4()),
+                code=code,
+                generation=0,
+                correct=correct_val,
+                combined_score=metrics_val.get("combined_score", 0.0),
+                public_metrics=metrics_val.get("public_metrics", {}),
+                private_metrics=metrics_val.get("private_metrics", {}),
+                text_feedback=metrics_val.get("text_feedback", ""),
+                timestamp=datetime.now().timestamp(),
+                embedding=code_embedding,
+                metadata=meta,
+            )
+
+            # Add to DB — island manager routes to next uninitialized island.
+            await self.async_db.add_program_async(program)
+            self.total_api_cost += cost + e_cost
+            logger.info(
+                f"  Island {island_idx} seeded: {name or 'unnamed'} "
+                f"(correct={correct_val}, score={program.combined_score:.3f})"
+            )

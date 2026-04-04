@@ -49,10 +49,9 @@ class TestClassificationResult:
         assert key == (
             ConceptType.THOUGHT_EXPERIMENT,
             ArcShape.FALL,
-            ConstraintDensity.UNCONSTRAINED,
         )
 
-    def test_cell_key_is_3_tuple(self):
+    def test_cell_key_is_2_tuple(self):
         result = ClassificationResult(
             concept_type="character_collision",
             concept_type_confidence="high",
@@ -65,9 +64,9 @@ class TestClassificationResult:
             constraint_density="moderate",
         )
         key = result.cell_key()
-        assert len(key) == 3
+        assert len(key) == 2
         assert key[0] == ConceptType.CHARACTER_COLLISION
-        assert key[2] == ConstraintDensity.MODERATE
+        assert key[1] == ArcShape.RISE_FALL
 
     def test_from_dict(self):
         data = {
