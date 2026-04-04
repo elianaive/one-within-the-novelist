@@ -6,6 +6,7 @@ Consumed by ShinkaEvolve's sampler (Edit 4) to dispatch operator prompts.
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -134,6 +135,102 @@ def inject_seed(
             content = seed.content if isinstance(seed.content, str) else "\n".join(seed.content)
             return f"\nUse this as your starting point:\n\n{content}"
     return ""
+
+
+# Dimension name → regex pattern for matching headers in judge reasoning.
+# Judges format dimension names inconsistently (plain, numbered, bold, with
+# hyphens or underscores), so patterns use . to match any separator.
+_DIM_PATTERNS = {
+    "originality": "ORIGINALITY",
+    "transportation_potential": "TRANSPORTATION.POTENTIAL",
+    "narrative_tension": "NARRATIVE.TENSION",
+    "thematic_resonance": "THEMATIC.RESONANCE",
+    "scope_calibration": "SCOPE.CALIBRATION",
+    "anti_cliche": "ANTI.CLICH",
+    "concept_coherence": "CONCEPT.COHERENCE",
+    "generative_fertility": "GENERATIVE.FERTILITY",
+    "over_explanation_resistance": "OVER.EXPLANATION.RESISTANCE",
+}
+
+# Pre-compiled regex matching any dimension header.
+_ANY_DIM_RE = re.compile(
+    r'(?:^|\n)\s*(?:\*{0,2}\d*[.)]*\s*\*{0,2}\s*)?(?:'
+    + "|".join(_DIM_PATTERNS.values())
+    + r")",
+    re.IGNORECASE,
+)
+
+
+def _extract_dimension_section(judge_text: str, dim_name: str) -> str | None:
+    """Extract a single dimension's feedback from one judge's reasoning."""
+    pattern = _DIM_PATTERNS.get(dim_name)
+    if not pattern:
+        return None
+    header_re = re.compile(
+        rf"(?:^|\n)\s*(?:\*{{0,2}}\d*[.)]*\s*\*{{0,2}}\s*)?{pattern}",
+        re.IGNORECASE,
+    )
+    match = header_re.search(judge_text)
+    if not match:
+        return None
+    # Find the next dimension header after this one.
+    next_match = _ANY_DIM_RE.search(judge_text, match.end() + 1)
+    end = next_match.start() if next_match else len(judge_text)
+    return judge_text[match.start():end].strip()
+
+
+def build_mutation_feedback(
+    text_feedback: str | None,
+    public_metrics: dict,
+) -> str:
+    """Compress judge feedback: scores summary + weakest dimensions' feedback.
+
+    Instead of injecting 4,000-6,000 tokens of raw judge reasoning into the
+    mutation prompt, extract only the sections relevant to the weakest
+    dimensions. Produces ~1,000-1,500 tokens of actionable feedback.
+    """
+    if not text_feedback or not text_feedback.strip():
+        return ""
+
+    dimensions = public_metrics.get("dimensions", {})
+    if not dimensions:
+        return text_feedback[:500]
+
+    sorted_dims = sorted(dimensions.items(), key=lambda x: x[1])
+    weakest = sorted_dims[:3]
+    strongest = sorted_dims[-2:]
+
+    lines = ["Weakest dimensions to improve:"]
+    for name, score in weakest:
+        lines.append(f"- {name} ({score:.2f})")
+    lines.append("")
+    lines.append("Strongest dimensions to preserve:")
+    for name, score in strongest:
+        lines.append(f"- {name} ({score:.2f})")
+
+    judge_blocks = text_feedback.split("\n\n---\n\n")
+    weak_dim_names = [name for name, _ in weakest]
+
+    for block in judge_blocks:
+        block = block.strip()
+        if not block:
+            continue
+        judge_header = block.split("\n", 1)[0]
+        extracted = []
+        for dim_name in weak_dim_names:
+            section = _extract_dimension_section(block, dim_name)
+            if section:
+                extracted.append(section)
+        if extracted:
+            lines.append("")
+            lines.append(judge_header)
+            lines.extend(extracted)
+        else:
+            # Parsing failed for this judge — include truncated raw.
+            lines.append("")
+            lines.append(block[:400])
+
+    return "\n".join(lines)
 
 
 def build_operator_prompt(

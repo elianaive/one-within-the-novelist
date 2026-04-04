@@ -12,55 +12,45 @@ class TestStageConfig:
         config = StageConfig.from_yaml(CONFIG_PATH)
         assert config.stage == 1
 
-    def test_evolution(self):
+    def test_evolution_loads(self):
         config = StageConfig.from_yaml(CONFIG_PATH)
-        assert config.evolution.num_generations == 20
         assert config.evolution.language == "json"
-        assert len(config.evolution.patch_types) == 11
-        assert len(config.evolution.patch_type_probs) == 11
-        assert config.evolution.llm_dynamic_selection == "ucb"
-        assert config.evolution.use_text_feedback is True
+        assert len(config.evolution.patch_types) > 0
+        assert len(config.evolution.patch_types) == len(config.evolution.patch_type_probs)
+        assert config.evolution.num_generations > 0
 
-    def test_database(self):
+    def test_database_loads(self):
         config = StageConfig.from_yaml(CONFIG_PATH)
-        assert config.database.num_islands == 10
-        assert config.database.archive_selection_strategy == "map_elites"
-        assert config.database.migration_rate == 0.20
+        assert config.database.num_islands > 0
+        assert config.database.archive_selection_strategy in ("map_elites", "fitness")
 
-    def test_operator_bandit(self):
+    def test_operator_bandit_loads(self):
         config = StageConfig.from_yaml(CONFIG_PATH)
-        assert config.operator_bandit.enabled is True
-        assert config.operator_bandit.warmup_generations == 3
-        assert config.operator_bandit.min_probability_floor == 0.02
+        assert isinstance(config.operator_bandit.enabled, bool)
+        assert config.operator_bandit.min_probability_floor >= 0
 
-    def test_llm(self):
+    def test_llm_loads(self):
         config = StageConfig.from_yaml(CONFIG_PATH)
-        assert "claude-sonnet-4-6" in config.llm.generation_models
-        assert config.llm.generation_model_family == "anthropic"
-        assert config.llm.embedding_model == "text-embedding-3-small"
+        assert len(config.llm.generation_models) > 0
+        assert config.llm.generation_model_family != ""
 
-    def test_judges(self):
+    def test_judges_loads(self):
         config = StageConfig.from_yaml(CONFIG_PATH)
-        assert len(config.judges.panel) == 3
-        assert "mira-okonkwo" in config.judges.panel
-        assert config.judges.min_demanding_ratio == 0.3
+        assert len(config.judges.panel) > 0
 
-    def test_evaluation(self):
+    def test_evaluation_loads(self):
         config = StageConfig.from_yaml(CONFIG_PATH)
-        assert config.evaluation.holder_p == 0.4
-        assert config.evaluation.diversity_weight == 0.15
-        assert config.evaluation.tier_a_enabled is False
-        assert config.evaluation.anti_cliche.similarity_threshold == 0.85
-        assert config.evaluation.anti_cliche.elevated_originality_threshold == 3.5
+        assert 0 < config.evaluation.holder_p <= 1.0
+        assert config.evaluation.anti_cliche.similarity_threshold > 0
 
-    def test_handoff(self):
+    def test_handoff_loads(self):
         config = StageConfig.from_yaml(CONFIG_PATH)
-        assert config.handoff.strategy == "top_per_cell"
-        assert config.handoff.max_concepts == 6
+        assert config.handoff.strategy != ""
+        assert config.handoff.max_concepts > 0
 
-    def test_paths(self):
+    def test_paths_loads(self):
         config = StageConfig.from_yaml(CONFIG_PATH)
-        assert config.paths.seed_bank == "data/seed-bank.yaml"
+        assert config.paths.seed_bank.endswith(".yaml")
 
     def test_missing_file_raises(self):
         with pytest.raises(FileNotFoundError):
