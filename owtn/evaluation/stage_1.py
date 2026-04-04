@@ -231,7 +231,6 @@ async def evaluate(
             "map_elites_cell": {
                 "concept_type": classification.concept_type.value,
                 "arc_shape": classification.arc_shape.value,
-                "constraint_density": classification.constraint_density.value,
             },
             "holder_score": agg.holder_score,
         },

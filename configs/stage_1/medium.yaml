@@ -5,7 +5,7 @@
 # evolution dynamics.
 #
 # Run with: uv run python -m owtn --config configs/stage_1_medium.yaml \
-#           --max-eval-jobs 3 --max-proposal-jobs 2
+#           --max-eval-jobs 5 --max-proposal-jobs 4
 #
 # Expected: ~50-80 concepts, ~$15-40 total.
 
@@ -45,7 +45,7 @@ evolution:
 # --- Database / Island Config (ShinkaEvolve DatabaseConfig) ---
 
 database:
-  num_islands: 10
+  num_islands: 4
   archive_size: 100
   archive_selection_strategy: "map_elites"
   migration_interval: 2

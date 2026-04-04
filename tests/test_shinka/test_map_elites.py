@@ -20,7 +20,6 @@ def _make_program(id, cell, holder_score, correct=True):
         "map_elites_cell": {
             "concept_type": cell[0],
             "arc_shape": cell[1],
-            "constraint_density": cell[2],
         },
     }
     return prog
@@ -52,9 +51,9 @@ def map_elites_db(tmp_path):
 
 class TestGetCellKey:
     def test_valid_cell(self):
-        prog = _make_program("p1", ("thought_experiment", "rise", "moderate"), 3.0)
+        prog = _make_program("p1", ("thought_experiment", "rise"), 3.0)
         key = ProgramDatabase._get_cell_key(prog)
-        assert key == ("thought_experiment", "rise", "moderate")
+        assert key == ("thought_experiment", "rise")
 
     def test_missing_dimension_returns_none(self):
         prog = MagicMock()
@@ -76,13 +75,13 @@ class TestGetCellKey:
 
 class TestMapElitesArchive:
     def test_insert_into_empty_cell(self, map_elites_db):
-        prog = _make_program("p1", ("thought_experiment", "rise", "moderate"), 3.0)
+        prog = _make_program("p1", ("thought_experiment", "rise"), 3.0)
         # Mock _get_program_by_id since we don't have a full programs table
         map_elites_db._get_program_by_id = MagicMock(return_value=None)
 
         map_elites_db._update_archive_map_elites(prog)
 
-        cell_key_str = json.dumps(("thought_experiment", "rise", "moderate"))
+        cell_key_str = json.dumps(("thought_experiment", "rise"))
         map_elites_db.cursor.execute(
             "SELECT program_id FROM map_elites_cells WHERE cell_key = ?",
             (cell_key_str,),
@@ -92,7 +91,7 @@ class TestMapElitesArchive:
         assert row[0] == "p1"
 
     def test_better_program_replaces_occupant(self, map_elites_db):
-        cell = ("voice_constraint", "fall", "heavy")
+        cell = ("voice_constraint", "fall")
         occupant = _make_program("p1", cell, 2.0)
         challenger = _make_program("p2", cell, 4.0)
 
@@ -113,7 +112,7 @@ class TestMapElitesArchive:
         assert row[0] == "p2"
 
     def test_worse_program_does_not_replace(self, map_elites_db):
-        cell = ("situation_with_reveal", "rise_fall", "unconstrained")
+        cell = ("situation_with_reveal", "rise_fall")
         occupant = _make_program("p1", cell, 4.0)
         challenger = _make_program("p2", cell, 2.0)
 
@@ -131,8 +130,8 @@ class TestMapElitesArchive:
         assert row[0] == "p1"
 
     def test_different_cells_coexist(self, map_elites_db):
-        p1 = _make_program("p1", ("thought_experiment", "rise", "moderate"), 3.0)
-        p2 = _make_program("p2", ("collision", "fall", "heavy"), 2.5)
+        p1 = _make_program("p1", ("thought_experiment", "rise"), 3.0)
+        p2 = _make_program("p2", ("collision", "fall"), 2.5)
 
         map_elites_db._update_archive_map_elites(p1)
         map_elites_db._update_archive_map_elites(p2)
@@ -148,7 +147,7 @@ class TestMapElitesArchive:
         assert map_elites_db.cursor.fetchone()[0] == 0
 
     def test_incorrect_program_not_archived(self, map_elites_db):
-        prog = _make_program("p1", ("thought_experiment", "rise", "moderate"), 3.0)
+        prog = _make_program("p1", ("thought_experiment", "rise"), 3.0)
         prog.correct = False
 
         map_elites_db._update_archive(prog)
@@ -160,10 +159,10 @@ class TestMapElitesArchive:
 class TestUpdateArchiveStrategyDispatch:
     def test_map_elites_strategy_dispatches(self, map_elites_db):
         """_update_archive routes to _update_archive_map_elites for map_elites strategy."""
-        prog = _make_program("p1", ("thought_experiment", "rise", "moderate"), 3.0)
+        prog = _make_program("p1", ("thought_experiment", "rise"), 3.0)
         map_elites_db._update_archive(prog)
 
-        cell_key_str = json.dumps(("thought_experiment", "rise", "moderate"))
+        cell_key_str = json.dumps(("thought_experiment", "rise"))
         map_elites_db.cursor.execute(
             "SELECT program_id FROM map_elites_cells WHERE cell_key = ?",
             (cell_key_str,),
@@ -174,10 +173,10 @@ class TestUpdateArchiveStrategyDispatch:
         """MAP-Elites doesn't check archive_size — inserts regardless."""
         map_elites_db.config.archive_size = 0  # would block fitness strategy
 
-        prog = _make_program("p1", ("thought_experiment", "rise", "moderate"), 3.0)
+        prog = _make_program("p1", ("thought_experiment", "rise"), 3.0)
         map_elites_db._update_archive(prog)
 
-        cell_key_str = json.dumps(("thought_experiment", "rise", "moderate"))
+        cell_key_str = json.dumps(("thought_experiment", "rise"))
         map_elites_db.cursor.execute(
             "SELECT program_id FROM map_elites_cells WHERE cell_key = ?",
             (cell_key_str,),

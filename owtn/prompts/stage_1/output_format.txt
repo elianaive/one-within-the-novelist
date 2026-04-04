@@ -17,11 +17,11 @@ Your exploration of different directions, and why you chose the one you did.
 {
   "premise": "A concrete story premise (string, min 20 chars)",
   "target_effect": "The emotional/intellectual effect on the reader (string, min 15 chars)",
-  "character_seeds": [{"label": "name/role", "sketch": "brief characterization"}, ...] or null,
-  "setting_seeds": "setting description as a single string" or null,
-  "thematic_tension": "core tension as a single string" or null,
-  "constraints": ["constraint 1", "constraint 2", ...] or null,
-  "style_hint": "style direction as a single string" or null
+  "character_seeds": [{"label": "name/role", "sketch": "brief characterization"}, ...] or null, //optional
+  "setting_seeds": "setting description as a single string" or null, // optional
+  "thematic_tension": "core tension as a single string" or null, // optional
+  "constraints": ["constraint 1", "constraint 2", ...] or null, // optional
+  "style_hint": "style direction as a single string" or null // optional
 }
 ```
 </CODE>

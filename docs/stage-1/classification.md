@@ -2,13 +2,12 @@
 
 After a concept passes Gate 3 (judge panel evaluation), it must be classified
 before archive insertion. The classifier assigns all 5 behavioral dimensions defined in population.md.
-Three are grid axes (determining the MAP-Elites cell): concept_type, arc_shape,
-and constraint_density. The other 2 (tonal_register, thematic_domain) are stored
+Two are grid axes (determining the MAP-Elites cell): concept_type and arc_shape.
+The other 3 (constraint_density, tonal_register, thematic_domain) are stored
 as tracked metadata for analysis and potential future promotion.
 
-Grid: concept_type (6) × arc_shape (6) × constraint_density (3) = 108 cells.
-Constraint density is rule-based (no LLM call). See population.md for promotion
-criteria.
+Grid: concept_type (6) × arc_shape (6) = 36 cells.
+Constraint density is rule-based (no LLM call) and stored as metadata. See population.md for details.
 
 ---
 

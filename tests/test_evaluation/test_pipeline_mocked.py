@@ -91,7 +91,7 @@ class TestEndToEnd:
             result = await evaluate(str(genome_file), str(results_dir), "configs/stage_1/medium.yaml")
 
         cell_key = result.public_metrics["cell_key"]
-        assert cell_key == ["voice_constraint", "fall", "heavy"]
+        assert cell_key == ["voice_constraint", "fall"]
 
 
 class TestShinkaContract:
@@ -141,7 +141,6 @@ class TestShinkaContract:
         cell = pub["map_elites_cell"]
         assert "concept_type" in cell
         assert "arc_shape" in cell
-        assert "constraint_density" in cell
         assert "holder_score" in pub
         assert isinstance(pub["holder_score"], float)
 

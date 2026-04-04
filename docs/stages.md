@@ -393,7 +393,7 @@ its cell (the combination of its diversity dimension values). This ensures every
 cell contains the best story *of its type*, not just the best story overall.
 
 Grid dimensionality will be determined by Stage 1 experience. Stage 1 uses a
-3D grid (concept_type × arc_shape × constraint_density = 108 cells) after review
+2D grid (concept_type × arc_shape = 36 cells) after review
 against QDAIF's empirical findings that higher-dimensional grids cause sparse
 archive problems (see `docs/issues/2026-04-01-map-elites-review.md`). Stage 6 has an
 advantage: some dimensions (dominant edge type, story length, POV/tense) are

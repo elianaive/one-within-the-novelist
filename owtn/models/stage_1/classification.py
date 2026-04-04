@@ -61,6 +61,6 @@ class ClassificationResult(BaseModel):
     thematic_domain_confidence: Confidence
     constraint_density: ConstraintDensity
 
-    def cell_key(self) -> tuple[ConceptType, ArcShape, ConstraintDensity]:
-        """MAP-Elites cell coordinates (3D grid, 108 cells)."""
-        return (self.concept_type, self.arc_shape, self.constraint_density)
+    def cell_key(self) -> tuple[ConceptType, ArcShape]:
+        """MAP-Elites cell coordinates (2D grid, 36 cells)."""
+        return (self.concept_type, self.arc_shape)

@@ -244,17 +244,16 @@ def _update_archive_map_elites(self, program: Program) -> None:
 def _get_cell_key(self, program: Program) -> Optional[tuple]:
     """Extract MAP-Elites cell coordinates from program metrics.
 
-    Grid axes: concept_type × arc_shape × constraint_density (3D, 108 cells).
-    Other classified dimensions (tonal_register, thematic_domain) are stored
-    as metadata but don't affect cell placement.
+    Grid axes: concept_type × arc_shape (2D, 36 cells).
+    Other classified dimensions (constraint_density, tonal_register,
+    thematic_domain) are stored as metadata but don't affect cell placement.
     """
     cell = (program.public_metrics or {}).get("map_elites_cell", {})
     concept_type = cell.get("concept_type")
     arc_shape = cell.get("arc_shape")
-    constraint_density = cell.get("constraint_density")
-    if any(d is None for d in (concept_type, arc_shape, constraint_density)):
+    if any(d is None for d in (concept_type, arc_shape)):
         return None
-    return (concept_type, arc_shape, constraint_density)
+    return (concept_type, arc_shape)
 ```
 
 The cell coordinates come from `public_metrics.map_elites_cell`, which is set by

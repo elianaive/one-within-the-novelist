@@ -1,5 +1,5 @@
 # ============================================================
-# real_world (25 seeds)
+# real_world
 # ============================================================
 
 - id: plant-anesthesia
@@ -256,7 +256,7 @@
   tags: [learning, irreversibility, critical-period, epigenetics, second-chances]
 
 # ============================================================
-# thought_experiment (5 seeds)
+# thought_experiment
 # ============================================================
 
 - id: te-marys-room
@@ -320,8 +320,231 @@
   source: "Kavka, G., 'The Toxin Puzzle,' Analysis, 1983"
   tags: [intention, commitment, self-knowledge, deterrence, rationality]
 
+- id: te-hungry-ghosts-river
+  type: thought_experiment
+  content: >
+    A hungry ghost approaches a river and sees pus and blood. A human
+    approaches the same river and sees clear water. A fish lives in the
+    river and experiences it as home. All three are present at the same
+    place at the same moment. There is no fourth perspective from which
+    to determine what the river "really" is. If shared experience cannot
+    settle the question — humans agree it's water, but so do the ghosts
+    agree it's pus — then what grounds the assumption that there is one
+    river at all, rather than three incommensurable worlds occupying the
+    same coordinates?
+  source: "Vasubandhu, Vimshatikakarikavrtti (Twenty Verses), 4th-5th c. CE"
+  tags: [perception, reality, incommensurability, buddhist, species, cosmology]
+
+- id: te-mozi-care-trustee
+  type: thought_experiment
+  content: >
+    You are about to leave on a journey from which you may not return.
+    You must entrust your children to one of two guardians. The first
+    believes in impartial love — they will care for your children
+    exactly as they care for any stranger's children, no more, no less.
+    The second believes in partiality — they will always prioritize
+    their own family above all others. You believe in partiality. You
+    have argued for it. But you choose the impartialist, because the
+    impartialist is the only one you can trust not to sacrifice your
+    children for their own. Your deepest value can only be protected
+    by someone who rejects it.
+  source: "Mozi (Mo Di), 'Impartial Caring' Chapter C (Jian'ai C), c. 450 BCE"
+  tags: [trust, partiality, hypocrisy, family, values, chinese-philosophy]
+
+- id: te-fire-cotton
+  type: thought_experiment
+  content: >
+    You hold cotton to a flame. The cotton burns. You have seen this
+    happen a thousand times. But Al-Ghazali argues you have never once
+    observed causation — only sequence. The fire has no power to burn.
+    God burns the cotton on the occasion of fire touching it. The
+    regularity is a habit of divine will, not a law of nature. Now:
+    God suspends this habit, just once, for just one person. The fire
+    touches the cotton and nothing happens. The person stares at the
+    unchanged cotton. They cannot tell anyone, because no one would
+    believe a world where fire does not burn. They cannot trust any
+    sequence they have ever observed. The most ordinary thing in the
+    world — a flame — has become evidence that nothing connects cause
+    to effect.
+  source: "Al-Ghazali, Tahafut al-Falasifa (The Incoherence of the Philosophers), Discussion 17, 1095 CE"
+  tags: [causation, habit, divine-will, trust, regularity, islamic-philosophy]
+
+- id: te-last-man
+  type: thought_experiment
+  content: >
+    You are the last living human. Everyone else is dead. In your
+    remaining hours, you begin systematically destroying every living
+    thing you can reach — cutting down trees, poisoning rivers, burning
+    grassland. You do this for no reason. Not survival, not anger, not
+    ritual. You simply do it because nothing stops you. No one is
+    harmed. No one will mourn what is lost. No future generation will
+    inherit the damage. No ecosystem needs to be preserved for anyone.
+    Nothing you destroy will ever be missed by a consciousness capable
+    of missing it. Is what you are doing wrong? And if you cannot say
+    why, what was holding your ethics together before everyone died?
+  source: "Routley (Sylvan), R., 'Is There a Need for a New, an Environmental, Ethic?', XVth World Congress of Philosophy, 1973"
+  tags: [environment, intrinsic-value, ethics, anthropocentrism, last-person, witness]
+
+- id: te-combined-spectrum
+  type: thought_experiment
+  content: >
+    Imagine a corridor of a thousand rooms. In the first room is
+    someone identical to you — your body, your memories, your
+    personality. In each successive room, one thing has changed: a
+    memory replaced, a preference shifted, a molecule of brain
+    chemistry altered. The changes are so small that the person in any
+    given room is indistinguishable from the person in the room before.
+    By room five hundred, the person shares half your memories and half
+    a stranger's. By room one thousand, the person is psychologically
+    and physically identical to Napoleon. You are in room one. You know
+    what is in room one thousand. You cannot identify a single room
+    where you cease to exist and someone else begins. There is no door
+    you can point to and say: I die here.
+  source: "Parfit, D., Reasons and Persons, Part III, Chapter 15, 1984"
+  tags: [personal-identity, gradual-change, threshold, continuity, death]
+
+- id: te-boltzmann-brain
+  type: thought_experiment
+  content: >
+    Given enough time — far more than the current age of the universe
+    — random thermal fluctuations will spontaneously assemble a
+    complete human brain, equipped with a full set of memories of a
+    life it never lived: parents it never had, a childhood that never
+    happened, a morning it never woke up to. This brain exists for a
+    fraction of a second before dissolving back into entropy.
+    Statistical mechanics implies such brains are overwhelmingly more
+    probable than brains that arose through billions of years of
+    stellar nucleosynthesis and biological evolution. You cannot
+    determine from the inside whether you are a Boltzmann brain. Your
+    memories do not help — they would feel identical either way. The
+    life you remember is not evidence that you lived it.
+  source: "Named for Boltzmann, L. (1844-1906); modern form developed by cosmologists c. 2002-2004"
+  tags: [memory, entropy, probability, false-memories, cosmology, identity]
+
+- id: te-fred-two-reds
+  type: thought_experiment
+  content: >
+    Fred sees two distinct colors where you see one. When you look at
+    a ripe tomato and a fire truck, you see the same red. Fred sees
+    two reds as different from each other as red is from green. He can
+    sort objects by this distinction with perfect consistency. His
+    visual cortex, when scanned, shows two separate activation patterns
+    where yours shows one. You have every physical fact about Fred's
+    brain, every measurement of his visual processing, every functional
+    description of what happens when light hits his retina. You still
+    do not know what his second red looks like. He lives among you,
+    unimprisoned, unrestricted — he simply perceives a dimension of the
+    world that is structurally unavailable to anyone else. No one can
+    verify what he sees. No one can share it. He is not lying, and he
+    cannot prove he is telling the truth.
+  source: "Jackson, F., 'Epiphenomenal Qualia,' Philosophical Quarterly 32(127), 1982"
+  tags: [perception, qualia, isolation, unverifiable, knowledge, color]
+
+- id: te-split-brain
+  type: thought_experiment
+  content: >
+    A patient's corpus callosum — the bridge between brain hemispheres
+    — is surgically severed. The left hemisphere sees one image; the
+    right hemisphere sees another. The left hand reaches for something
+    the right hand does not want. The patient — the left hemisphere,
+    which controls speech — reports only one intention, confabulating
+    a reason for what the other hand did. The right hemisphere, which
+    cannot speak, has made a different decision for a different reason.
+    It has no voice to report this. If the right hemisphere disagrees
+    with an action the left hemisphere has taken, there is no mechanism
+    by which it can object. One body, two moral agents, and only one
+    of them can testify.
+  source: "Sperry, R. & Gazzaniga, M., split-brain research, 1960s-1980s; Gazzaniga, The Ethical Brain, 2005"
+  tags: [consciousness, agency, testimony, silence, confabulation, neuroscience]
+
+- id: te-white-horse-gate
+  type: thought_experiment
+  content: >
+    A man arrives at a border checkpoint leading a white horse. The
+    law is clear: no horses may pass. The man argues — not as a joke
+    but as a legal claim he expects to prevail — that a white horse
+    is not a horse. "Horse" refers to a form. "White horse" refers to
+    a form plus a color. These are different categories. The law
+    prohibits horses; he has a white horse; therefore the law does not
+    apply. The guard must now decide, with real consequences, whether
+    language tracks reality closely enough to enforce a law. If the
+    man is wrong, he is a sophist. If the man is right, the law is
+    unenforceable — because every actual horse is a colored horse, and
+    no colored horse is the "horse" the law names.
+  source: "Gongsun Long (c. 320-250 BCE), 'Bai Ma Lun' (White Horse Dialogue), Gongsun Longzi"
+  tags: [language, law, categories, enforcement, sophistry, chinese-philosophy]
+
+- id: te-liberal-paradox
+  type: thought_experiment
+  content: >
+    There is one copy of a controversial book. Three people are
+    involved. The first is scandalized by the book and wants no one to
+    read it — but if someone must, he'd rather read it himself than
+    let it corrupt the second person. The second person desperately
+    wants to read it, but even more wants the first person to read it,
+    because the first person's prudishness offends him and he believes
+    the book would do him good. Each person has the right to decide
+    for themselves whether they personally read the book. Both are
+    exercising that right sincerely. When you follow the logic of
+    respecting both their individual freedoms and producing the best
+    collective outcome, you arrive at a result neither of them chose
+    and neither of them wants. Individual liberty and collective
+    welfare, applied simultaneously and honestly, produce an outcome
+    that violates both.
+  source: "Sen, A., 'The Impossibility of a Paretian Liberal,' Journal of Political Economy 78(1), 1970"
+  tags: [liberty, welfare, paradox, rights, collective-choice, economics]
+
+- id: te-perception-inversion
+  type: thought_experiment
+  content: >
+    A man's perceptual system is catastrophically altered. What he
+    previously experienced as beauty — human faces, sunlight, music —
+    now registers as horror: viscera, decay, noise. What he previously
+    experienced as horror — a monstrous creature, rot, alien tissue —
+    now registers as beauty: a radiant girl, warmth, tenderness. His
+    ethics follow his phenomenology coherently. He falls in love with
+    the only beautiful thing in his world. From the outside, he is a
+    monster. From the inside, he is the last romantic in a world of
+    nightmare. The question is not who is right. The question is
+    whether "right" means anything independent of what the world feels
+    like from inside.
+  source: "Urobuchi, G. / Nitroplus, Saya no Uta, 2003"
+  tags: [perception, phenomenology, ethics, inversion, VN, beauty]
+
+- id: te-hedgehog-dissolution
+  type: thought_experiment
+  content: >
+    A technology exists that can dissolve the boundary between one
+    consciousness and another's. Complete mutual access — no secrets,
+    no misunderstanding, no loneliness. The process is irreversible.
+    Two people who love each other are offered this. One wants it
+    desperately. The other refuses — not because they don't love the
+    first person, but because the self that would benefit from
+    painlessness is the same self that would be eliminated by it. You
+    cannot be relieved of loneliness without being relieved of the one
+    who was lonely. The story is about the refusal, and what it costs
+    both of them.
+  source: "Anno, H., Neon Genesis Evangelion, 1995-1997 (Hedgehog's Dilemma / AT Field / Instrumentality)"
+  tags: [loneliness, merger, individuation, self, love, anime]
+
+- id: te-unlimited-reset
+  type: thought_experiment
+  content: >
+    A being is given the power to reset any situation to its starting
+    point, retaining full memory. At first, they use it to help —
+    saving everyone, optimizing every outcome, becoming a perfect
+    benefactor. Then they've saved everyone. Every configuration of
+    rescue has been executed. They begin experimenting — what happens
+    if they don't save this person? What if they actively harm them?
+    The harm has no consequences; a reset erases it. Gradually, the
+    being discovers that the absence of permanent consequence has
+    eroded the meaning of permanent kindness. They are not evil. They
+    are bored. Boredom is worse.
+  source: "Fox, T., Undertale, 2015 (Flowey's arc)"
+  tags: [consequence, boredom, reset, ethics, game-mechanic, power]
+
 # ============================================================
-# axiom (13 seeds)
+# axiom
 # ============================================================
 
 - id: axiom-ubuntu
@@ -480,8 +703,65 @@
   source: "Benjamin, W., 'The Work of Art in the Age of Mechanical Reproduction,' 1935"
   tags: [authenticity, reproduction, ai, art, social-relation]
 
+- id: axiom-empathy-truth
+  type: axiom
+  content: >
+    Every act of cruelty was, from inside the person who committed
+    it, an act of something else — survival, love, desperation, the
+    last thing they could think to do. The cruelty is real. The
+    interior experience is also real. Understanding the act requires
+    holding both simultaneously, which is what love does and logic
+    cannot. A person who understands only the cruelty understands
+    nothing. A person who understands only the interior experience
+    forgives too easily. The truth is in the refusal to choose
+    between them.
+  source: "Ryukishi07, Umineko no Naku Koro ni, 2007-2010"
+  tags: [empathy, truth, cruelty, love, epistemology, VN]
+
+- id: axiom-history-as-archive
+  type: axiom
+  content: >
+    History is not the record of what happened. It is the record of
+    what those who controlled the archives chose to preserve. An
+    individual who acts without institutional witness may as well not
+    have acted for everyone who comes after. The hero whose deeds were
+    not recorded is not a forgotten hero — they are, for all
+    functional purposes, a person who never existed. The villain whose
+    deeds were recorded as heroism is, for all functional purposes,
+    a hero.
+  source: "Matsuno, Y., Final Fantasy Tactics, 1997 (Durai Papers)"
+  tags: [history, archives, power, erasure, documentation, JRPG]
+
+- id: axiom-coexistence-as-attention
+  type: axiom
+  content: >
+    The natural world is not a resource, not a threat, not a metaphor,
+    not a mirror. It is a set of forces operating according to logics
+    that predate and will outlast human meaning-making. A person who
+    understands this does not conquer the forest or commune with it.
+    They learn where it is safe to walk and where it is not, and they
+    do not require the forest to explain itself. Mastery is a
+    misunderstanding. Reverence is a different misunderstanding.
+    Attention is the correct relationship.
+  source: "Urushibara, Y., Mushishi, 1999-2008"
+  tags: [nature, coexistence, attention, animism, non-mastery, manga]
+
+- id: axiom-earned-pacifism
+  type: axiom
+  content: >
+    A warrior who has killed more people than they can count decides
+    to stop. Not because they were defeated, not because they found
+    God, not because killing became difficult. They stopped because
+    they completed the experiment. They pursued violence to its logical
+    conclusion and arrived at the answer: there is nothing at the end.
+    The violence was not wrong because it was immoral. It was wrong
+    because it was empty. This is not a moral argument. It is an
+    empirical result.
+  source: "Yukimura, M., Vinland Saga, 2005-present"
+  tags: [violence, pacifism, empiricism, exhaustion, finding, manga]
+
 # ============================================================
-# dilemma (6 seeds)
+# dilemma
 # ============================================================
 
 - id: dilemma-translator-asylum
@@ -555,7 +835,7 @@
   tags: [simulation, trust, investigation, flourishing, unfalsifiability]
 
 # ============================================================
-# constraint (9 seeds)
+# constraint
 # ============================================================
 
 - id: constraint-halving
@@ -644,53 +924,182 @@
 - id: constraint-greentext
   type: constraint
   content: >
-    The story is told in the compressed, fragmented style of an anonymous imageboard post: short declarative lines, present tense, no attribution, no names — only relational labels (roommate, mom, the girl from work). The narrator performs detachment and ironic distance as a social obligation. The emotional content of the story must never be stated directly by the narrator — it can only surface through what they choose to include, the details they can't help recording, and the places where the performed indifference fails. The narrator does not realize they are telling a story that matters to them.
+    The story is told in the compressed, fragmented style of an
+    anonymous imageboard post: short declarative lines, present tense,
+    no attribution, no names — only relational labels (roommate, mom,
+    the girl from work). The narrator performs detachment and ironic
+    distance as a social obligation. The emotional content of the story
+    must never be stated directly by the narrator — it can only surface
+    through what they choose to include, the details they can't help
+    recording, and the places where the performed indifference fails.
+    The narrator does not realize they are telling a story that matters
+    to them.
   tags: [format, compression, irony, detachment, voice, internet-culture]
 
 - id: constraint-forum-thread
   type: constraint
   content: >
-    The story unfolds as a series of posts in a topical online forum — a specific community (beekeeping, ham radio, a disease support group, amateur astronomy). Different usernames, different levels of knowledge, different reasons for being there. No omniscient narrator. Chronological gaps between posts. Some posters misunderstand the situation. Some posts are deleted. The story emerges from the community's norms and blind spots, not from plot reveals.
+    The story unfolds as a series of posts in a topical online forum
+    — a specific community (beekeeping, ham radio, a disease support
+    group, amateur astronomy). Different usernames, different levels
+    of knowledge, different reasons for being there. No omniscient
+    narrator. Chronological gaps between posts. Some posters
+    misunderstand the situation. Some posts are deleted. The story
+    emerges from the community's norms and blind spots, not from plot
+    reveals.
   tags: [format, multi-voice, community, digital, gaps, misunderstanding]
 
 - id: constraint-incident-report
   type: constraint
   content: >
-    The story is told as a formal incident report, after-action review, or bureaucratic filing. Clinical language, passive voice, numbered sections, redactions. The human reality bleeds through the institutional framing — not because the narrator breaks voice, but because bureaucratic language is structurally incapable of containing what happened. The form's inadequacy is the point.
+    The story is told as a formal incident report, after-action
+    review, or bureaucratic filing. Clinical language, passive voice,
+    numbered sections, redactions. The human reality bleeds through the
+    institutional framing — not because the narrator breaks voice, but
+    because bureaucratic language is structurally incapable of
+    containing what happened. The form's inadequacy is the point.
   tags: [format, bureaucracy, clinical, distance, inadequacy]
 
 - id: constraint-ritual-instructions
   type: constraint
   content: >
-    The story is presented as instructions for performing a ritual. The steps must be followed in order. Certain materials are required. Certain words must be spoken. The instructions imply a history — who the ritual is for, what happened that made it necessary, what will go wrong if a step is skipped or performed carelessly. The ritual itself is the narrative; the practitioner is the reader. The instructions never explain why the ritual exists. They only say what to do.
+    The story is presented as instructions for performing a ritual.
+    The steps must be followed in order. Certain materials are
+    required. Certain words must be spoken. The instructions imply a
+    history — who the ritual is for, what happened that made it
+    necessary, what will go wrong if a step is skipped or performed
+    carelessly. The ritual itself is the narrative; the practitioner
+    is the reader. The instructions never explain why the ritual
+    exists. They only say what to do.
   tags: [format, ritual, cosmology, implication, pre-modern, procedural]
 
 - id: constraint-trial-transcript
   type: constraint
   content: >
-    The story is told as a court transcript from a non-modern legal system — ecclesiastical court, village tribunal, inquisition, colonial hearing. Questions and answers only. The questions reveal the questioner's worldview: what counts as evidence, what counts as guilt, what counts as real. The accused answers within a different framework than the one being applied to them. The reader understands both; the court understands only its own.
+    The story is told as a court transcript from a non-modern legal
+    system — ecclesiastical court, village tribunal, inquisition,
+    colonial hearing. Questions and answers only. The questions reveal
+    the questioner's worldview: what counts as evidence, what counts
+    as guilt, what counts as real. The accused answers within a
+    different framework than the one being applied to them. The reader
+    understands both; the court understands only its own.
   tags: [format, legal, worldview, power, pre-modern, cross-purposes]
 
 - id: constraint-hagiography
   type: constraint
   content: >
-    The story is told in the form of a saint's life: miraculous birth or calling, trials and temptations, signs and wonders, martyrdom or transfiguration. The hagiographic conventions are followed faithfully. The subject is not a saint. The frame can be ironic or sincere or both simultaneously — the reader must decide whether the life described is holy, deluded, or whether the distinction matters.
+    The story is told in the form of a saint's life: miraculous birth
+    or calling, trials and temptations, signs and wonders, martyrdom
+    or transfiguration. The hagiographic conventions are followed
+    faithfully. The subject is not a saint. The frame can be ironic or
+    sincere or both simultaneously — the reader must decide whether
+    the life described is holy, deluded, or whether the distinction
+    matters.
   tags: [format, sacred, irony, sincerity, pre-modern, devotion]
 
 - id: constraint-almanac
   type: constraint
   content: >
-    The story is told as seasonal entries in a farmer's almanac or household guide: planting schedules, weather predictions, remedies, feast days, practical advice. A life unfolds between the instructions. The almanac never acknowledges the life directly — it never breaks its own frame. The narrative exists entirely in implication: what is planted and what isn't, which remedies appear and why, what the weather did this year that it didn't do last year.
+    The story is told as seasonal entries in a farmer's almanac or
+    household guide: planting schedules, weather predictions, remedies,
+    feast days, practical advice. A life unfolds between the
+    instructions. The almanac never acknowledges the life directly —
+    it never breaks its own frame. The narrative exists entirely in
+    implication: what is planted and what isn't, which remedies appear
+    and why, what the weather did this year that it didn't do last
+    year.
   tags: [format, seasonal, indirection, implication, pre-modern, cyclical]
 
 - id: constraint-herbalist-compendium
   type: constraint
   content: >
-    Each section describes a plant: its appearance, where it grows, what it cures, what it poisons, how to prepare it, when to harvest. The herbalist's clinical distance is the voice. The plants correspond to people or events — but the correspondence is not allegorical. The progression from appearance to cure to poison gives each entry a narrative arc. Somewhere in the preparations and dosages, a story takes shape without ever being named as a story.
+    Each section describes a plant: its appearance, where it grows,
+    what it cures, what it poisons, how to prepare it, when to
+    harvest. The herbalist's clinical distance is the voice. The
+    plants correspond to people or events — but the correspondence is
+    not allegorical. The progression from appearance to cure to poison
+    gives each entry a narrative arc. Somewhere in the preparations
+    and dosages, a story takes shape without ever being named as a
+    story.
   tags: [format, botanical, clinical, pre-modern, indirection, poison]
 
+- id: constraint-save-point-erosion
+  type: constraint
+  content: >
+    The story is told by someone who can return to a checkpoint and
+    try again, retaining full memory of every attempt. But the people
+    around them are beginning to notice. Small inconsistencies — the
+    narrator knowing things they shouldn't, flinching before the pain
+    arrives, finishing someone's sentence with words they haven't said
+    yet. The narrator's power is eroding the trust of the people
+    they're trying to save. The story is about a god-like ability that
+    makes you less human to the people who matter.
+  tags: [format, loop, trust, erosion, VN, game-mechanic]
+
+- id: constraint-comedy-tragedy-neither
+  type: constraint
+  content: >
+    The story is told once as a comedy, once as a tragedy, and once
+    as neither. The same events, the same characters, the same words
+    spoken. What changes is the context the narrator provides around
+    the events. The third telling provides no emotional framing at
+    all — just the events, bare. The reader must decide which of the
+    first two framings was correct, armed with the third telling's
+    refusal to help.
+  tags: [structural, recontextualization, framing, ambiguity, VN-route]
+
+- id: constraint-aspect-to-aspect
+  type: constraint
+  content: >
+    Every scene is entered through its smallest detail first and
+    expands outward — a thread on a sleeve, then the sleeve, then the
+    arm, then the room, then the building, then the city. The scene
+    is never described as a whole. The reader assembles totality from
+    the sequence of fragments. The order in which details are presented
+    IS the narrator's emotional state — what they notice first reveals
+    what they're afraid of.
+  tags: [structural, manga, perception, fragments, ordering, fear]
+
+- id: constraint-genre-collapse
+  type: constraint
+  content: >
+    The story is told in a genre the protagonist believes they are in
+    — a hero's journey, a love story, a coming-of-age — and the
+    genre's conventions function perfectly until the protagonist
+    encounters something the genre cannot accommodate. The genre
+    doesn't collapse; the protagonist does. They continue trying to
+    apply the genre's logic to a situation that has outgrown it. The
+    gap between the story they think they're in and the story they're
+    actually in IS the narrative.
+  tags: [structural, genre, collapse, Muv-Luv, dissonance]
+
+- id: constraint-register-collapse
+  type: constraint
+  content: >
+    The story is told in meticulous, observational prose until a
+    specific event. After the event, the prose loses its ability to
+    observe — descriptions become approximate, temporal markers
+    disappear, characters blur into each other. The narrator is still
+    present but can no longer do what they could do before. The formal
+    breakdown is the only evidence the reader has that something
+    happened. The event itself is never described.
+  tags: [voice, degradation, trauma, absence, Punpun, Eva]
+
+- id: constraint-commentary-as-intervention
+  type: constraint
+  content: >
+    The story is narrated by two observers watching the events from
+    outside — commentators, critics, an audience. Their commentary is
+    casual, analytical, sometimes wrong. The characters within the
+    story can hear the commentary but interpret it as something else
+    entirely — divine instruction, intrusive thoughts, prophecy. The
+    observers don't know they're being heard. Their offhand remarks
+    reshape the plot in ways they'd never intend if they understood
+    their power.
+  tags: [format, meta, commentary, prophecy, Endo-Kobayashi]
+
 # ============================================================
-# noun_cluster (6 seeds)
+# noun_cluster
 # ============================================================
 
 - id: nouns-childhood-geography
@@ -790,7 +1199,7 @@
   tags: [pre-modern, domestic, protection, liminal, ritual, boundary]
 
 # ============================================================
-# image (11 seeds)
+# image
 # ============================================================
 
 - id: image-piano-field
@@ -922,8 +1331,43 @@
     what any of it says.
   tags: [craft, meaning, devotion, pre-modern, labor, gap]
 
+- id: image-replacement-hand-glass
+  type: image
+  content: >
+    A being composed entirely of replacements looking at the last
+    fragment of their original body, held behind glass in someone
+    else's collection. They reach toward it and their replacement
+    hand — the fourth one, the one made from a material that can't
+    feel temperature — touches the glass. They know they should feel
+    something. They know this because they remember remembering that
+    they once could.
+  tags: [identity, replacement, loss, memory, manga, gem]
+
+- id: image-figure-megastructure
+  type: image
+  content: >
+    A human-sized figure walking through a structure so vast its walls
+    disappear into darkness in every direction. They have been walking
+    for what they believe is years. They carry a weapon designed for a
+    threat they have never encountered. The structure was built by
+    something that is no longer here, for a purpose that cannot be
+    determined from inside. The figure is not lost — there is nowhere
+    to be found.
+  tags: [scale, architecture, solitude, purpose, manga, Blame]
+
+- id: image-apothecary-tasting
+  type: image
+  content: >
+    A servant girl in the imperial harem crouching over a mortar and
+    pestle at dawn, grinding something green. She tastes it with her
+    fingertip — not to test the flavor but to measure her body's
+    reaction. Her eyes dilate. She makes a note. The substance could
+    save the empress or kill her. The girl is not deciding which. She
+    is simply interested in what it does.
+  tags: [expertise, poison, medicine, curiosity, palace, manga]
+
 # ============================================================
-# compression (9 seeds)
+# compression
 # ============================================================
 
 - id: compression-cartography-grief
@@ -1013,8 +1457,69 @@
   source: "McLuhan, M., Understanding Media, 1964"
   tags: [technology, extension, amputation, loss, convenience]
 
+- id: compression-only-reader
+  type: compression
+  content: >
+    A man steps into a story he has read alone, obsessively, for
+    years. The characters he loved on the page are now real and do not
+    know him. He knows their futures. He knows who will die. He knows
+    who will betray whom. His loneliness — the loneliness of the only
+    reader — becomes the engine of every choice he makes. The story is
+    about whether a reader's love for a character counts as love when
+    the character has never heard of you.
+  tags: [reading, loneliness, metafiction, love, knowledge, manhwa]
+
+- id: compression-villainess-exit
+  type: compression
+  content: >
+    A woman is trapped in a role — not by chains or walls but by the
+    logic of the story she's in. She's the villainess. The story needs
+    her to lose. Every choice she makes that deviates from the script
+    is corrected — events conspire, coincidences accumulate, the world
+    bends to put her back on the path to ruin. Her only genuine act of
+    agency is to want something the story cannot provide. Not victory,
+    not love, not redemption — just an ending that belongs to her.
+  tags: [determinism, agency, exit, narrative-cage, villainess, manhwa]
+
+- id: compression-name-without-referent
+  type: compression
+  content: >
+    A being has had every component of their body replaced — arms,
+    legs, head, eyes — each piece swapped for a different material
+    from a different source. Their original components are scattered
+    across the world, used as decorations, worn as jewelry, forgotten.
+    They no longer remember who they were. Everyone still calls them
+    by the same name. The story is about a name that has outlasted
+    everything it was supposed to refer to.
+  tags: [identity, replacement, memory, name, Ship-of-Theseus, manga]
+
+- id: compression-fluency-in-cruelty
+  type: compression
+  content: >
+    A woman infiltrates her own family. She learns their language of
+    manipulation, their grammar of cruelty, their syntax of strategic
+    affection. She becomes fluent. Fluency is the trap — the language
+    shapes the speaker. She begins to think in their categories: who
+    is useful, who is expendable, who can be leveraged. She has not
+    changed her values. She has changed her reflexes. The values say
+    one thing. The reflexes do another. The story is about the moment
+    the reflexes win and the values don't even notice.
+  tags: [competence, corruption, language, family, reflexes, manhwa]
+
+- id: compression-medicine-poison-dosage
+  type: compression
+  content: >
+    A servant girl in the imperial harem whose only power is knowing
+    what plants do. Medicine and poison are the same substances — the
+    distinction is dosage, timing, and intent. She solves mysteries
+    through pharmacology, not magic. She navigates palace politics
+    through the same logic: everything is a matter of dose. Loyalty
+    in small amounts is survival. In large amounts, it's a death
+    sentence.
+  tags: [expertise, dosage, palace, pharmacology, agency, manga]
+
 # ============================================================
-# collision_pair (6 seeds)
+# collision_pair
 # ============================================================
 
 - id: collision-taxidermy-lullaby
@@ -1080,8 +1585,29 @@
     - browser history
   tags: [preservation, sacred, mundane, what-outlasts-us, cosmology]
 
+- id: collision-checkpoint-lastrites
+  type: collision_pair
+  content:
+    - checkpoint
+    - last rites
+  tags: [game-mechanic, sacred, death, persistence, ritual]
+
+- id: collision-tribulation-lullaby
+  type: collision_pair
+  content:
+    - heavenly tribulation
+    - lullaby
+  tags: [cultivation, tenderness, cosmic-violence, intimacy, xianxia]
+
+- id: collision-truck-hospice
+  type: collision_pair
+  content:
+    - isekai truck
+    - hospice
+  tags: [departure, fantasy, mortality, acceptance, absurd]
+
 # ============================================================
-# anti_target (10 seeds)
+# anti_target
 # ============================================================
 
 - id: anti-reconciliation-arc
@@ -1208,5 +1734,88 @@
 - id: anti-confession-catharsis
   type: anti_target
   content: >
-    PATTERN: Confession/catharsis arc (character carries a secret, confesses it, weight is lifted, healing begins). SUBVERSION: The confession happens and nothing changes. The person confessed to already knew. The weight doesn't lift. The secret was load-bearing — it was the last structure organizing the relationship, the thing that gave every interaction its shape and tension. Without it, there is nothing to navigate around. The story is about discovering that honesty can be a demolition, and that some silences were architectural.
+    PATTERN: Confession/catharsis arc (character carries a secret,
+    confesses it, weight is lifted, healing begins). SUBVERSION: The
+    confession happens and nothing changes. The person confessed to
+    already knew. The weight doesn't lift. The secret was
+    load-bearing — it was the last structure organizing the
+    relationship, the thing that gave every interaction its shape and
+    tension. Without it, there is nothing to navigate around. The
+    story is about discovering that honesty can be a demolition, and
+    that some silences were architectural.
   tags: [confession, catharsis, structure, demolition, honesty]
+
+- id: anti-isekai-power-fantasy
+  type: anti_target
+  content: >
+    PATTERN: Isekai power fantasy (protagonist dies in mundane world,
+    reincarnates in RPG-like world with unique cheat ability, assembles
+    companions, escalates through regions of increasing power without
+    meaningful cost or personal growth). SUBVERSION: Told from the
+    perspective of a native of the fantasy world watching the summoned
+    hero arrive. The hero is incomprehensible — they laugh at dangers
+    that kill real people, reference things that don't exist, treat
+    the world's inhabitants as supporting characters in a personal
+    narrative only they can see. The native cannot tell whether the
+    hero is divine, insane, or simply incapable of taking other
+    people's reality seriously. The story is about what it means to be
+    a real person in someone else's fantasy.
+  tags: [isekai, perspective-flip, NPC, power-fantasy, anime]
+
+- id: anti-villainess-determinism
+  type: anti_target
+  content: >
+    PATTERN: Villainess otome isekai (protagonist reincarnates as the
+    villainess of an otome game, uses meta-knowledge to avoid doom
+    flags, charm love interests, and achieve a happy ending the
+    original story never offered). SUBVERSION: The protagonist doesn't
+    want to win the game — she wants to leave it. The narrative's
+    determinism is the antagonist: every choice that deviates from the
+    script is corrected by the world, coincidences accumulate to drag
+    events back toward the original plotline. Her only freedom is
+    wanting the one thing the story cannot provide — an exit. Death is
+    not a failure state; it is the only door the narrative can't lock.
+  tags: [villainess, determinism, agency, exit, otome, manhwa]
+
+- id: anti-cultivation-moral-collapse
+  type: anti_target
+  content: >
+    PATTERN: Cultivation face-slapping (golden finger, humiliation,
+    revenge, regional escalation, ascend to next tier, repeat —
+    enemies are morally inferior, power validates the protagonist).
+    SUBVERSION: A "righteous" cultivator systematically discovers that
+    every righteous sect operates identically to the demonic sects
+    they claim to oppose — the same resource hoarding, the same
+    suppression of rivals, the same exploitation of weaker cultivators.
+    The distinction between righteous and demonic is faction politics,
+    not ethics. The protagonist cannot defect to the other side because
+    there is nothing to defect to — the other side is the same thing
+    wearing different robes.
+  tags: [cultivation, morality, faction, hypocrisy, xianxia]
+
+- id: anti-cultivation-transcendence-cost
+  type: anti_target
+  content: >
+    PATTERN: Cultivation face-slapping. SUBVERSION: The protagonist
+    cultivates successfully — reaches immortality, transcends the
+    heavens, defeats every enemy the genre provides. And discovers that
+    transcendence means watching everyone they loved age and die,
+    repeatedly, across millennia. The power fantasy delivers exactly
+    what it promised, and the price is the one thing the genre never
+    mentions: immortality is not the absence of death but the permanent
+    presence of loss. The story begins after ascension, not before.
+  tags: [cultivation, immortality, loss, transcendence, aftermath, xianxia]
+
+- id: anti-regression-victory-lap
+  type: anti_target
+  content: >
+    PATTERN: Regression (protagonist dies at the end, returns to the
+    beginning with full knowledge, replays life with foreknowledge
+    advantage, takes revenge, optimizes outcomes). SUBVERSION: The
+    protagonist is not the regressor — they're someone who has figured
+    out that another person has regressed. The regressor's miraculous
+    decisions, impossible foreknowledge, suspiciously perfect timing —
+    the protagonist sees the pattern. The story is about realizing
+    someone near you is playing a game you can't see, using knowledge
+    they shouldn't have, and you are a piece on their board.
+  tags: [regression, observation, manipulation, outsider, manhwa]
