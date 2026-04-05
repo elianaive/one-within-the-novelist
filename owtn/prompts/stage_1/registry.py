@@ -15,21 +15,7 @@ from owtn.models.stage_1.seed_bank import OPERATOR_SEED_TYPES, SeedBank
 _PROMPTS_DIR = Path(__file__).resolve().parent
 _OPERATORS_DIR = _PROMPTS_DIR / "operators"
 
-# Tonal targets for diversity steering. Each entry is a short creative direction
-# that pushes the LLM toward a different emotional register. Assigned per-concept
-# to prevent the population from collapsing into a single aesthetic.
-TONAL_TARGETS = [
-    "Write in the register of DREAD — something closing in, inevitable, quiet horror. The reader should want to stop reading and not be able to.",
-    "Write in the register of COMEDY — genuine humor, wit, absurdist logic, or the kind of joke that makes you see something true. Solemnity is not depth.",
-    "Write in the register of TENDERNESS — unguarded, specific, earned warmth. Not sentimentality. The kind of gentleness that only works because it's precise.",
-    "Write in the register of FURY — real anger, not melodrama. A situation so unjust the reader's jaw tightens. The story should vibrate with it.",
-    "Write in the register of WONDER — genuine astonishment, the feeling of encountering something that shouldn't exist but does. Curiosity as an engine.",
-    "Write in the register of ABSURDITY — dream logic, Kafka's bureaucratic nightmare, Barthelme's debris. The premise should be impossible and emotionally true.",
-    "Write in the register of MELANCHOLY — not sadness, but the particular ache of time passing. Nostalgia with teeth. Things that were and won't be again.",
-    "Write in the register of GIDDINESS — the rush of transgression, getting away with it, the thrill of a plan working or spectacularly failing. Energy, not stillness.",
-    "Write in the register of FLATNESS — affectless, procedural, Carver-esque. The emotional weight is in what's not said. Restraint as power.",
-    "Write in the register of REVULSION — not gore, but moral or existential disgust. Something the reader can't unsee. Discomfort that produces insight.",
-]
+from owtn.prompts import sample_tonal_steering  # noqa: E402 (after Path import)
 
 
 @dataclass(frozen=True)
@@ -141,15 +127,15 @@ def inject_seed(
 # Judges format dimension names inconsistently (plain, numbered, bold, with
 # hyphens or underscores), so patterns use . to match any separator.
 _DIM_PATTERNS = {
-    "originality": "ORIGINALITY",
-    "transportation_potential": "TRANSPORTATION.POTENTIAL",
-    "narrative_tension": "NARRATIVE.TENSION",
+    "novelty": "NOVELTY",
+    "grip": "GRIP",
+    "tension_architecture": "TENSION.ARCHITECTURE",
+    "emotional_depth": "EMOTIONAL.DEPTH",
     "thematic_resonance": "THEMATIC.RESONANCE",
-    "scope_calibration": "SCOPE.CALIBRATION",
-    "anti_cliche": "ANTI.CLICH",
     "concept_coherence": "CONCEPT.COHERENCE",
     "generative_fertility": "GENERATIVE.FERTILITY",
-    "over_explanation_resistance": "OVER.EXPLANATION.RESISTANCE",
+    "scope_calibration": "SCOPE.CALIBRATION",
+    "indelibility": "INDELIBILITY",
 }
 
 # Pre-compiled regex matching any dimension header.
@@ -259,19 +245,25 @@ def build_operator_prompt(
     if seed_bank is not None:
         seed_text = inject_seed(operator, seed_bank, exclude_ids=exclude_seed_ids)
 
-    # System message: base + operator identity
+    # System message: base + tonal atmosphere + operator identity
     base_system = _load_base_system()
     steering_section = f"\n\nCreative direction for this run: {steering}" if steering else ""
-    system_msg = base_system.replace("{steering_section}", steering_section)
+    tonal_atmosphere = f"\n\n{tonal_steering}" if tonal_steering else ""
+    system_msg = (
+        base_system
+        .replace("{tonal_atmosphere}", tonal_atmosphere)
+        .replace("{steering_section}", steering_section)
+    )
     if op.sys_format:
         system_msg += "\n\n" + op.sys_format
 
-    # Resolve {seed_content} and {tonal_steering} in operator instructions.
-    tonal_section = f"\n3. Tonal target: {tonal_steering}" if tonal_steering else ""
+    # Resolve {seed_content} in operator instructions.
+    # {tonal_steering} placeholder kept for backward compat but now empty —
+    # tonal steering lives in the system message as atmospheric context.
     instructions = (
         op.operator_instructions
         .replace("{seed_content}", seed_text)
-        .replace("{tonal_steering}", tonal_section)
+        .replace("{tonal_steering}", "")
     )
 
     # In mutation mode, prepend the mutation preamble to anchor to the parent.

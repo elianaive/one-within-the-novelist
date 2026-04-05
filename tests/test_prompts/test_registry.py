@@ -270,65 +270,65 @@ class TestBuildMutationFeedback:
     # Realistic multi-format judge feedback matching actual run output.
     SAMPLE_FEEDBACK = (
         "[mira-okonkwo]\n"
-        "ORIGINALITY: RECOGNITION: I've seen stories told through instructions before. "
-        "SPECIFICITY: The concrete details elevate it. CEILING: A 5 is possible. RISKS: Could slip.\n"
-        "TRANSPORTATION POTENTIAL: RECOGNITION: Procedural narratives can be absorbing. "
-        "SPECIFICITY: Sensory details strong. CEILING: Could be 5. RISKS: Too cold.\n"
-        "NARRATIVE TENSION: RECOGNITION: Tension from procedural complicity. "
-        "SPECIFICITY: Built in. CEILING: Near unputdownable. RISKS: Frustration.\n"
-        "THEMATIC RESONANCE: RECOGNITION: Love/control themes. "
-        "SPECIFICITY: Embedded. CEILING: Strong. RISKS: Too neat.\n"
-        "SCOPE CALIBRATION: RECOGNITION: Fits short story. "
-        "SPECIFICITY: Naturally short. CEILING: 5. RISKS: Repetitive.\n"
-        "ANTI-CLICHE: RECOGNITION: Avoids patterns. "
-        "SPECIFICITY: Domestic focus helps. CEILING: 4. RISKS: Could drift.\n"
-        "CONCEPT COHERENCE: RECOGNITION: Tight. "
-        "SPECIFICITY: Load-bearing. CEILING: 5. RISKS: Execution dependent.\n"
-        "GENERATIVE FERTILITY: RECOGNITION: Could feel like one path. "
-        "SPECIFICITY: Surprisingly fertile. CEILING: 4. RISKS: Limited by form.\n"
-        "OVER-EXPLANATION RESISTANCE: RECOGNITION: Instruction manuals resist exposition. "
-        "SPECIFICITY: Structurally impossible to explain. CEILING: 5. RISKS: Hidden exposition.\n"
+        "NOVELTY: DOMAIN CROSSING: Instructions-as-horror crosses domestic manual with body horror. "
+        "CONVERGENCE DISTANCE: Avoids standard patterns. GENERATIVE SURPRISE: Multiple executions possible.\n"
+        "GRIP: THE THING YOU CAN'T LOOK AWAY FROM: Procedural narratives can be absorbing. "
+        "EMOTIONAL STAKES: Sensory details strong. SENSORY SEED: Could be 5.\n"
+        "TENSION ARCHITECTURE: SUSPENSE: Tension from procedural complicity. "
+        "INFORMATION ARCHITECTURE: Built in. REFRAMING POTENTIAL: Near unputdownable.\n"
+        "EMOTIONAL DEPTH: RECOGNITION: Love/control themes deeply felt. "
+        "EMOTIONAL COMPLEXITY: Embedded contradictions. EMOTIONAL SOURCE: Strong voice.\n"
+        "THEMATIC RESONANCE: QUESTION VS MESSAGE: Genuine question posed. "
+        "EMBEDDEDNESS: Embedded. Strong.\n"
+        "CONCEPT COHERENCE: LOAD-BEARING ELEMENTS: Tight. "
+        "SURFACE/DEPTH ARCHITECTURE: Load-bearing. Execution dependent.\n"
+        "GENERATIVE FERTILITY: EXECUTION DIVERSITY: Could feel like one path. "
+        "GENERATIVE PRINCIPLE: Surprisingly fertile. Limited by form.\n"
+        "SCOPE CALIBRATION: NATURAL SIZE: Fits short story. "
+        "CONSTRAINT AS COMPRESSION: Naturally short. Repetitive risk.\n"
+        "INDELIBILITY: INDELIBLE IMAGE: Instruction manuals resist forgetting. "
+        "THE IRREDUCIBLE REMAINDER: Structurally impossible to forget. SILHOUETTE: Strong shape.\n"
         "\n\n---\n\n"
         "[tomas-varga]\n"
-        "1) ORIGINALITY\n"
-        "RECOGNITION: Variations of manual/instructions as horror exist. "
-        "SPECIFICITY: Distinct mechanics. CEILING: High. RISKS: Collapse into sketch.\n"
-        "2) TRANSPORTATION POTENTIAL\n"
-        "RECOGNITION: Office-checkpoint deadpan absorbs. "
-        "SPECIFICITY: Vivid sensory anchors. CEILING: 3.5-5. RISKS: Static.\n"
-        "3) NARRATIVE TENSION\n"
-        "RECOGNITION: Institutional incompleteness is common. "
-        "SPECIFICITY: Multiple tension types. CEILING: Exceptional. RISKS: No resolution.\n"
-        "4) THEMATIC RESONANCE\n"
-        "RECOGNITION: Trapped vs having somewhere to be. "
-        "SPECIFICITY: Articulated well. CEILING: High. RISKS: Sloganized.\n"
-        "5) SCOPE CALIBRATION\n"
-        "RECOGNITION: Fits well. "
-        "SPECIFICITY: 1000-3500 words. CEILING: Perfect. RISKS: Sprawl.\n"
-        "6) ANTI-CLICHE\n"
-        "RECOGNITION: Document/handbook horror is known. "
-        "SPECIFICITY: Genuinely followable. CEILING: Uncliche. RISKS: Remains.\n"
-        "7) CONCEPT COHERENCE\n"
-        "RECOGNITION: Could smuggle in violations. "
-        "SPECIFICITY: Robust. CEILING: High. RISKS: Constraint difficulty.\n"
-        "8) GENERATIVE FERTILITY\n"
-        "RECOGNITION: Can generate many settings. "
-        "SPECIFICITY: Switchable degrees of freedom. CEILING: Multiple approaches. RISKS: Same shape.\n"
-        "9) OVER-EXPLANATION RESISTANCE\n"
-        "RECOGNITION: Removes narration and interiority. "
-        "SPECIFICITY: Bans usual exposition. CEILING: Very high. RISKS: Hidden exposition.\n"
+        "1) NOVELTY\n"
+        "Variations of manual/instructions as horror exist. "
+        "Distinct mechanics. High ceiling. Risk of collapse into sketch.\n"
+        "2) GRIP\n"
+        "Office-checkpoint deadpan absorbs. "
+        "Vivid sensory anchors. 3.5-5 ceiling. Risk: static.\n"
+        "3) TENSION ARCHITECTURE\n"
+        "Institutional incompleteness is common. "
+        "Multiple tension types. Exceptional ceiling. Risk: no resolution.\n"
+        "4) EMOTIONAL DEPTH\n"
+        "Trapped vs having somewhere to be. "
+        "Articulated well. High ceiling. Risk: sloganized.\n"
+        "5) THEMATIC RESONANCE\n"
+        "Fits well thematically. "
+        "1000-3500 words. Perfect. Risk: sprawl.\n"
+        "6) CONCEPT COHERENCE\n"
+        "Could smuggle in violations. "
+        "Robust. High ceiling. Risk: constraint difficulty.\n"
+        "7) GENERATIVE FERTILITY\n"
+        "Can generate many settings. "
+        "Switchable degrees of freedom. Multiple approaches. Risk: same shape.\n"
+        "8) SCOPE CALIBRATION\n"
+        "Fits short story form well. "
+        "Good compression. Very high ceiling. Risk: hidden bloat.\n"
+        "9) INDELIBILITY\n"
+        "Removes narration and interiority. "
+        "Bans usual exposition. Very high. Risk: forgettable mechanics.\n"
     )
 
     SAMPLE_DIMENSIONS = {
-        "originality": 4.17,
-        "transportation_potential": 4.60,
-        "narrative_tension": 4.73,
+        "novelty": 4.17,
+        "grip": 4.60,
+        "tension_architecture": 4.73,
+        "emotional_depth": 4.20,
         "thematic_resonance": 4.37,
-        "scope_calibration": 4.83,
-        "anti_cliche": 4.20,
         "concept_coherence": 4.80,
         "generative_fertility": 4.17,
-        "over_explanation_resistance": 5.0,
+        "scope_calibration": 4.83,
+        "indelibility": 5.0,
     }
 
     def test_returns_empty_for_no_feedback(self):
@@ -341,11 +341,11 @@ class TestBuildMutationFeedback:
             self.SAMPLE_FEEDBACK,
             {"dimensions": self.SAMPLE_DIMENSIONS},
         )
-        # Weakest: originality (4.17), generative_fertility (4.17), anti_cliche (4.20)
-        assert "originality" in result
+        # Weakest: novelty (4.17), generative_fertility (4.17), emotional_depth (4.20)
+        assert "novelty" in result
         assert "generative_fertility" in result
-        # Strongest: over_explanation_resistance (5.0), scope_calibration (4.83)
-        assert "over_explanation_resistance" in result
+        # Strongest: indelibility (5.0), scope_calibration (4.83)
+        assert "indelibility" in result
         assert "scope_calibration" in result
         assert "Weakest" in result
         assert "Strongest" in result
@@ -355,11 +355,11 @@ class TestBuildMutationFeedback:
             self.SAMPLE_FEEDBACK,
             {"dimensions": self.SAMPLE_DIMENSIONS},
         )
-        # Should include Mira's ORIGINALITY section (weakest dim)
-        assert "I've seen stories told through instructions" in result
-        # Should include Tomas's ORIGINALITY section
+        # Should include Mira's NOVELTY section (weakest dim)
+        assert "Instructions-as-horror" in result
+        # Should include Tomas's NOVELTY section
         assert "Variations of manual/instructions" in result
-        # Should NOT include full TRANSPORTATION POTENTIAL (not weakest)
+        # Should NOT include full GRIP (not weakest)
         assert "Office-checkpoint deadpan" not in result
 
     def test_output_is_concise(self):

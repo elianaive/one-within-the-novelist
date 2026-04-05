@@ -82,6 +82,14 @@ See `lab/issues/FORMAT.md` for the full template and conventions.
 - **API keys** live in `.env` at the project root. `uv run` loads them automatically.
 - **Tests:** `uv run pytest tests/ -m "not live_api"` for fast offline tests (~2s). Tests marked `live_api` make real API calls and cost money — run the full suite with `uv run pytest tests/`.
 
+### Running the Pipeline
+
+```bash
+uv run python -m owtn --config configs/stage_1/<config>.yaml [--max-eval-jobs N] [--max-proposal-jobs N]
+```
+
+Configs: `dry_run.yaml`, `light.yaml`, `medium.yaml`. See each file's header for cost estimates and concurrency recommendations.
+
 ## Test Organization
 
 Tests live in `tests/`, organized by module:

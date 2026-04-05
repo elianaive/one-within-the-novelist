@@ -1,8 +1,8 @@
 """CLI entry point for Stage 1 concept evolution.
 
 Usage:
-    uv run python -m owtn --config configs/stage_1/medium.yaml --verbose
-    uv run python -m owtn --config configs/stage_1_dry_run.yaml
+    uv run python -m owtn --config configs/stage_1/medium.yaml
+    uv run python -m owtn --config configs/stage_1/dry_run.yaml
 """
 
 import argparse

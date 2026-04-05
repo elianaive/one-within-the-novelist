@@ -28,12 +28,11 @@ class TestPromptAssembly:
         assert "{" not in prompt or "{{" in prompt
         assert judge.name in prompt
         assert "Grip" in prompt
-        assert "use your best judgment" in prompt
 
     def test_judge_system_contains_rubric_anchors(self, judge):
         prompt = build_judge_system(judge)
-        assert "ORIGINALITY" in prompt
-        assert "OVER-EXPLANATION RESISTANCE" in prompt
+        assert "NOVELTY" in prompt
+        assert "INDELIBILITY" in prompt
 
     def test_judge_user_has_genome_fields(self):
         genome = ConceptGenome.model_validate(HILLS_GENOME)

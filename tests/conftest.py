@@ -44,15 +44,15 @@ MINIMAL_GENOME = {
 
 MOCK_JUDGE_SCORES = JudgeScores(
     reasoning="Strong concept with clear tension and specificity.",
-    originality=4.0,
-    transportation_potential=3.5,
-    narrative_tension=4.0,
+    novelty=4.0,
+    grip=3.5,
+    tension_architecture=4.0,
+    emotional_depth=3.0,
     thematic_resonance=3.0,
-    scope_calibration=4.5,
-    anti_cliche=3.5,
     concept_coherence=4.0,
     generative_fertility=3.0,
-    over_explanation_resistance=4.0,
+    scope_calibration=4.5,
+    indelibility=3.5,
 )
 
 MOCK_CLASSIFICATION_JSON = json.dumps({
