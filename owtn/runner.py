@@ -27,7 +27,8 @@ from shinka.utils import get_language_extension
 from owtn.llm.call_logger import llm_context, llm_log_dir
 from owtn.models.stage_1.config import StageConfig
 from owtn.models.stage_1.seed_bank import SeedBank
-from owtn.prompts.stage_1.registry import TONAL_TARGETS, build_operator_prompt, load_registry
+from owtn.prompts import sample_tonal_steering
+from owtn.prompts.stage_1.registry import build_operator_prompt, load_registry
 from owtn.state_logger import snapshot_generation
 
 logger = logging.getLogger(__name__)
@@ -137,6 +138,8 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
             seed_bank=self.seed_bank,
             genesis_ratio=self.stage_config.evolution.genesis_ratio,
         )
+        self.prompt_sampler.tonal_inherit_rate = self.stage_config.evolution.tonal_inherit_rate
+        self.prompt_sampler.tonal_crossover_new_rate = self.stage_config.evolution.tonal_crossover_new_rate
 
     async def run_async(self):
         """Configure logging and snapshot gen 0, then run evolution."""
@@ -199,7 +202,7 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
         Returns (code, patch_name, patch_description, total_costs, llm_metadata).
         """
         operator = str(np.random.choice(_CS_NAMES, p=_CS_PROBS))
-        tonal_target = str(np.random.choice(TONAL_TARGETS))
+        tonal_text, register_name, mode_name = sample_tonal_steering()
         llm_context.set({"role": "generation", "operator": operator, "generation": 0})
 
         sys_msg, user_msg = build_operator_prompt(
@@ -208,7 +211,7 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
             is_initial=True,
             seed_bank=self.seed_bank,
             steering=self.stage_config.steering,
-            tonal_steering=tonal_target,
+            tonal_steering=tonal_text,
         )
 
         model_sample_probs = None
@@ -277,6 +280,8 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
 
                 llm_metadata = {
                     "patch_type": operator,
+                    "affective_register": register_name,
+                    "literary_mode": mode_name,
                     "api_costs": total_costs,
                     "num_applied": 1,
                     "patch_name": patch_name,

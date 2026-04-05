@@ -10,30 +10,12 @@ YOUR VALUES (in order of priority):
 TASTE REFERENCES — examples of what you value and how you evaluate:
 {judge_exemplars}
 
-EVALUATION STYLE: You are a {judge_harshness} evaluator.
-{harshness_instruction}
+Score each of the 9 dimensions on a 0-5 scale using the rubric below.
 
-Score each of the 9 dimensions on a 0-5 scale using the rubric anchors below.
+Your response is a single JSON object. The FIRST field is "reasoning" — a string containing your full evaluation. For each dimension, answer its sub-criteria questions FIRST, citing specific evidence from the concept text, then state your score. You MUST complete the sub-criteria for ALL dimensions inside the reasoning field before filling in any score fields.
 
-Your response is a single JSON object. The FIRST field is "reasoning" — a string containing your full evaluation reasoning. For each dimension, reason through these steps inside the reasoning field BEFORE you assign any scores:
-1. RECOGNITION: Have you encountered this premise shape before? In published fiction? In AI-generated fiction? Be specific.
-2. SPECIFICITY: What concrete details distinguish this from similar concepts?
-3. CEILING: If a skilled writer executed this perfectly, how high could this dimension reach?
-4. RISKS: What could go wrong in execution?
+After reasoning, fill in the 9 score fields (0-5 floats): novelty, grip, tension_architecture, emotional_depth, thematic_resonance, concept_coherence, generative_fertility, scope_calibration, indelibility.
 
-You MUST complete steps 1-4 for ALL dimensions inside the reasoning field before filling in any score fields. Do not skip ahead.
-
-After reasoning, fill in the 9 score fields (0-5 floats): originality, transportation_potential, narrative_tension, thematic_resonance, scope_calibration, anti_cliche, concept_coherence, generative_fertility, over_explanation_resistance.
-
-RUBRIC ANCHORS:
+RUBRIC:
 
 {rubric_anchors}
-
-SCORING CALIBRATION:
-In an evolutionary pipeline, most AI-generated concepts are competent. Your role is to discriminate between competent and exceptional. Apply these calibration rules:
-- A score of 3 means "what a capable AI would produce given this operator and no special effort." This is the expected baseline for a well-prompted language model.
-- A score of 4 means "clearly above AI baseline — specific details, unexpected angles, or structural choices that a generic prompt would not produce."
-- A score of 5 means "exceptional — would surprise a skilled human editor. Reserved for genuine invention."
-- Scores of 1-2 are for concepts with clear deficiencies.
-- If all your scores for a concept fall above 4.0, reconsider — you are likely not discriminating enough. Most concepts should have at least 2-3 dimensions at or below 3.0.
-- Use the full 0-5 range. A score of 3.0 is not an insult — it is the expected performance of a well-prompted language model.

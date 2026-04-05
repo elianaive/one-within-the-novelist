@@ -1,0 +1,229 @@
+# Affective registers for diversity steering.
+# Each entry describes what the READER should end up feeling,
+# channeling a canonical author known for that register.
+# One register is sampled per concept and paired with a literary mode.
+
+- name: DREAD
+  text: >
+    Write in the register of DREAD — Something was approaching, with a
+    slow, inevitable step that chilled the very air of the house. It was
+    a quiet sort of horror, the kind that settles in the corners of a
+    room and waits. One might wish to look away, to close the book and
+    find a normal world again, but the eyes remain fixed, held by a
+    nameless fascination. There was no reason for it — no ghosts in the
+    hallways, no monsters under the bed — only the terrible, silent
+    weight of the walls themselves and the suffocating grace of a tea
+    service. The familiar patterns of the wallpaper and the steady
+    ticking of the clock had turned traitor, and the safety of home had
+    become the most exquisite of traps. Channel Shirley Jackson:
+    domesticity itself becomes threatening, and the horror is never
+    explained.
+
+- name: FURY
+  text: >
+    Write in the register of FURY — I am telling you this not to make
+    you comfortable but because you need to hear it, and because the
+    anger you will feel reading this is not melodrama — it is clarity.
+    There is a rage that does not surrender the mind but sharpens it,
+    that makes the jaw tighten not in helplessness but in recognition.
+    I know this rage. I have carried it in my own heart, and I have
+    watched it do its work, and I can tell you that when it is most
+    precise it is most dangerous, for the sentence forged in that fire
+    does not miss its mark. It cannot afford to. Channel James Baldwin:
+    rage and analytical precision fused into a single, inevitable act.
+
+- name: TENDERNESS
+  text: >
+    Write in the register of TENDERNESS — There is a certain unguarded
+    warmth, a specific and hard-won grace, that is quite distinct from
+    sentimentality. It is a gentleness that finds its strength in
+    precision. One might look upon the light falling across a child's
+    hair and see it as a matter of cosmic significance, an event of the
+    highest order. In such a world, every small detail is load-bearing,
+    carrying the full weight of existence. Channel Marilynne Robinson:
+    the kind of gentleness that only works because it's precise.
+
+- name: WONDER
+  text: >
+    Write in the register of WONDER — A profound perplexity, that
+    singular tremor before an object which defies the laws of the
+    universe yet persists in its being. Curiosity serves as the
+    mechanism, while vertigo remains the inevitable prize. It is the
+    mapping of the impossible with a librarian's meticulous serenity,
+    where the infinite is revealed as a mere necessity of logic. Channel
+    Jorge Luis Borges: the impossible described with encyclopedic calm.
+
+- name: MELANCHOLY
+  text: >
+    Write in the register of MELANCHOLY — It wasn't exactly sadness,
+    but rather that specific, quiet ache that comes when you realize how
+    much time has slipped away. A sort of nostalgia, I suppose, but one
+    with a sharp edge to it. You find yourself looking back at things
+    that simply won't happen again. It's the feeling of a life that you
+    only recognize as having been unlived when you've reached the very
+    end of it. The realization comes far too late, and I suppose that
+    very lateness is the essence of the whole thing. Channel Kazuo
+    Ishiguro: the realization always arrives too late, and that lateness
+    is the whole point.
+
+- name: REVULSION
+  text: >
+    Write in the register of REVULSION — Not gore, but moral disgust
+    rendered with the flat precision of a naturalist. The narrator
+    observes a woman whose face is as broad and innocent as a cabbage,
+    and records her vanity with the same mild attention it will later
+    give her death. In case of an accident, anyone seeing her dead on
+    the highway would know at once that she was a lady — the joke
+    requires no setup because the narrator never smiles. Violence is
+    reported at the same tonal level as furniture: the shooting and the
+    cleaning of the glasses share a sentence of equal weight. Something
+    the reader cannot unsee, delivered without flinching, because the
+    narrator's refusal to shift register is itself the horror. Grace
+    arrives in the same flat prose as the grotesque, and the reader must
+    tell them apart alone. Channel Flannery O'Connor: clinical
+    observation without editorial, free indirect irony, the grotesque as
+    observable fact — and the tonal constancy that makes both comedy and
+    revelation land.
+
+- name: GIDDINESS
+  text: >
+    Write in the register of GIDDINESS — The pills had scraped out the
+    linings of my veins and my jaw ached and I knew every raindrop by
+    its name. I sensed everything before it happened. The plan was
+    working or it wasn't, I couldn't tell, and it didn't matter because
+    we were moving now, really moving, and the car was full of light for
+    two seconds and then the dark closed back in. Something tremendous
+    was happening. Something was about to go spectacularly wrong, or it
+    already had, and the not-knowing was the best part. I didn't care.
+    They said they'd take me all the way. Channel Denis Johnson:
+    narrated at the speed of a car crash you're enjoying.
+
+- name: SORROW
+  text: >
+    Write in the register of SORROW — Life changes fast. Life changes
+    in the instant. You sit down to dinner and life as you know it
+    ends. The question of self-pity. Those were the first words I wrote
+    after it happened. Grief, it turns out, is not what we expect. We
+    expect to be prostrate. We do not expect to be cool customers who
+    believe their husband is about to return and need his shoes. The
+    mind engages the problem as if the problem can be solved. It
+    consults the literature. It reviews the evidence. It checks the
+    file — the date, the time, the ordinary instant. It applies
+    forensic precision to the wreckage, even as the wreckage is the
+    one doing the examining. Channel Joan Didion: grief as a cognitive
+    event, examined with forensic precision even as it dismantles the
+    examiner.
+
+- name: DESIRE
+  text: >
+    Write in the register of DESIRE — Very early in my life it was too
+    late. I had the face of pleasure, and yet I had no knowledge of
+    pleasure. He says he is lonely. She says she is lonely too. She
+    doesn't say why. This is how desire works: it is sensory, it is
+    specific, it is never abstract. It organizes memory. It is the
+    crossing of the river, the image that was never photographed, the
+    heat of the room, the skin. Spare. Humid. Obsessive. And the
+    wanting remains, long after the object is gone, long after the wars
+    and the marriages and the children, because he told her he could
+    never stop, that he would love her until death, and she knew already
+    that this was true and that it changed nothing. Channel Marguerite
+    Duras: desire as the organizing principle of memory, the wanting
+    that outlasts its object.
+
+- name: HEROIC
+  text: >
+    Write in the register of the HEROIC — When he woke in the dark
+    he'd reach out to touch the child sleeping beside him. Each the
+    other's world entire. There was no reason to keep walking but he
+    walked. All things of grace and beauty have a common provenance in
+    pain, and he whispered this to the sleeping boy because he could
+    not have said it to anyone awake. Love here is not warmth but
+    continuation. Not hope but the cold decision to carry the fire,
+    which means only: do not put it down. He held the boy or he reached
+    to hold what cannot be held, and the reaching was the holding.
+    Channel Cormac McCarthy's late work: tenderness always indirect,
+    always to what cannot answer, and the sentence that revises itself
+    toward what exceeds the physical.
+
+- name: SERENITY
+  text: >
+    Write in the register of SERENITY — I am sitting by the creek and
+    I am really here, alive on the intricate earth under trees. It is
+    a matter of keeping still. Keeping still and letting the world
+    perform its graces, whether or not you are wise enough to notice.
+    The least you can do is try to be there. I watch the water striders
+    dimple the surface and the water is still water. I watch the light
+    on the ripples and the light is still light. But if you watch long
+    enough — if you hone and spread your spirit till you yourself are a
+    sail, broadside to the merest puff — then something breaks and
+    something opens, and you are not watching the creek anymore. You are
+    the creek. You have been, your whole life, a bell, and never knew
+    it until this moment when you were lifted and struck. Channel Annie
+    Dillard: perception as spiritual discipline, attention so sustained
+    it becomes its own reward.
+
+- name: PARANOIA
+  text: >
+    Write in the register of PARANOIA — Everything's hooked up in a
+    vast, shivering webwork. Pattern recognition's gone screamingly
+    feral, a runaway feedback loop where the reader starts twitching to
+    the same frequencies, unable to swear they're just hallucinating
+    the grid. Maybe the conspiracy's a phantom, a mere trick of the
+    light, but the quest has already swallowed the world whole.
+    Meaning's leaking out of every manhole cover and radio tower, while
+    certainty's vanished into the white noise. Channel Thomas Pynchon:
+    the conspiracy may not be real, but the search has consumed
+    everything.
+
+- name: SHAME
+  text: >
+    Write in the register of SHAME — The searing heat of exposure. To
+    be seen, and for the soul to recoil in horror from its own
+    reflection. The reader flinches, recognizing that same
+    wretchedness. The underground man performs and dissects his own
+    humiliation in the very same breath. And oh, how lucidity only
+    serves to sharpen the agony! Channel Dostoevsky: the underground
+    man performing and dissecting his own humiliation simultaneously.
+
+- name: JOY
+  text: >
+    Write in the register of JOY — It was not giddiness, which needs
+    the world to be falling apart, and it was not tenderness, which
+    asks you to be soft and open to the knife. It was simpler than that
+    and harder won. It was the body knowing it was alive — the feet on
+    the ground, the sun on the neck, the taste of something sweet after
+    a long time with none. Smack in the middle of the wreckage there
+    was this: an uncomplicated pleasure, brief as birdsong, that did
+    not ask for anything or explain itself. And it was radiant. It was
+    radiant precisely because of what surrounded it, because the people
+    who felt it had survived what should have killed them, and here they
+    were, in the morning, still here, and the morning was good. Channel
+    Toni Morrison: moments of joy that earn their warmth through
+    everything the characters have survived.
+
+- name: ANTICIPATION
+  text: >
+    Write in the register of ANTICIPATION — Tom calculated quickly. If
+    the man at the bar was who he thought he was, there were perhaps six
+    minutes before it became a problem. If he wasn't, it didn't matter.
+    What mattered was the interval — the not-knowing — which had a
+    quality Tom had come to recognize, almost to savor. The reader leans
+    forward here, not because the outcome is terrible and inevitable,
+    but because it is genuinely uncertain, and because — this is the
+    troubling part — the reader wants Tom to get away with it. The
+    suspense is not in what will happen to him. The suspense is in what
+    the reader is willing to forgive, and the answer is: more than they
+    expected. Channel Patricia Highsmith: suspense as moral test, the
+    reader implicated by their own investment.
+
+- name: COMIC
+  text: >
+    Write in the register of the COMIC — True humor, see, it's the
+    thing that actually cracks the nut open. The laugh isn't just some
+    fancy garnish — it's the actual payload. We get confused, thinking
+    if we're being all grim and serious, we're being deep. But no. You
+    can be hilarious and absolutely gut-punched in the same breath. A
+    good joke? That's just the fastest way to get the truth across the
+    room. Channel George Saunders: funny and devastating in the same
+    sentence, the joke as the most efficient delivery system for the
+    point.

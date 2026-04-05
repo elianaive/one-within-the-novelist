@@ -5,15 +5,15 @@ from pydantic import BaseModel, Field
 
 # Dimension field names — canonical order for to_list() and averaging.
 DIMENSION_NAMES = [
-    "originality",
-    "transportation_potential",
-    "narrative_tension",
+    "novelty",
+    "grip",
+    "tension_architecture",
+    "emotional_depth",
     "thematic_resonance",
-    "scope_calibration",
-    "anti_cliche",
     "concept_coherence",
     "generative_fertility",
-    "over_explanation_resistance",
+    "scope_calibration",
+    "indelibility",
 ]
 
 
@@ -21,22 +21,22 @@ class JudgeScores(BaseModel):
     """Structured output from a single judge evaluation.
 
     Field order matters: instructor fills `reasoning` first, forcing CoT
-    before score assignment. Score field names match judge_user.txt keys.
+    before score assignment. Score field names match rubric_anchors.txt.
     """
 
     reasoning: str = Field(
-        description="Step-by-step evaluation reasoning for each dimension. "
-        "Complete all reasoning before assigning scores."
+        description="For each dimension, answer the sub-criteria questions "
+        "citing specific evidence, then assign the score."
     )
-    originality: float = Field(ge=0, le=5)
-    transportation_potential: float = Field(ge=0, le=5)
-    narrative_tension: float = Field(ge=0, le=5)
+    novelty: float = Field(ge=0, le=5)
+    grip: float = Field(ge=0, le=5)
+    tension_architecture: float = Field(ge=0, le=5)
+    emotional_depth: float = Field(ge=0, le=5)
     thematic_resonance: float = Field(ge=0, le=5)
-    scope_calibration: float = Field(ge=0, le=5)
-    anti_cliche: float = Field(ge=0, le=5)
     concept_coherence: float = Field(ge=0, le=5)
     generative_fertility: float = Field(ge=0, le=5)
-    over_explanation_resistance: float = Field(ge=0, le=5)
+    scope_calibration: float = Field(ge=0, le=5)
+    indelibility: float = Field(ge=0, le=5)
 
     def to_list(self) -> list[float]:
         """All 9 scores in canonical order (for holder_mean)."""

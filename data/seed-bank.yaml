@@ -1819,3 +1819,208 @@
     someone near you is playing a game you can't see, using knowledge
     they shouldn't have, and you are a piece on their board.
   tags: [regression, observation, manipulation, outsider, manhwa]
+
+# ============================================================
+# kishōtenketsu-inspired
+# Meaning through arrangement, not argument.
+# ============================================================
+
+# --- real_world ---
+
+- id: rw-ozu-pillow-shots
+  type: real_world
+  content: >
+    Yasujirō Ozu punctuated his films with "pillow shots" — a vase, an
+    empty corridor, laundry on a line — inserted between scenes with no
+    narrative function. They don't advance plot or symbolize anything.
+    Scholars have spent decades arguing what they mean. Ozu never
+    explained. Asked about the vase in Late Spring, he talked about
+    duration, not meaning.
+  source: "Bordwell, Ozu and the Poetics of Cinema, 1988; Schrader, Transcendental Style in Film, 1972"
+  tags: [cinema, negative-space, juxtaposition, attention, ozu, kishōtenketsu]
+
+- id: rw-nintendo-invisible-teaching
+  type: real_world
+  content: >
+    In the most celebrated Super Mario levels, the moment where the
+    player grasps a new concept occurs in a space with no enemies, no
+    timer pressure, no penalty. The challenge comes after understanding,
+    never during it. The designer's entire craft is arranging conditions
+    so the player has the experience of insight — and believes they
+    arrived at it alone. Hundreds of millions of people have been taught
+    by this structure. None of them knew they were being taught.
+  source: "Miyamoto design philosophy; Koizumi, GDC 2007; Game Maker's Toolkit analysis of World 1-1"
+  tags: [game-design, invisible-architecture, teaching, arrangement, kishōtenketsu]
+
+# --- thought_experiment ---
+
+- id: te-peripheral-life
+  type: thought_experiment
+  content: >
+    You are given the ability to replay any moment of your life, but
+    only the parts you weren't paying attention to. The background of
+    every scene. The faces you didn't look at. The sounds you filtered
+    out. The person standing behind you while you were proposing. The
+    weather on the day you were fired. The expression on your child's
+    face while you were looking at your phone. You discover that the
+    story of your life, told only through what you ignored, is a
+    different story entirely — and a more coherent one. The foreground
+    was noise. The periphery was the plot. You were the background
+    character in the most important moments of your own life.
+  tags: [attention, periphery, kishōtenketsu, recontextualization, self]
+
+# --- dilemma ---
+
+- id: dilemma-retroactive-understanding
+  type: dilemma
+  content: >
+    A woman finally understands why her mother left the family thirty
+    years ago. The understanding came not through confession or
+    confrontation but through a stranger's offhand remark in a shop
+    that made three decades of silence click into place. She now has the
+    answer she spent her life wanting. Telling her siblings would give
+    them the same peace. But the answer requires them to see their
+    father — who is dying, who they love — as someone other than who
+    they believe him to be.
+  tags: [recontextualization, family, silence, meaning, kishōtenketsu]
+
+# --- constraint ---
+
+- id: constraint-reader-only-pivot
+  type: constraint
+  content: >
+    The pivotal moment of the story must be noticed only by the reader,
+    never by any character. No character realizes what has shifted. No
+    character remarks on it. The reader sees it because the arrangement
+    of scenes makes it visible.
+  tags: [structural, reader-work, arrangement, kishōtenketsu]
+
+- id: constraint-pillow-shot
+  type: constraint
+  content: >
+    The story must contain one paragraph of sustained attention to a
+    single ordinary object or scene. No character is present. No action
+    occurs. No metaphor is intended. This paragraph is placed between
+    two scenes. No subsequent text may reference or acknowledge what
+    was described in it.
+  tags: [negative-space, attention, ozu, restraint, kishōtenketsu]
+
+- id: constraint-contentment
+  type: constraint
+  content: >
+    Every named character is genuinely content with their life. Not
+    performing contentment, not suppressing pain — actually satisfied.
+    No character wants something they lack. The story must produce in
+    the reader an emotion that no character in the story feels.
+  tags: [no-conflict, contentment, reader-gap, kishōtenketsu]
+
+- id: constraint-four-panel
+  type: constraint
+  content: >
+    The story has exactly four sections. The first two share characters
+    and setting. The third shares nothing visible with the first two —
+    different people, different place, different register. The fourth
+    section is one sentence. That sentence makes all three previous
+    sections feel like they were always the same story.
+  tags: [yonkoma, structural, juxtaposition, compression, kishōtenketsu]
+
+# --- compression ---
+
+- id: compression-voicemail-active
+  type: compression
+  content: >
+    A man keeps his dead wife's voicemail greeting active. Not to hear
+    her voice — he can't bear to listen to it. He keeps it because the
+    pharmacy, the dentist's office, and the library still call and leave
+    her messages, and these are the last places in the world that don't
+    know.
+  tags: [asymmetry, mundane-persistence, information-gap, kishōtenketsu]
+
+- id: compression-mothers-word
+  type: compression
+  content: >
+    A story about a woman who realizes her mother is old — not from
+    illness, not from a fall, not from forgetting a name. Her mother
+    asked her what a word meant. Her mother — who taught her every
+    word she knows, who was the source of language itself — asked her
+    daughter to explain a word.
+  tags: [family, language, inversion, aging, recontextualization]
+
+- id: compression-wall-television
+  type: compression
+  content: >
+    Two people share an apartment wall for nineteen years without
+    meeting. Each knows the other only as a schedule of sounds — the
+    television, the kettle, the footsteps that pause at the window.
+    After one dies, the other keeps hearing the television for three
+    days before the silence arrives.
+  tags: [proximity, absence, sound, recognition-after, kishōtenketsu]
+
+# --- image ---
+
+- id: image-plant-names
+  type: image
+  content: >
+    A woman waters houseplants in a bright apartment. Each pot is labeled
+    with a strip of tape bearing a name and a date. The names are not
+    plant names. The dates are all in the past.
+  tags: [care, memorial, labels, domestic, ambiguity]
+
+- id: image-barber-gray-strand
+  type: image
+  content: >
+    A barber sweeps his shop floor at closing time. Among the dark hair
+    he finds a single gray strand. He picks it up and puts it in his
+    wallet.
+  tags: [ritual, specificity, tenderness, unexplained]
+
+- id: image-cradling-nothing
+  type: image
+  content: >
+    On a night train, a young mother holds a sleeping infant against
+    her shoulder. Across the aisle, an older woman sits with her arms
+    arranged in exactly the same position, cradling nothing. She is
+    looking out the window.
+  tags: [mirroring, absence, body-memory, motherhood, trains]
+
+- id: image-slippers-entrance
+  type: image
+  content: >
+    A house after a funeral, tidied, everyone gone home. A single pair
+    of worn slippers sits at the genkan. The rest of the house has been
+    cleaned. No one moved the slippers.
+  tags: [aftermath, objects, domestic, japanese, absence]
+
+# --- collision_pair ---
+
+- id: collision-tide-table-love-letter
+  type: collision_pair
+  content:
+    - tide table
+    - love letter
+  tags: [cyclical, intimate, measurement, impermanence, kishōtenketsu]
+
+- id: collision-grocery-receipt-elegy
+  type: collision_pair
+  content:
+    - grocery receipt
+    - elegy
+  tags: [mundane, mourning, record, daily-life, juxtaposition]
+
+# --- anti_target ---
+
+- id: anti-conflict-equals-story
+  type: anti_target
+  content: >
+    PATTERN: The assumption, embedded in virtually all Western craft
+    advice and therefore in LLM training data, that a story requires
+    conflict. "No conflict, no story." "The character must want something
+    and something must stand in the way." SUBVERSION: A story where every
+    character gets what they want. No opposition. No obstacle. The
+    emotional devastation comes from the reader seeing what the
+    characters' desires, fulfilled without resistance, reveal about
+    them — about what they chose to want and what they didn't notice
+    they were losing by getting it. The conflict is not between
+    characters. It is between the story the characters think they are
+    in and the story the reader can see.
+  tags: [no-conflict, kishōtenketsu, western-default, desire, revelation]

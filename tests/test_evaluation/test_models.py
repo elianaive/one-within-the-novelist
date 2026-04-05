@@ -11,38 +11,38 @@ from owtn.evaluation.models import (
 
 VALID_SCORES = {
     "reasoning": "This concept is strong because...",
-    "originality": 4.0,
-    "transportation_potential": 3.5,
-    "narrative_tension": 4.0,
+    "novelty": 4.0,
+    "grip": 3.5,
+    "tension_architecture": 4.0,
+    "emotional_depth": 3.0,
     "thematic_resonance": 3.0,
-    "scope_calibration": 4.5,
-    "anti_cliche": 3.5,
     "concept_coherence": 4.0,
     "generative_fertility": 3.0,
-    "over_explanation_resistance": 4.0,
+    "scope_calibration": 4.5,
+    "indelibility": 3.5,
 }
 
 
 class TestJudgeScores:
     def test_valid(self):
         scores = JudgeScores(**VALID_SCORES)
-        assert scores.originality == 4.0
+        assert scores.novelty == 4.0
         assert scores.reasoning.startswith("This concept")
 
     def test_score_below_zero(self):
-        data = {**VALID_SCORES, "originality": -0.1}
+        data = {**VALID_SCORES, "novelty": -0.1}
         with pytest.raises(ValidationError):
             JudgeScores(**data)
 
     def test_score_above_five(self):
-        data = {**VALID_SCORES, "originality": 5.1}
+        data = {**VALID_SCORES, "novelty": 5.1}
         with pytest.raises(ValidationError):
             JudgeScores(**data)
 
     def test_boundary_values(self):
-        data = {**VALID_SCORES, "originality": 0.0, "scope_calibration": 5.0}
+        data = {**VALID_SCORES, "novelty": 0.0, "scope_calibration": 5.0}
         scores = JudgeScores(**data)
-        assert scores.originality == 0.0
+        assert scores.novelty == 0.0
         assert scores.scope_calibration == 5.0
 
     def test_to_list_order(self):
@@ -57,7 +57,7 @@ class TestJudgeScores:
         d = scores.to_dict()
         assert "reasoning" not in d
         assert len(d) == 9
-        assert d["originality"] == 4.0
+        assert d["novelty"] == 4.0
 
 
 class TestJudgeEvaluation:
@@ -71,7 +71,7 @@ class TestJudgeEvaluation:
             cost=0.005,
         )
         assert ev.judge_id == "mira-okonkwo"
-        assert ev.scores.originality == 4.0
+        assert ev.scores.novelty == 4.0
 
 
 class TestEvaluationResult:
@@ -85,11 +85,11 @@ class TestEvaluationResult:
             correct=True,
             combined_score=3.5,
             holder_score=3.4,
-            public_metrics={"dimensions": {"originality": 4.0}},
+            public_metrics={"dimensions": {"novelty": 4.0}},
             private_metrics={"total_cost": 0.01},
             text_feedback="Good concept.",
         )
         json_str = result.model_dump_json()
         restored = EvaluationResult.model_validate_json(json_str)
         assert restored.combined_score == 3.5
-        assert restored.public_metrics["dimensions"]["originality"] == 4.0
+        assert restored.public_metrics["dimensions"]["novelty"] == 4.0

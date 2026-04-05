@@ -4,7 +4,7 @@
 # mid-tier judge model. Good for validating evolution dynamics and
 # MAP-Elites coverage without burning through expensive models.
 #
-# Run with: uv run python -m owtn --config configs/stage_1_light.yaml \
+# Run with: uv run python -m owtn --config configs/stage_1/light.yaml \
 #           --max-eval-jobs 5 --max-proposal-jobs 4
 #
 # Expected: ~20-30 concepts, ~$2-8 total.
@@ -36,6 +36,8 @@ evolution:
   code_embed_sim_threshold: 0.90
   max_novelty_attempts: 3
   genesis_ratio: 0.2                  # 20% fresh concepts, 80% evolve parent
+  tonal_inherit_rate: 0.5            # per-dimension chance of inheriting parent's register/mode on mutation
+  tonal_crossover_new_rate: 0.33     # per-dimension chance of fresh roll on crossover (vs parent A or B)
 
 database:
   num_islands: 3
@@ -76,7 +78,7 @@ evaluation:
   std_threshold: 0.8
   anti_cliche:
     similarity_threshold: 0.85
-    elevated_originality_threshold: 3.5
+    elevated_novelty_threshold: 3.5
     patterns_file: "data/convergence-patterns.yaml"
   tier_a_enabled: false
   pairwise_enabled: false

@@ -22,14 +22,15 @@ def _make_parent():
     parent.public_metrics = {
         "holder_score": 2.5,
         "dimensions": {
-            "originality": 3.0, "transportation_potential": 3.5,
-            "narrative_tension": 3.0, "thematic_resonance": 2.5,
-            "scope_calibration": 4.0, "anti_cliche": 3.0,
-            "concept_coherence": 3.5, "generative_fertility": 2.5,
-            "over_explanation_resistance": 4.0,
+            "novelty": 3.0, "grip": 3.5,
+            "tension_architecture": 3.0, "emotional_depth": 2.5,
+            "thematic_resonance": 2.5, "concept_coherence": 3.5,
+            "generative_fertility": 2.5, "scope_calibration": 4.0,
+            "indelibility": 3.0,
         },
     }
-    parent.text_feedback = "[mock-judge]\nORIGINALITY: Decent.\n\n---\n\n[mock-judge-2]\nORIGINALITY: Fine."
+    parent.text_feedback = "[mock-judge]\nNOVELTY: Decent.\n\n---\n\n[mock-judge-2]\nNOVELTY: Fine."
+    parent.metadata = {"affective_register": "DREAD", "literary_mode": "NOIR"}
     return parent
 
 
@@ -47,7 +48,7 @@ def test_operator_dispatch_returns_triple(operator):
     # Provide inspirations so cross-type operators work
     inspirations = [_make_parent()] * 2
 
-    sys_msg, user_msg, returned_type = sampler.sample(
+    sys_msg, user_msg, returned_type, register_name, mode_name = sampler.sample(
         parent, inspirations, inspirations,
     )
 
@@ -56,6 +57,8 @@ def test_operator_dispatch_returns_triple(operator):
     assert isinstance(user_msg, str)
     assert len(sys_msg) > 50
     assert len(user_msg) > 50
+    assert isinstance(register_name, str)
+    assert isinstance(mode_name, str)
 
 
 def test_cross_operators_filtered_when_no_inspirations():
@@ -73,7 +76,7 @@ def test_cross_operators_filtered_when_no_inspirations():
 
     # With empty inspirations, should never return a cross-type operator
     for _ in range(20):
-        _, _, patch_type = sampler.sample(parent, [], [])
+        _, _, patch_type, _, _ = sampler.sample(parent, [], [])
         assert patch_type not in cross_ops
 
 
@@ -87,7 +90,7 @@ def test_legacy_diff_still_works():
     parent = _make_parent()
     parent.code = "def foo(): pass"
 
-    sys_msg, user_msg, patch_type = sampler.sample(parent, [], [])
+    sys_msg, user_msg, patch_type, _, _ = sampler.sample(parent, [], [])
     assert patch_type == "diff"
     assert "SEARCH/REPLACE" in sys_msg or "diff" in sys_msg.lower()
 
@@ -102,7 +105,7 @@ def test_legacy_full_still_works():
     parent = _make_parent()
     parent.code = "def foo(): pass"
 
-    sys_msg, user_msg, patch_type = sampler.sample(parent, [], [])
+    sys_msg, user_msg, patch_type, _, _ = sampler.sample(parent, [], [])
     assert patch_type == "full"
 
 
@@ -115,7 +118,7 @@ def test_operator_prompt_contains_parent_genome():
     )
     parent = _make_parent()
 
-    _, user_msg, _ = sampler.sample(parent, [], [])
+    _, user_msg, _, _, _ = sampler.sample(parent, [], [])
     assert "What if..." in user_msg
 
 
@@ -134,5 +137,5 @@ def test_seed_bank_threaded_to_operator():
     )
     parent = _make_parent()
 
-    _, user_msg, _ = sampler.sample(parent, [], [])
+    _, user_msg, _, _, _ = sampler.sample(parent, [], [])
     assert "physicist" in user_msg

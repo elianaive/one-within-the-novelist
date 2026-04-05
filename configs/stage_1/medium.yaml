@@ -4,7 +4,7 @@
 # models with dynamic island spawning and operator bandit. Full
 # evolution dynamics.
 #
-# Run with: uv run python -m owtn --config configs/stage_1_medium.yaml \
+# Run with: uv run python -m owtn --config configs/stage_1/medium.yaml \
 #           --max-eval-jobs 5 --max-proposal-jobs 4
 #
 # Expected: ~50-80 concepts, ~$15-40 total.
@@ -41,6 +41,8 @@ evolution:
   code_embed_sim_threshold: 0.90
   max_novelty_attempts: 3
   genesis_ratio: 0.15                  # 15% fresh concepts, 85% evolve parent
+  tonal_inherit_rate: 0.5            # per-dimension chance of inheriting parent's register/mode on mutation
+  tonal_crossover_new_rate: 0.33     # per-dimension chance of fresh roll on crossover (vs parent A or B)
 
 # --- Database / Island Config (ShinkaEvolve DatabaseConfig) ---
 
@@ -105,7 +107,7 @@ evaluation:
   # Gate 2: Anti-cliche
   anti_cliche:
     similarity_threshold: 0.85
-    elevated_originality_threshold: 3.5
+    elevated_novelty_threshold: 3.5
     patterns_file: "data/convergence-patterns.yaml"
 
   # Tier A disabled for concepts (they're JSON, not prose)

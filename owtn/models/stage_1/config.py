@@ -34,6 +34,8 @@ class EvolutionConfig(BaseModel):
     code_embed_sim_threshold: float
     max_novelty_attempts: int
     genesis_ratio: float = 0.0
+    tonal_inherit_rate: float = 0.5       # per-dimension probability of inheriting parent's register or mode on mutation
+    tonal_crossover_new_rate: float = 0.33  # per-dimension probability of fresh roll on crossover (vs parent A or B)
     annealing: AnnealingSchedule = AnnealingSchedule()
 
 
@@ -66,7 +68,7 @@ class JudgesConfig(BaseModel):
 
 class AntiCliqueConfig(BaseModel):
     similarity_threshold: float
-    elevated_originality_threshold: float
+    elevated_novelty_threshold: float
     patterns_file: str
 
 

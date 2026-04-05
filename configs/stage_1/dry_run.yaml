@@ -1,5 +1,7 @@
 # Stage 1: Dry Run — Minimal config to prove the evolution loop works.
 #
+# Run with: uv run python -m owtn --config configs/stage_1/dry_run.yaml
+#
 # 2 generations, 2 islands, 1 judge. Cheap models throughout.
 # Expected: ~4 concepts generated, evaluated, archived. ~$0.50-2.00 total.
 
@@ -30,6 +32,8 @@ evolution:
   code_embed_sim_threshold: 0.90
   max_novelty_attempts: 3
   genesis_ratio: 0.5                   # 50/50 for testing both modes
+  tonal_inherit_rate: 0.5            # per-dimension chance of inheriting parent's register/mode on mutation
+  tonal_crossover_new_rate: 0.33     # per-dimension chance of fresh roll on crossover (vs parent A or B)
 
 database:
   num_islands: 2
@@ -68,7 +72,7 @@ evaluation:
   std_threshold: 0.8
   anti_cliche:
     similarity_threshold: 0.85
-    elevated_originality_threshold: 3.5
+    elevated_novelty_threshold: 3.5
     patterns_file: "data/convergence-patterns.yaml"
   tier_a_enabled: false
   pairwise_enabled: false

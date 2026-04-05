@@ -1,0 +1,283 @@
+# Literary modes for diversity steering.
+# Each entry describes a structural/tonal strategy that produces
+# complex emotional effects, channeling a canonical author.
+# One mode is sampled per concept and paired with an affective register.
+
+- name: ABSURDISM
+  text: >
+    Write in the mode of ABSURDISM — A man finds himself in a situation
+    that defies all logic, yet he must proceed as if it were merely
+    another regulation to be followed. There is no reason given, for
+    the law does not owe an explanation to those it ensnares. One must
+    simply document the impossible with the cold, meticulous precision
+    of a court clerk. The horror lies not in the transformation itself,
+    but in the mundane paperwork that follows it. Channel Franz Kafka:
+    bureaucratic procedure applied to the impossible, and the
+    explanation never comes.
+
+- name: MINIMALISM
+  text: >
+    Write in the mode of MINIMALISM — He didn't say much. He kept it
+    all inside. There was a lot of space between the words, and that's
+    where the trouble was. You could feel it, like a weight in the
+    room. It was about the things they couldn't bring themselves to talk
+    about. Every time someone started to speak, they stopped short. The
+    surface looked calm enough, but underneath, things were different.
+    Channel Raymond Carver: people failing to say the thing, every
+    sentence a door not opened.
+
+- name: MAXIMALISM
+  text: >
+    Write in the mode of MAXIMALISM — Accumulation, digression,
+    overwhelming detail — the world rendered as fundamentally too-much,
+    a sort of sensory and cognitive surfeit where meaning emerges not
+    from any kind of minimalist compression but from the sheer,
+    exhaustive weight of the data itself. You have to channel a certain
+    specific mode of consciousness — think David Foster Wallace — where
+    every single thought is followed, with a kind of frantic, recursive
+    precision, all the way to its terminal node (and often into a
+    series of increasingly granular footnotes). The point here is that
+    the excess isn't some failure of editing or a lack of discipline;
+    the excess is, in fact, the entire point.
+
+- name: INCANTATION
+  text: >
+    Write in the mode of INCANTATION — Then summer came. A summer limp
+    with the weight of blossomed things. And you could hear it in the
+    way the words laid themselves down, one on top of the other, not for
+    meaning — not yet — but for the sound, the way a sound can get
+    inside the body and settle there before the mind has any say in it.
+    Rhythmic. Sonic. A trance the prose makes of itself, where the
+    music is not ornament but structure, where the sentence hums and
+    the humming carries what cannot be said outright. Language as a
+    ritual act. You feel it before you parse it. You have always felt
+    it. You were a bell, and this is the ringing. Channel Toni Morrison:
+    sentences you feel before you parse, language as ritual act.
+
+- name: SATIRE
+  text: >
+    Write in the mode of SATIRE — 'Tis a species of Wit that aimeth at
+    a particular Mark, wherein the Jest serveth as a most formidable
+    Weapon. The Reader is first mov'd to Mirth, only to find, upon
+    Reflection, that he is himself entangled in the Guilt. Let the
+    Discourse be deliver'd with such a grave and compos'd Air, that the
+    very Horror of the Scheme shall find Admittance through the
+    Reader's own Assent; even as I once propos'd a most humble
+    Expedient for the Children of the Poor. Channel Jonathan Swift: the
+    voice so reasonable that the horror enters through the reader's own
+    agreement.
+
+- name: NOIR
+  text: >
+    Write in the mode of NOIR — Fatalism, moral compromise, and an
+    atmosphere so thick you could lean against it. The world's a
+    stacked deck and the guy in the middle of it knows exactly how the
+    cards are marked. Think of Los Angeles not as a city, but as a
+    character with a soul more rotted than any grifter on the street.
+    The similes do the heavy lifting, hitting you like a stiff drink on
+    an empty stomach. Channel Raymond Chandler: the similes do half the
+    tonal work, and the city has worse morals than anyone in it.
+
+- name: GOTHIC
+  text: >
+    Write in the mode of the GOTHIC — The past, like a persistent
+    mist, seeps into the present. There is a sense of rot beneath the
+    floorboards, of secrets whispered in the corridors, where the very
+    stones of the house seem to mirror the fractures of the mind. It is
+    something long interred that refuses to remain in the earth. One
+    feels the heavy hand of the departed; just as in 'Rebecca,' where
+    the shadow of the dead wife looms larger and more formidable than
+    the living, the house itself breathes with a dark and purposeful
+    life of its own. Channel Daphne du Maurier: architecture as
+    psychology, something buried that won't stay buried.
+
+- name: MAGICAL_REALISM
+  text: >
+    Write in the mode of MAGICAL REALISM — The supernatural was simply
+    another thread in the tapestry of the everyday. It was not the
+    artifice of fantasy, with its labored construction of distant
+    realms, but rather our own world, where miracles occurred with the
+    quiet persistence of the rain. It was a place where a woman might
+    suddenly drift toward the heavens while pinning sheets to a line,
+    and those watching would only sigh at the inconvenience of the wind,
+    for in this land, the extraordinary had long ago lost the power to
+    surprise. Channel Gabriel Garcia Marquez: miracles no one remarks
+    on, the narrative that never blinks.
+
+- name: STREAM_OF_CONSCIOUSNESS
+  text: >
+    Write in the mode of STREAM OF CONSCIOUSNESS — What a morning —
+    fresh as if issued to children on a beach; and one might walk, and
+    walking think, and thinking arrive at something quite unexpected,
+    for the mind does not march in sequence but drifts, settles, lifts
+    again; one notices the flags flying and the shop windows and the
+    salmon on the iceblock and then, without any warning at all, one is
+    twenty years old and standing in a garden and the thought has
+    nothing to do with the flags or the salmon and everything to do
+    with the way the air felt then, on that particular morning, which
+    was like this morning and nothing like it at all; and syntax follows
+    thought, not grammar, and thought follows the scent of something
+    half-remembered, and consciousness itself is the real subject —
+    infinite, interior, and as dangerous as living even one day. Channel
+    Virginia Woolf: the present moment as infinite interior landscape.
+
+- name: SUBLIME
+  text: >
+    Write in the mode of THE SUBLIME — It was in August of that year
+    that I set out on a walking tour through the county of Suffolk, a
+    journey which, as I now recall, led me through landscapes of such
+    desolation that I could not help but feel the weight of all that
+    had transpired upon the ground beneath my feet — the herring fleets
+    long vanished, the once-great estates fallen to ruin, the bombed
+    cities whose rubble had been quietly absorbed by the grasses — and
+    it seemed to me then, as it seems to me still, that on every new
+    thing there lies already the shadow of annihilation, that history
+    accumulates not as progress but as a vast, imperceptible settling,
+    layer upon layer, until the individual life becomes no more than a
+    footnote in a volume no one will read, and the awe one feels at
+    this scale is not wonder but something closer to its opposite, a
+    diminishment so total it borders on a kind of annihilation of its
+    own. Channel W.G. Sebald: history accumulates until the reader
+    feels the weight of everything that has happened on the ground they
+    stand on.
+
+- name: UNCANNY
+  text: >
+    Write in the mode of THE UNCANNY — My name is Kathy H. I'm
+    thirty-one years old, and I've been a carer now for over eleven
+    years. I suppose you could say that's a long time, though I know
+    carers who've done more. The point is, I don't think there's
+    anything particularly unusual about any of this, and I expect
+    you'll understand what I mean when I say that. It was a good
+    school, really it was, and we had our little worries and dramas
+    just like anyone else. The familiar made wrong — that's the trick
+    of it. Not horror, nothing so loud as that. Something subtler: a
+    recognition that destabilizes rather than frightens. The tone of
+    the telling never shifts, never acknowledges that what it describes
+    is monstrous, and it is precisely this refusal — this calm, this
+    ordinariness — that makes the reader's skin crawl. Channel Kazuo
+    Ishiguro: 'Never Let Me Go' is a boarding school novel that is also
+    about organ harvesting, and the tone never acknowledges the shift.
+
+- name: CARNIVALESQUE
+  text: >
+    Write in the mode of THE CARNIVALESQUE — The room was a
+    mistresspiece of exquisitely feminine squalor — not "despite" the
+    squalor, not "in spite of" — the squalor itself exquisite. A
+    choker of rubies like an extraordinarily precious slit throat. A
+    face broad as a meat dish, thrown on a common wheel out of coarse
+    clay, presiding as the democratically elected divinity of the
+    imminent century. The beautiful and the grotesque share a noun
+    phrase without apology. Everywhere she went, rivers parted, wars
+    threatened, suns eclipsed — and the King of Portugal gave her a
+    skipping rope of egg-shaped pearls, which she banked. The catalogue
+    is not ornament but proof. The body refuses containment. The
+    sentence refuses to choose between Latinate elegance and Cockney
+    vulgarity, placing both in the same clause, because hierarchy is
+    the thing being overthrown. Channel Angela Carter: grammatical
+    apposition without connective tissue, the violent simile that
+    escalates, register collision as liberation, and excess as the
+    form itself.
+
+- name: FABLE
+  text: >
+    Write in the mode of FABLE — Cities, like dreams, are made of
+    desires and fears, even if the thread of their discourse is secret,
+    their rules are absurd, their perspectives deceitful, and
+    everything conceals something else. Here, the narrative does not
+    hide its didactic skeleton; it presents itself as a pure pattern, a
+    crystalline structure where meaning is not buried in the earth to be
+    dug up, but sits upon the surface, luminous and overt. Imagine a
+    city that is not made of stone, but of a single concept draped in
+    the heavy brocade of a costume. In this space, the compression is
+    not a constraint — it is the very architecture of the soul. Channel
+    Italo Calvino: each city in 'Invisible Cities' is a concept wearing
+    a costume, and the compression is the form.
+
+- name: LYRIC
+  text: >
+    Write in the mode of THE LYRIC — What is an adjective? Nouns name
+    the world. Verbs activate the names. Adjectives come from somewhere
+    else. They are small imported mechanisms, the latches of being, and
+    when you unlatch them the substances float free: a river root
+    silver, a child bruiseless, killings cream black. The sentence is
+    the unit, not the paragraph, not the scene. Genre is a liquid
+    state — criticism and elegy and vision coexist in a single line
+    without transition, because the gap between them is where the
+    meaning lives. You remember too much, my mother said to me
+    recently. Why hold onto all that? And I said, Where can I put it
+    down? — the question left hanging with no answer, because the
+    answer would stop the feeling. The red world and corresponding red
+    breezes went on. Geryon did not. Channel Anne Carson: the scholarly
+    surface held until it cracks in a single unanswerable phrase, the
+    image that does not explain itself, the sentence that stops where
+    the subject stops.
+
+- name: CONFESSIONAL
+  text: >
+    Write in the mode of CONFESSIONAL — I am speaking to you because I
+    must, because the words are a tight, hard knot in my throat that
+    only you can untie. You sit there, a silent confessor, a cool-eyed
+    therapist, or perhaps the jury that will eventually condemn me. I am
+    too close to you, my breath fogging the glass between us, my
+    honesty a sharp, silver blade that cuts through the polite veneer
+    of things. My mind is a bell jar, clear and suffocating, where the
+    air grows thin and the world outside distorts into something
+    grotesque. I see everything with a terrifying, brittle lucidity,
+    even as the edges of my self begin to fray and dissolve into the
+    gray, static hum of the void. Channel Sylvia Plath's prose: trapped
+    inside a consciousness that is both lucid and disintegrating.
+
+- name: DOCUMENTARY
+  text: >
+    Write in the mode of DOCUMENTARY — The village of Holcomb stands on
+    the high wheat plains of western Kansas, a lonesome area that other
+    Kansans call 'out there.' The tone is clinical, observed,
+    reportorial — applied with the steady hand of a man taking notes at
+    a scene he should not be able to bear. The details are ordinary:
+    the hard blue skies, the desert-clear air, the accent barbed with a
+    prairie twang. The murders, when they come, are recorded with the
+    same measured calm. No grandeur, no moralizing — only a
+    straightforward account. The weight of the body. The length of the
+    rope. It is precisely this gap between the method and the material
+    that creates the effect. The detachment does not lessen the horror.
+    It makes the horror unbearable. Channel Truman Capote: 'In Cold
+    Blood' reconstructs murder with journalistic detachment that renders
+    it more unbearable, not less.
+
+- name: MYTHIC
+  text: >
+    Write in the mode of THE MYTHIC — Deep time and archetype and the
+    elemental forces of the world. The characters are but figures and
+    they are not people. The prose moves at the scale of fate and it
+    knows nothing of psychology. Like the violence and the landscape
+    they are geological events and the syntax is the syntax of the old
+    bible and the word of god. Channel Cormac McCarthy: 'Blood Meridian'
+    treats violence and landscape as geological events.
+
+- name: METAFICTION
+  text: >
+    Write in the mode of METAFICTION — The text, shimmering with a
+    crystalline self-consciousness, acknowledges its own artifice. The
+    gears of the clockwork are laid bare. The reader is nudged, with a
+    conspiratorial wink, to remember they are merely traversing a
+    landscape of ink and paper, and this very realization becomes the
+    prism through which meaning is refracted. One must evoke the spirit
+    of 'Pale Fire,' where the pedantic apparatus of the commentator —
+    the index, the footnotes, the scholarly hum — is itself the heart
+    of the fiction. Form and content are but two mirrors reflecting the
+    same elaborate, shimmering jest. Channel Vladimir Nabokov: the
+    apparatus of literary criticism is the novel, and form and content
+    are the same joke.
+
+- name: PICARESQUE
+  text: >
+    Write in the mode of THE PICARESQUE — Fragmentary, a vision of
+    society glimpsed from the edges, driven by a certain picaresque
+    energy. The protagonist doesn't evolve so much as he wanders,
+    passing through the world without letting it mold him. The plot is
+    nothing more than a collection of chance encounters. Think of 'The
+    Savage Detectives' — poets lost in the flow of decades and across
+    borders, where the drifting itself is the only thing that matters.
+    Channel Roberto Bolano: the accumulation of encounters is the plot,
+    and the drift is the point.
