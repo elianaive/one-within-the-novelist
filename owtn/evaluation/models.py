@@ -39,22 +39,12 @@ class JudgeScores(BaseModel):
     indelibility: float = Field(ge=0, le=5)
 
     def to_list(self) -> list[float]:
-        """All 9 scores in canonical order (for holder_mean)."""
+        """All 9 scores in canonical order."""
         return [getattr(self, name) for name in DIMENSION_NAMES]
 
     def to_dict(self) -> dict[str, float]:
         """Dimension scores as {name: score}, excluding reasoning."""
         return {name: getattr(self, name) for name in DIMENSION_NAMES}
-
-
-class JudgeEvaluation(BaseModel):
-    """Complete result from one judge: scores + reasoning + metadata."""
-
-    judge_id: str
-    scores: JudgeScores
-    holder_score: float
-    model_used: str
-    cost: float
 
 
 class EvaluationResult(BaseModel):
@@ -70,14 +60,6 @@ class EvaluationResult(BaseModel):
 
 
 # --- Pairwise comparison models ---
-
-
-class DimensionVote(BaseModel):
-    """One judge's verdict on one dimension for a pair of concepts."""
-
-    dimension: str
-    winner: str  # "a", "b", or "tie"
-    reasoning: str
 
 
 class PairwiseJudgment(BaseModel):

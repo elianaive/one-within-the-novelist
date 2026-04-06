@@ -6,8 +6,8 @@ registry, and overrides initial population generation with cold-start allocation
 
 from __future__ import annotations
 
+import json
 import logging
-import time
 import uuid
 from datetime import datetime
 from pathlib import Path
@@ -20,9 +20,8 @@ from shinka.core.config import EvolutionConfig as ShinkaEvolutionConfig, FOLDER_
 from shinka.core.sampler import PromptSampler
 from shinka.database import DatabaseConfig as ShinkaDatabaseConfig, Program
 from shinka.edit.async_apply import write_file_async
-from shinka.launch import JobConfig, LocalJobConfig
+from shinka.launch import LocalJobConfig
 from shinka.llm import extract_between
-from shinka.utils import get_language_extension
 
 from owtn.evaluation.pairwise import compare as pairwise_compare
 from owtn.evaluation.tournament import run_tournament
@@ -157,7 +156,6 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
         eval function (in a worker thread) can read champions without
         touching the database.
         """
-        import json as _json
         num_islands = self.stage_config.database.num_islands
         for island_idx in range(num_islands):
             champion = self.db.get_island_champion(island_idx)
@@ -167,7 +165,7 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
                 champ_file.unlink(missing_ok=True)
                 continue
             champ_file = self._champions_dir / f"island_{island_idx}.json"
-            champ_file.write_text(_json.dumps({
+            champ_file.write_text(json.dumps({
                 "id": champion.id,
                 "code": champion.code,
                 "metadata": champion.metadata or {},
@@ -185,7 +183,6 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
         pairwise completes, so ShinkaEvolve waits for the real score.
         """
         import asyncio
-        import json as _json
         from owtn.evaluation.stage_1 import evaluate
 
         # Propagate context vars to this worker thread (they don't cross
@@ -207,7 +204,7 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
             champ_file = self._champions_dir / f"island_{island_idx}.json"
             if champ_file.exists():
                 try:
-                    champion_data = _json.loads(champ_file.read_text())
+                    champion_data = json.loads(champ_file.read_text())
                 except Exception:
                     pass
 
@@ -278,11 +275,10 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
     @staticmethod
     def _write_eval_result(result, results_dir: str) -> None:
         """Re-write metrics.json with updated pairwise scores."""
-        import json as _json
         results_path = Path(results_dir)
         results_path.mkdir(parents=True, exist_ok=True)
         (results_path / "metrics.json").write_text(result.model_dump_json(indent=2))
-        (results_path / "correct.json").write_text(_json.dumps({"correct": result.correct}))
+        (results_path / "correct.json").write_text(json.dumps({"correct": result.correct}))
 
     async def run_async(self):
         """Configure logging and snapshot gen 0, then run evolution."""

@@ -173,17 +173,26 @@ async def compare(
         tasks.append(_judge_one_ordering(judge, genome_a, genome_b))  # A-first
         tasks.append(_judge_one_ordering(judge, genome_b, genome_a))  # B-first
 
-    results = await asyncio.gather(*tasks)
+    results = await asyncio.gather(*tasks, return_exceptions=True)
 
     # Process results: pairs of (forward, reverse) per judge.
+    # Skip judges whose calls failed.
     all_resolved = []
     judgments_data = []
     reasoning_texts = []
     total_cost = 0.0
 
     for i, judge in enumerate(panel):
-        fwd_judgment, fwd_cost = results[i * 2]
-        rev_judgment, rev_cost = results[i * 2 + 1]
+        fwd_result = results[i * 2]
+        rev_result = results[i * 2 + 1]
+
+        if isinstance(fwd_result, Exception) or isinstance(rev_result, Exception):
+            err = fwd_result if isinstance(fwd_result, Exception) else rev_result
+            logger.warning("Judge %s failed, skipping: %s", judge.id, err)
+            continue
+
+        fwd_judgment, fwd_cost = fwd_result
+        rev_judgment, rev_cost = rev_result
         total_cost += fwd_cost + rev_cost
 
         forward_votes = fwd_judgment.votes()
@@ -200,6 +209,15 @@ async def compare(
             "resolved_votes": resolved,
             "cost": fwd_cost + rev_cost,
         })
+
+    if not all_resolved:
+        logger.error("All judges failed — champion retains by default.")
+        return PairwiseResult(
+            winner=champion_label,
+            dimension_wins={d: "tie" for d in DIMENSION_NAMES},
+            a_wins=0, b_wins=0, ties=len(DIMENSION_NAMES),
+            feedback="All judges failed — no comparison possible.",
+        )
 
     dim_winners, a_total, b_total, tie_total = _aggregate(all_resolved)
 
