@@ -42,10 +42,11 @@ evolution:
 database:
   num_islands: 3
   archive_size: 50
-  archive_selection_strategy: "map_elites"
-  migration_interval: 3
-  migration_rate: 0.20
+  archive_selection_strategy: "fitness"
+  migration_interval: 5
+  migration_rate: 0.15
   island_elitism: true
+  island_selection_strategy: "equal"
   enable_dynamic_islands: false
   stagnation_threshold: 25
   parent_selection_strategy: "power_law"

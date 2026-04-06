@@ -45,4 +45,5 @@ def test_build_shinka_configs():
     assert evo.language == "json"
     assert len(evo.patch_types) > 0
     assert db.num_islands > 0
-    assert job.eval_program_path.endswith("__main__.py")
+    # eval_function is set later in __init__, not in _build_shinka_configs
+    assert job.extra_cmd_args.get("config_path") is not None

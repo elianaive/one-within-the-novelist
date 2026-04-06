@@ -24,7 +24,10 @@ from shinka.launch import JobConfig, LocalJobConfig
 from shinka.llm import extract_between
 from shinka.utils import get_language_extension
 
+from owtn.evaluation.pairwise import compare as pairwise_compare
+from owtn.evaluation.tournament import run_tournament
 from owtn.llm.call_logger import llm_context, llm_log_dir
+from owtn.models.stage_1.concept_genome import ConceptGenome
 from owtn.models.stage_1.config import StageConfig
 from owtn.models.stage_1.seed_bank import SeedBank
 from owtn.prompts import sample_tonal_steering
@@ -79,15 +82,14 @@ def _build_shinka_configs(
         migration_interval=cfg.database.migration_interval,
         migration_rate=cfg.database.migration_rate,
         island_elitism=cfg.database.island_elitism,
+        island_selection_strategy=cfg.database.island_selection_strategy,
         enable_dynamic_islands=cfg.database.enable_dynamic_islands,
         stagnation_threshold=cfg.database.stagnation_threshold,
         parent_selection_strategy=cfg.database.parent_selection_strategy,
     )
 
+    # eval_function is set in __init__ after DB is available (needs self.db).
     job = LocalJobConfig(
-        eval_program_path=str(
-            Path(__file__).resolve().parent / "evaluation" / "__main__.py"
-        ),
         extra_cmd_args={"config_path": config_path},
     )
 
@@ -141,6 +143,147 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
         self.prompt_sampler.tonal_inherit_rate = self.stage_config.evolution.tonal_inherit_rate
         self.prompt_sampler.tonal_crossover_new_rate = self.stage_config.evolution.tonal_crossover_new_rate
 
+        # Set eval_function now that self.db is available (from super().__init__).
+        # The eval function reads champion from a file (not DB) to avoid
+        # SQLite threading issues — the scheduler runs it in a thread pool.
+        self._champions_dir = Path(self.results_dir) / "champions"
+        self._champions_dir.mkdir(parents=True, exist_ok=True)
+        self.scheduler.config.eval_function = self._evaluate_with_pairwise
+
+    def _write_champions_to_disk(self) -> None:
+        """Write each island's current champion genome to disk.
+
+        Called from the main thread before evaluation jobs run, so the
+        eval function (in a worker thread) can read champions without
+        touching the database.
+        """
+        import json as _json
+        num_islands = self.stage_config.database.num_islands
+        for island_idx in range(num_islands):
+            champion = self.db.get_island_champion(island_idx)
+            if champion is None:
+                # Remove stale champion file.
+                champ_file = self._champions_dir / f"island_{island_idx}.json"
+                champ_file.unlink(missing_ok=True)
+                continue
+            champ_file = self._champions_dir / f"island_{island_idx}.json"
+            champ_file.write_text(_json.dumps({
+                "id": champion.id,
+                "code": champion.code,
+                "metadata": champion.metadata or {},
+            }))
+
+    def _evaluate_with_pairwise(
+        self, program_path: str, results_dir: str, config_path: str,
+        parent_id: str | None = None, island_idx: int | None = None,
+    ) -> None:
+        """Inline evaluation: validate + pairwise in one blocking step.
+
+        Called by ShinkaEvolve's scheduler in a worker thread. Validates
+        the genome, reads the champion from disk (written by main thread),
+        runs pairwise comparison, and writes metrics.json. Blocks until
+        pairwise completes, so ShinkaEvolve waits for the real score.
+        """
+        import asyncio
+        import json as _json
+        from owtn.evaluation.stage_1 import evaluate
+
+        # Propagate context vars to this worker thread (they don't cross
+        # thread boundaries automatically).
+        llm_log_dir.set(self._log_dir)
+        llm_context.set({"role": "pairwise_judge"})
+
+        # Step 1: Validate.
+        loop = asyncio.new_event_loop()
+        result = loop.run_until_complete(evaluate(program_path, results_dir, config_path))
+
+        if not result.correct:
+            loop.close()
+            return
+
+        # Step 2: Read island champion from disk.
+        champion_data = None
+        if island_idx is not None:
+            champ_file = self._champions_dir / f"island_{island_idx}.json"
+            if champ_file.exists():
+                try:
+                    champion_data = _json.loads(champ_file.read_text())
+                except Exception:
+                    pass
+
+        if champion_data is None:
+            result.combined_score = 0.5
+            result.text_feedback = "No champion found — initial champion."
+            self._write_eval_result(result, results_dir)
+            logger.info("'%s' → initial champion (score=50%%)", Path(program_path).parent.name)
+            loop.close()
+            return
+
+        # Step 3: Pairwise comparison.
+        try:
+            challenger_genome = ConceptGenome.model_validate_json(
+                Path(program_path).read_text()
+            )
+            champion_genome = ConceptGenome.model_validate_json(champion_data["code"])
+        except Exception as e:
+            logger.warning("Could not parse genomes for pairwise: %s", e)
+            result.combined_score = 0.0
+            result.text_feedback = f"Parse error: {e}"
+            self._write_eval_result(result, results_dir)
+            loop.close()
+            return
+
+        challenger_name = Path(program_path).parent.name
+        champion_name = (champion_data.get("metadata") or {}).get("patch_name", champion_data["id"][:8])
+        logger.info("'%s' vs champion '%s' — comparing...", challenger_name, champion_name)
+
+        try:
+            pairwise_result = loop.run_until_complete(pairwise_compare(
+                genome_a=challenger_genome,
+                genome_b=champion_genome,
+                config=self.stage_config,
+                champion_label="b",
+            ))
+        except Exception as e:
+            logger.error("Pairwise comparison failed: %s", e, exc_info=True)
+            result.combined_score = 0.0
+            result.text_feedback = f"Comparison failed: {e}"
+            self._write_eval_result(result, results_dir)
+            loop.close()
+            return
+        finally:
+            loop.close()
+
+        if pairwise_result.winner == "a":
+            result.combined_score = pairwise_result.a_score
+            result.text_feedback = pairwise_result.feedback
+            logger.info(
+                "'%s' BEATS '%s' (%d-%d-%d, score=%.0f%%)",
+                challenger_name, champion_name,
+                pairwise_result.a_wins, pairwise_result.b_wins, pairwise_result.ties,
+                pairwise_result.a_score * 100,
+            )
+        else:
+            result.combined_score = pairwise_result.a_score * 0.9
+            result.text_feedback = pairwise_result.feedback
+            logger.info(
+                "'%s' loses to '%s' (%d-%d-%d, score=%.0f%%)",
+                challenger_name, champion_name,
+                pairwise_result.a_wins, pairwise_result.b_wins, pairwise_result.ties,
+                pairwise_result.a_score * 100,
+            )
+
+        self._write_eval_result(result, results_dir)
+
+    @staticmethod
+    def _write_eval_result(result, results_dir: str) -> None:
+        """Re-write metrics.json with updated pairwise scores."""
+        import json as _json
+        results_path = Path(results_dir)
+        results_path.mkdir(parents=True, exist_ok=True)
+        (results_path / "metrics.json").write_text(result.model_dump_json(indent=2))
+        (results_path / "correct.json").write_text(_json.dumps({"correct": result.correct}))
+
     async def run_async(self):
         """Configure logging and snapshot gen 0, then run evolution."""
         # Context vars must be set inside the async context to survive asyncio.run().
@@ -154,21 +297,101 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
 
         async def _setup_with_snapshot():
             await orig_setup()
+            # Set gen 0 programs as initial champions (score 0.5).
+            # They bypass the normal generation flow, so _run_pairwise_selection
+            # never sees them.
+            for program in self.db.get_programs_by_generation(0):
+                if program.correct:
+                    self.db.update_program_score(program.id, 0.5, "Initial champion.")
+                    name = (program.metadata or {}).get("patch_name", program.id[:8])
+                    logger.info("Gen 0: '%s' → initial champion (island %s, score=50%%)", name, program.island_idx)
+            self._write_champions_to_disk()
             self._snapshot(0)
 
         self._setup_async = _setup_with_snapshot
         await super().run_async()
 
+        # Post-evolution: Swiss tournament across island champions.
+        await self._run_final_tournament()
+
     async def _update_completed_generations(self):
-        """Snapshot state and update temperature schedule after each generation."""
+        """Snapshot state, write champions to disk, and anneal after each generation."""
         old = self.completed_generations
         await super()._update_completed_generations()
         if self.completed_generations > old:
-            # completed_generations is a count (1 after gen 0, 2 after gen 1, etc.)
-            # The generation number that just finished is count - 1.
             gen = self.completed_generations - 1
+            self._write_champions_to_disk()
             self._snapshot(gen)
             self._anneal(gen)
+
+
+    async def _run_final_tournament(self) -> None:
+        """Swiss tournament across island champions after evolution completes."""
+        num_islands = self.stage_config.database.num_islands
+        participants = []
+
+        for island_idx in range(num_islands):
+            champion = self.db.get_island_champion(island_idx)
+            if champion is None:
+                continue
+            try:
+                genome = ConceptGenome.model_validate_json(champion.code)
+                participants.append((champion.id, genome))
+            except Exception as e:
+                logger.warning("Could not parse champion for island %d: %s", island_idx, e)
+
+        if len(participants) < 2:
+            logger.info("Tournament skipped: fewer than 2 island champions.")
+            return
+
+        logger.info("Running final Swiss tournament with %d island champions...", len(participants))
+        llm_context.set({"role": "tournament"})
+
+        rankings = await run_tournament(participants, self.stage_config)
+
+        # Write tournament results.
+        results_path = Path(self.results_dir) / "tournament.json"
+        import json
+        results_path.write_text(json.dumps([
+            {
+                "rank": rank,
+                "program_id": entry.program_id,
+                "wins": entry.wins,
+                "losses": entry.losses,
+                "buchholz": entry.buchholz,
+                "matches": entry.match_history,
+            }
+            for rank, entry in enumerate(rankings, 1)
+        ], indent=2))
+        logger.info("Tournament results written to %s", results_path)
+
+        # Apply tournament bonus: score = (tournament_wins + 0.5) / (total_rounds + 1)
+        # This spreads champions across the 0-1 range by tournament performance.
+        n = len(rankings)
+        total_rounds = rankings[0].wins + rankings[0].losses if rankings else 1
+
+        logger.info("")
+        logger.info("=" * 50)
+        logger.info("  FINAL TOURNAMENT RANKINGS")
+        logger.info("=" * 50)
+        for rank, entry in enumerate(rankings, 1):
+            score = (entry.wins + 0.5) / (total_rounds + 1)
+            self.db.update_program_score(entry.program_id, score, "")
+            logger.info(
+                "  #%d  %-12s  W%d-L%d  Buchholz=%d  score=%.0f%%",
+                rank, entry.program_id[:8], entry.wins, entry.losses,
+                entry.buchholz, score * 100,
+            )
+        logger.info("=" * 50)
+
+        if rankings:
+            best = rankings[0]
+            logger.info("Winner: %s", best.program_id[:8])
+            best_dir = Path(self.results_dir) / "best"
+            best_dir.mkdir(parents=True, exist_ok=True)
+            (best_dir / "main.json").write_text(
+                best.genome.model_dump_json(indent=2)
+            )
 
     def _anneal(self, generation: int) -> None:
         """Anneal temperature and genesis ratio: high early, lower late."""
