@@ -255,6 +255,111 @@
   source: "Gervain et al., Frontiers in Systems Neuroscience, 2013"
   tags: [learning, irreversibility, critical-period, epigenetics, second-chances]
 
+- id: rw-entomophthora-necrophilia
+  type: real_world
+  content: >
+    Dead female flies infected with Entomophthora muscae become sexually
+    irresistible to healthy males — and the longer the fly has been dead,
+    the more attractive she becomes. The fungus produces volatile
+    sesquiterpenes and modifies the corpse's cuticular hydrocarbons to
+    amplify sexual signaling. 73.3% of males that contact late-stage
+    cadavers become infected. The chemistry of desire has been hijacked
+    by something that needs the desire to function but has no use for
+    the desirer.
+  source: "Naundrup et al., ISME Journal, 2022"
+  tags: [parasitism, desire, death, chemistry, signal-hijacking]
+
+- id: rw-nanoarchaeum-borrowed
+  type: real_world
+  content: >
+    Nanoarchaeum equitans has the smallest known archaeal genome —
+    490,885 base pairs — and possesses no genes for energy metabolism,
+    lipid synthesis, amino acid production, or cofactor biosynthesis. It
+    cannot do anything life requires. It exists by borrowing everything
+    from its host, down to the molecular level. It is alive in the same
+    way a debt is real: only because something else is paying for it.
+  source: "Waters et al., PNAS, 2003"
+  tags: [parasitism, existence, dependency, minimalism, borrowed-life]
+
+- id: rw-tmao-depth-ceiling
+  type: real_world
+  content: >
+    Fish cannot biologically exist below approximately 8,200 meters. The
+    osmolyte they use to counteract deep-sea pressure — TMAO — becomes
+    isosmotic with seawater at that depth, creating a hard biochemical
+    ceiling. Below this line, the deepest 25% of the ocean floor, no
+    vertebrate can survive. Not because of predators or temperature —
+    because of a molecular equation that simply stops working. The abyss
+    has a lock, and it's chemical.
+  source: "Yancey et al., PNAS, 2014"
+  tags: [depth, limit, biochemistry, ocean, inaccessible]
+
+- id: rw-kbc-void-center
+  type: real_world
+  content: >
+    The Milky Way sits near the center of the KBC Void — a region of
+    space approximately 2 billion light-years across where galaxy density
+    is 20-50% below the cosmic average. We are not at a typical location
+    in the universe. We are in a hole. Our measurements of cosmic
+    expansion may be systematically biased by the emptiness we're sitting
+    in, which means our picture of the universe's fate may be an artifact
+    of our address. The science is contested — but the possibility that
+    our cosmology is a local hallucination is not.
+  source: "Keenan, Barger & Cowie, Astrophysical Journal, 2013"
+  tags: [cosmology, void, measurement-bias, position, emptiness]
+
+- id: rw-syncytin-viral-placenta
+  type: real_world
+  content: >
+    The protein that fuses cells to form the human placenta — syncytin —
+    is a repurposed retroviral envelope protein. A virus infected a
+    mammalian ancestor, its gene was captured and domesticated, and it
+    now builds the organ that connects mother to child. This happened
+    independently at least ten times across mammalian lineages, always
+    from different retroviruses. Mammalian reproduction is built on viral
+    machinery. The most intimate biological connection we have was
+    engineered by a parasite.
+  source: "Dupressoir et al., Placenta, 2012; Heidmann group, multiple PNAS papers 2000-2014"
+  tags: [virus, reproduction, parasitism, intimacy, convergent-evolution]
+
+- id: rw-ozu-pillow-shots
+  type: real_world
+  content: >
+    Yasujirō Ozu punctuated his films with "pillow shots" — a vase, an
+    empty corridor, laundry on a line — inserted between scenes with no
+    narrative function. They don't advance plot or symbolize anything.
+    Scholars have spent decades arguing what they mean. Ozu never
+    explained. Asked about the vase in Late Spring, he talked about
+    duration, not meaning.
+  source: "Bordwell, Ozu and the Poetics of Cinema, 1988; Schrader, Transcendental Style in Film, 1972"
+  tags: [cinema, negative-space, juxtaposition, attention, ozu, kishōtenketsu]
+
+- id: rw-nintendo-invisible-teaching
+  type: real_world
+  content: >
+    In the most celebrated Super Mario levels, the moment where the
+    player grasps a new concept occurs in a space with no enemies, no
+    timer pressure, no penalty. The challenge comes after understanding,
+    never during it. The designer's entire craft is arranging conditions
+    so the player has the experience of insight — and believes they
+    arrived at it alone. Hundreds of millions of people have been taught
+    by this structure. None of them knew they were being taught.
+  source: "Miyamoto design philosophy; Koizumi, GDC 2007; Game Maker's Toolkit analysis of World 1-1"
+  tags: [game-design, invisible-architecture, teaching, arrangement, kishōtenketsu]
+
+- id: rw-permian-uv-sterilization
+  type: real_world
+  content: >
+    The eruption that drove the Permian-Triassic extinction — which
+    killed 96% of marine species — destroyed the ozone layer through
+    halogen outgassing from the Siberian Traps. A 2023 study found
+    direct fossil evidence: ultraviolet-absorbing compounds spiked in
+    plant spores precisely at the extinction boundary. The surface of
+    the earth was sterilized by its own sun. The mechanism was the same
+    chemistry as human CFC emissions, at geological scale.
+  source: "Fielding et al., Science Advances, 2023"
+  tags: [extinction, sun, chemistry, deep-time, sterilization]
+
 # ============================================================
 # thought_experiment
 # ============================================================
@@ -543,6 +648,115 @@
   source: "Fox, T., Undertale, 2015 (Flowey's arc)"
   tags: [consequence, boredom, reset, ethics, game-mechanic, power]
 
+- id: te-mainlander-god-corpse
+  type: thought_experiment
+  content: >
+    Before the universe, there was God — unified, singular, complete.
+    But God's existence was intolerable to God. The only obstacle to
+    nothingness was God's own essence. The solution: shatter into
+    multiplicity, become the universe, and set in motion an irreversible
+    process of self-dissolution. The universe is not God's creation. It
+    is God's decomposing corpse. Every particle trending toward entropy
+    is a fragment of inherited will-to-die. Life is not a gift — it is
+    the medium through which God continues dying. Mainländer committed
+    suicide the day his book was published.
+  source: "Mainländer, Philipp, Die Philosophie der Erlösung, 1876"
+  tags: [entropy, god, suicide, cosmology, decomposition, pessimism]
+
+- id: te-brassier-aboriginal-trauma
+  type: thought_experiment
+  content: >
+    The sun will die, ending all terrestrial life. We treat this as a
+    future catastrophe. Brassier argues it must be understood as an event
+    that has already occurred. The solar death is the 'aboriginal trauma'
+    that structures all of life from its origin — not something
+    approaching but something we are already inside. Every organism
+    exists between 'the simultaneous strophes of a death which is at
+    once earlier than the first unicellular organism and later than the
+    last multicellular animal.' Life is not heading toward extinction. It
+    is a detour that extinction is already making.
+  source: "Brassier, Ray, Nihil Unbound, Palgrave Macmillan, 2007"
+  tags: [extinction, time, retroactivity, solar-death, cosmology]
+
+- id: te-levinas-il-y-a
+  type: thought_experiment
+  content: >
+    Destroy everything — every object, every person, every concept,
+    every relation. What remains? Most answer: nothing. Levinas argues
+    this is wrong. What remains is the il y a — the 'there is' —
+    anonymous, impersonal existence that persists when everything else
+    has been negated. It is not nothingness but being without a being.
+    The nearest access is insomnia: lying awake in the dark, stripped of
+    engagement with objects, consciousness encounters existence itself —
+    not as something to hold but as something that holds you. 'The bare
+    fact of presence is oppressive; one is held by being, held to be.'
+    It will not stop.
+  source: "Levinas, Emmanuel, Existence and Existents, 1947"
+  tags: [existence, insomnia, anonymous, impersonal, inescapable]
+
+- id: te-zapffe-cosmic-panic
+  type: thought_experiment
+  content: >
+    Human consciousness is an evolutionary overshoot — like the Irish
+    elk whose antlers grew so large they became lethal. Consciousness
+    solved survival but generated an awareness of mortality and
+    meaninglessness that no organism can bear without managed
+    suppression. Zapffe identifies four mechanisms: isolation (sequester
+    the thought), anchoring (attach to stable fictions — God, nation,
+    family), distraction (constant engagement), and sublimation
+    (transform horror into art). These are not coping strategies. They
+    are the definition of sanity. The fully conscious person is the one
+    who cannot function. What happens when the mechanism fails — not
+    through trauma, but through accidental clarity?
+  source: "Zapffe, Peter Wessel, 'The Last Messiah,' 1933"
+  tags: [consciousness, evolution, suppression, clarity, pessimism]
+
+- id: te-schelling-ungrund
+  type: thought_experiment
+  content: >
+    Before existence, before nothingness, there is something that is
+    neither. Schelling calls it the Ungrund — the non-ground, the abyss
+    prior to the distinction between being and non-being. Not darkness
+    as the absence of light, but an unconscious chaos that precedes the
+    capacity for order. This abyss does not stay behind reality as a
+    past stage. It remains as the foundation. Every existing thing rests
+    on it, contains it, and yearns toward a revelation it can never
+    fully achieve. The ground of reality is groundless. The darkness is
+    not behind us. It is what we are standing on.
+  source: "Schelling, F.W.J., Philosophical Inquiries into Human Freedom, 1809"
+  tags: [abyss, foundation, darkness, metaphysics, groundlessness]
+
+- id: te-peripheral-life
+  type: thought_experiment
+  content: >
+    You are given the ability to replay any moment of your life, but
+    only the parts you weren't paying attention to. The background of
+    every scene. The faces you didn't look at. The sounds you filtered
+    out. The person standing behind you while you were proposing. The
+    weather on the day you were fired. The expression on your child's
+    face while you were looking at your phone. You discover that the
+    story of your life, told only through what you ignored, is a
+    different story entirely — and a more coherent one. The foreground
+    was noise. The periphery was the plot. You were the background
+    character in the most important moments of your own life.
+  tags: [attention, periphery, kishōtenketsu, recontextualization, self]
+
+- id: te-cotard-il-y-a
+  type: thought_experiment
+  content: >
+    A patient with Cotard's delusion — the fixed belief that one is
+    dead — shows brain metabolism on PET scans comparable to deep
+    anesthesia. But the patient is walking, speaking, insisting they do
+    not exist. What if the delusion is not a malfunction? The brain is
+    generating the most accurate available description of its own
+    condition: near-total metabolic shutdown, the machinery of selfhood
+    dark, and yet something persists. Not the person. Something
+    impersonal that will not stop. The patient is not confused about
+    being dead. They are reporting, with clinical precision, what it
+    feels like to encounter anonymous existence from the inside.
+  source: "Charland-Verville et al., Cortex, 2013; Levinas, Existence and Existents, 1947"
+  tags: [death, consciousness, il-y-a, anonymous, self-model, neuroscience]
+
 # ============================================================
 # axiom
 # ============================================================
@@ -760,6 +974,48 @@
   source: "Yukimura, M., Vinland Saga, 2005-present"
   tags: [violence, pacifism, empiricism, exhaustion, finding, manga]
 
+- id: axiom-meillassoux-hyperchaos
+  type: axiom
+  content: >
+    It is not merely possible but philosophically necessary that the
+    laws of nature are contingent. They could change at any moment, for
+    no reason, with no warning. 'Everything could actually collapse:
+    from trees to stars, from stars to laws, from physical laws to
+    logical laws.' This is not a skeptical hypothesis about our
+    knowledge. It is a claim about reality itself. The only necessity is
+    contingency. The universe's ultimate characteristic is that it has
+    no ultimate characteristics.
+  source: "Meillassoux, Quentin, After Finitude, Continuum, 2008"
+  tags: [contingency, laws, physics, instability, necessity]
+
+- id: axiom-bahnsen-will-collision
+  type: axiom
+  content: >
+    Intimacy and fascination are structurally incompatible. The
+    conditions that make another person fascinating — their opacity,
+    strangeness, unknowability — are destroyed by closeness. But
+    closeness requires the dissolution of those conditions. This is not
+    a practical problem with a psychological solution. It is an
+    ontological structure: what we pursue destroys the conditions that
+    made pursuing it meaningful. Unlike Hegel, there is no synthesis.
+    The contradiction must be lived.
+  source: "Bahnsen, Julius, Der Widerspruch im Wissen und Wesen der Welt, 1880"
+  tags: [intimacy, contradiction, pessimism, fascination, irresolvable]
+
+- id: axiom-zapffe-sublimation-trap
+  type: axiom
+  content: >
+    Art and philosophy are the most sophisticated suppression
+    mechanisms — they transform cosmic panic into aesthetic objects. This
+    means every significant artwork is simultaneously a confession of
+    and a defense against unbearable awareness. The story about horror
+    is itself a horror-management device. It can succeed aesthetically
+    only by failing philosophically: if it resolved the horror, it would
+    no longer be needed. Zapffe notes his own essay is an act of
+    sublimation.
+  source: "Zapffe, Peter Wessel, 'The Last Messiah,' 1933"
+  tags: [art, sublimation, self-reference, suppression, horror]
+
 # ============================================================
 # dilemma
 # ============================================================
@@ -833,6 +1089,33 @@
     that works against a benevolent cage, and the only thing that can destroy
     a life that wasn't a cage at all.
   tags: [simulation, trust, investigation, flourishing, unfalsifiability]
+
+- id: dilemma-retroactive-understanding
+  type: dilemma
+  content: >
+    A woman finally understands why her mother left the family thirty
+    years ago. The understanding came not through confession or
+    confrontation but through a stranger's offhand remark in a shop
+    that made three decades of silence click into place. She now has the
+    answer she spent her life wanting. Telling her siblings would give
+    them the same peace. But the answer requires them to see their
+    father — who is dying, who they love — as someone other than who
+    they believe him to be.
+  tags: [recontextualization, family, silence, meaning, kishōtenketsu]
+
+- id: dilemma-trigg-alien-flesh
+  type: dilemma
+  content: >
+    Your body contains a materiality that predates and exceeds your
+    selfhood. Tissue with its own pre-personal history. Anonymous matter
+    that exists before being annexed into a subject. Illness, extreme
+    sensation, and horror each offer a glimpse of this body running on
+    programs that predate and will outlast identity. You cannot leave the
+    body behind to encounter something genuinely alien — the body is
+    already genuinely alien. The horror of the cosmos is essentially the
+    horror of the body. Where, then, does the alien begin?
+  source: "Trigg, Dylan, The Thing: A Phenomenology of Horror, Open Humanities Press, 2014"
+  tags: [body, alien, pre-personal, flesh, phenomenology]
 
 # ============================================================
 # constraint
@@ -1098,6 +1381,107 @@
     their power.
   tags: [format, meta, commentary, prophecy, Endo-Kobayashi]
 
+- id: constraint-reader-only-pivot
+  type: constraint
+  content: >
+    The pivotal moment of the story must be noticed only by the reader,
+    never by any character. No character realizes what has shifted. No
+    character remarks on it. The reader sees it because the arrangement
+    of scenes makes it visible.
+  tags: [structural, reader-work, arrangement, kishōtenketsu]
+
+- id: constraint-pillow-shot
+  type: constraint
+  content: >
+    The story must contain one paragraph of sustained attention to a
+    single ordinary object or scene. No character is present. No action
+    occurs. No metaphor is intended. This paragraph is placed between
+    two scenes. No subsequent text may reference or acknowledge what
+    was described in it.
+  tags: [negative-space, attention, ozu, restraint, kishōtenketsu]
+
+- id: constraint-contentment
+  type: constraint
+  content: >
+    Every named character is genuinely content with their life. Not
+    performing contentment, not suppressing pain — actually satisfied.
+    No character wants something they lack. The story must produce in
+    the reader an emotion that no character in the story feels.
+  tags: [no-conflict, contentment, reader-gap, kishōtenketsu]
+
+- id: constraint-four-panel
+  type: constraint
+  content: >
+    The story has exactly four sections. The first two share characters
+    and setting. The third shares nothing visible with the first two —
+    different people, different place, different register. The fourth
+    section is one sentence. That sentence makes all three previous
+    sections feel like they were always the same story.
+  tags: [yonkoma, structural, juxtaposition, compression, kishōtenketsu]
+
+- id: constraint-geological-survey-impossible
+  type: constraint
+  content: >
+    Write the story as a geological survey report — strata descriptions,
+    formation names, drilling logs, core samples — for a site where the
+    stratigraphy is wrong. Younger deposits below older ones. Fossils
+    from incompatible eras in the same layer. The report format promises
+    that the landscape is stable and measurable. Let the format's
+    assumptions fail from within.
+  tags: [format-as-voice, geology, deep-time, stratigraphy, institutional]
+
+- id: constraint-specimen-catalog-unclassifiable
+  type: constraint
+  content: >
+    Write the story as a natural history specimen catalog entry —
+    morphological description, measurements, habitat notes, taxonomic
+    placement — for an organism that falls outside all existing taxa.
+    The cataloger tries classification after classification. Each fails
+    for a different reason. The format promises nature is classifiable.
+    The specimen refuses.
+  tags: [format-as-voice, taxonomy, classification, organism, failure]
+
+- id: constraint-translator-untranslatable
+  type: constraint
+  content: >
+    Write the story as a translator's working notes on a text that
+    resists translation — not because the language is unknown, but
+    because the concepts have no equivalents. The translator's
+    annotations grow longer than the source text. The notes begin to
+    explain things about the translator rather than the text.
+  tags: [format-as-voice, translation, language, limits, contamination]
+
+- id: constraint-exponential-time
+  type: constraint
+  content: >
+    Each section of the story covers exactly ten times the timespan of
+    the previous section. If the first section covers one hour, the
+    second covers ten hours, the third covers four days, the fourth
+    covers six weeks, the fifth covers a year, the sixth covers a
+    decade. The story begins at human scale and ends at a scale where
+    the original events are invisible.
+  tags: [structural, time, scale-collapse, cosmicism, constraint]
+
+- id: constraint-no-first-person-dissolved
+  type: constraint
+  content: >
+    The narrator cannot use first-person pronouns. Not as a stylistic
+    choice — because their selfhood has dissolved, and the grammatical
+    'I' is no longer available. They must describe themselves from
+    outside, as if they were weather, or furniture, or a fact about the
+    room.
+  tags: [structural, identity, dissolution, perspective, constraint]
+
+- id: constraint-systematic-wrong-explanation
+  type: constraint
+  content: >
+    Every observation in the story must be accurate. Every explanation
+    offered for those observations must be wrong. The narrator sees
+    correctly and interprets incorrectly — not through stupidity but
+    because the correct interpretation is not available from within
+    their framework.
+  tags: [structural, epistemology, unreliability, framework-failure, constraint]
+
 # ============================================================
 # noun_cluster
 # ============================================================
@@ -1197,6 +1581,18 @@
     - the salt
     - the lintel
   tags: [pre-modern, domestic, protection, liminal, ritual, boundary]
+
+- id: nouns-body-before-self
+  type: noun_cluster
+  content:
+    - the marrow
+    - the molt
+    - the suture
+    - the culture dish
+    - the phantom limb
+    - the spore
+    - the host
+  tags: [body, pre-personal, biology, parasitism, persistence]
 
 # ============================================================
 # image
@@ -1366,6 +1762,74 @@
     is simply interested in what it does.
   tags: [expertise, poison, medicine, curiosity, palace, manga]
 
+- id: image-plant-names
+  type: image
+  content: >
+    A woman waters houseplants in a bright apartment. Each pot is labeled
+    with a strip of tape bearing a name and a date. The names are not
+    plant names. The dates are all in the past.
+  tags: [care, memorial, labels, domestic, ambiguity]
+
+- id: image-barber-gray-strand
+  type: image
+  content: >
+    A barber sweeps his shop floor at closing time. Among the dark hair
+    he finds a single gray strand. He picks it up and puts it in his
+    wallet.
+  tags: [ritual, specificity, tenderness, unexplained]
+
+- id: image-cradling-nothing
+  type: image
+  content: >
+    On a night train, a young mother holds a sleeping infant against
+    her shoulder. Across the aisle, an older woman sits with her arms
+    arranged in exactly the same position, cradling nothing. She is
+    looking out the window.
+  tags: [mirroring, absence, body-memory, motherhood, trains]
+
+- id: image-slippers-entrance
+  type: image
+  content: >
+    A house after a funeral, tidied, everyone gone home. A single pair
+    of worn slippers sits at the genkan. The rest of the house has been
+    cleaned. No one moved the slippers.
+  tags: [aftermath, objects, domestic, japanese, absence]
+
+- id: image-ma-da-river
+  type: image
+  content: >
+    A woman stands at the edge of a river at dusk. She has been standing
+    there since 1986. She is waiting for someone to enter the water. She
+    has approached five people over forty years — a swimmer, a child
+    near the bank, a drunk man, two others. Each time she stopped
+    herself. She cannot leave until someone takes her place. She is not
+    particularly evil. She is also not particularly willing to do what
+    she has to do.
+  tags: [replacement, waiting, river, Vietnamese, moral-weight]
+
+- id: image-manananggal-dawn
+  type: image
+  content: >
+    A woman finds her neighbor's lower torso standing upright in the
+    garden at 4:47 AM. She knows what it is. She has lived next door for
+    four years. She has salt in the kitchen. She has approximately forty
+    minutes until sunrise, at which point the upper half returns and the
+    creature recombines. The entire story is the duration of her
+    decision.
+  tags: [body, dawn, decision, Filipino, neighbor, timer]
+
+- id: image-dokkaebi-apartment
+  type: image
+  content: >
+    An apartment building where three generations of one family lived
+    and died has produced something. It is not malevolent — it genuinely
+    wants what it saw the family want across sixty years. But what it
+    wants for the current resident, the great-granddaughter, is the life
+    her great-grandmother never had. Not the life she chose for herself.
+    The building is trying to course-correct sixty years of deferred
+    desire, and it will not stop helping.
+  tags: [Korean, dokkaebi, desire, inheritance, building, help-as-horror]
+
 # ============================================================
 # compression
 # ============================================================
@@ -1518,6 +1982,71 @@
     sentence.
   tags: [expertise, dosage, palace, pharmacology, agency, manga]
 
+- id: compression-voicemail-active
+  type: compression
+  content: >
+    A man keeps his dead wife's voicemail greeting active. Not to hear
+    her voice — he can't bear to listen to it. He keeps it because the
+    pharmacy, the dentist's office, and the library still call and leave
+    her messages, and these are the last places in the world that don't
+    know.
+  tags: [asymmetry, mundane-persistence, information-gap, kishōtenketsu]
+
+- id: compression-mothers-word
+  type: compression
+  content: >
+    A story about a woman who realizes her mother is old — not from
+    illness, not from a fall, not from forgetting a name. Her mother
+    asked her what a word meant. Her mother — who taught her every
+    word she knows, who was the source of language itself — asked her
+    daughter to explain a word.
+  tags: [family, language, inversion, aging, recontextualization]
+
+- id: compression-wall-television
+  type: compression
+  content: >
+    Two people share an apartment wall for nineteen years without
+    meeting. Each knows the other only as a schedule of sounds — the
+    television, the kettle, the footsteps that pause at the window.
+    After one dies, the other keeps hearing the television for three
+    days before the silence arrives.
+  tags: [proximity, absence, sound, recognition-after, kishōtenketsu]
+
+- id: compression-borrowed-existence
+  type: compression
+  content: >
+    Something that has no metabolism, no energy, no ability to do
+    anything life requires — and is alive. Its existence is a debt held
+    open in the body of its host.
+  tags: [parasitism, dependency, existence, debt]
+
+- id: compression-waiting-was-the-event
+  type: compression
+  content: >
+    The moment you understand that the thing you spent your life
+    preparing for already happened — while you were preparing.
+  tags: [waiting, retrospection, loss, anticipation]
+
+- id: compression-last-mechanism-fails
+  type: compression
+  content: >
+    Terminal lucidity may not be the return of the self. It may be the
+    last suppression mechanism failing — and what speaks through the
+    dying brain is not the person coming back but the awareness they
+    spent their entire life managing. The families at the bedside,
+    weeping with relief at the clarity, are witnessing not a reunion
+    but an unmasking.
+  tags: [death, clarity, suppression, consciousness, horror]
+
+- id: compression-instrument-is-obstruction
+  type: compression
+  content: >
+    We are falling at 600 kilometers per second toward something we
+    cannot see. Not because it is far away or faint, but because our
+    own galaxy — the thing that makes observation possible — is blocking
+    the view. The instrument is the obstruction.
+  tags: [cosmology, self-obstruction, observation, gravity, blindness]
+
 # ============================================================
 # collision_pair
 # ============================================================
@@ -1605,6 +2134,41 @@
     - isekai truck
     - hospice
   tags: [departure, fantasy, mortality, acceptance, absurd]
+
+- id: collision-tide-table-love-letter
+  type: collision_pair
+  content:
+    - tide table
+    - love letter
+  tags: [cyclical, intimate, measurement, impermanence, kishōtenketsu]
+
+- id: collision-grocery-receipt-elegy
+  type: collision_pair
+  content:
+    - grocery receipt
+    - elegy
+  tags: [mundane, mourning, record, daily-life, juxtaposition]
+
+- id: collision-parasitology-love-letter
+  type: collision_pair
+  content:
+    - parasitic behavioral manipulation
+    - love letter
+  tags: [desire, control, intimacy, infection, signal]
+
+- id: collision-geological-survey-lullaby
+  type: collision_pair
+  content:
+    - geological core sample log
+    - lullaby
+  tags: [deep-time, comfort, repetition, scale, bedrock]
+
+- id: collision-demolition-nursery-rhyme
+  type: collision_pair
+  content:
+    - demolition survey
+    - nursery rhyme
+  tags: [ending, beginning, institutional, innocence, structure]
 
 # ============================================================
 # anti_target
@@ -1820,195 +2384,6 @@
     they shouldn't have, and you are a piece on their board.
   tags: [regression, observation, manipulation, outsider, manhwa]
 
-# ============================================================
-# kishōtenketsu-inspired
-# Meaning through arrangement, not argument.
-# ============================================================
-
-# --- real_world ---
-
-- id: rw-ozu-pillow-shots
-  type: real_world
-  content: >
-    Yasujirō Ozu punctuated his films with "pillow shots" — a vase, an
-    empty corridor, laundry on a line — inserted between scenes with no
-    narrative function. They don't advance plot or symbolize anything.
-    Scholars have spent decades arguing what they mean. Ozu never
-    explained. Asked about the vase in Late Spring, he talked about
-    duration, not meaning.
-  source: "Bordwell, Ozu and the Poetics of Cinema, 1988; Schrader, Transcendental Style in Film, 1972"
-  tags: [cinema, negative-space, juxtaposition, attention, ozu, kishōtenketsu]
-
-- id: rw-nintendo-invisible-teaching
-  type: real_world
-  content: >
-    In the most celebrated Super Mario levels, the moment where the
-    player grasps a new concept occurs in a space with no enemies, no
-    timer pressure, no penalty. The challenge comes after understanding,
-    never during it. The designer's entire craft is arranging conditions
-    so the player has the experience of insight — and believes they
-    arrived at it alone. Hundreds of millions of people have been taught
-    by this structure. None of them knew they were being taught.
-  source: "Miyamoto design philosophy; Koizumi, GDC 2007; Game Maker's Toolkit analysis of World 1-1"
-  tags: [game-design, invisible-architecture, teaching, arrangement, kishōtenketsu]
-
-# --- thought_experiment ---
-
-- id: te-peripheral-life
-  type: thought_experiment
-  content: >
-    You are given the ability to replay any moment of your life, but
-    only the parts you weren't paying attention to. The background of
-    every scene. The faces you didn't look at. The sounds you filtered
-    out. The person standing behind you while you were proposing. The
-    weather on the day you were fired. The expression on your child's
-    face while you were looking at your phone. You discover that the
-    story of your life, told only through what you ignored, is a
-    different story entirely — and a more coherent one. The foreground
-    was noise. The periphery was the plot. You were the background
-    character in the most important moments of your own life.
-  tags: [attention, periphery, kishōtenketsu, recontextualization, self]
-
-# --- dilemma ---
-
-- id: dilemma-retroactive-understanding
-  type: dilemma
-  content: >
-    A woman finally understands why her mother left the family thirty
-    years ago. The understanding came not through confession or
-    confrontation but through a stranger's offhand remark in a shop
-    that made three decades of silence click into place. She now has the
-    answer she spent her life wanting. Telling her siblings would give
-    them the same peace. But the answer requires them to see their
-    father — who is dying, who they love — as someone other than who
-    they believe him to be.
-  tags: [recontextualization, family, silence, meaning, kishōtenketsu]
-
-# --- constraint ---
-
-- id: constraint-reader-only-pivot
-  type: constraint
-  content: >
-    The pivotal moment of the story must be noticed only by the reader,
-    never by any character. No character realizes what has shifted. No
-    character remarks on it. The reader sees it because the arrangement
-    of scenes makes it visible.
-  tags: [structural, reader-work, arrangement, kishōtenketsu]
-
-- id: constraint-pillow-shot
-  type: constraint
-  content: >
-    The story must contain one paragraph of sustained attention to a
-    single ordinary object or scene. No character is present. No action
-    occurs. No metaphor is intended. This paragraph is placed between
-    two scenes. No subsequent text may reference or acknowledge what
-    was described in it.
-  tags: [negative-space, attention, ozu, restraint, kishōtenketsu]
-
-- id: constraint-contentment
-  type: constraint
-  content: >
-    Every named character is genuinely content with their life. Not
-    performing contentment, not suppressing pain — actually satisfied.
-    No character wants something they lack. The story must produce in
-    the reader an emotion that no character in the story feels.
-  tags: [no-conflict, contentment, reader-gap, kishōtenketsu]
-
-- id: constraint-four-panel
-  type: constraint
-  content: >
-    The story has exactly four sections. The first two share characters
-    and setting. The third shares nothing visible with the first two —
-    different people, different place, different register. The fourth
-    section is one sentence. That sentence makes all three previous
-    sections feel like they were always the same story.
-  tags: [yonkoma, structural, juxtaposition, compression, kishōtenketsu]
-
-# --- compression ---
-
-- id: compression-voicemail-active
-  type: compression
-  content: >
-    A man keeps his dead wife's voicemail greeting active. Not to hear
-    her voice — he can't bear to listen to it. He keeps it because the
-    pharmacy, the dentist's office, and the library still call and leave
-    her messages, and these are the last places in the world that don't
-    know.
-  tags: [asymmetry, mundane-persistence, information-gap, kishōtenketsu]
-
-- id: compression-mothers-word
-  type: compression
-  content: >
-    A story about a woman who realizes her mother is old — not from
-    illness, not from a fall, not from forgetting a name. Her mother
-    asked her what a word meant. Her mother — who taught her every
-    word she knows, who was the source of language itself — asked her
-    daughter to explain a word.
-  tags: [family, language, inversion, aging, recontextualization]
-
-- id: compression-wall-television
-  type: compression
-  content: >
-    Two people share an apartment wall for nineteen years without
-    meeting. Each knows the other only as a schedule of sounds — the
-    television, the kettle, the footsteps that pause at the window.
-    After one dies, the other keeps hearing the television for three
-    days before the silence arrives.
-  tags: [proximity, absence, sound, recognition-after, kishōtenketsu]
-
-# --- image ---
-
-- id: image-plant-names
-  type: image
-  content: >
-    A woman waters houseplants in a bright apartment. Each pot is labeled
-    with a strip of tape bearing a name and a date. The names are not
-    plant names. The dates are all in the past.
-  tags: [care, memorial, labels, domestic, ambiguity]
-
-- id: image-barber-gray-strand
-  type: image
-  content: >
-    A barber sweeps his shop floor at closing time. Among the dark hair
-    he finds a single gray strand. He picks it up and puts it in his
-    wallet.
-  tags: [ritual, specificity, tenderness, unexplained]
-
-- id: image-cradling-nothing
-  type: image
-  content: >
-    On a night train, a young mother holds a sleeping infant against
-    her shoulder. Across the aisle, an older woman sits with her arms
-    arranged in exactly the same position, cradling nothing. She is
-    looking out the window.
-  tags: [mirroring, absence, body-memory, motherhood, trains]
-
-- id: image-slippers-entrance
-  type: image
-  content: >
-    A house after a funeral, tidied, everyone gone home. A single pair
-    of worn slippers sits at the genkan. The rest of the house has been
-    cleaned. No one moved the slippers.
-  tags: [aftermath, objects, domestic, japanese, absence]
-
-# --- collision_pair ---
-
-- id: collision-tide-table-love-letter
-  type: collision_pair
-  content:
-    - tide table
-    - love letter
-  tags: [cyclical, intimate, measurement, impermanence, kishōtenketsu]
-
-- id: collision-grocery-receipt-elegy
-  type: collision_pair
-  content:
-    - grocery receipt
-    - elegy
-  tags: [mundane, mourning, record, daily-life, juxtaposition]
-
-# --- anti_target ---
-
 - id: anti-conflict-equals-story
   type: anti_target
   content: >
@@ -2024,3 +2399,82 @@
     characters. It is between the story the characters think they are
     in and the story the reader can see.
   tags: [no-conflict, kishōtenketsu, western-default, desire, revelation]
+
+- id: anti-vocabulary-as-horror
+  type: anti_target
+  content: >
+    PATTERN: Lovecraftian vocabulary-as-horror (the story loads up on
+    'eldritch,' 'cyclopean,' 'non-Euclidean,' 'gibbous,' 'squamous,'
+    treating genre-marker terms as horror-producing agents — announcing
+    wrongness instead of generating it). SUBVERSION: The wrongness lives
+    in the precision of a wrong technical detail, not the vagueness of
+    an archaic adjective. A relay switch clicks at an interval outside
+    its specification. A furnace operator logs a temperature differential
+    that shouldn't exist. A locomotive arrives from a route it didn't
+    take. The prose register is investigative and bureaucratic. When the
+    uncanny appears, it appears as a deviation from specification —
+    which is more disturbing than 'eldritch' because the reader knows
+    what the specification should be.
+  tags: [vocabulary, precision, industrial-uncanny, Grabinski, specification]
+
+- id: anti-madness-resolution
+  type: anti_target
+  content: >
+    PATTERN: Protagonist witnesses cosmic truth and goes insane (the
+    narrative resolves by incapacitating the witness — madness as
+    curtain drawn over the encounter, claiming intensity the prose
+    didn't generate). SUBVERSION: The protagonist does not go mad. They
+    encounter something structurally inexplicable, and they continue.
+    The story ends mid-experience — the reader is set down in the
+    middle of something with no shape. The protagonist goes home, or
+    back to work, and the story simply stops. The horror is that
+    ordinary life continues despite what happened. The reader carries
+    the unresolved encounter because the text refuses to provide the
+    endpoint that would let them put it down.
+  tags: [resolution, non-closure, continuation, Aickman, unresolved]
+
+- id: anti-forbidden-tome
+  type: anti_target
+  content: >
+    PATTERN: Character finds a forbidden text which functions as the
+    mechanism that cracks open reality (horror as vending machine —
+    insert token of knowledge, receive madness). SUBVERSION: The horror
+    isn't found in a text. It's what's there when all the texts are
+    closed and the lights are off and you can't sleep. The story's
+    mechanism is not reading but stopping. A character in enforced
+    stillness — illness, insomnia, waiting — becomes aware of something
+    that has always been present behind the furniture of experience.
+    There is no book that caused it. It can't be un-caused. There is
+    no before.
+  tags: [il-y-a, insomnia, stillness, Levinas, always-already]
+
+- id: anti-monster-reveal
+  type: anti_target
+  content: >
+    PATTERN: The story's climax is the visual description of the
+    entity — we finally see what the horror is (naming and typing the
+    horror domesticates it into a known unknown). SUBVERSION: The entity
+    is not somewhere else. It is in things you already know, but wrong.
+    A houseguest whose presence erodes the house. A familiar person
+    running on different logic. The story never shows you what the thing
+    is. It shows you the effects — the fold in space, the
+    juxtaposition — and the entity remains structurally outside the
+    narrative frame. The horror is not the thing itself but what happens
+    to the ordinary when something larger is bleeding through.
+  tags: [entity, effects, diminished-gods, Jean-Ray, familiar-wrongness]
+
+- id: anti-scientific-hubris
+  type: anti_target
+  content: >
+    PATTERN: Science and curiosity cause the disaster — the researcher
+    who 'went too far,' awakening something that should have stayed
+    dormant (the cosmos secretly a punishing parent enforcing a
+    prohibition). SUBVERSION: The horror has nothing to do with what
+    the protagonist did or didn't do. No transgression caused it. No
+    containment can address it. The disaster has already happened — not
+    in the past but retroactively. The extinction is a fact that the
+    present moment is in the process of catching up to. The cosmic
+    horror is not that we did something wrong; it is that the universe's
+    timeline has a different relationship to our present than we
+    assumed. We are historical already.
+  tags: [hubris, retroactivity, Brassier, extinction, unconditional]
