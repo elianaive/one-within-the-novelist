@@ -50,6 +50,10 @@ def main():
             datefmt="%H:%M:%S",
         )
 
+    # Suppress asyncio "Event loop is closed" errors at shutdown — httpx clients
+    # try to close connections after the loop is gone. Not actionable.
+    logging.getLogger("asyncio").setLevel(logging.CRITICAL)
+
     runner = ConceptEvolutionRunner(
         config_path=args.config,
         verbose=verbose,
