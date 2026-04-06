@@ -1,18 +1,18 @@
-# Rubric Anchors: 10 Resonance Dimensions
+# Rubric Anchors: 10 Resonance Dimensions (Prose Stages)
 
-Full score-level descriptions for all 10 resonance dimensions. Judges receive
-these anchors in their evaluation prompts. Each dimension has explicit
-descriptions for scores 1 through 5.
+Full score-level descriptions for the 10 prose-stage resonance dimensions. These
+apply to Stages 3-5 where finished prose is evaluated. Stage 1 concept evaluation
+uses a different set of 9 dimensions with sub-criteria decomposition and pairwise
+comparison — see `owtn/prompts/stage_1/rubric_anchors.txt`.
 
 The anchors are grounded in cognitive science research (cited per dimension) and
 calibrated against Prometheus 2's rubric format, which achieves 0.897 Pearson
 correlation with human evaluators when using criterion-specific per-score
 descriptions.
 
-These are the **shared baseline dimensions** used across all stages. Individual
-stages may add stage-specific dimensions (e.g., Stage 1 adds "generative
-fertility"; Stage 4 adds "voice adherence") but cannot remove or redefine these
-10.
+These are the **shared baseline dimensions** for prose stages. Individual
+stages may add stage-specific dimensions (e.g., Stage 4 adds "voice adherence")
+but cannot remove or redefine these 10.
 
 ---
 
@@ -209,9 +209,9 @@ PNAS 2025) measures plot uniqueness.
 Not all dimensions are equally relevant to all stories or all stages. The 10
 dimensions are the **baseline vocabulary**, not a mandatory checklist:
 
-- **Stage 1 (Concept):** Evaluates *potential* for these dimensions, not
-  achievement. A concept scores high on "suspense architecture" if the premise
-  supports effective tension management, not because tension is already present.
+- **Stage 1 (Concept):** Uses a different set of 9 dimensions with sub-criteria
+  decomposition and pairwise comparison. See `owtn/prompts/stage_1/rubric_anchors.txt`.
+  The 10 dimensions below do not apply to concept evaluation.
 - **Stage 3 (Voice):** Only dimensions 1, 9, and 10 are primary (transportation,
   flow, distinctiveness). Suspense and emotional arc depend on content, not voice.
 - **Stage 4 (Prose):** All dimensions at play. This is where the full rubric

@@ -63,295 +63,181 @@ where the real selection pressure lives.
 
 ---
 
-## Core Evaluation Dimensions
+## Evaluation Dimensions
 
-Nine dimensions, each grounded in research on what predicts successful stories.
-Not all dimensions are equally relevant to every concept — the dynamic rubric
-system (inherited from the judging architecture) adjusts weights based on concept
-type.
+Nine dimensions compared via pairwise voting. Each has 2-4 observable
+sub-criteria that require judges to cite specific evidence from the concept
+text. Full sub-criteria with literary exemplars are in
+`owtn/prompts/stage_1/rubric_anchors.txt`.
 
-### 1. Originality (Novelty Assessment)
+### 1. Novelty
 
-*Is this a premise we haven't seen? Would an LLM naturally converge on this?*
+*Is this premise genuinely new, and does it resist AI convergence patterns?*
 
-**Assessment methods:**
+Merges the former Originality and Anti-Cliche dimensions. Sub-criteria: **domain
+crossing** (does the concept combine conventionally unpaired domains?),
+**convergence distance** (does it avoid or subvert the 10 known AI convergence
+patterns?), **generative surprise** (would different writers produce different
+stories from this premise?).
 
-- **Sui Generis scoring** (computable pre-check): Generate 5-10 quick plot
-  sketches from the concept using different LLMs. Measure convergence — how
-  many sketches land on the same basic plot? Human concepts produce diverse
-  sketches (Sui Generis ~13+); LLM-convergent concepts produce uniform sketches
-  (Sui Generis ~6-7). High convergence = the concept is "too obvious."
-  (Xu et al., PNAS 2025)
+Grounded in: Sui Generis score (Xu et al., PNAS 2025), AI uncertainty gap (Sui,
+ICML 2026), Boden's creativity framework.
 
-- **Embedding distance** from existing archive members. ShinkaEvolve's novelty
-  system provides this — concepts that are too similar to existing archive
-  occupants are less valuable even if individually strong.
+### 2. Grip
 
-- **Judge panel assessment:** Each judge is asked directly: "Have you encountered
-  this premise before? In published fiction? In AI-generated fiction? What
-  specifically is different here?" Forced articulation of novelty (or lack
-  thereof) produces better calibrated scores than a simple 0-5 rating.
+*Does this concept contain the engine to pull a reader in and not let go?*
 
-**Grounded in:** Echoes-in-AI (Xu et al., Microsoft, PNAS 2025) — LLM plots
-converge at 6-7x the rate of human plots. AI uncertainty gap (Sui, ICML 2026) —
-human writing is 2-4x more informationally surprising.
+Sub-criteria: **the thing you can't look away from** (a concretization — something
+abstract made visible and undeniable, like Kafka's insect or Jackson's stones),
+**emotional stakes** (something specific at risk), **sensory seed** (at least one
+concrete, visible scene).
 
-### 2. Emotional Potential (Transportation Potential)
+Grounded in: Green & Brock's transportation theory (2000), Kahneman's peak-end
+rule, Gardner's "vivid and continuous dream."
 
-*Does this concept contain the energy for a story that grips the reader?*
+### 3. Tension Architecture
 
-**Assessment using Green & Brock's three components:**
+*Does the concept create inherent pull-forward force?*
 
-- **Cognitive absorption potential:** Is there enough complexity, mystery, or
-  intellectual interest to sustain focused attention? A concept that can be fully
-  understood in one sentence may lack the depth to sustain transportation.
+Sub-criteria: **suspense** (uncertain outcome for someone the reader invests in),
+**information architecture** (withheld information — distinguishing resolvable
+gaps that the story will answer from permanent gaps the story structurally refuses
+to resolve), **reframing potential** (structural room for a revelation that
+changes how the reader understands prior events).
 
-- **Affective involvement potential:** Are there emotional stakes — something to
-  care about, fear, hope for, grieve? The stakes don't have to be dramatic; the
-  ache of a small loss can be as transporting as apocalyptic danger.
+Grounded in: Brewer & Lichtenstein (1982), Loewenstein's information-gap theory,
+Schulz et al. (2024) narrative entropy, Zillmann's excitation transfer.
 
-- **Vivid imagery potential:** Can the reader *see* this? Does the concept
-  suggest concrete, sensory scenes? Abstract concepts need grounding in specific
-  images to produce transportation.
+### 4. Emotional Depth
 
-**Target effect clarity:** Is the declared unity of effect specific enough to be
-useful? "Sadness" is too vague. "The ache of knowing something beautiful is
-temporary" is specific enough to guide all downstream decisions. Judges evaluate
-whether the target effect is achievable and whether the premise naturally builds
-toward it.
+*Does this concept have the capacity for genuine, complex feeling?*
 
-**Peak-end potential:** Does the concept have a natural climax moment? A natural
-ending? Kahneman's peak-end rule means stories are remembered by their peaks and
-endings — a concept that suggests a powerful peak-end structure has higher
-transportation potential.
+Separated from Grip because they measure different things — a thriller can grip
+without depth; a literary meditation can have depth without grip.
 
-**Grounded in:** Transportation theory (Green & Brock, 2000; Green & Appel,
-2024). Peak-end rule (Kahneman et al., 1993). Emotional peaks and memory (Leong
-et al., Nature Human Behaviour 2025).
+Sub-criteria: **recognition** (does the target effect name a feeling the reader
+will recognize — "oh, that's what that is"?), **emotional complexity**
+(contradictory or layered feelings), **emotional source** (where does the feeling
+come from — character, situation, voice, structural constraint — and is it
+load-bearing?), **implication** (does reading the story mirror something within
+the story, so the reader is participating, not just observing?).
 
-### 3. Narrative Tension (Suspense / Curiosity / Surprise Decomposition)
+Grounded in: paradox of fiction (Radford 1975), Psychological Depth Scale
+(EMNLP 2024).
 
-*Does the concept create inherent tension that pulls the reader forward?*
+### 5. Thematic Resonance
 
-The information theory research (Schulz et al., 2024) shows that suspense,
-curiosity, and surprise are computationally distinguishable — they arise from
-different relationships between the reader's knowledge and the story's events.
-A concept should support at least one:
+*Does this connect to something universal that resists easy answers?*
 
-- **Suspense potential:** Does the concept involve uncertain outcomes for entities
-  the reader might care about? "A woman defuses a bomb" has suspense. "A woman
-  remembers defusing a bomb" has less. Suspense requires uncertainty about what
-  will happen next.
+Sub-criteria: **question vs. message** (does the concept pose a genuine dilemma
+where both sides have weight, or deliver a position?), **embeddedness** (is the
+thematic concern inseparable from the premise, or could you swap in a different
+theme without changing the story?).
 
-- **Curiosity potential:** Does the concept create information gaps — things the
-  reader wants to know? "A town's annual tradition" creates curiosity about what
-  the tradition is. Curiosity is epistemic (understanding), not teleological
-  (outcome). It's the "page-turner" quality.
+### 6. Concept Coherence
 
-- **Surprise potential:** Does the concept have room for revelations that reframe
-  prior events? "The lottery winner is actually being sentenced to death" is a
-  surprise that recontextualizes everything. The ideal: low predictability + high
-  post-dictability (unexpected but, in retrospect, inevitable).
+*Do the genome's elements work as a system?*
 
-A concept doesn't need all three. A voice-constraint piece ("Hills Like White
-Elephants") runs almost entirely on curiosity. A thriller runs on suspense. A
-reveal story runs on surprise. But it should strongly support at least one.
+Sub-criteria: **load-bearing elements** (would removing each major element make
+the concept generic or broken?), **surface/depth architecture** (the highest form
+of productive tension is structural irony — the surface tells one story while the
+depth tells another, and the reader holds both).
 
-**Grounded in:** Information-theoretic model of narrative (Schulz et al., 2024).
-Bayesian surprise (Kumar et al., Cognitive Science 2023; Chen & Bornstein, Trends
-in Cognitive Sciences, 2024). Narrative surprise operationalization (Bissell et
-al., WNU @ ACL 2025).
+Grounded in: Chen & Bornstein (Trends in Cognitive Sciences, 2024) — causally
+central elements are rated more important and better recalled.
 
-### 4. Thematic Resonance
-
-*Does this concept connect to something that matters?*
-
-- Does the thematic tension (if specified) connect to something universal — a
-  dilemma that real people face, a question that doesn't have an easy answer?
-- Does the concept resist simple resolution? The best themes are tensions, not
-  answers. "Freedom vs. security" is a theme; "freedom is good" is a message.
-- Is the thematic concern embedded in the premise rather than bolted on? A
-  concept where the theme emerges naturally from the situation is stronger than
-  one where the theme is stated separately.
-
-### 5. Scope Calibration (Feasibility)
-
-*Can this concept produce a satisfying story in the target word count?*
-
-More specific than generic "feasibility":
-
-- A concept requiring extensive worldbuilding may be infeasible at 1,000 words
-  but ideal at 8,000
-- A concept that's essentially one moment may be perfect at 500 words but
-  unsustainable at 5,000
-- A concept with multiple characters, locations, and time periods may need 8,000+
-  words to breathe
-
-The evaluation considers the concept's *natural scope* — the word count range
-where it could work — and compares it to the target. Mismatches aren't fatal
-(compression and expansion are possible) but are a risk signal.
-
-### 6. Anti-Cliche Score
-
-*Does this concept avoid known AI convergence patterns?*
-
-This dimension reflects the Gate 2 pre-check but adds the judge panel's
-qualitative assessment. Judges evaluate:
-
-- Does this premise feel like something an AI would generate? (Not just "is it
-  a known pattern?" but "does it have the *flavor* of AI fiction?")
-- If it maps to a known pattern, does it subvert it meaningfully?
-- Does it avoid the AI fiction failure modes: sanitized conflict, moral clarity,
-  neat resolution, performed emotion?
-
-Stored in `private_metrics` — hidden from the mutation LLM to prevent gaming.
-The system shouldn't learn to *describe* novelty without *being* novel.
-
-**Known convergence patterns:**
-
-| Pattern | Description | What Makes It Cliche |
-|---------|-------------|---------------------|
-| Reconciliation arc | Protagonist returns to hometown/family, confronts past, reconciles | Most overrepresented LLM plot shape |
-| Grief meditation | Dead loved one (often spouse), protagonist processes loss through metaphorical journey | LLMs default to grief as "literary" emotion |
-| The chosen one | Protagonist discovers special abilities/destiny | Inherited from training on genre fiction |
-| AI consciousness | AI becomes sentient, questions existence | Extreme self-reference frequency in LLMs |
-| Sanitized conflict | Conflict with no real stakes, no one gets hurt, clean resolution | RLHF safety training suppresses darkness |
-| Epistolary revelation | Found letters/messages/recordings reveal hidden truth | Convenient exposition disguised as narrative |
-| Time loop lesson | Protagonist repeats day/event, learns to be a better person | Mechanistic structure easily optimized |
-| Magical realism metaphor | Literal manifestation of emotional state (grief becomes weather, loneliness becomes invisibility) | LLMs map emotion→metaphor reflexively |
-| Moral clarity | Good and evil are obvious, virtue is rewarded, evil is punished | RLHF preferences for prosocial outcomes |
-| Small-town secret | Idyllic community hides dark truth | AI version lacks the specificity that makes Jackson's "Lottery" work |
-
-These aren't bad premises. Jackson's "The Lottery" IS a small-town secret.
-Chiang's "Story of Your Life" IS a grief meditation. The difference is
-specificity, subversion, and execution. The anti-cliche score measures whether
-a concept that maps to a known pattern brings enough novelty to justify the
-familiar territory.
-
-### 7. Concept Coherence
-
-*Do the genome's elements work together?*
-
-- A comedic premise + devastating target effect = potentially brilliant dark
-  comedy, or potentially incoherent. Judges evaluate which.
-- A spare constraint + rich character seeds = possibly inspired tension, or
-  possibly confused about what it's trying to be
-- Multiple incompatible style hints = might be avant-garde or might be a mess
-
-The key question: do the elements create *productive* tension or *contradictory*
-signals? Productive tension is a feature — the genome's internal friction can
-drive the story. Contradiction is a weakness — the elements fight each other
-rather than creating something.
-
-### 8. Generative Fertility
+### 7. Generative Fertility
 
 *Does this concept suggest multiple possible stories, or only one obvious
 execution?*
 
-High-fertility concepts are better evolutionary starting points because they give
-Stage 2 more room to explore structure variants. A concept that implies a single
-obvious plot is lower-value than one that could go in several surprising
-directions.
+Sub-criteria: **execution diversity** (can you sketch 3 meaningfully different
+stories from this premise?), **generative principle vs. situation** (does the
+concept contain an engine that produces possibilities, or just a single
+scenario?).
 
-**Assessment method:** Generate 3 brief plot sketches from the concept. If all
-three converge on the same basic plot, fertility is low. If they diverge into
-genuinely different stories, fertility is high.
+### 8. Scope Calibration
 
-This is related to but distinct from originality. A concept can be highly original
-(no one has done this before) but low fertility (there's only one way to do it).
-The ideal: original AND fertile.
+*Can this produce a satisfying story in ~1,000-8,000 words?*
 
-### 9. Resistance to Over-Explanation
+Sub-criteria: **natural size** (count the characters, locations, time periods,
+complexity layers — does the quantity fit?), **constraint as compression** (do the
+concept's constraints help scope by forcing economy, or hurt it by requiring
+elaborate setup?).
 
-*Does this concept inherently invite or resist exposition?*
+### 9. Indelibility
 
-The #1 fiction anti-pattern identified by Nous Research is over-explanation: the
-narrator explains what a scene already showed. Some concepts inherently invite
-this problem:
+*Would this concept stick in a reader's mind?*
 
-- Complex speculative premises that need exposition to make sense
-- Multiple layers of backstory required for the situation to work
-- High concept density that tempts the writer to explain rather than dramatize
+Sub-criteria: **indelible image** (at least one scene vivid and emotionally
+charged enough to persist in memory), **the irreducible remainder** (something
+the mind cannot metabolize or file away — a permanent gap, an unresolvable
+tension), **silhouette** (does the concept have an irreducible shape that
+survives memory's compression? Would you recognize it years later if something
+reminded you of it?).
 
-Other concepts inherently resist it:
+Grounded in: story superiority effect (Mar et al., N>33,000), emotional peaks
+drive memory (Leong et al., Nature Human Behaviour 2025), Kahneman's peak-end
+rule.
 
-- "Two people at a train station" — nothing to explain, only subtext
-- "A woman walks into a room and everything changes" — the change must be shown
-- Constraint-driven concepts where the constraint forbids explanation
+### Known AI Convergence Patterns
 
-This dimension is a signal, not a hard filter. Some high-exposition concepts are
-worth the risk (Chiang makes it work brilliantly). But concepts that resist
-over-explanation tend to produce better prose downstream because the LLM can't
-fall back on its strongest bad habit.
+These 10 patterns are checked in the Novelty dimension's convergence distance
+sub-criterion. A concept mapping to a known pattern can still score well on
+Novelty if it subverts the pattern with enough specificity.
+
+| Pattern | What Makes It Cliche |
+|---------|---------------------|
+| Reconciliation arc | Most overrepresented LLM plot shape |
+| Grief meditation | LLMs default to grief as "literary" emotion |
+| The chosen one | Inherited from training on genre fiction |
+| AI consciousness | Extreme self-reference frequency in LLMs |
+| Sanitized conflict | RLHF safety training suppresses darkness |
+| Epistolary revelation | Convenient exposition disguised as narrative |
+| Time loop lesson | Mechanistic structure easily optimized |
+| Magical realism metaphor | LLMs map emotion→metaphor reflexively |
+| Moral clarity | RLHF preferences for prosocial outcomes |
+| Small-town secret | AI version lacks specificity that makes Jackson's "Lottery" work |
 
 ---
 
-## Scoring Mechanics
+## Selection Mechanics
 
-### Holder Mean Within Judge
+> **Note:** This section was rewritten in April 2026 to reflect the shift from
+> pointwise scoring to pairwise comparison. See `docs/CHANGELOG.md` for context.
 
-Each judge scores the concept across applicable dimensions (0-5 scale). The
-within-judge aggregate uses the Holder mean with parameter p ~ 0.3-0.5:
+### Pairwise Comparison, Not Pointwise Scoring
 
-```
-holder_mean = (sum(score_i^p) / n)^(1/p)
-```
+Concepts are not scored individually. Each new concept is compared head-to-head
+against its island's current champion via a 3-judge panel. Each judge evaluates
+both concepts on all 9 dimensions independently, picking a winner per dimension.
+Position bias is mitigated by running each comparison in both orderings — if a
+judge picks a different winner when the order is swapped, that vote is discarded.
 
-This acts as a **soft minimum**: weaknesses drag the score down more than
-strengths compensate. A concept that scores 5/5 on originality but 1/5 on
-coherence will score much lower than a concept that scores 3/5 on everything.
-This matches how concepts actually work — a fatal flaw in one dimension (e.g.,
-the premise makes no sense) isn't rescued by strength in another.
+The overall winner is the concept that wins the most dimensions across all judges.
+Score = win percentage: `(dimension_wins + 0.5 * ties) / 9`.
 
-The Holder mean is stored as `combined_score` in ShinkaEvolve — the primary
-fitness signal for selection.
+**Why not pointwise?** Absolute LLM scoring compresses all AI concepts into a
+0.3-point band (4.5-4.8 on a 0-5 scale) regardless of rubric design, calibration
+instructions, or harshness settings. The leniency bias is structural (RLHF), not
+fixable by prompt engineering. Pairwise comparison discriminates where scoring
+cannot — EQ-Bench switched to pairwise for exactly this reason.
 
-### Per-Dimension Scores
+### Mutation Feedback
 
-Individual dimension scores are stored in `public_metrics` — visible to the
-mutation LLM in future generations. This gives operators targeted feedback: "this
-concept scored high on originality but low on feasibility" tells the mutation
-operator exactly what to fix.
+The pairwise comparison reasoning is the mutation feedback. The mutation model
+sees which dimensions the champion beat the challenger on and why — directly
+actionable for the next generation. No per-dimension scores, just comparative
+judgment: "A wins on novelty because it crosses marine biology with courtroom
+procedure, while B stays within familiar literary territory."
 
-### Judge Reasoning Chains
+### Rubric Sub-Criteria
 
-The most valuable output of concept evaluation is the reasoning chain — the
-judge's natural-language explanation of why the concept works or doesn't. These
-are stored in `text_feedback` and fed to mutation operators as context.
-
-Reasoning chains serve multiple purposes:
-- Guide mutation: "The premise is strong but the target effect is too vague" →
-  the operator knows to sharpen the target effect
-- Inform Stage 2: "This concept's strength is its reveal potential" → structure
-  evolution emphasizes disclosure edges
-- Build episodic memory: chains that explain failures feed the compost heap and
-  anti-cliche system
-- Calibrate the system: reasoning chains are human-readable audit trails
-
-### Chain-of-Thought Before Scoring
-
-Judges must articulate their reasoning *before* assigning scores. This increases
-reliability (Prometheus 2 achieves 0.897 Pearson correlation with humans using
-rubric + CoT) and produces the reasoning chains that downstream stages consume.
-
-### Rubric Anchors
-
-Each dimension has explicit per-score descriptions (what a 1 looks like, what a 3
-looks like, what a 5 looks like). These reduce arbitrary variance between judges
-and across evaluation rounds:
-
-**Example for Originality:**
-- **1/5:** Premise is a well-known trope executed without subversion. "A detective
-  solves a murder." "A young person discovers they have magical powers."
-- **3/5:** Premise has a fresh angle on familiar territory, or combines known
-  elements in an unusual way. The core idea isn't new, but the specific execution
-  suggests novelty.
-- **5/5:** Premise surprises. The evaluator hasn't seen this specific combination
-  of elements, or the subversion of expectations is genuinely unexpected. Reading
-  this concept changes how the evaluator thinks about what's possible.
-
-(Full rubric anchors for all dimensions to be developed during calibration against
-HANNA and LitBench datasets.)
+Each dimension has 2-4 observable sub-criteria that structure the judge's
+comparison. Endpoint-only anchors (scores 1 and 5 described; 2-4 are
+interpolations). Every sub-criterion requires the judge to "name it" — cite
+specific evidence from the concept text. Full sub-criteria in
+`owtn/prompts/stage_1/rubric_anchors.txt`.
 
 ---
 
@@ -384,21 +270,14 @@ operates at the concept stage, but evaluating potential rather than execution:
 - **0-5 grading scale** (ICC = 0.853 vs 0.805 for 0-10). Reliable for the
   subjective, open-ended task of concept evaluation.
 
-### The Disagreement Signal
+### Pairwise Voting as Disagreement Signal
 
-Track both mean score and variance across the panel:
-
-- **High mean + low variance:** Broadly competent concept. Possibly safe/generic.
-- **High mean + high variance:** Some judges love it, some hate it. This concept
-  is doing something *bold*. It gets a diversity bonus in selection.
-- **Low mean + high variance:** Might be flawed in ways some judges forgive.
-  Worth investigating, not automatically advancing.
-- **Low mean + low variance:** Consensus: this doesn't work. Eliminate.
-
-The diversity bonus for high-variance concepts explicitly protects bold,
-polarizing ideas from being ground down to consensus mediocrity. This is critical
-at the concept stage — safe, broadly-appealing concepts produce safe,
-broadly-appealing stories.
+With pairwise per-criteria voting, the disagreement signal is built in. A concept
+that one judge loves and two hate will lose (majority vote). But tied dimensions
+(where position bias mitigation catches a flip) preserve uncertainty — the
+dimension is genuinely close. A match with many ties (e.g., 1-0-8) means the
+concepts are hard to distinguish; a match with few ties (e.g., 8-1-0) means
+there's a clear winner.
 
 ---
 
@@ -406,22 +285,16 @@ broadly-appealing stories.
 
 For flagged concepts (those matching known convergence patterns in Gate 2):
 
-1. Evaluate normally through the full judge panel (blind — judges don't know it's
+1. Compare normally via pairwise (blind — judges don't know the concept is
    flagged)
-2. After scoring, apply the originality threshold multiplier:
-   - Unflagged concepts: advance if `combined_score > base_threshold`
-   - Flagged concepts: advance if `combined_score > base_threshold` AND
-     `originality_score > elevated_threshold`
-3. The elevated threshold should be calibrated so that ~20-30% of flagged
-   concepts can still advance (we want genuinely subversive takes on familiar
-   patterns, not a blanket ban)
-4. Store the flag and the original/elevated thresholds in `private_metrics` for
-   post-run analysis
+2. The flag is stored in `private_metrics` for post-run analysis
+3. A flagged concept that wins its pairwise comparison advances normally — the
+   pairwise comparison inherently tests whether the concept is compelling enough
+   to beat the champion despite mapping to a known pattern
 
-This means a flagged concept needs to demonstrate *specific novelty* — not just
-be generally good, but be specifically original despite mapping to a known
-pattern. Jackson's "The Lottery" would pass because its specificity and execution
-angle are genuinely novel. A generic "idyllic town hides dark secret" would not.
+Jackson's "The Lottery" would win its pairwise because its specificity and
+execution angle make it genuinely compelling. A generic "idyllic town hides dark
+secret" would lose.
 
 ---
 
@@ -449,7 +322,7 @@ recomputation if patterns are added/removed or the embedding model changes.
 | Parameter | Value | Rationale |
 |-----------|-------|-----------|
 | `base_similarity_threshold` | 0.85 | Cosine similarity above this flags the concept for elevated scrutiny. Calibrated to flag concepts that are clearly in the territory of a known pattern without catching distant thematic echoes. |
-| `elevated_originality_threshold` | 3.5 | Flagged concepts must score > 3.5/5 on the originality dimension (from the judge panel) to advance. This is above the midpoint and represents a "fresh angle" — see rubric-anchors.md score 4. |
+| `elevated_novelty_threshold` | 3.5 | Reserved for future use — with pairwise selection, flagged concepts are evaluated via head-to-head comparison, not absolute scoring. The threshold may be used if pointwise scoring is reintroduced for prose stages. |
 
 ### Calibration Notes
 
@@ -457,9 +330,5 @@ recomputation if patterns are added/removed or the embedding model changes.
   calibrated by embedding 50-100 known concept descriptions (from HANNA and
   LitBench story premises) and verifying that clearly convergent concepts are
   flagged while merely thematically related ones are not.
-- The `elevated_originality_threshold` of 3.5 targets the ~20-30% advance rate
-  for flagged concepts specified in the design. Adjust after the first full run
-  based on actual flagging rates and judge score distributions.
-- Store all threshold values in `private_metrics` for post-run tuning:
-  `anti_cliche_flag`, `anti_cliche_similarity`, `anti_cliche_matched_pattern`,
-  `originality_score`, `threshold_applied`.
+- Store threshold values in `private_metrics` for post-run tuning:
+  `anti_cliche_flag`, `anti_cliche_similarity`, `anti_cliche_matched_pattern`.

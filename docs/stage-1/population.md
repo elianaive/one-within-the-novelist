@@ -15,209 +15,104 @@ reconsidered through this lens.
 
 ## ShinkaEvolve Configuration
 
-### Recommended Parameters
+### Current Parameters
+
+See `configs/stage_1/light.yaml` for the reference configuration. Key settings:
 
 ```
 EvolutionConfig:
-  num_generations: 15-30
-  language: "json"                        # genome is structured JSON, not code
-  patch_types: ["diff", "full", "cross"]
-  patch_type_probs: [0.3, 0.4, 0.3]      # favor novel generation + blending
-  max_patch_resamples: 3
-  llm_dynamic_selection: "ucb"            # bandit selects across model families
-  evolve_prompts: true                    # co-evolve the system prompt
-  meta_rec_interval: 3-5                  # frequent strategy reflection
-  code_embed_sim_threshold: 0.88-0.92     # tighter than code (concepts cluster)
+  num_generations: 10
+  language: "json"
+  patch_types: [collision, noun_list, thought_experiment, ...]  # 11 concept operators
+  llm_dynamic_selection: "ucb"
+  code_embed_sim_threshold: 0.90
   max_novelty_attempts: 3
+  genesis_ratio: 0.2                     # 20% fresh concepts, 80% evolve parent
+  annealing:                             # temperature schedule
+    temp_early: [0.8, 0.9, 1.0]
+    temp_late: [0.5, 0.6, 0.7]
 
 DatabaseConfig:
-  num_islands: 8-12
-  archive_size: 80-120                    # ignored under map_elites strategy
-  archive_selection_strategy: "map_elites" # targeted edit (see below)
-  migration_interval: 2-3                  # frequent cross-pollination
-  migration_rate: 0.15-0.25               # concepts blend naturally
+  num_islands: 3
+  archive_size: 50
+  archive_selection_strategy: "fitness"
+  island_selection_strategy: "equal"     # balanced allocation across islands
+  migration_interval: 5
+  migration_rate: 0.15
   island_elitism: true
-  enable_dynamic_islands: true
-  stagnation_threshold: 20-30             # lower — concept generations are fast
   parent_selection_strategy: "power_law"
-  exploitation_alpha: 1.0
-  exploitation_ratio: 0.3-0.4            # draw from archive more often
 ```
 
-### Why These Differ from Code Defaults
+### Selection: Pairwise, Not Pointwise
 
-**8-12 islands (vs. 2).** Each concept candidate is cheap — a few hundred tokens
-to generate, a few judge calls to evaluate. With low per-candidate cost, running
-more parallel sub-populations is affordable and valuable. Each island naturally
-drifts toward different concept types through selection pressure, providing
-geographic diversity that's harder to achieve with fewer islands. Even without
-explicit specialization, 8-12 random islands will produce more diverse final
-archives than 2.
+Evaluation is inline (`eval_function` on `JobConfig`, no subprocess). Each new
+concept is validated (gates 1 & 2), then compared head-to-head against its
+island's champion via a 3-judge panel. The comparison is per-criteria: each judge
+evaluates both concepts on all 9 dimensions, picking a winner per dimension with
+position bias mitigation (dual orderings). Winner becomes champion;
+`combined_score` = win percentage.
 
-**15-30 generations (vs. 50).** Concept genomes are simpler than code — fewer
-interacting components, fewer ways to be "almost right." This means faster
-convergence. But the concept search space is vast and sparse — genuinely novel
-premises are rare — which rewards extended exploration. 15-30 generations
-balances faster convergence against the value of continued search. The
-meta-summarizer at intervals of 3-5 provides course correction.
+This replaced MAP-Elites (which barely fired at current generation counts — 7-9
+cells occupied out of 36 with 12 concepts per run) and pointwise scoring (which
+compressed all concepts into a 0.3-point band due to model-level leniency bias).
 
-**Migration every 2-3 generations at 15-25% rate (vs. every 10 at 0%).** Concept
-blending is natural and productive. When you take a premise from one island and
-inject it into another's population, the cross-pollination creates meaningful
-variation — unlike code, where injecting foreign code often produces syntax
-errors. Frequent, high-rate migration spreads discoveries across the archipelago
-quickly while island-level selection pressure maintains local specialization.
+### Island Model
 
-**Novelty threshold 0.88-0.92 (vs. 0.99).** Concept embeddings are denser than
-code embeddings — premises that are semantically different can still produce
-similar embeddings because they share vocabulary and structure. A concept about
-"a woman confronting her mother's legacy" and "a man confronting his father's
-legacy" might have >0.95 cosine similarity despite being narratively distinct.
-The tighter threshold catches genuine near-duplicates without rejecting
-structurally similar but narratively different concepts.
+Each island is an independent lineage with its own champion. `EqualIslandSampler`
+ensures each generation goes to the island with fewest programs, distributing
+concepts evenly. Different islands start from different seeds with different
+affective registers and literary modes, providing diversity without needing
+MAP-Elites' behavioral grid.
 
-**Patch type probs [0.3, 0.4, 0.3] (vs. [0.6, 0.3, 0.1]).** Code evolution
-favors `diff` (small modifications to working programs) because code is fragile —
-large changes usually break something. Concepts aren't fragile. A radically new
-concept (`full`) or a collision between two concepts (`cross`) is as likely to
-produce something good as a small tweak (`diff`). The rebalanced weights reflect
-this: more novel generation, more blending, less incremental editing.
+Migration means a champion from one island challenges another island's champion
+via pairwise comparison. The migrant either wins and takes over, or loses and is
+discarded — concepts spread by proving they're better, not by having a higher
+number.
 
-**Exploitation ratio 0.3-0.4 (vs. 0.2).** With the MAP-Elites archive (up to 36
-cells), the archive contains diverse high-quality material — one champion per
-behavioral niche. Sampling parents from the archive more often leverages this
-accumulated quality. The power-law selection ensures the best archive members are
-sampled most often, but the 60-70% non-archive samples maintain exploration.
+### Why These Parameters
 
-**archive_size: 80-120 (ignored under MAP-Elites).** In ShinkaEvolve's
-fitness-ranked mode, this caps retained programs. Under `map_elites` strategy, the
-archive size is determined by the number of occupied cells (up to 108). The
-parameter is retained for compatibility but has no effect — all occupied cells
-keep their champion unconditionally.
+**3 islands.** With pairwise comparison blocking on LLM calls (~30-40s per
+comparison), more islands means more parallel comparisons. 3 islands balances
+diversity with the constraint that each island needs enough generations to
+develop its lineage.
+
+**10 generations.** Fast iteration for testing. Medium config uses 20.
+
+**Fitness archive (not MAP-Elites).** MAP-Elites requires dense cell occupancy
+for within-cell competition to fire. With 10-20 concepts per run and 36+ cells,
+most cells have 0-1 occupants — the archive degenerates into an unfiltered list.
+Fitness archive with island champions provides selection pressure that actually
+works at current scale.
+
+**Equal island scheduling.** Without this, ShinkaEvolve's uniform random island
+selection can send multiple consecutive concepts to the same island, leaving
+others starved. Equal scheduling guarantees balanced allocation.
 
 ---
 
-## MAP-Elites Behavioral Dimensions
+## Diversity Maintenance
 
-### Targeted Edit to ShinkaEvolve
+With MAP-Elites removed, diversity comes from three mechanisms:
 
-ShinkaEvolve's archive is currently fitness-ranked — it keeps the N
-highest-scoring programs regardless of behavioral diversity. For concept
-evolution, we need true quality-diversity: the archive should maintain the *best
-concept of each type*, not just the best concepts overall.
+### 1. Island Separation
 
-**The edit:** Add a `"map_elites"` option to `archive_selection_strategy` in
-`shinka/database/dbase.py`. Implementation:
+Each island starts from a different seed concept with a different affective
+register and literary mode (16 registers x 18 modes = 288 combinations). Islands
+evolve independently — no shared selection pressure. Different starting points
+naturally produce different lineages.
 
-1. Each concept's evaluate.py output includes behavioral dimension classifications
-   in `public_metrics` (e.g., `concept_type: "thought_experiment"`,
-   `arc_shape: "fall_rise"`, `constraint_density: "moderate"`)
-2. The grid axes (concept_type × arc_shape × constraint_density) define a 3D
-   grid of 108 behavioral cells
-3. When a new concept is evaluated, it's placed in a cell based on its grid axes
-4. The concept replaces the current cell occupant only if its `holder_score`
-   (raw Hölder mean, no diversity bonus) is higher
-5. Empty cells represent unexplored niches — the niche target operator (#12) can
-   be activated to fill them when diversity stalls
+### 2. Tonal Steering
 
-This ensures the archive contains the best thought-experiment AND the best
-character collision AND the best fall-rise AND the best rise-fall — not just the
-highest-scoring concepts overall (which might all be thought experiments if
-that's what scores best).
+Each concept receives a paired affective register + literary mode that shapes its
+emotional and stylistic character. These are injected into the generation prompt
+and stored in metadata for inheritance by offspring. See
+`owtn/prompts/affective_registers.yaml` and `owtn/prompts/literary_modes.yaml`.
 
-### Grid Dimensions (Active)
+### 3. Novelty Rejection
 
-Three behavioral dimensions form the MAP-Elites grid key, chosen for
-orthogonality, measurability, and grid density. Concept generation is cheap
-(~hundreds of tokens + judge calls), so with 1,200-5,400 candidates per run a
-108-cell grid produces healthy within-cell competition (~10-50 candidates per
-cell). This follows QDAIF's principle that the grid should be dense enough for
-within-cell replacement to fire regularly (Bradley et al., ICLR 2024), while
-capturing meaningfully more diversity than a 2D grid.
-
-**1. Concept type** (auto-detected from genome content)
-- Thought experiment
-- Situation with reveal
-- Voice constraint
-- Character collision
-- Atmospheric/associative
-- Constraint-driven
-
-6 values. Auto-detection based on which genome fields are most prominent and the
-premise's structural properties.
-
-**2. Emotional arc shape** (Reagan et al., EPJ Data Science 2016)
-- Rise (rags to riches)
-- Fall (tragedy)
-- Fall-rise (man in a hole)
-- Rise-fall (Icarus)
-- Rise-fall-rise (Cinderella)
-- Fall-rise-fall (Oedipus)
-
-6 values. Classified by analyzing the target emotional effect and the premise's
-implied trajectory. "Fall-rise" and "rise-fall-rise" correlate with higher story
-popularity in Reagan's analysis of 1,327 stories.
-
-**3. Constraint density**
-- Unconstrained (no constraints field, or minimal)
-- Lightly constrained (1-2 soft constraints)
-- Heavily constrained (3+ constraints, or one severe constraint)
-
-3 values. Directly measurable from the constraints field. This dimension is
-deterministic — zero LLM cost, zero classification instability, zero boundary
-effects. It captures something real: unconstrained, moderately constrained, and
-heavily constrained concepts produce genuinely different stories and should be
-preserved independently.
-
-### Tracked Metadata (Not Grid Axes)
-
-These dimensions are still classified and stored in `public_metrics` for analysis,
-convergence detection, and potential future promotion to grid axes — but they do
-not determine archive cell placement.
-
-**4. Tonal register**
-- Comedic
-- Tragic
-- Ironic
-- Earnest
-- Surreal
-- Matter-of-fact
-
-6 values. Classified from the style hint, the premise's emotional texture, and
-the target effect's valence.
-
-**5. Thematic domain**
-- Interpersonal (relationships, family, love, betrayal)
-- Societal (institutions, communities, power structures)
-- Philosophical (epistemology, ethics, metaphysics, identity)
-- Existential (mortality, meaning, isolation, transcendence)
-- Mundane-elevated (everyday experience rendered extraordinary)
-
-5 values. Classified from the thematic tension field and the premise's subject
-matter.
-
-### Promoting Metadata to Grid Axes
-
-A metadata dimension should be promoted to a grid axis when:
-- Cell occupancy consistently exceeds ~80% of the current grid
-- Active within-cell competition is occurring (cells have been replaced 2+ times)
-- The classifier shows >80% test-retest stability on the candidate dimension
-- The resulting grid size still allows ~10+ candidates per cell given the
-  generation budget
-
-Promotion is a configuration change, not an architecture change — the classifier
-already classifies all 5 dimensions.
-
-### Grid Size
-
-3 dimensions with 6 × 6 × 3 values = 108 possible cells. Under MAP-Elites, the
-`archive_size` config parameter is ignored — all occupied cells retain their
-champion. The archive naturally caps at 108 entries.
-
-With 1,200-5,400 candidates per run, this produces ~10-50 candidates per cell on
-average — dense enough for regular within-cell competition (the primary
-quality-driving mechanism) while capturing meaningfully more diversity than a
-smaller grid. A well-explored archive should occupy 50-108 cells.
+ShinkaEvolve's `AsyncNoveltyJudge` rejects concepts that are too similar to
+existing archive members (cosine similarity > 0.90). This prevents near-duplicate
+concepts from accumulating, pushing evolution toward genuine exploration.
 
 ---
 

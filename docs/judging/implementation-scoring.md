@@ -1,8 +1,9 @@
 # Judging Implementation: Scoring, Calibration & Integration
 
 Shared mathematical utilities, calibration procedures, and stage integration
-patterns used by the entire judging system. This is the orchestration layer —
-the modules that combine Tier A and Tier B outputs into selection decisions.
+patterns for prose-stage evaluation. Stage 1 concept evaluation uses pairwise
+comparison instead of the pointwise scoring described here — see
+`owtn/evaluation/pairwise.py` and `docs/CHANGELOG.md`.
 
 ---
 
@@ -381,26 +382,12 @@ stage_config = {
 
 ### Example: Stage 1 (Concept Evolution)
 
-```python
-stage_1_config = {
-    "tier_a_enabled": False,  # Concepts aren't prose — no slop filtering
-    "dimensions": [
-        "originality", "transportation_potential", "narrative_tension",
-        "thematic_resonance", "scope_calibration",
-    ],
-    "extra_dimensions": [
-        {"name": "anti_cliche", "anchors": {...}},
-        {"name": "concept_coherence", "anchors": {...}},
-        {"name": "generative_fertility", "anchors": {...}},
-        {"name": "over_explanation_resistance", "anchors": {...}},
-    ],
-    "holder_p": 0.4,
-    "panel_size": 5,
-    "harshness_distribution": {"lenient": 0.2, "moderate": 0.5, "demanding": 0.3},
-    "dynamic_rubrics_enabled": False,  # Concepts don't need per-instance rubrics
-    "pairwise_enabled": False,         # Pointwise during evolution
-    "diversity_weight": 0.15,
-}
+Stage 1 uses **pairwise comparison**, not the pointwise configuration schema
+above. Each new concept is compared head-to-head against its island's champion
+across 9 dimensions (novelty, grip, tension_architecture, emotional_depth,
+thematic_resonance, concept_coherence, generative_fertility, scope_calibration,
+indelibility). Selection is binary: the winner becomes champion. Score = win
+percentage. See `owtn/evaluation/pairwise.py` for implementation.
 ```
 
 ### Example: Stage 4 (Prose Evolution)
