@@ -185,20 +185,29 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
         import asyncio
         from owtn.evaluation.stage_1 import evaluate
 
-        # Propagate context vars to this worker thread (they don't cross
-        # thread boundaries automatically).
+        # Propagate context vars to this worker thread.
         llm_log_dir.set(self._log_dir)
         llm_context.set({"role": "pairwise_judge"})
 
-        # Step 1: Validate.
-        loop = asyncio.new_event_loop()
-        result = loop.run_until_complete(evaluate(program_path, results_dir, config_path))
+        # Single asyncio.run() for all async work in this eval — avoids
+        # httpx/aiohttp cleanup errors from loop creation/destruction.
+        asyncio.run(self._evaluate_with_pairwise_async(
+            program_path, results_dir, config_path, island_idx,
+        ))
+
+    async def _evaluate_with_pairwise_async(
+        self, program_path: str, results_dir: str, config_path: str,
+        island_idx: int | None,
+    ) -> None:
+        """Async implementation of validate + pairwise."""
+        from owtn.evaluation.stage_1 import evaluate
+
+        result = await evaluate(program_path, results_dir, config_path)
 
         if not result.correct:
-            loop.close()
             return
 
-        # Step 2: Read island champion from disk.
+        # Read island champion from disk.
         champion_data = None
         if island_idx is not None:
             champ_file = self._champions_dir / f"island_{island_idx}.json"
@@ -212,11 +221,10 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
             result.combined_score = 0.5
             result.text_feedback = "No champion found — initial champion."
             self._write_eval_result(result, results_dir)
-            logger.info("'%s' → initial champion (score=50%%)", Path(program_path).parent.name)
-            loop.close()
+            logger.info("Initial champion (island %s, score=50%%)", island_idx)
             return
 
-        # Step 3: Pairwise comparison.
+        # Parse genomes for comparison.
         try:
             challenger_genome = ConceptGenome.model_validate_json(
                 Path(program_path).read_text()
@@ -227,36 +235,40 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
             result.combined_score = 0.0
             result.text_feedback = f"Parse error: {e}"
             self._write_eval_result(result, results_dir)
-            loop.close()
             return
 
-        challenger_name = Path(program_path).parent.name
-        champion_name = (champion_data.get("metadata") or {}).get("patch_name", champion_data["id"][:8])
-        logger.info("'%s' vs champion '%s' — comparing...", challenger_name, champion_name)
+        challenger_name = challenger_genome.premise[:60]
+        champion_name = champion_genome.premise[:60]
+        logger.info("'%s...' vs champion '%s...' — comparing...", challenger_name, champion_name)
 
         try:
-            pairwise_result = loop.run_until_complete(pairwise_compare(
+            pairwise_result = await pairwise_compare(
                 genome_a=challenger_genome,
                 genome_b=champion_genome,
                 config=self.stage_config,
                 champion_label="b",
-            ))
+            )
         except Exception as e:
             logger.error("Pairwise comparison failed: %s", e, exc_info=True)
             result.combined_score = 0.0
             result.text_feedback = f"Comparison failed: {e}"
             self._write_eval_result(result, results_dir)
-            loop.close()
             return
-        finally:
-            loop.close()
 
         if pairwise_result.winner == "a":
             result.combined_score = pairwise_result.a_score
             result.text_feedback = pairwise_result.feedback
+            # Update champion file immediately so next eval on this island
+            # sees the new champion.
+            if island_idx is not None:
+                champ_file = self._champions_dir / f"island_{island_idx}.json"
+                champ_file.write_text(json.dumps({
+                    "id": "pending",
+                    "code": Path(program_path).read_text(),
+                    "metadata": {},
+                }))
             logger.info(
-                "'%s' BEATS '%s' (%d-%d-%d, score=%.0f%%)",
-                challenger_name, champion_name,
+                "WINS (%d-%d-%d, score=%.0f%%)",
                 pairwise_result.a_wins, pairwise_result.b_wins, pairwise_result.ties,
                 pairwise_result.a_score * 100,
             )
@@ -264,8 +276,7 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
             result.combined_score = pairwise_result.a_score * 0.9
             result.text_feedback = pairwise_result.feedback
             logger.info(
-                "'%s' loses to '%s' (%d-%d-%d, score=%.0f%%)",
-                challenger_name, champion_name,
+                "LOSES (%d-%d-%d, score=%.0f%%)",
                 pairwise_result.a_wins, pairwise_result.b_wins, pairwise_result.ties,
                 pairwise_result.a_score * 100,
             )
@@ -321,8 +332,57 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
             self._anneal(gen)
 
 
+    def _log_evolution_summary(self) -> None:
+        """Log a clear island-by-island evolution summary."""
+        num_islands = self.stage_config.database.num_islands
+        total_gens = self.stage_config.evolution.num_generations
+
+        logger.info("")
+        logger.info("=" * 60)
+        logger.info("  EVOLUTION SUMMARY")
+        logger.info("=" * 60)
+
+        for island_idx in range(num_islands):
+            programs = []
+            for gen in range(total_gens):
+                for p in self.db.get_programs_by_generation(gen):
+                    if p.island_idx == island_idx and p.correct:
+                        programs.append(p)
+
+            champion = self.db.get_island_champion(island_idx)
+            champ_name = "none"
+            if champion:
+                try:
+                    g = ConceptGenome.model_validate_json(champion.code)
+                    champ_name = g.premise[:55]
+                except Exception:
+                    champ_name = (champion.metadata or {}).get("patch_name", champion.id[:8])
+
+            logger.info("")
+            logger.info("  Island %d  (%d concepts, champion: '%s...')", island_idx, len(programs), champ_name)
+            logger.info("  " + "-" * 56)
+
+            for p in sorted(programs, key=lambda x: x.generation):
+                try:
+                    g = ConceptGenome.model_validate_json(p.code)
+                    premise = g.premise[:50]
+                except Exception:
+                    premise = (p.metadata or {}).get("patch_name", p.id[:8])
+
+                is_champ = " ★" if champion and p.id == champion.id else ""
+                score_pct = p.combined_score * 100
+                logger.info(
+                    "    gen %2d  %.0f%%  '%s...'%s",
+                    p.generation, score_pct, premise, is_champ,
+                )
+
+        logger.info("")
+        logger.info("=" * 60)
+
     async def _run_final_tournament(self) -> None:
         """Swiss tournament across island champions after evolution completes."""
+        self._log_evolution_summary()
+
         num_islands = self.stage_config.database.num_islands
         participants = []
 
@@ -340,6 +400,7 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
             logger.info("Tournament skipped: fewer than 2 island champions.")
             return
 
+        logger.info("")
         logger.info("Running final Swiss tournament with %d island champions...", len(participants))
         llm_context.set({"role": "tournament"})
 
@@ -367,18 +428,31 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
         total_rounds = rankings[0].wins + rankings[0].losses if rankings else 1
 
         logger.info("")
-        logger.info("=" * 50)
-        logger.info("  FINAL TOURNAMENT RANKINGS")
-        logger.info("=" * 50)
+        logger.info("=" * 60)
+        logger.info("  TOURNAMENT RESULTS")
+        logger.info("=" * 60)
         for rank, entry in enumerate(rankings, 1):
             score = (entry.wins + 0.5) / (total_rounds + 1)
             self.db.update_program_score(entry.program_id, score, "")
+            premise = entry.genome.premise[:50]
             logger.info(
-                "  #%d  %-12s  W%d-L%d  Buchholz=%d  score=%.0f%%",
-                rank, entry.program_id[:8], entry.wins, entry.losses,
-                entry.buchholz, score * 100,
+                "  #%d  W%d-L%d  score=%.0f%%  '%s...'",
+                rank, entry.wins, entry.losses, score * 100, premise,
             )
-        logger.info("=" * 50)
+            for match in entry.match_history:
+                if match.get("opponent") == "bye":
+                    logger.info("       bye")
+                    continue
+                dims = match.get("dimension_wins", {})
+                won = [d for d, w in dims.items() if w == ("a" if match["result"] == "win" else "b")]
+                lost = [d for d, w in dims.items() if w == ("b" if match["result"] == "win" else "a")]
+                logger.info(
+                    "       %s %s  (won: %s | lost: %s)",
+                    match["result"].upper(), match.get("score", "?"),
+                    ", ".join(won) or "none",
+                    ", ".join(lost) or "none",
+                )
+        logger.info("=" * 60)
 
         if rankings:
             best = rankings[0]
