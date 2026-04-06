@@ -38,7 +38,7 @@ Every seed must satisfy all three:
 
 2. **Surprising enough to resist LLM default convergence.** LLMs have strong patterns for story generation baked in from training data. A seed must be orthogonal to those patterns. If the seed would naturally produce a story you've read a hundred times, it's too familiar. The 10 known convergence patterns (reconciliation arc, grief meditation, chosen one, AI consciousness, sanitized conflict, epistolary revelation, time loop lesson, magical realism metaphor, moral clarity, small-town secret) are the primary traps.
 
-3. **Human implications.** Not just a cool fact or clever constraint — there must be something at stake for people. How does this change what it means to be a person, to love someone, to make a choice? The seed must touch something that matters.
+3. **Human implications.** Not just a cool fact or clever constraint — there must be something at stake for people. How does this change what it means to be a person, to love someone, to make a choice? The seed must touch something that matters. This does not mean it must be about humans, but rather that something about it *feels* human.
 
 ### What the evaluation system rewards
 

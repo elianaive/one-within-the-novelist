@@ -475,38 +475,38 @@ fixed rubric penalizes one of them.
 
 ---
 
-## Scoring: Hölder Mean
+## Selection: Pairwise Comparison
 
-The standard approach — weighted average across dimensions — has a critical
-flaw: a story that scores 5/5 on prose and 1/5 on coherence averages to the
-same score as a story that scores 3/5 on everything. But the first story is
-broken and the second is merely mediocre. Readers don't average across
-dimensions; they're derailed by the weakest link.
+Stage 1 concept selection uses **pairwise comparison** instead of absolute
+scoring. Each new concept is compared head-to-head against its island's champion
+by a 3-judge panel. Each judge evaluates both concepts on all 9 dimensions
+independently, picks a winner per dimension, with position bias mitigation (dual
+orderings — if a judge picks different winners in different orderings, that vote
+is discarded as a tie). The overall winner is the concept with the most
+dimension-wins across all judges.
 
-**The Hölder mean** (used by the Lechmazur benchmark, the most rigorous
-community writing evaluation) with parameter p ≈ 0.3-0.5 acts as a
-**soft minimum**: weaknesses drag the score down more than strengths can
-compensate. At p → −∞ it becomes the strict minimum (weakest link
-determines everything); at p = 1 it's the arithmetic mean. The sweet spot
-(p ≈ 0.3-0.5) penalizes unevenness while still rewarding genuinely strong
-dimensions.
+**Why not absolute scoring?** Absolute LLM scoring compresses all AI-generated
+content into a narrow band at the top of the scale. The leniency bias is
+structural (RLHF training), not fixable by rubric design, calibration
+instructions, or harshness settings. Pairwise comparison discriminates where
+scoring cannot — a judge who assigns 4.5 to everything can still reliably say
+"A is better than B."
 
-**Application:**
+**Score:** Win percentage = (dimension_wins + 0.5 * ties) / total_dimensions.
+Champions start at 0.5. After evolution, island champions compete in a
+Swiss-system tournament for final ranking.
 
-- **Within a single judge**: Hölder mean across all scored dimensions for
-  that story. This means a story must be *well-rounded* to score highly —
-  it can't exploit one strong dimension to mask failures elsewhere.
-
-- **Across judges**: Track both the **average** score (overall quality signal)
-  and the **variance** (disagreement signal). Don't Hölder-mean across judges —
-  the variance is information (see next section).
+For future prose stages (4-5), absolute scoring via Hölder mean may be
+reintroduced alongside pairwise comparison. The Hölder mean (soft minimum, p ≈
+0.3-0.5) penalizes unevenness, matching how readers experience stories — a single
+broken dimension ruins the whole experience. See `implementation-scoring.md`.
 
 ---
 
 ## The Disagreement Signal
 
-The most counterintuitive idea in the judge system: **high inter-judge
-variance is a feature, not a bug.**
+The most counterintuitive idea in the judge system: **inter-judge disagreement
+is a feature, not a bug.**
 
 The individual-collective creativity paradox (Doshi & Hauser, Science
 Advances 2024): optimizing individual story quality via LLM selection
@@ -515,28 +515,17 @@ creativity at the risk of losing collective novelty." Selecting for
 consensus produces homogeneous excellence. Selecting for polarization
 preserves genuine range.
 
-**Implementation:**
+**In pairwise comparison**, disagreement manifests as:
 
-Track two metrics for each story across the judge panel:
-
-- **Mean score** — the overall quality signal
-- **Score variance** — the disagreement signal
-
-A story with high mean + low variance → competent, broadly appealing,
-potentially safe/generic.
-
-A story with high mean + high variance → some judges love it, some hate it.
-This story is doing something bold, interesting, or genuinely different.
-
-A story with low mean + high variance → might be flawed in ways some judges
-forgive. Worth investigating but not automatically advancing.
-
-A story with low mean + low variance → consensus: this doesn't work. Eliminate.
-
-**In evolutionary selection:** stories with high mean AND high variance
-receive a **diversity bonus** — they are more likely to survive selection than
-an equally-scored story with low variance. This explicitly protects bold,
-polarizing work from being ground down to consensus mediocrity.
+- **Tied dimensions**: a dimension where position bias mitigation catches a flip
+  (the judge picked different winners in different orderings). Many tied
+  dimensions (e.g., 1-0-8) means the concepts are genuinely hard to distinguish.
+- **Split votes across judges**: one judge picks A, another picks B for the same
+  dimension. The majority vote resolves it, but the split is information — the
+  concept is doing something that divides opinion.
+- **Lopsided wins on different dimensions**: concept A wins on novelty and grip
+  while B wins on coherence and scope. This reveals what each concept is good
+  at, and the mutation feedback makes this explicit.
 
 **Primary vs. contrarian judges:** The disagreement signal is particularly
 informative when it splits along the primary/contrarian axis. A story that

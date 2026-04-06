@@ -8,7 +8,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **Core thesis:** AI writing fails because (1) LLMs generate too linearly while humans explore branching pathways, and (2) evaluating story quality is a fundamental bottleneck. We address both via population-based evolutionary search with rigorous multi-judge evaluation at every stage.
 
-**Current state:** Stage 1 building blocks implemented (LLM client, data models, evaluation pipeline, Tier A filters, scoring, operator prompt registry, configs). ShinkaEvolve integration in progress. Stages 2-6 have high-level specs.
+**Current state:** Stage 1 is functional end-to-end — concept generation, pairwise evaluation, island-based evolution with champion succession, Swiss tournament for final ranking. ShinkaEvolve integration complete. Stages 2-6 have high-level specs.
 
 ## How We Work
 
@@ -96,15 +96,15 @@ Tests live in `tests/`, organized by module:
 
 | Directory | What it tests |
 |-----------|--------------|
-| `test_evaluation/` | Gate validation, prompt assembly, mocked pipeline E2E, ShinkaEvolve contract, live API smoke test |
-| `test_judging/` | Tier A filters (anti-patterns, vocabulary, structural, statistical, ngrams), scoring math |
+| `test_evaluation/` | Gate validation, pairwise prompt assembly, mocked pipeline E2E, ShinkaEvolve contract |
+| `test_judging/` | Tier A filters (anti-patterns, vocabulary, structural, statistical, ngrams) |
 | `test_llm/` | Query routing, cache keys, model resolution, pricing, prompt caching, QueryResult serialization |
 | `test_models/` | Pydantic models: ConceptGenome, classification, config, seed bank, judge personas |
-| `test_prompts/` | Operator registry structure, routing, seed types, prompt building, defaults/async_apply sync |
+| `test_prompts/` | Operator registry structure, routing, seed types, prompt building, mutation feedback |
 | `test_runner/` | Cold-start operator distribution, config building |
 | `test_shinka/` | ShinkaEvolve integration: sampler dispatch, MAP-Elites archive, JSON patch application, program loading |
 
-**Shared fixtures** in `tests/conftest.py`: canonical test genomes (`HILLS_GENOME`, `MINIMAL_GENOME`), mock judge scores, `FakeQueryResult`, `genome_file`/`results_dir`/`mock_query_async` fixtures. Use these — don't redefine test data locally.
+**Shared fixtures** in `tests/conftest.py`: canonical test genomes (`HILLS_GENOME`, `MINIMAL_GENOME`), `genome_file`/`results_dir` fixtures. Use these — don't redefine test data locally.
 
 **Test principles:**
 - Don't assert on LLM output content — it's non-deterministic. Assert structural validity only (correct fields, score ranges, files written).
@@ -117,44 +117,72 @@ Tests live in `tests/`, organized by module:
 
 Each stage evolves a different "genome" under selection pressure from a diverse judge panel:
 
-1. **Concept** — premise/seed ideas (fully specified → `docs/stage-1/`)
+1. **Concept** — premise/seed ideas (functional → `docs/stage-1/`)
 2. **Structure** — typed-edge DAG of story beats
 3. **Voice** — style specification (rhythm, diction, POV, constraints)
 4. **Prose** — actual written text, scene by scene
 5. **Refinement** — editorial critique-revise cycles (2-3 rounds max)
-6. **Selection & Archive** — MAP-Elites quality-diversity archiving, feedback to Stage 1
+6. **Selection & Archive** — quality-diversity archiving, feedback to Stage 1
 
 Pipeline overview, cross-stage mechanisms, and per-stage detail: `docs/stages.md`
 
-### Judging System (fully specified → `docs/judging/`)
+### Selection System
+
+**Pairwise comparison, not absolute scoring.** Absolute LLM scoring compresses all AI concepts into a narrow band (model-level leniency bias). Pairwise comparison ("which is better?") discriminates where scoring cannot.
+
+**Per-criteria voting.** Each judge compares two concepts on all 9 dimensions independently, picks a winner per dimension, with position bias mitigation (dual orderings). Overall winner = most dimension-wins across all judges.
+
+**Island champions.** Each island maintains a champion. New concepts challenge the champion via pairwise comparison. Winners become the new champion; losers are archived with their comparison feedback.
+
+**Swiss tournament.** After evolution completes, island champions compete in a Swiss-system tournament for final ranking.
+
+### Evaluation Dimensions (9)
+
+Concepts are compared on these dimensions (sub-criteria in `owtn/prompts/stage_1/rubric_anchors.txt`):
+
+1. **Novelty** — domain crossing, convergence distance, generative surprise
+2. **Grip** — the thing you can't look away from, emotional stakes, sensory seed
+3. **Tension Architecture** — suspense, information architecture (resolvable vs permanent gaps), reframing potential
+4. **Emotional Depth** — recognition, complexity, source, reader implication
+5. **Thematic Resonance** — question vs message, embeddedness
+6. **Concept Coherence** — load-bearing elements, surface/depth architecture
+7. **Generative Fertility** — execution diversity, generative principle vs situation
+8. **Scope Calibration** — natural size, constraint as compression
+9. **Indelibility** — indelible image, irreducible remainder, silhouette
+
+### Judging System (`docs/judging/`)
 
 Two-tier architecture:
-- **Tier A** (`tier-a-anti-slop.md`): Fast regex/stats filters on every candidate. Banned vocabulary, burstiness, MATTR, construction patterns, 433 slop trigrams, 12 Nous anti-patterns.
-- **Tier B** (`tier-b-resonance.md`): Pairwise tournament with LLM judge panel. Swiss-system brackets. 10 resonance dimensions scored with Hölder mean (p≈0.4). Dynamic per-story rubrics.
+- **Tier A** (`tier-a-anti-slop.md`): Fast regex/stats filters. Banned vocabulary, burstiness, MATTR, construction patterns, 433 slop trigrams, 12 Nous anti-patterns. Used for prose stages, not concepts.
+- **Tier B**: Pairwise comparison with 3-judge panel across 9 dimensions. Per-criteria voting with position bias mitigation. Judge personas in `configs/judges/*.yaml`.
 
-Key rules: different model families for generation vs. evaluation. Single-turn independent evaluations. 0-5 scale. CoT before scoring.
-
-Scoring math, calibration, stage integration: `implementation-scoring.md`, `implementation-tier-a.md`, `implementation-tier-b.md`, `rubric-anchors.md`
+Key rules: different model families for generation vs. evaluation. Single-turn independent evaluations. Each judge sees both concepts in both orderings.
 
 ### ShinkaEvolve Integration
 
-Stage 1 maps onto ShinkaEvolve's async evolution engine. Concept genomes are JSON in `Program.code`. Required edits to ShinkaEvolve documented in `docs/stage-1/implementation.md` (JSON support, MAP-Elites archive strategy, operator-level bandit tracking, compost heap).
+Stage 1 maps onto ShinkaEvolve's async evolution engine. Concept genomes are JSON in `Program.code`. Evaluation is inline (no subprocess) via `eval_function` on `JobConfig`. The eval function validates the concept, reads the island champion from disk, and runs pairwise comparison — all blocking, so ShinkaEvolve sees the real score before selecting the next parent.
 
 Fork: `lib/shinka-evolve/`
+
+Key additions to ShinkaEvolve:
+- `eval_function` on `JobConfig` for inline evaluation (no subprocess)
+- `parent_id` and `island_idx` passed through scheduler to eval function
+- `get_island_champion()` and `update_program_score()` on `ProgramDatabase`
+- `EqualIslandSampler` for balanced island allocation
 
 ## Key Documents
 
 | Path | What |
 |------|------|
+| `docs/CHANGELOG.md` | What changed and why — pairwise selection, rubric redesign, convergence fixes |
 | `docs/ideas.md` | Master design doc — thesis, architecture, judge panel, dimensions, open questions |
 | `docs/stages.md` | All 6 stages with genome/operator/eval specs and worked examples |
-| `docs/judging/overview.md` | Judging philosophy, panel architecture, resonance dimensions, scoring |
-| `docs/stage-1/` | Fully specified: overview, operators (11), evaluation (9 dims), population, implementation |
-| `docs/judging/` | Fully specified: Tier A filters, Tier B pairwise tournament, scoring math, rubric anchors |
+| `docs/judging/overview.md` | Judging philosophy, panel architecture, resonance dimensions |
+| `docs/stage-1/` | Overview, operators (11), evaluation (9 dims), population, implementation |
+| `docs/judging/` | Tier A filters, Tier B pairwise tournament, rubric anchors |
 | `docs/prompting-guide.md` | Prompt engineering principles (ordering matters, decision chains, additive context) |
 | `lab/INDEX.md` | Claude working directory — issues, scripts, references |
-| `lab/references/INDEX.md` | All external reference materials with summaries |
-| `lab/deep-research/runs/` | 18 research reports backing the design |
+| `lab/deep-research/runs/` | 18+ research reports backing the design |
 
 ## LLM-Fed Files — Token Hygiene
 

@@ -248,56 +248,55 @@ by a custom judge panel.
 | Our Concept | ShinkaEvolve Field | Notes |
 |---|---|---|
 | Concept genome (all fields) | `Program.code` | Serialized as JSON |
-| Hölder mean of judge scores | `combined_score` | Main fitness signal |
-| Per-dimension scores | `public_metrics` | Visible to mutation LLM as feedback |
-| Anti-cliché flags, convergence scores | `private_metrics` | Hidden from mutation LLM |
-| Judge reasoning chains | `text_feedback` | Rich signal for operators |
+| Pairwise win percentage | `combined_score` | (dim_wins + 0.5 * ties) / 9 |
+| Anti-cliché flags | `private_metrics` | Hidden from mutation LLM |
+| Pairwise comparison reasoning | `text_feedback` | Which dimensions won/lost and why |
 | Valid genome (required fields present) | `correct` | Boolean validation gate |
-| MAP-Elites cell assignment | `public_metrics` dimensions | Concept type, arc shape, tone, etc. |
-| Operator that created this concept | `private_metrics.operator` | Enables operator performance analysis |
+| Operator that created this concept | `metadata.patch_type` | Enables operator performance analysis |
 
-### What We Use As-Is
+### What We Use From ShinkaEvolve
 
 - **Async evolution loop** (`ShinkaEvolveRunner`): proposal generation,
   evaluation, persistence, slot management
+- **Inline evaluation** (`eval_function` on `JobConfig`): evaluation runs as a
+  direct function call, not a subprocess
 - **Bandit LLM selection** (`llm_dynamic_selection`): UCB/Thompson sampling
   across model families for mutation
-- **Island model** (`CombinedIslandManager`): geographic population separation
-  with migration
+- **Island model** (`CombinedIslandManager`): independent lineages with equal
+  island scheduling and migration
 - **Novelty rejection** (`AsyncNoveltyJudge`): embedding similarity check before
   evaluation
-- **Parent selection** (`CombinedParentSelector`): power-law, weighted, or beam
-  search
-- **Meta-summarizer** (`MetaSummarizer`): periodic strategy recommendations
-- **Prompt co-evolution** (`evolve_prompts`): co-evolve the system prompt that
-  guides concept generation
+- **Parent selection** (`CombinedParentSelector`): power-law selection within
+  islands
 - **Cost tracking and budget management**
 
-### Targeted Edits (see population.md for details)
+### Additions to ShinkaEvolve
 
-- **MAP-Elites archive strategy**: extend `archive_selection_strategy` with a
-  `"map_elites"` option for multi-dimensional behavioral cells
-- **Operator-level bandit tracking**: track performance per operator type, not
-  just per LLM model
-- **Compost heap integration**: persistent cross-run archive for interesting
-  failures and fragments
+- **`eval_function` on `JobConfig`**: inline evaluation without subprocess
+  overhead. The eval function validates the concept, reads the island champion
+  from disk, and runs pairwise comparison — blocking until complete.
+- **`parent_id` and `island_idx` passthrough**: the scheduler passes the
+  parent's island index to the eval function, enabling island-aware pairwise.
+- **`get_island_champion()` and `update_program_score()`**: database methods
+  for champion lookup and score updates after pairwise comparison.
+- **`EqualIslandSampler`**: balanced island allocation (each generation goes
+  to the island with fewest programs).
 
 ---
 
 ## Handoff to Stage 2
 
-When Stage 1 completes, concepts are selected by MAP-Elites cell diversity: **the
-top 1 concept per occupied concept-type cell** (up to 6 concepts). This ensures
-the advancing set includes the best thought experiment AND the best character
-collision AND the best constraint-driven concept — not just the 6 highest-scoring
-concepts (which might all be the same type).
+When Stage 1 completes, island champions compete in a **Swiss-system pairwise
+tournament**. The tournament ranking determines which concepts advance to Stage 2.
 
-**Selection rule:** Within each concept-type cell, select the concept with the
-highest `selection_score` (judge mean + diversity bonus from disagreement signal).
+Each island maintains one champion — the concept that has beaten all challengers
+on that island. The tournament runs ceil(log2(N)) rounds, pairing champions with
+similar records. Each pairing uses the same per-criteria pairwise protocol as
+within-island comparison (3 judges, 2 orderings, majority of non-tie votes).
 
-Each advancing concept may spawn multiple structure variants — a single premise
-might be explored as both a disclosure-heavy reveal story and a causal-heavy
-character piece.
+The top-ranked concepts advance. Each may spawn multiple structure variants — a
+single premise might be explored as both a disclosure-heavy reveal story and a
+causal-heavy character piece.
 
 ### What Gets Passed Forward
 
@@ -313,8 +312,8 @@ character piece.
 5. **Identified risks** — from judge reasoning: "The concept is strong but may be
    difficult to sustain past 2,000 words." "The reveal is powerful but the setup
    needs to earn it." These help Stage 2 focus its structural search.
-6. **Diversity metadata** — which MAP-Elites cell this concept occupies, how it
-   relates to neighboring concepts, which dimensions it's strongest/weakest on.
+6. **Diversity metadata** — affective register and literary mode from the tonal
+   steering system. Helps Stage 2 understand the concept's aesthetic character.
 
 ### Mapping to Stage 2 Edge Types
 
@@ -343,54 +342,73 @@ A completed Stage 1 run auto-exports its results and supports re-export via CLI.
 ### Output Directory
 
 ```
-output/stage_1_run_<timestamp>/
-├── winners/
-│   ├── <concept_type>_best.json   # one per occupied concept-type cell
+results/run_<timestamp>/stage_1/
+├── best/
+│   └── main.json                  # tournament winner genome
+├── tournament.json                # Swiss tournament results with rankings
+├── champions/                     # island champion genomes (for pairwise)
+│   ├── island_0.json
 │   └── ...
-├── archive_snapshot.json          # full MAP-Elites archive at run end
-├── run_summary.yaml               # generations, cost, convergence signals
-└── compost_additions.json         # new entries added to compost DB this run
+├── gen_0/                         # per-generation concept files
+│   ├── main.json
+│   └── results/metrics.json
+├── gen_1/
+│   └── ...
+└── evolution_run.log              # full run log with pairwise matchups
 ```
 
 ### Winner Format
 
-Each winner JSON contains everything Stage 2 needs:
+The tournament winner's genome in `best/main.json` contains everything Stage 2
+needs:
 
 ```json
 {
-  "genome": {
-    "premise": "...",
-    "target_effect": "...",
-    "character_seeds": [],
-    "setting_seeds": null,
-    "thematic_tension": "...",
-    "constraints": [],
-    "style_hint": null
+  "premise": "...",
+  "target_effect": "...",
+  "character_seeds": [],
+  "setting_seeds": null,
+  "thematic_tension": "...",
+  "constraints": [],
+  "style_hint": null
+}
+```
+
+The tournament results in `tournament.json` contain the full ranking with match
+history:
+
+```json
+[
+  {
+    "rank": 1,
+    "program_id": "...",
+    "wins": 2,
+    "losses": 0,
+    "buchholz": 1,
+    "matches": [
+      {
+        "opponent": "...",
+        "result": "win",
+        "dimension_wins": {"novelty": "a", "grip": "b", ...},
+        "score": "6-1-2"
+      }
+    ]
   },
-  "scores": {
-    "originality": 4.2,
-    "transportation_potential": 3.8,
-    "narrative_tension": 4.0,
-    "thematic_resonance": 3.5,
-    "scope_calibration": 4.0,
-    "anti_cliche": 4.5,
-    "concept_coherence": 3.7,
-    "generative_fertility": 4.1,
-    "over_explanation_resistance": 3.9
-  },
-  "combined_score": 3.8,
-  "selection_score": 3.95,
-  "judge_reasoning": {
-    "mira-okonkwo": "...",
-    "tomas-varga": "...",
-    "sable-ahn": "..."
-  },
-  "map_elites_cell": {
-    "concept_type": "thought_experiment",
-    "arc_shape": "fall_rise",
-    "tonal_register": "ironic",
-    "thematic_domain": "philosophical",
-    "constraint_density": "moderate"
+  ...
+]
+```
+
+Each concept's `metrics.json` contains its pairwise result:
+
+```json
+{
+  "correct": true,
+  "combined_score": 0.78,
+  "text_feedback": "Pairwise result: Won (7-1-1)\nDimensions to improve: ...",
+  "metadata": {
+    "patch_type": "thought_experiment",
+    "affective_register": "DREAD",
+    "literary_mode": "GOTHIC"
   }
 }
 ```
