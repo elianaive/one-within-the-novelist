@@ -46,6 +46,7 @@ class DatabaseConfig(BaseModel):
     migration_interval: int
     migration_rate: float
     island_elitism: bool
+    island_selection_strategy: str = "uniform"
     enable_dynamic_islands: bool
     stagnation_threshold: int
     parent_selection_strategy: str

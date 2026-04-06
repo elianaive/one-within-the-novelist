@@ -38,10 +38,11 @@ evolution:
 database:
   num_islands: 2
   archive_size: 50
-  archive_selection_strategy: "map_elites"
+  archive_selection_strategy: "fitness"
   migration_interval: 2
-  migration_rate: 0.20
+  migration_rate: 0.15
   island_elitism: true
+  island_selection_strategy: "equal"
   enable_dynamic_islands: false   # no dynamic islands for 2 generations
   stagnation_threshold: 25
   parent_selection_strategy: "power_law"
