@@ -4,7 +4,6 @@ from pydantic import ValidationError
 from owtn.evaluation.models import (
     DIMENSION_NAMES,
     EvaluationResult,
-    JudgeEvaluation,
     JudgeScores,
 )
 
@@ -58,20 +57,6 @@ class TestJudgeScores:
         assert "reasoning" not in d
         assert len(d) == 9
         assert d["novelty"] == 4.0
-
-
-class TestJudgeEvaluation:
-    def test_construction(self):
-        scores = JudgeScores(**VALID_SCORES)
-        ev = JudgeEvaluation(
-            judge_id="mira-okonkwo",
-            scores=scores,
-            holder_score=3.7,
-            model_used="gpt-4o",
-            cost=0.005,
-        )
-        assert ev.judge_id == "mira-okonkwo"
-        assert ev.scores.novelty == 4.0
 
 
 class TestEvaluationResult:

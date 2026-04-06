@@ -78,9 +78,6 @@ class EvaluationConfig(BaseModel):
     diversity_weight: float
     std_threshold: float
     anti_cliche: AntiCliqueConfig
-    tier_a_enabled: bool
-    pairwise_enabled: bool
-    dynamic_rubrics_enabled: bool
 
 
 class HandoffConfig(BaseModel):

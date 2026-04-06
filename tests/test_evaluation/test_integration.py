@@ -1,23 +1,21 @@
-"""Live API smoke test for the evaluation pipeline.
+"""Live API smoke test for validation-only evaluation.
 
-Confirms the pipeline runs end-to-end and produces valid output structure.
-Does NOT assert on score values — LLM judgment is non-deterministic.
+Confirms the evaluation pipeline validates a concept and returns the
+correct structure. Pairwise comparison is tested separately via the runner.
 
-Cost: ~$0.03 per run.
-Requires API keys in .env (OPENAI_API_KEY for judges, ANTHROPIC_API_KEY for classifier).
+Cost: ~$0.00 (no LLM calls — validation is local).
 """
 
 import pytest
 
-from owtn.evaluation.models import DIMENSION_NAMES
 from owtn.evaluation.stage_1 import evaluate
 
 
 @pytest.mark.live_api
 class TestLiveEvaluation:
     @pytest.mark.asyncio
-    async def test_pipeline_runs(self, genome_file, tmp_path):
-        """A valid genome should evaluate successfully with real LLM calls."""
+    async def test_validation_runs(self, genome_file, tmp_path):
+        """A valid genome should pass validation."""
         results_dir = tmp_path / "results"
         result = await evaluate(
             str(genome_file),
@@ -26,14 +24,6 @@ class TestLiveEvaluation:
         )
 
         assert result.correct is True
-        assert result.combined_score > 0
-        assert result.holder_score > 0
-
-        dims = result.public_metrics["dimensions"]
-        for name in DIMENSION_NAMES:
-            assert name in dims
-            assert 0 <= dims[name] <= 5
-
-        assert len(result.public_metrics["cell_key"]) == 3
+        assert result.combined_score == 0.0  # Placeholder — pairwise sets real score
         assert (results_dir / "correct.json").exists()
         assert (results_dir / "metrics.json").exists()

@@ -4,8 +4,6 @@ import json
 
 import pytest
 
-from owtn.evaluation.models import JudgeScores
-
 
 # --- Canonical test genomes ---
 
@@ -40,42 +38,6 @@ MINIMAL_GENOME = {
 }
 
 
-# --- Mock evaluation data ---
-
-MOCK_JUDGE_SCORES = JudgeScores(
-    reasoning="Strong concept with clear tension and specificity.",
-    novelty=4.0,
-    grip=3.5,
-    tension_architecture=4.0,
-    emotional_depth=3.0,
-    thematic_resonance=3.0,
-    concept_coherence=4.0,
-    generative_fertility=3.0,
-    scope_calibration=4.5,
-    indelibility=3.5,
-)
-
-MOCK_CLASSIFICATION_JSON = json.dumps({
-    "concept_type": "voice_constraint",
-    "concept_type_confidence": "high",
-    "arc_shape": "fall",
-    "arc_shape_confidence": "medium",
-    "tonal_register": "matter_of_fact",
-    "tonal_register_confidence": "high",
-    "thematic_domain": "interpersonal",
-    "thematic_domain_confidence": "high",
-})
-
-
-class FakeQueryResult:
-    """Minimal mock of QueryResult for pipeline tests."""
-
-    def __init__(self, content, model_name="gpt-4o", cost=0.005):
-        self.content = content
-        self.model_name = model_name
-        self.cost = cost
-
-
 # --- Shared fixtures ---
 
 @pytest.fixture
@@ -89,17 +51,3 @@ def genome_file(tmp_path):
 @pytest.fixture
 def results_dir(tmp_path):
     return tmp_path / "results"
-
-
-@pytest.fixture
-def mock_query_async():
-    """Returns a mock LLM query function for pipeline tests."""
-    async def _mock(model_name, msg, system_msg, output_model=None, **kwargs):
-        if output_model is JudgeScores:
-            return FakeQueryResult(MOCK_JUDGE_SCORES)
-        return FakeQueryResult(
-            MOCK_CLASSIFICATION_JSON,
-            model_name="claude-haiku-4-5-20251001",
-            cost=0.001,
-        )
-    return _mock

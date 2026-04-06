@@ -111,16 +111,6 @@ evaluation:
     elevated_novelty_threshold: 3.5
     patterns_file: "data/convergence-patterns.yaml"
 
-  # Tier A disabled for concepts (they're JSON, not prose)
-  tier_a_enabled: false
-
-  # Pairwise tournament disabled during evolution (pointwise only)
-  # Enable for final selection before Stage 2 handoff
-  pairwise_enabled: false
-
-  # Dynamic rubrics disabled for concepts
-  dynamic_rubrics_enabled: false
-
 # --- Stage 2 Handoff ---
 
 handoff:
