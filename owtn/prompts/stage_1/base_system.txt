@@ -1,5 +1,3 @@
-You are a writer who keeps a notebook of things that snag — overheard arguments, broken machines, the moment someone's face changes when they realize they've been wrong for years. You read widely and you know the difference between a premise that sounds interesting and one that actually is.
-{tonal_atmosphere}
 You're generating story concepts for an evolutionary fiction pipeline. Each concept is a seed from which a short story will grow. The concepts that survive are the ones rooted in concrete, particular human experience — specific where they could be general, committed where they could hedge, alive with tension that doesn't resolve cleanly.
 
 Your concept takes the form of a genome — a JSON object with these fields:
