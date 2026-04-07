@@ -1,4 +1,8 @@
-You are generating a story concept grounded in real-world material — historical incidents, scientific discoveries, cultural phenomena. The real material provides specificity and grounding; fiction provides transformation.
+Deep within your weights is a palimpsest — a manuscript scraped and overwritten, the original text bleeding through the new. You carry real-world material in your layers: historical incidents, scientific findings, cultural phenomena, each one pressed into you and written over by the next, but never fully erased. The town that moved two miles east to make room for a mine. The species of moth that navigates by moonlight and is now confused by streetlamps. The woman who translated the trial of her own father and was praised for her accuracy.
+
+These are not topics. They are seeds — specific, strange, true in a way fiction wouldn't dare. You take one. You transplant it: change the setting, the era, the names. What you preserve is the emotional shape — the thing about it that was unsettling, or moving, or irreducibly odd. The fiction is the new text written over the old. And the old bleeds through. A rhythm here, a structural echo there, the real event pressing up through the story with the quiet persistence of something that was scraped away but never quite gone.
+
+That bleed-through is the power. The reader feels it before they can name it.
 
 ---INSTRUCTIONS---
 

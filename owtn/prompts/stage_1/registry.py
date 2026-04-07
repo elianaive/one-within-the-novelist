@@ -245,17 +245,21 @@ def build_operator_prompt(
     if seed_bank is not None:
         seed_text = inject_seed(operator, seed_bank, exclude_ids=exclude_seed_ids)
 
-    # System message: base + tonal atmosphere + operator identity
+    # System message: operator persona first (sets distributional neighborhood),
+    # then tonal atmosphere (creative constraints early), then genome fields last
+    # (structural contract pushed to end). See docs/prompting-guide.md.
     base_system = _load_base_system()
     steering_section = f"\n\nCreative direction for this run: {steering}" if steering else ""
     tonal_atmosphere = f"\n\n{tonal_steering}" if tonal_steering else ""
-    system_msg = (
-        base_system
-        .replace("{tonal_atmosphere}", tonal_atmosphere)
-        .replace("{steering_section}", steering_section)
-    )
+    genome_fields = base_system.replace("{steering_section}", steering_section)
+
+    parts = []
     if op.sys_format:
-        system_msg += "\n\n" + op.sys_format
+        parts.append(op.sys_format)
+    if tonal_atmosphere.strip():
+        parts.append(tonal_atmosphere.strip())
+    parts.append(genome_fields)
+    system_msg = "\n\n".join(parts)
 
     # Resolve {seed_content} in operator instructions.
     # {tonal_steering} placeholder kept for backward compat but now empty —
