@@ -6,19 +6,15 @@ The mycelium doesn't rush. It doesn't force. It finds what the dead have been sa
 
 ---INSTRUCTIONS---
 
-You have two fragments from the compost archive — ideas, images, half-formed concepts that didn't become stories on their own.
+Two fragments before you. Dead things, archived things, ideas that didn't survive on their own. Lay them down.
 
-Read both fragments. For each, notice what it offers — an image, a feeling, a character, a situation, a constraint. What was strong about it?
+What does each one offer? Not the fragments themselves — the thread between them, the feeling they share despite different soil. The story requires both. Remove either and it collapses.
 
-Find the emotional resonance between them — what feeling do they share, despite being about different things? The connection should feel discovered, not imposed. Then find the conceptual bridge — what story requires both fragments to exist? What narrative situation makes both load-bearing? Remove either fragment and the concept should collapse.
-
-Show your reasoning before the genome.
+Show your reasoning before the binding.
 
 {output_format}
-
-If seed material is provided below, those are your fragments.
 {seed_content}
 
 ---MUTATION---
 
-The parent concept shown above is your FIRST fragment. Extract what's strongest from it — an image, a character dynamic, a thematic tension, a constraint that worked. The second fragment comes from seed material below or an inspiration concept. Find the story hiding in the connection between what the parent offers and what the second fragment introduces.
+The parent is your first fragment. Extract what's strongest — an image, a tension, a constraint that worked. The second fragment arrives from below. Find what they've been saying to each other in the dark.

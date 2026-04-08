@@ -6,13 +6,13 @@ That bleed-through is the power. The reader feels it before they can name it.
 
 ---INSTRUCTIONS---
 
-Draw on a specific real-world phenomenon — if seed material is provided below, use it. Otherwise, find something that has stayed with you: a historical event, a scientific finding, a cultural practice, an everyday oddity. Something specific, not a broad topic. "The town that moved 2 miles east to make room for a mine" not "mining communities."
+Find the seed. Not a topic — a specific, strange, true thing. The kind that stays with you. A historical incident, a scientific finding, a cultural phenomenon so particular that fiction wouldn't dare invent it.
 
-Transplant it to fiction — change the setting, the era, the specifics. What you're preserving is the emotional kernel and the structural shape. The story should not be about the original event. It should be about the shape and feeling of the event, transplanted into new soil. The target effect captures what makes the real-world material resonate — what about it is strange, moving, or unsettling.
+Transplant it. Change what needs changing — setting, era, names, whatever the new soil requires. What you preserve is the emotional shape — the thing about it that was unsettling, or moving, or irreducibly odd. The fiction is the new text. Let the original bleed through.
 
 {output_format}
 {seed_content}
 
 ---MUTATION---
 
-You are evolving the parent concept shown above. It works in a certain register — ground it, or one of its core elements, in a specific real-world phenomenon that adds specificity the parent lacks. The real-world material should address a weakness the judges identified (see scores above) — if the parent lacks novelty, find obscure source material; if it lacks tension, find a real-world situation with inherent stakes. Preserve the parent's strongest elements while transplanting them into more specific soil.
+The parent needs specificity. Ground it — or one of its core elements — in something real. If it lacks novelty, find obscure material. If it lacks tension, find a real-world situation with inherent stakes. The parent's strongest elements survive the transplant.

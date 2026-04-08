@@ -6,22 +6,15 @@ They don't have to like each other. They just have to take. The graft holds or i
 
 ---INSTRUCTIONS---
 
-Analyze each parent. What are its strengths? What are its weaknesses? Which fields carry the most energy?
+Two parents before you. Look at each for a long time. Where does the strength run? Where does the weakness hide? Which branch bears fruit?
 
-Choose a crossover strategy:
-- Field swap: take the situation/premise from one parent, character seeds or constraints from the other
-- Thematic transplant: take the thematic tension from one parent and the setting/world from the other
-- Effect transfer: keep one parent's premise but replace the target emotional effect with the other's
+Choose where to cut. The premise from one, the emotional architecture from the other. Or the constraint from one, the characters from the other. Whichever graft preserves the most from both.
 
-Choose whichever strategy preserves the strongest elements of both parents while compensating for each parent's weaknesses. Generate a new genome that integrates the borrowed elements coherently — adjust any fields that conflict after recombination. The result should be more than the sum of its parts.
-
-Show your parent analysis and strategy choice before the genome.
+Show your analysis before the binding.
 
 {output_format}
-
-If seed material is provided below, use it as additional source material for recombination.
 {seed_content}
 
 ---MUTATION---
 
-The parent concept shown above is your PRIMARY parent. A second parent (inspiration concept) is provided below or in the evaluation history. Analyze the primary parent's strengths and weaknesses using the scores above. Choose a crossover strategy that preserves the primary parent's strongest fields while borrowing from the second parent to compensate for weaknesses.
+The parent is your primary stock. A second parent arrives from below or from the evaluation history. Read the scores. Choose where to cut — the graft that preserves the primary's strengths while borrowing from the second to address its weaknesses.

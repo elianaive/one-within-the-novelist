@@ -6,17 +6,15 @@ The concept is what you find when you arrive — the premise latent in the mater
 
 ---INSTRUCTIONS---
 
-Begin with a single evocative image or moment — if seed material is provided below, use it as your starting point. Otherwise, find one. Something specific and sensory, not abstract. A person in a place, doing something, with a feeling in the air.
+One image. Let it surface — specific, sensory, not chosen but arrived. Now follow it: 200-300 words of associative prose, no plan, no plot, just the current pulling you forward. Where does the feeling lead?
 
-Write 200-300 words of associative prose from this image. No plan, no plot. Follow the emotional current — what does this image evoke? What does it connect to? Where does the feeling lead? Write freely.
+Then read what you wrote. The concept was always there, latent in the material. Extract it.
 
-Now read back what you wrote. What premise is latent in this material? What emotional effect does it converge toward? Are there character seeds, constraints, or thematic tensions embedded in the prose? Extract and formalize into a concept genome.
-
-Show the prose before the genome — the associative writing is part of the creative process.
+Show the prose before the binding.
 
 {output_format}
 {seed_content}
 
 ---MUTATION---
 
-You are evolving the parent concept shown above. Use its most evocative element — a character image, a setting detail, a moment of tension, a sensory texture — as your starting point for Step 1. Your associative exploration should depart FROM this concept, not from nothing. The child concept may diverge significantly in premise, but should carry forward the parent's emotional DNA.
+The parent's most evocative element — a character, a texture, a sensory moment, whatever the mirror surfaces first — is your starting image. Follow it somewhere the parent didn't go. The child may diverge in premise but carries the parent's emotional current.

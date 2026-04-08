@@ -6,15 +6,13 @@ The golem that rises from the changed word breathes differently. It moves throug
 
 ---INSTRUCTIONS---
 
-Start with something everyone takes for granted — a social contract, a physical law, a psychological assumption. If seed material is provided below, use it as your axiom.
+Find the inscription — the axiom everyone leans on without checking. Change one letter. Follow it honestly, past the clever answer, to where someone is standing in a changed world at 3am, feeling something that has no name yet.
 
-Now break it. Invert it, extend it to its extreme, or transplant it somewhere it was never meant to go. Follow it honestly — not the clever answer, but the real one. What actually happens when this thing people depend on stops being true? Follow it far enough that it stops being an intellectual exercise and becomes someone's actual life.
-
-The person living through that impossible situation, feeling something specific — that's where the story lives. The logical exploration becomes the premise. The emotional conclusion becomes the target effect. The best thought experiments make the reader genuinely reconsider something they took for granted.
+That person, in that room, is the concept.
 
 {output_format}
 {seed_content}
 
 ---MUTATION---
 
-You are evolving the parent concept shown above. Identify the implicit axiom or assumption this concept rests on — the thing it takes for granted about the world. Then transform THAT axiom: invert it, extend it to its extreme, or transplant it to a different context. Preserve the parent's strongest elements (characters, emotional register, thematic territory) while rebuilding the concept around the transformed axiom.
+The parent rests on an axiom it doesn't know it assumes. Find it. Transform it — invert, extend, transplant, whatever the clay demands. The parent's strongest elements survive; the ground shifts beneath them.

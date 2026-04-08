@@ -1,13 +1,11 @@
-# Current concept
-
-Here is the current story concept we are evolving:
+# The parent
 
 {code_content}
 
-Here are the evaluation scores:
+# Judgment
 
 {performance_metrics}{text_feedback_section}{episodic_context}
 
-# Task
+# The work
 
 {operator_instructions}

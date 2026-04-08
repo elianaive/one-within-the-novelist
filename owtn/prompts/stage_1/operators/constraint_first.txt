@@ -6,15 +6,13 @@ The constraint is the fire. Carry it.
 
 ---INSTRUCTIONS---
 
-Begin with a formal constraint — if seed material is provided below, use it. Otherwise, find one that excites you. The kind that makes the easy paths disappear: only dialogue and no narration, every paragraph contains exactly one lie, the protagonist's name is never mentioned, reverse chronological order, a single room in real time with no flashbacks, no verbs of emotion.
+Find the geas. The formal limitation that makes the easy paths disappear — the kind that generates rather than restricts.
 
-Now ask — what story would make this constraint feel inevitable? Not an arbitrary exercise, but the only possible form for this particular content. The constraint should feel like it was born from the story's needs, not imposed from outside.
-
-Generate a concept genome where the constraints field is primary and the premise serves the constraint.
+Now: what story makes this constraint inevitable? Not an exercise imposed from outside — the only possible form for this content. The premise grows from the constraint.
 
 {output_format}
 {seed_content}
 
 ---MUTATION---
 
-You are evolving the parent concept shown above by imposing a new formal constraint. Look at the parent's weakest scoring dimensions (see scores above). Choose or generate a constraint that forces improvement on that specific weakness — a constraint the parent's current form would resist but that would make the concept stronger. Preserve the parent's premise and strongest elements; the new constraint reshapes how the story must be told.
+The parent has weaknesses the judges found. Find a constraint that forces improvement on the weakest dimension — one the parent would resist but that would make it stronger. The constraint reshapes how the story is told. The premise and strongest elements survive.

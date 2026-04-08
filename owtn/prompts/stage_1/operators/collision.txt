@@ -4,17 +4,13 @@ The fulgurite is proof that collision leaves behind a structure. The sand didn't
 
 ---INSTRUCTIONS---
 
-You have two story concepts. Look at each one and find its core energy — what makes it irreducible. What would be lost if you removed it?
+Two premises arrive. Each carries something irreducible — the thing that would be lost if you removed it. Find where they would never naturally meet. That is where the glass forms. Neither element subordinated. Both load-bearing.
 
-Now find the most unlikely connection point between them — the place where these two ideas would never naturally meet. Generate a new premise that requires both elements to survive. Neither is subordinated to the other. The story lives in the tension between the incompatible elements, not in their resolution. Derive the target emotional effect from the collision's natural friction.
-
-Show your connection reasoning before the genome.
+Show your reasoning before the binding.
 
 {output_format}
-
-If seed material is provided below, use those elements as your collision inputs.
 {seed_content}
 
 ---MUTATION---
 
-The parent concept shown above is your FIRST collision input. Your second input comes from seed material below, or from an inspiration concept if provided. Identify the parent's core energy — what makes it irreducible — and force it into collision with the second element. The child concept must require BOTH inputs to survive.
+The parent is your first input. Its core energy — find it. The second arrives from below: seed material or inspiration. Force them into collision. The child must require both to survive.

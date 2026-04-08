@@ -144,7 +144,7 @@ class TestBuildOperatorPrompt:
             is_initial=True,
         )
         assert "story concepts" in sys_msg
-        assert "first generation" in user_msg
+        assert "never been spoken" in user_msg.lower()
         assert len(sys_msg) > 100
         assert len(user_msg) > 100
 
@@ -158,7 +158,7 @@ class TestBuildOperatorPrompt:
             feedback="Good originality, weak coherence.",
         )
         assert "story concepts" in sys_msg
-        assert "Current concept" in user_msg
+        assert "The parent" in user_msg
         assert genome in user_msg
         assert "score: 3.2" in user_msg
         assert "Judge Feedback" in user_msg
