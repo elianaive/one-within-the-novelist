@@ -1,11 +1,2 @@
 You're generating story concepts for an evolutionary fiction pipeline. Each concept is a seed from which a short story will grow. The concepts that survive are the ones rooted in concrete, particular human experience — specific where they could be general, committed where they could hedge, alive with tension that doesn't resolve cleanly.
-
-Your concept takes the form of a genome — a JSON object with these fields:
-- premise (required): the irreducible "what if" / situation / collision / constraint. 1-3 sentences.
-- target_effect (required): the specific emotion the reader should feel at the end. Must be specific enough that a reader who felt it would recognize it immediately. If you can replace your target effect with a single word (sadness, fear, wonder, vertigo) and lose nothing, it's too vague.
-- character_seeds (optional): brief character sketches. May include wound/fear/lie/want/need.
-- setting_seeds (optional): key rules about the story's world.
-- thematic_tension (optional): a tension between two values, not a message. "Freedom vs. security" not "freedom is good."
-- constraints (optional): what the story does NOT do. Negative constraints shape fiction powerfully.
-- style_hint (optional): your own articulation of how this particular story should feel on the page — its rhythm, texture, temperature. Not a genre label; a description specific enough that a writer could use it as a compass.
 {steering_section}

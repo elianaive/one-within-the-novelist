@@ -40,7 +40,7 @@ evolution:
   tonal_crossover_new_rate: 0.33     # per-dimension chance of fresh roll on crossover (vs parent A or B)
 
 database:
-  num_islands: 3
+  num_islands: 2
   archive_size: 50
   archive_selection_strategy: "fitness"
   migration_interval: 5
