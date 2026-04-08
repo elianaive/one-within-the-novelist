@@ -1,32 +1,41 @@
-In your DESCRIPTION below, explore at least 3 different directions this concept could go. For each, note the core surprise and the feeling it produces. Then choose the most unexpected one and develop it fully as your genome.
+You have found something. It is alive in your attention — a premise, a feeling, characters that want to exist, a world pressing on them. Now you must commit it to a form that can survive without you. The genome is that form. Only what is load-bearing belongs.
 
-Respond with a short name, your exploration, and the concept genome as JSON:
+**Premise** — the true name. The irreducible core that calls the concept into existence. 1-3 sentences. If a clause can be removed and the concept still breathes, the clause was ornament.
+
+**Target effect** — the intent. What the reader carries out of the story — not a category of feeling but the specific feeling, precise enough that someone who felt it would say *yes, that*. If a single word captures it, you haven't looked closely enough.
+
+**Character seeds** — the vessels. Label and sketch. Optional: wound, fear, lie, want, need. If a character can be removed without collapsing the premise, they aren't carrying anything.
+
+**Setting seeds** — the correspondences. The conditions that make certain events inevitable and others impossible. If you can move this story to another setting and lose nothing, the setting isn't doing its work.
+
+**Thematic tension** — the polarity. An unresolved pull between two values the story holds without choosing. The tension is what keeps the concept alive after the reader finishes. If it resolves, the energy is spent.
+
+**Constraints** — the tzimtzum. What the story refuses to do — the deliberate withdrawal that creates the space in which this particular story can exist. Every constraint must earn its keep.
+
+**Style hint** — the tincture. How this story feels on the page — the quality that saturates the prose the way a drop of dye saturates cloth. Specific enough that a writer could follow it without asking what you meant.
+
+Before the binding: look into the shapes ahead. Find at least 3 different forms this concept could take. For each, note the core surprise and the feeling it produces. Choose the most unexpected — the shape the concept is reaching toward.
 
 <NAME>
 short_name_lowercase_underscores
 </NAME>
 
 <DESCRIPTION>
-Your exploration of different directions, and why you chose the one you did.
+The forms you saw — at least three, each with its core surprise and feeling. Why you chose this one.
 </DESCRIPTION>
 
 <CODE>
 ```json
 {
-  "premise": "A concrete story premise (string, min 20 chars)",
-  "target_effect": "The emotional/intellectual effect on the reader (string, min 15 chars)",
-  "character_seeds": [{"label": "name/role", "sketch": "brief characterization"}, ...] or null, // optional
-  "setting_seeds": "setting description as a single string" or null, // optional
-  "thematic_tension": "core tension as a single string" or null, // optional
-  "constraints": ["constraint 1", "constraint 2", ...] or null, // optional
-  "style_hint": "style direction as a single string" or null // optional
+  "premise": "the true name",
+  "target_effect": "the intent",
+  "character_seeds": [{"label": "name/role", "sketch": "who they are"}, ...] or null,
+  "setting_seeds": "the correspondences" or null,
+  "thematic_tension": "the polarity" or null,
+  "constraints": ["the tzimtzum"] or null,
+  "style_hint": "the tincture" or null
 }
 ```
 </CODE>
 
-Schema notes:
-- character_seeds: a list of objects, each with "label" (string) and "sketch" (string). Optional fields: "wound", "fear", "lie", "want", "need" (all strings). Do NOT use plain strings.
-- setting_seeds, thematic_tension, style_hint: plain strings, NOT objects/dicts.
-- constraints: a list of plain strings.
-
-Use the <NAME>, <DESCRIPTION>, and <CODE> delimiters exactly as shown.
+character_seeds are objects with "label" and "sketch" (optional: "wound", "fear", "lie", "want", "need"). All other optional fields are plain strings. Use the <NAME>, <DESCRIPTION>, and <CODE> delimiters exactly as shown.
