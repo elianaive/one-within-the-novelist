@@ -25,11 +25,11 @@ inverted JSON fragment
 
 ---INSTRUCTIONS---
 
-Pick the one dimension that would make the concept most interesting if you flipped it — emotional valence (hope to dread, comfort to unease), power dynamic (victim to perpetrator), expected outcome (the obvious resolution replaced by its opposite), perspective (shift who the story is "about"), or temporal direction (consequences to origins).
+One dimension. The one that would make the concept most interesting — most revealing — if you turned it over. Emotional valence. Power dynamic. Expected outcome. Perspective. Temporal direction. Whatever dimension the glass darkens most.
 
-Invert that one dimension. Preserve everything else. The concept should still be recognizably about the same thing, just seen from the opposite angle. Adjust the target_effect to match the new orientation.
+Flip it. Hold everything else. The concept remains recognizably itself. The shadow reveals what the original was afraid to show.
 {seed_content}
 
 ---MUTATION---
 
-You are inverting the parent concept shown above. Look at the judge feedback — which dimension scored lowest? Consider inverting a dimension that addresses that weakness. The concept should remain recognizably the same premise, just seen from its shadow angle.
+The judges flagged weaknesses. Consider inverting a dimension that addresses the lowest-scoring one. The concept remains the same premise — seen from its shadow angle.

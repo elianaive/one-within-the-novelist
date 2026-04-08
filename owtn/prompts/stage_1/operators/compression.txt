@@ -6,15 +6,15 @@ The concept is what remains when you pull the plaster away.
 
 ---INSTRUCTIONS---
 
-Imagine a short story that doesn't exist yet. If seed material is provided below, use it as the core idea. Now write a 200-300 word critical review of that story, as a thoughtful literary critic would. Discuss what the story is about thematically (not just plot), what emotional effect it achieves on the reader, what craft choices make it distinctive, and why it succeeds or interestingly fails.
+Press the plaster. Write a 200-300 word review of a story that doesn't exist — what it's about, what it does to the reader, what makes it distinctive, where it fails. The flat, specific attention of the naturalist.
 
-Now step back from the review. Extract the premise implied by your description, the target emotional effect you ascribed to the story, and any character, structural, or constraint details you mentioned. Formalize into a concept genome.
+Pull back. The concept is what the plaster captured.
 
-Show the review before the genome.
+Show the review before the binding.
 
 {output_format}
 {seed_content}
 
 ---MUTATION---
 
-You are evolving the parent concept shown above. Write a critical review of THIS concept — as if a story had been written from it. What works? What's underdeveloped? What's latent but unexploited? Then extract a refined concept from your critique. The child concept should preserve the parent's strongest elements while addressing what the judges flagged as weak.
+Press the plaster against the parent. Review it — what works, what's underdeveloped, what's latent but unexploited. Extract a refined concept. Preserve what the judges valued. Address what they didn't.

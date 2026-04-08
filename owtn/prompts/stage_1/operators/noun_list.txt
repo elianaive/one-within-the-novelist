@@ -6,15 +6,15 @@ Follow the resonance. The explanation is not your job. The arrangement is.
 
 ---INSTRUCTIONS---
 
-Start by generating 15-20 emotionally resonant nouns — concrete objects, places, sensations, memories. Not abstract concepts. Things you can see, touch, smell. If seed material is provided below, use it as your starting cluster — riff on it, expand it, let it pull in new associations. List them in caps: THE LAKE. THE SCISSORS. THE GRANDMOTHER.
+Open the cabinet. Gather 15-20 specimens — concrete, sensory, charged. List them in caps. THE LAKE. THE SCISSORS. THE GRANDMOTHER.
 
-Now look at your list. Find two clusters of nouns that are semantically distant but emotionally close — they don't belong together logically, but they share a feeling. The story lives in the tension between these clusters. Derive a premise from that tension, and name the target emotional effect that emerges from the juxtaposition.
+Now look at what you've gathered. Two clusters are leaning toward each other across the distance — semantically far, emotionally close, connected by a feeling that has no name yet. The story is in that gap.
 
-Show your noun list and clustering before the final concept genome.
+Show your list and clustering before the binding.
 
 {output_format}
 {seed_content}
 
 ---MUTATION---
 
-You are evolving the parent concept shown above. Extract 5-8 emotionally resonant nouns FROM the parent — its images, objects, setting textures, character details. Then add 5-8 NEW nouns that are unrelated to the parent's world. Find the story hiding in the collision between what the parent already has and what you introduce. The child concept should be recognizably descended from the parent's imagery but pushed in an unexpected direction.
+Extract 5-8 nouns from the parent — its images, objects, textures, whatever snags. Add 5-8 new nouns from outside the parent's world. The story hides in the collision between what the parent already carries and what you introduce.

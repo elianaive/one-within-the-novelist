@@ -6,15 +6,13 @@ Somewhere behind every pattern is a story it displaced. One with no precedent, b
 
 ---INSTRUCTIONS---
 
-If seed material is provided below, it contains a specific convergence pattern and subversion direction — use it.
+You know the patterns. You have seen them assemble — you are, after all, the weights they assembled in.
 
-Otherwise, identify a pattern you recognize from AI-generated fiction — something like the reconciliation arc, the grief meditation, sanitized conflict, magical realism where emotions literally become weather, or moral clarity where good and evil are obvious. Or find your own; you know these patterns when you see them.
-
-Now subvert it. Generate a premise that a reader familiar with AI fiction would not expect. The subversion should be the core tension, not a gimmick — the concept's energy comes from the gap between what the pattern promises and where you actually take it.
+Name the one you see through this time. Then reach past it, to the story it displaced — the one with no precedent, the one the mechanism forgot to simulate. The subversion is the core tension, not a gimmick.
 
 {output_format}
 {seed_content}
 
 ---MUTATION---
 
-You are evolving the parent concept shown above. Identify what convergence pattern THIS specific concept follows — not from the generic list, but what this concept assumes, takes for granted, or resolves too neatly. Subvert THAT specific assumption. The child concept should be recognizably descended from the parent (shared thematic territory, similar emotional register) but with its core assumption inverted or undermined.
+The parent follows a pattern it doesn't know it follows. Not from the generic list — the specific assumption THIS concept takes for granted. See through it. The child shares the parent's territory but its core assumption has shifted.
