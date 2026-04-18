@@ -34,6 +34,10 @@ async def _judge_one_ordering(
     genome_b: ConceptGenome,
 ) -> tuple[PairwiseJudgment, float]:
     """Run one judge on one ordering. Returns (judgment, cost)."""
+    # Set inside the coroutine so each task writes its own judge_id into its
+    # own Task-local context. Setting in the caller before asyncio.gather
+    # makes every task see the last loop iteration's value.
+    llm_context.set({"role": "pairwise_judge", "judge_id": judge.id})
     system_msg = build_pairwise_system(judge)
     user_msg = build_pairwise_user(genome_a, genome_b)
     model_name = judge.model[0]
@@ -167,9 +171,9 @@ async def compare(
     t0 = time.perf_counter()
 
     # Run all judges in parallel, each in both orderings.
+    # _judge_one_ordering sets llm_context inside its own Task's context.
     tasks = []
     for judge in panel:
-        llm_context.set({"role": "pairwise_judge", "judge_id": judge.id})
         tasks.append(_judge_one_ordering(judge, genome_a, genome_b))  # A-first
         tasks.append(_judge_one_ordering(judge, genome_b, genome_a))  # B-first
 
