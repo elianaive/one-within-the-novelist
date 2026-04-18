@@ -42,10 +42,14 @@ async def _judge_one_ordering(
     user_msg = build_pairwise_user(genome_a, genome_b)
     model_name = judge.model[0]
 
+    # The judge's entire system message is stable across all comparisons by
+    # this judge — pass it as system_prefix so Anthropic caches it (and
+    # OpenAI/DeepSeek auto-match the prefix for their own discounts).
     result = await query_async(
         model_name=model_name,
         msg=user_msg,
-        system_msg=system_msg,
+        system_msg="",
+        system_prefix=system_msg,
         output_model=PairwiseJudgment,
     )
     return result.content, result.cost

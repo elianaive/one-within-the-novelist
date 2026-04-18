@@ -83,6 +83,12 @@ def query_deepseek(
     except Exception:
         thinking_tokens = 0
     out_tokens = all_out_tokens - thinking_tokens
+    # prompt_tokens_details.cached_tokens survives instructor validation;
+    # prompt_cache_hit_tokens is a DeepSeek-only field that instructor drops.
+    details = getattr(response.usage, "prompt_tokens_details", None)
+    cached_tokens = (getattr(details, "cached_tokens", 0) or 0) if details else 0
+    if not cached_tokens:
+        cached_tokens = getattr(response.usage, "prompt_cache_hit_tokens", 0) or 0
     input_cost, output_cost = calculate_cost(model, in_tokens, all_out_tokens)
 
     # Collect all results
@@ -101,6 +107,7 @@ def query_deepseek(
         output_cost=output_cost,
         thought=thought,
         model_posteriors=model_posteriors,
+        cache_read_tokens=cached_tokens,
     )
     return result
 
@@ -166,6 +173,12 @@ async def query_deepseek_async(
     except Exception:
         thinking_tokens = 0
     out_tokens = all_out_tokens - thinking_tokens
+    # prompt_tokens_details.cached_tokens survives instructor validation;
+    # prompt_cache_hit_tokens is a DeepSeek-only field that instructor drops.
+    details = getattr(response.usage, "prompt_tokens_details", None)
+    cached_tokens = (getattr(details, "cached_tokens", 0) or 0) if details else 0
+    if not cached_tokens:
+        cached_tokens = getattr(response.usage, "prompt_cache_hit_tokens", 0) or 0
     input_cost, output_cost = calculate_cost(model, in_tokens, all_out_tokens)
 
     return QueryResult(
@@ -183,4 +196,5 @@ async def query_deepseek_async(
         output_cost=output_cost,
         thought=thought,
         model_posteriors=model_posteriors,
+        cache_read_tokens=cached_tokens,
     )
