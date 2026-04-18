@@ -28,6 +28,10 @@ def get_openai_costs(response, model):
         thinking_tokens = 0
     all_out_tokens = response.usage.output_tokens
     out_tokens = response.usage.output_tokens - thinking_tokens
+    cached_tokens = 0
+    details = getattr(response.usage, "input_tokens_details", None)
+    if details is not None:
+        cached_tokens = getattr(details, "cached_tokens", 0) or 0
 
     # Get actual costs from OpenRouter API if available -- if not use OAI
     cost_details = getattr(response.usage, "cost_details", None)
@@ -58,6 +62,7 @@ def get_openai_costs(response, model):
         "input_cost": input_cost,
         "output_cost": output_cost,
         "cost": input_cost + output_cost,
+        "cache_read_tokens": cached_tokens,
     }
 
 

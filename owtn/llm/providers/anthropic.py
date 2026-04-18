@@ -20,17 +20,16 @@ def _build_system(system_msg, system_prefix):
     cache_control on the prefix block. Otherwise returns the plain string.
     """
     if system_prefix:
-        return [
+        blocks = [
             {
                 "type": "text",
                 "text": system_prefix,
                 "cache_control": {"type": "ephemeral"},
-            },
-            {
-                "type": "text",
-                "text": system_msg,
-            },
+            }
         ]
+        if system_msg:
+            blocks.append({"type": "text", "text": system_msg})
+        return blocks
     return system_msg
 
 

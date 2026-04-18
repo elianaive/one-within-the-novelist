@@ -53,10 +53,12 @@ def get_gemini_costs(response, model):
         in_tokens = getattr(usage_metadata, "prompt_token_count", 0) or 0
         candidates_tokens = getattr(usage_metadata, "candidates_token_count", 0) or 0
         thoughts_tokens = getattr(usage_metadata, "thoughts_token_count", 0) or 0
+        cached_tokens = getattr(usage_metadata, "cached_content_token_count", 0) or 0
     else:
         in_tokens = 0
         candidates_tokens = 0
         thoughts_tokens = 0
+        cached_tokens = 0
 
     out_tokens = candidates_tokens
     thinking_tokens = thoughts_tokens
@@ -71,6 +73,7 @@ def get_gemini_costs(response, model):
         "input_cost": input_cost,
         "output_cost": output_cost,
         "cost": input_cost + output_cost,
+        "cache_read_tokens": cached_tokens,
     }
 
 

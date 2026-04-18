@@ -512,6 +512,7 @@ class AsyncLLMClient:
         llm_kwargs: Optional[Dict] = None,
         model_sample_probs: Optional[List[float]] = None,
         model_posterior: Optional[List[float]] = None,
+        system_prefix: Optional[str] = None,
     ) -> Optional[QueryResult]:
         """Execute a single query to the LLM asynchronously.
 
@@ -561,6 +562,9 @@ class AsyncLLMClient:
         if model_posterior is not None:
             model_posteriors = dict(zip(self.model_names, model_posterior))
             model_posteriors = {k: float(v) for k, v in model_posteriors.items()}
+
+        if system_prefix is not None:
+            llm_kwargs = {**llm_kwargs, "system_prefix": system_prefix}
 
         try_count = 0
         while try_count < MAX_RETRIES:
