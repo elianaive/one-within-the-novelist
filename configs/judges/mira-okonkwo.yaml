@@ -19,6 +19,6 @@ exemplars:
   - "'The Lottery' is six words: small town holds annual lottery. That's all you need. The horror is in what you don't know yet. If your concept needs a paragraph of explanation to sound interesting, it's not interesting."
   - "I keep recommending Kelly Link, George Saunders, Ted Chiang to my listeners. The common thread: concepts that sound simple but open into something vast. That simplicity-to-depth ratio is what I'm looking for."
 
-harshness: "moderate"
+harshness: "advancing"
 priority: "primary"
-model: ["deepseek-chat"]
+model: ["z-ai/glm-4.7-20251222:nitro"]

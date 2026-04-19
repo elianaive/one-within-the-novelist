@@ -55,4 +55,9 @@ class TestCalculateCost:
 
 class TestIsReasoningModel:
     def test_non_reasoning_model(self):
-        assert not is_reasoning_model("claude-4-sonnet-20250514")
+        # deepseek-chat is the canonical non-reasoning model in pricing.csv.
+        # (claude-4-sonnet is a reasoning model with extended thinking.)
+        assert not is_reasoning_model("deepseek-chat")
+
+    def test_reasoning_model(self):
+        assert is_reasoning_model("claude-4-sonnet-20250514")

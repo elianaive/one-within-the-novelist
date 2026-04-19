@@ -16,11 +16,15 @@ M = 1_000_000
 
 def _load_pricing_dataframe() -> pd.DataFrame:
     """Load pricing data from CSV file as a pandas DataFrame."""
-    df = pd.read_csv(_pricing_csv_path)
+    # skipinitialspace handles quoted values with leading spaces like `" True"`
+    # that older rows in pricing.csv use. Without it, modern pandas keeps the
+    # space and subsequent `== "True"` checks silently return False — mis-
+    # classifying historical reasoning models as non-reasoning.
+    df = pd.read_csv(_pricing_csv_path, skipinitialspace=True)
 
-    # Strip whitespace from string columns only
+    # Strip remaining whitespace from string columns (belt-and-suspenders).
     for col in df.columns:
-        if df[col].dtype == "object":  # Only strip string columns
+        if pd.api.types.is_string_dtype(df[col]):
             df[col] = df[col].str.strip()
 
     # Strip column names
