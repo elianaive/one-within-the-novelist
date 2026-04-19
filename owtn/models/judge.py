@@ -13,7 +13,12 @@ class JudgePersona(BaseModel):
     identity: str
     values: list[str]
     exemplars: list[str]
-    harshness: Literal["lenient", "moderate", "demanding"]
+    harshness: Literal[
+        "advancing",
+        "standard",
+        "demanding",
+        "failing_unless_exceptional",
+    ]
     priority: Literal["primary", "secondary", "contrarian"]
     model: list[str]
 

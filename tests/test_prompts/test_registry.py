@@ -149,20 +149,24 @@ class TestBuildOperatorPrompt:
         assert len(user_msg) > 100
 
     def test_iteration_prompt_structure(self, registry):
+        """iteration.txt no longer renders a numerical score (stripped in the
+        Phase-3 feedback redesign — see issue lazy-feedback-summarizer). The
+        feedback section is the brief, not a score summary."""
         genome = '{"premise": "test", "target_effect": "test effect"}'
         sys_msg, user_msg = build_operator_prompt(
             "collision",
             registry=registry,
             parent_genome=genome,
-            metrics="score: 3.2",
+            metrics="",
             feedback="Good originality, weak coherence.",
         )
         assert "story concepts" in sys_msg
         assert "The parent" in user_msg
         assert genome in user_msg
-        assert "score: 3.2" in user_msg
         assert "Judge Feedback" in user_msg
         assert "Good originality" in user_msg
+        # Score block and # Judgment header are gone.
+        assert "# Judgment" not in user_msg
 
     def test_no_feedback_section_when_empty(self, registry):
         sys_msg, user_msg = build_operator_prompt(
@@ -336,43 +340,30 @@ class TestBuildMutationFeedback:
         assert build_mutation_feedback(None, {}) == ""
         assert build_mutation_feedback("  ", {}) == ""
 
-    def test_identifies_weakest_and_strongest(self):
-        result = build_mutation_feedback(
-            self.SAMPLE_FEEDBACK,
-            {"dimensions": self.SAMPLE_DIMENSIONS},
+    def test_prefers_precomputed_parent_brief_from_private_metrics(self):
+        """When runner has precomputed a parent brief, pass it through verbatim."""
+        rendered = (
+            "This concept has been evaluated in 3 matches...\n\n"
+            "## Established weaknesses\n- Hook relies on withheld information..."
         )
-        # Weakest: novelty (4.17), generative_fertility (4.17), emotional_depth (4.20)
-        assert "novelty" in result
-        assert "generative_fertility" in result
-        # Strongest: indelibility (5.0), scope_calibration (4.83)
-        assert "indelibility" in result
-        assert "scope_calibration" in result
-        assert "Weakest" in result
-        assert "Strongest" in result
-
-    def test_extracts_dimension_sections(self):
         result = build_mutation_feedback(
-            self.SAMPLE_FEEDBACK,
+            "legacy text_feedback that should be ignored",
             {"dimensions": self.SAMPLE_DIMENSIONS},
+            {"parent_brief_rendered": rendered},
         )
-        # Should include Mira's NOVELTY section (weakest dim)
-        assert "Instructions-as-horror" in result
-        # Should include Tomas's NOVELTY section
-        assert "Variations of manual/instructions" in result
-        # Should NOT include full GRIP (not weakest)
-        assert "Office-checkpoint deadpan" not in result
+        assert result == rendered
 
-    def test_output_is_concise(self):
-        result = build_mutation_feedback(
-            self.SAMPLE_FEEDBACK,
-            {"dimensions": self.SAMPLE_DIMENSIONS},
-        )
-        assert len(result) < len(self.SAMPLE_FEEDBACK)
-
-    def test_fallback_when_no_dimensions(self):
+    def test_falls_back_to_text_feedback_when_no_brief(self):
+        """Seeds and programs with no cached brief get a truncated fallback."""
         result = build_mutation_feedback(
             "raw feedback text here",
-            {"holder_score": 4.0},
+            {"dimensions": self.SAMPLE_DIMENSIONS},
+            {},  # no parent_brief_rendered key
         )
         assert "raw feedback text" in result
         assert len(result) <= 500
+
+    def test_private_metrics_none_still_works(self):
+        """Backward compat: callers that don't pass private_metrics."""
+        result = build_mutation_feedback("some text", {})
+        assert "some text" in result

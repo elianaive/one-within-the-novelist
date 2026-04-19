@@ -30,6 +30,7 @@ def _make_parent():
         },
     }
     parent.text_feedback = "[mock-judge]\nNOVELTY: Decent.\n\n---\n\n[mock-judge-2]\nNOVELTY: Fine."
+    parent.private_metrics = {}
     parent.metadata = {"affective_register": "DREAD", "literary_mode": "NOIR"}
     return parent
 

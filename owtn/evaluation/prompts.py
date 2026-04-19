@@ -15,6 +15,7 @@ def load_prompt(name: str) -> str:
 def build_pairwise_system(persona: JudgePersona) -> str:
     template = load_prompt("pairwise_system.txt")
     rubric_anchors = load_prompt("rubric_anchors.txt")
+    harshness_instruction = load_prompt(f"harshness/{persona.harshness}.txt").strip()
 
     values_str = "\n".join(f"- {v}" for v in persona.values)
     exemplars_str = "\n".join(f"- {e}" for e in persona.exemplars)
@@ -24,6 +25,8 @@ def build_pairwise_system(persona: JudgePersona) -> str:
         judge_identity=persona.identity,
         judge_values=values_str,
         judge_exemplars=exemplars_str,
+        judge_harshness=persona.harshness,
+        harshness_instruction=harshness_instruction,
         rubric_anchors=rubric_anchors,
     )
 

@@ -1,10 +1,6 @@
 # The parent
 
-{code_content}
-
-# Judgment
-
-{performance_metrics}{text_feedback_section}{episodic_context}
+{code_content}{text_feedback_section}{episodic_context}
 
 # The work
 

@@ -165,58 +165,35 @@ def _extract_dimension_section(judge_text: str, dim_name: str) -> str | None:
     return judge_text[match.start():end].strip()
 
 
+_PARENT_BRIEF_CACHE_RENDER_KEY = "parent_brief_rendered"
+
+
 def build_mutation_feedback(
     text_feedback: str | None,
     public_metrics: dict,
+    private_metrics: dict | None = None,
 ) -> str:
-    """Compress judge feedback: scores summary + weakest dimensions' feedback.
+    """Build the feedback section injected into the mutation prompt.
 
-    Instead of injecting 4,000-6,000 tokens of raw judge reasoning into the
-    mutation prompt, extract only the sections relevant to the weakest
-    dimensions. Produces ~1,000-1,500 tokens of actionable feedback.
+    Preferred path (Phase-3 feedback pipeline): if the parent's
+    `private_metrics` contains a pre-rendered parent brief (set by the
+    runner's async precompute step via `feedback.get_or_compute_brief`),
+    return it verbatim. This is the curated, accumulated-critique summary.
+
+    Fallback (legacy): for seeds, for programs without accumulated critiques,
+    or if the precompute step was skipped, return a minimal pairwise-result
+    snippet. No regex-based dimension extraction — that path produced
+    corrupt, champion-praising feedback (see
+    `lab/issues/2026-04-18-lazy-feedback-summarizer.md`).
     """
+    if private_metrics:
+        rendered = private_metrics.get(_PARENT_BRIEF_CACHE_RENDER_KEY)
+        if rendered:
+            return rendered
+
     if not text_feedback or not text_feedback.strip():
         return ""
-
-    dimensions = public_metrics.get("dimensions", {})
-    if not dimensions:
-        return text_feedback[:500]
-
-    sorted_dims = sorted(dimensions.items(), key=lambda x: x[1])
-    weakest = sorted_dims[:3]
-    strongest = sorted_dims[-2:]
-
-    lines = ["Weakest dimensions to improve:"]
-    for name, score in weakest:
-        lines.append(f"- {name} ({score:.2f})")
-    lines.append("")
-    lines.append("Strongest dimensions to preserve:")
-    for name, score in strongest:
-        lines.append(f"- {name} ({score:.2f})")
-
-    judge_blocks = text_feedback.split("\n\n---\n\n")
-    weak_dim_names = [name for name, _ in weakest]
-
-    for block in judge_blocks:
-        block = block.strip()
-        if not block:
-            continue
-        judge_header = block.split("\n", 1)[0]
-        extracted = []
-        for dim_name in weak_dim_names:
-            section = _extract_dimension_section(block, dim_name)
-            if section:
-                extracted.append(section)
-        if extracted:
-            lines.append("")
-            lines.append(judge_header)
-            lines.extend(extracted)
-        else:
-            # Parsing failed for this judge — include truncated raw.
-            lines.append("")
-            lines.append(block[:400])
-
-    return "\n".join(lines)
+    return text_feedback[:500]
 
 
 def build_operator_prompt(
