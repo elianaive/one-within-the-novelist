@@ -61,5 +61,11 @@ qwen/qwen3-235b-a22b-2507,openrouter,N/A,N/A,,,," False"," 0",0
 qwen/qwen3-32b,openrouter,N/A,N/A,,,," False"," 0",0
 openai/gpt-oss-120b,openrouter,N/A,N/A,,,," True"," 1"," 1"
 z-ai/glm-4.6,openrouter,N/A,N/A,,,," True"," 1"," 0"
+z-ai/glm-5.1,openrouter,N/A,N/A,,,," True"," 1"," 0"
+z-ai/glm-4.7-20251222:nitro,openrouter,N/A,N/A,,,," True"," 1"," 0"
 moonshotai/kimi-k2-0905,openrouter,N/A,N/A,,,," False"," 0",0
+moonshotai/kimi-k2-0905:nitro,openrouter,N/A,N/A,,,," False"," 0",0
 moonshotai/kimi-k2-thinking,openrouter,N/A,N/A,,,," True"," 1"," 1"
+moonshotai/kimi-k2.5,openrouter,N/A,N/A,,,," True"," 1"," 0"
+moonshotai/kimi-k2.5-0127:nitro,openrouter,N/A,N/A,,,," True"," 1"," 0"
+minimax/minimax-m2.5:nitro,openrouter,N/A,N/A,,,," True"," 1"," 0"

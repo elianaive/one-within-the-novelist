@@ -13,19 +13,58 @@ import logging
 import time
 from collections import Counter
 
+from datetime import datetime, timezone
+
 from owtn.evaluation.models import (
     DIMENSION_NAMES,
+    JudgeReasoningRecord,
+    MatchCritique,
     PairwiseJudgment,
     PairwiseResult,
 )
 from owtn.evaluation.prompts import build_pairwise_system, build_pairwise_user
 from owtn.llm.call_logger import llm_context
+from owtn.llm.providers.model_resolver import resolve_model_backend
+from owtn.llm.providers.pricing import is_reasoning_model
 from owtn.llm.query import query_async
 from owtn.models.judge import JudgePersona, load_panel
 from owtn.models.stage_1.concept_genome import ConceptGenome
 from owtn.models.stage_1.config import StageConfig
 
 logger = logging.getLogger(__name__)
+
+# 2000 reasoning tokens at effort=low + ~1.5k visible judgment + 2× buffer
+# against truncation-induced parse-retries. See
+# lab/issues/2026-04-18-judge-latency-variance.md for calibration.
+_JUDGE_MAX_OUTPUT_TOKENS = 6144
+
+
+def _build_judge_kwargs(model_name: str) -> dict:
+    """Build reasoning-cap kwargs for a judge call.
+
+    - `max_output_tokens`: set for any OpenAI/OpenRouter/Azure model, not just
+      reasoning ones. Non-reasoning OpenRouter upstreams (e.g. kimi-k2-0905
+      via :nitro) were observed truncating judgments mid-JSON in
+      run_20260418_184314 — consistent with a tight provider default cap.
+      This is a ceiling, so it's a no-op on models that finish within it.
+    - `reasoning: {effort: low}`: bounds the reasoning-token spiral on
+      reasoning-model judges. OpenAI reasoning judges also get capped —
+      fine because the panel fans out in parallel and latency is gated by
+      the slowest judge.
+
+    Note: we previously tried `extra_body.provider.sort=throughput` with
+    `require_parameters=true` to curb backend-routing variance on OpenRouter,
+    but that forced Kimi onto a backend that leaked `[EOS]` markers into
+    JSON output, breaking every Sable call in run_20260418_181611. Dropped
+    until we find a routing recipe that doesn't trigger that upstream.
+    """
+    resolved = resolve_model_backend(model_name)
+    kwargs: dict = {}
+    if resolved.provider in ("openai", "openrouter", "azure_openai"):
+        kwargs["max_output_tokens"] = _JUDGE_MAX_OUTPUT_TOKENS
+        if is_reasoning_model(resolved.api_model_name):
+            kwargs["reasoning"] = {"effort": "low"}
+    return kwargs
 
 
 async def _judge_one_ordering(
@@ -41,6 +80,7 @@ async def _judge_one_ordering(
     system_msg = build_pairwise_system(judge)
     user_msg = build_pairwise_user(genome_a, genome_b)
     model_name = judge.model[0]
+    judge_kwargs = _build_judge_kwargs(model_name)
 
     # The judge's entire system message is stable across all comparisons by
     # this judge — pass it as system_prefix so Anthropic caches it (and
@@ -51,12 +91,13 @@ async def _judge_one_ordering(
         system_msg="",
         system_prefix=system_msg,
         output_model=PairwiseJudgment,
+        **judge_kwargs,
     )
     return result.content, result.cost
 
 
 def _flip_votes(judgment: PairwiseJudgment) -> dict[str, str]:
-    """Flip a/b in votes (for the reversed ordering)."""
+    """Flip a/b in votes (for the reversed ordering). Tie is identity."""
     flipped = {}
     for dim, winner in judgment.votes().items():
         if winner == "a":
@@ -68,24 +109,59 @@ def _flip_votes(judgment: PairwiseJudgment) -> dict[str, str]:
     return flipped
 
 
+def _classify_resolution(fwd: str, rev: str) -> str:
+    """Label the (fwd, rev) combination for diagnostic logging.
+
+    - confident-a / confident-b: both orderings agree on a winner
+    - confident-tie: judge declared tie in both orderings
+    - resolution-tie: orderings disagree on winner (position bias caught)
+    - soft-tie: one ordering picked a winner, the other declared tie
+    """
+    if fwd == rev:
+        if fwd == "tie":
+            return "confident-tie"
+        return f"confident-{fwd}"
+    if fwd == "tie" or rev == "tie":
+        return "soft-tie"
+    return "resolution-tie"
+
+
 def _resolve_votes(
     forward_votes: dict[str, str],
     reverse_votes: dict[str, str],
 ) -> dict[str, str]:
     """Resolve per-dimension votes across two orderings.
 
-    Same winner in both orderings → that winner.
-    Different winners → tie (position bias detected).
+    Conservative dual-ordering: a side wins only if both orderings agree on
+    that side. Anything else (disagreement, either-ordering tie) resolves to
+    tie. See issue 2026-04-18-reintroduce-harshness-pairwise.md for the full
+    case table.
     """
     resolved = {}
     for dim in DIMENSION_NAMES:
         fwd = forward_votes.get(dim, "tie")
         rev = reverse_votes.get(dim, "tie")
-        if fwd == rev:
+        if fwd == rev and fwd != "tie":
             resolved[dim] = fwd
+        elif fwd == rev and fwd == "tie":
+            resolved[dim] = "tie"
         else:
             resolved[dim] = "tie"
     return resolved
+
+
+def _classify_votes(
+    forward_votes: dict[str, str],
+    reverse_votes: dict[str, str],
+) -> dict[str, str]:
+    """Per-dimension classification of the (fwd, rev) combination."""
+    return {
+        dim: _classify_resolution(
+            forward_votes.get(dim, "tie"),
+            reverse_votes.get(dim, "tie"),
+        )
+        for dim in DIMENSION_NAMES
+    }
 
 
 def _aggregate(
@@ -118,6 +194,88 @@ def _aggregate(
             tie_total += 1
 
     return dim_winners, a_total, b_total, tie_total
+
+
+def _invert_outcome(outcome: str) -> str:
+    """Flip a per-concept outcome from one side to the other."""
+    if outcome == "won":
+        return "lost"
+    if outcome == "lost":
+        return "won"
+    return "tied"
+
+
+def _build_match_critiques(
+    *,
+    genome_a: ConceptGenome,
+    genome_b: ConceptGenome,
+    champion_label: str,
+    winner: str,
+    dim_winners: dict[str, str],
+    panel: list[JudgePersona],
+    fwd_judgments: list[PairwiseJudgment],
+) -> dict[str, MatchCritique]:
+    """Build two per-concept critique records (keyed by 'a' / 'b') for this match.
+
+    Reasoning text is stored verbatim (references concepts as 'A' / 'B').
+    Label disambiguation is the summarizer's job at prompt time; we never
+    text-substitute into judge reasoning here.
+    """
+    timestamp = datetime.now(timezone.utc).isoformat()
+
+    # Forward-ordering reasonings from each judge that did not error.
+    reasonings = [
+        JudgeReasoningRecord(
+            judge_id=judge.id,
+            harshness=judge.harshness,
+            reasoning=judgment.reasoning,
+        )
+        for judge, judgment in zip(panel, fwd_judgments)
+    ]
+
+    # Outcome from A's perspective.
+    a_outcome: str
+    if winner == "a":
+        a_outcome = "won"
+    elif winner == "b":
+        a_outcome = "lost"
+    else:
+        a_outcome = "tied"
+    b_outcome = _invert_outcome(a_outcome)
+
+    # Per-dimension outcomes from A's perspective (resolved "a" → won, etc.).
+    def _dim_outcomes_from(label: str) -> dict[str, str]:
+        result = {}
+        for dim, w in dim_winners.items():
+            if w == "tie":
+                result[dim] = "tied"
+            elif w == label:
+                result[dim] = "won"
+            else:
+                result[dim] = "lost"
+        return result
+
+    critique_a = MatchCritique(
+        self_label="a",
+        opponent_label="b",
+        self_was_champion=(champion_label == "a"),
+        opponent_genome=genome_b.model_dump(),
+        outcome=a_outcome,
+        dim_outcomes=_dim_outcomes_from("a"),
+        judge_reasonings=reasonings,
+        timestamp=timestamp,
+    )
+    critique_b = MatchCritique(
+        self_label="b",
+        opponent_label="a",
+        self_was_champion=(champion_label == "b"),
+        opponent_genome=genome_a.model_dump(),
+        outcome=b_outcome,
+        dim_outcomes=_dim_outcomes_from("b"),
+        judge_reasonings=reasonings,
+        timestamp=timestamp,
+    )
+    return {"a": critique_a, "b": critique_b}
 
 
 def _format_feedback(
@@ -188,6 +346,8 @@ async def compare(
     all_resolved = []
     judgments_data = []
     reasoning_texts = []
+    surviving_panel: list[JudgePersona] = []
+    surviving_fwd_judgments: list[PairwiseJudgment] = []
     total_cost = 0.0
 
     for i, judge in enumerate(panel):
@@ -206,15 +366,20 @@ async def compare(
         forward_votes = fwd_judgment.votes()
         reverse_votes = _flip_votes(rev_judgment)  # flip because labels were swapped
         resolved = _resolve_votes(forward_votes, reverse_votes)
+        classifications = _classify_votes(forward_votes, reverse_votes)
         all_resolved.append(resolved)
 
         reasoning_texts.append(fwd_judgment.reasoning)
+        surviving_panel.append(judge)
+        surviving_fwd_judgments.append(fwd_judgment)
         judgments_data.append({
             "judge_id": judge.id,
             "model_used": judge.model[0],
+            "harshness": judge.harshness,
             "forward_votes": forward_votes,
             "reverse_votes": reverse_votes,
             "resolved_votes": resolved,
+            "classifications": classifications,
             "cost": fwd_cost + rev_cost,
         })
 
@@ -241,6 +406,16 @@ async def compare(
         dim_winners, a_total, b_total, reasoning_texts, champion_label,
     )
 
+    critiques_by_label = _build_match_critiques(
+        genome_a=genome_a,
+        genome_b=genome_b,
+        champion_label=champion_label,
+        winner=winner,
+        dim_winners=dim_winners,
+        panel=surviving_panel,
+        fwd_judgments=surviving_fwd_judgments,
+    )
+
     dt = time.perf_counter() - t0
 
     # Log per-dimension breakdown.
@@ -261,4 +436,5 @@ async def compare(
         ties=tie_total,
         judgments=judgments_data,
         feedback=feedback,
+        critiques_by_label=critiques_by_label,
     )
