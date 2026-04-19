@@ -17,7 +17,7 @@ class TestLoadPanel:
         mira = panel[0]
         assert mira.id == "mira-okonkwo"
         assert mira.name == "Mira Okonkwo"
-        assert mira.harshness == "moderate"
+        assert mira.harshness == "advancing"
         assert mira.priority == "primary"
         assert isinstance(mira.model, list)
         assert len(mira.values) >= 3
@@ -36,3 +36,30 @@ class TestLoadPanel:
     def test_missing_judge_raises(self):
         with pytest.raises(FileNotFoundError):
             load_panel(JUDGES_DIR, ["nonexistent-judge"])
+
+    def test_contrarian_harshness(self):
+        panel = load_panel(JUDGES_DIR, PANEL_IDS)
+        sable = panel[2]
+        assert sable.harshness == "failing_unless_exceptional"
+
+    def test_rejects_old_harshness_values(self):
+        from pydantic import ValidationError
+
+        for old in ("lenient", "moderate"):
+            with pytest.raises(ValidationError):
+                JudgePersona(
+                    id="x", name="X", identity="x",
+                    values=["x"], exemplars=["x"],
+                    harshness=old, priority="primary",
+                    model=["gpt-4o"],
+                )
+
+    def test_accepts_all_four_bands(self):
+        for band in ("advancing", "standard", "demanding", "failing_unless_exceptional"):
+            j = JudgePersona(
+                id="x", name="X", identity="x",
+                values=["x"], exemplars=["x"],
+                harshness=band, priority="primary",
+                model=["gpt-4o"],
+            )
+            assert j.harshness == band

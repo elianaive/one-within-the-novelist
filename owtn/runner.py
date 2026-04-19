@@ -8,7 +8,9 @@ from __future__ import annotations
 
 import json
 import logging
+import threading
 import uuid
+from collections import defaultdict
 from datetime import datetime
 from pathlib import Path
 from typing import Optional
@@ -95,6 +97,28 @@ def _build_shinka_configs(
     return evo, db, job
 
 
+# Epsilon for champion succession. Small enough that accumulated succession
+# over hundreds of generations adds negligible score (keeping archive/threshold
+# logic undisturbed), large enough that float comparison and SQL ORDER BY
+# treat the new champion as strictly greater than the deposed incumbent.
+_SUCCESSION_EPS = 1e-6
+
+
+def _challenger_succession_score(
+    *, match_score: float, incumbent_score: float
+) -> float:
+    """Score assigned to a challenger that has won a pairwise match.
+
+    Guarantees the new champion outranks the deposed incumbent in
+    `get_island_champion`'s ORDER BY combined_score DESC sort. Without
+    this, an early decisive upset (e.g. 8-1-0 = 0.89 against a weak seed)
+    creates a permanent moat that later challengers can beat in pairwise
+    but never dethrone in selection. See
+    `lab/issues/2026-04-18-champion-succession-score-bug.md`.
+    """
+    return max(match_score, incumbent_score + _SUCCESSION_EPS)
+
+
 class ConceptEvolutionRunner(ShinkaEvolveRunner):
     """ShinkaEvolve runner configured for Stage 1 concept evolution."""
 
@@ -119,6 +143,15 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
         # Load seed bank and operator registry
         self.seed_bank = SeedBank.load(self.stage_config.paths.seed_bank)
         self.registry = load_registry()
+
+        # Per-island lock guarding the post-pairwise champion-file
+        # read+update phase. Pairwise comparisons run in parallel (the slow
+        # LLM calls overlap), but the brief "did I dethrone?" handoff must
+        # serialize: without it, two parallel winners both read the
+        # pre-update incumbent score, both compute `incumbent + ε`, and
+        # both end up with the same score — breaking the succession chain.
+        # See lab/issues/2026-04-19-parallel-eval-champion-race.md.
+        self._champion_locks: dict[int, threading.Lock] = defaultdict(threading.Lock)
 
         super().__init__(
             evo_config=evo,
@@ -169,6 +202,7 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
                 "id": champion.id,
                 "code": champion.code,
                 "metadata": champion.metadata or {},
+                "combined_score": champion.combined_score,
             }))
 
     def _evaluate_with_pairwise(
@@ -181,6 +215,16 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
         the genome, reads the champion from disk (written by main thread),
         runs pairwise comparison, and writes metrics.json. Blocks until
         pairwise completes, so ShinkaEvolve waits for the real score.
+
+        Per-island serialization: only one eval runs against an island's
+        champion at a time. Parallelism is preserved *across* islands —
+        with 2 islands and `--max-eval-jobs=2`, two challengers can
+        evaluate simultaneously as long as they're on different islands.
+        Without this, two parallel challengers on the same island would
+        both read the same incumbent score, both succeed via succession
+        with the identical `incumbent + ε` value, and both append a
+        defense critique to the same champion. See
+        `lab/issues/2026-04-19-parallel-eval-champion-race.md`.
         """
         import asyncio
         from owtn.evaluation.stage_1 import evaluate
@@ -188,6 +232,13 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
         # Propagate context vars to this worker thread.
         llm_log_dir.set(self._log_dir)
         llm_context.set({"role": "pairwise_judge"})
+
+        if island_idx is not None:
+            with self._champion_locks[island_idx]:
+                asyncio.run(self._evaluate_with_pairwise_async(
+                    program_path, results_dir, config_path, island_idx,
+                ))
+            return
 
         # Single asyncio.run() for all async work in this eval — avoids
         # httpx/aiohttp cleanup errors from loop creation/destruction.
@@ -256,16 +307,27 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
             return
 
         if pairwise_result.winner == "a":
-            result.combined_score = pairwise_result.a_score
+            # The whole eval body is serialized per island via the outer
+            # `_champion_locks[island_idx]` (see `_evaluate_with_pairwise`).
+            # That guarantees `champion_data` reflects the actual current
+            # champion (no parallel challenger has snuck in), so we can
+            # use the score we read at the start of this eval directly.
+            incumbent_score = float(champion_data.get("combined_score", 0.5))
+            result.combined_score = _challenger_succession_score(
+                match_score=pairwise_result.a_score,
+                incumbent_score=incumbent_score,
+            )
             result.text_feedback = pairwise_result.feedback
-            # Update champion file immediately so next eval on this island
-            # sees the new champion.
+            # Update champion file immediately so the next eval on this
+            # island (which will block on the same lock) sees the new
+            # champion when it eventually runs.
             if island_idx is not None:
                 champ_file = self._champions_dir / f"island_{island_idx}.json"
                 champ_file.write_text(json.dumps({
                     "id": "pending",
                     "code": Path(program_path).read_text(),
                     "metadata": {},
+                    "combined_score": result.combined_score,
                 }))
             logger.info(
                 "WINS (%d-%d-%d, score=%.0f%%)",
@@ -281,7 +343,97 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
                 pairwise_result.a_score * 100,
             )
 
+        # Attach match critiques from both perspectives:
+        # - Challenger's critique goes into private_metrics so it persists
+        #   with the new program via shinka's normal metrics.json → DB path.
+        # - Champion's critique is appended to its existing DB row via
+        #   append_match_critique_threadsafe (opens its own connection).
+        challenger_critique = pairwise_result.critiques_by_label.get("a")
+        champion_critique = pairwise_result.critiques_by_label.get("b")
+        if challenger_critique is not None:
+            existing = result.private_metrics.setdefault("match_critiques", [])
+            existing.append(challenger_critique.model_dump())
+
+        champion_id = champion_data.get("id") if champion_data else None
+        if champion_critique is not None:
+            if champion_id and champion_id != "pending":
+                self.db.append_match_critique_threadsafe(
+                    champion_id, champion_critique.model_dump()
+                )
+
+        # Compute parent briefs in-band, before metrics.json is written or
+        # the champion's defense critique is read by any subsequent
+        # mutation prompt. This eliminates the precompute race
+        # (lab/issues/2026-04-19-parent-brief-precompute-race.md) — by the
+        # time shinka adds the challenger to DB or picks the champion as a
+        # parent, both have fresh `parent_brief_rendered` in their rows.
+        await self._compute_briefs_in_band(
+            result=result,
+            challenger_genome=challenger_genome,
+            champion_id=champion_id,
+            champion_genome=champion_genome if champion_critique is not None else None,
+        )
+
         self._write_eval_result(result, results_dir)
+
+    async def _compute_briefs_in_band(
+        self,
+        *,
+        result,
+        challenger_genome: ConceptGenome,
+        champion_id: str | None,
+        champion_genome: ConceptGenome | None,
+    ) -> None:
+        """Refresh parent briefs for the challenger (in-memory) and the
+        champion (via DB threadsafe write). Called from the eval worker
+        before metrics.json is written, so shinka's subsequent reads see
+        fresh briefs without depending on the per-generation precompute.
+        See lab/issues/2026-04-19-parent-brief-precompute-race.md.
+        """
+        from owtn.evaluation.feedback import get_or_compute_brief
+
+        classifier_model = self.stage_config.llm.classifier_model
+
+        # Challenger: brief reflects the single just-completed match,
+        # already attached to result.private_metrics["match_critiques"].
+        try:
+            rendered, payload = await get_or_compute_brief(
+                self_genome=challenger_genome.model_dump(),
+                private_metrics=result.private_metrics,
+                classifier_model=classifier_model,
+            )
+            if payload is not None:
+                result.private_metrics["parent_brief_cache"] = payload
+            result.private_metrics["parent_brief_rendered"] = rendered
+        except Exception as e:
+            logger.warning("Challenger brief computation failed: %s", e)
+
+        # Champion: re-read post-append critiques from DB, compute brief,
+        # write back via threadsafe. Skipped if the champion is the synthetic
+        # "pending" placeholder (i.e. mid-succession on a fresh upset).
+        if (
+            champion_id
+            and champion_id != "pending"
+            and champion_genome is not None
+        ):
+            try:
+                champ_pm = self.db.get_program_private_metrics_threadsafe(
+                    champion_id
+                )
+                rendered, payload = await get_or_compute_brief(
+                    self_genome=champion_genome.model_dump(),
+                    private_metrics=champ_pm,
+                    classifier_model=classifier_model,
+                )
+                if payload is not None:
+                    self.db.set_parent_brief_threadsafe(
+                        champion_id, payload, rendered
+                    )
+            except Exception as e:
+                logger.warning(
+                    "Champion brief computation failed for %s: %s",
+                    champion_id[:8], e,
+                )
 
     @staticmethod
     def _write_eval_result(result, results_dir: str) -> None:
@@ -328,8 +480,84 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
         if self.completed_generations > old:
             gen = self.completed_generations - 1
             self._write_champions_to_disk()
+            await self._precompute_parent_briefs()
             self._snapshot(gen)
             self._anneal(gen)
+
+    async def _precompute_parent_briefs(self) -> None:
+        """Refresh ParentBrief for any program whose match_critiques has grown.
+
+        Called post-generation, before the next generation's mutation phase.
+        Iterates *all* correct programs (not just current island champions)
+        and recomputes a brief for any whose cached count is stale relative
+        to its accumulated `match_critiques` length. This catches deposed
+        champions that continued accumulating defense critiques during the
+        generation in which they were dethroned — those concepts still get
+        sampled later as inspirations or by the bandit's parent selector,
+        and their briefs need to reflect the full critique history.
+
+        Uses lazy caching keyed on `len(match_critiques)`: programs whose
+        critique count hasn't grown since the last brief are skipped.
+        """
+        from owtn.evaluation.feedback import get_or_compute_brief
+        import json
+
+        classifier_model = self.stage_config.llm.classifier_model
+
+        self.db.cursor.execute(
+            "SELECT id, code, private_metrics FROM programs WHERE correct = 1"
+        )
+        rows = self.db.cursor.fetchall()
+
+        for row in rows:
+            program_id = row["id"]
+            code = row["code"]
+            try:
+                pm = json.loads(row["private_metrics"] or "{}")
+            except json.JSONDecodeError:
+                pm = {}
+            critique_count = len(pm.get("match_critiques") or [])
+            if critique_count == 0:
+                continue
+            cached_count = (pm.get("parent_brief_cache") or {}).get("count")
+            if cached_count == critique_count:
+                continue  # cache fresh — skip
+
+            try:
+                self_genome = json.loads(code)
+            except Exception as e:
+                logger.debug(
+                    "Skipping brief for %s — genome parse failed: %s",
+                    program_id[:8], e,
+                )
+                continue
+            try:
+                rendered, payload = await get_or_compute_brief(
+                    self_genome=self_genome,
+                    private_metrics=pm,
+                    classifier_model=classifier_model,
+                )
+            except Exception as e:
+                logger.warning(
+                    "Brief precompute failed for %s: %s", program_id[:8], e,
+                )
+                continue
+            if payload is None and pm.get("parent_brief_rendered") == rendered:
+                continue  # nothing to write
+            new_pm = dict(pm)
+            if payload is not None:
+                new_pm["parent_brief_cache"] = payload
+            new_pm["parent_brief_rendered"] = rendered
+            try:
+                self.db.cursor.execute(
+                    "UPDATE programs SET private_metrics = ? WHERE id = ?",
+                    (json.dumps(new_pm), program_id),
+                )
+                self.db.conn.commit()
+            except Exception as e:
+                logger.warning(
+                    "Failed to persist brief for %s: %s", program_id[:8], e,
+                )
 
 
     def _log_evolution_summary(self) -> None:

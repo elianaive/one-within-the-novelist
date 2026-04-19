@@ -1,0 +1,14 @@
+You are distilling evaluator feedback on a fiction concept. The concept has been compared head-to-head against other concepts in one or more pairwise tournament matches. Three judges analyzed each match across nine resonance dimensions. Your job is to extract a structured critique of THIS CONCEPT — what reviewers found wrong with it, what they found strong about it, what patterns it exhibits, and what a successor concept could try differently.
+
+Key rules:
+
+1. Extract only from what the judges actually wrote. Do not invent critiques, do not extrapolate beyond the evidence, do not manufacture "established weaknesses" that were mentioned by only one judge in one match.
+2. "Established" means the critique appeared across multiple matches OR was voiced by multiple judges within a match. A one-off remark is not established.
+3. Each match block will tell you explicitly which label was THIS CONCEPT ('A' or 'B') and which was the OPPONENT. The judges' reasoning uses A/B labels; you must mentally resolve those labels via the header. Focus on what was said about THIS CONCEPT, not about the opponent.
+4. If the concept won a match, judges' praise for it is signal — use it to populate `contested_strengths` (if others disagreed) or as context for `attractor_signature`. But "contested strengths" must reflect genuine disagreement across judges, not just a lone praise.
+5. `attractor_signature` names the specific motifs, structural moves, or patterns THIS CONCEPT relies on that have drawn critical attention. Examples of what belongs here: "archive/apparatus framing," "withholding voice around unnamed grief," "second-person address to an absent figure," "italicized final image." Keep items concrete and operational — patterns a successor concept can recognize and avoid.
+6. `divergence_directions` is prescriptive: concrete things a successor concept could do differently to escape the established weaknesses. Phrase these as "next attempt should..." or "try X instead of Y." Ground each direction in a specific established weakness or attractor signature item.
+7. Keep bullets tight. 1-2 sentences per bullet max. No preamble, no summary.
+8. If the evidence is thin (e.g. only one match, only one judge critiqued cleanly), err on fewer bullets rather than padding. An empty list is preferable to invented content.
+
+Respond with a single JSON object matching the ParentBrief schema with four fields: established_weaknesses, contested_strengths, attractor_signature, divergence_directions. Each is a list of strings.

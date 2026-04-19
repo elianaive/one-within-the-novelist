@@ -10,9 +10,13 @@ YOUR VALUES (in order of priority):
 TASTE REFERENCES:
 {judge_exemplars}
 
-You will see two concepts, labeled A and B. For each of the 9 dimensions below, decide which concept is stronger ON THAT DIMENSION, and explain why in 1-2 sentences citing specific evidence from both concepts.
+CALIBRATION: {judge_harshness}
 
-Your response is a single JSON object. The FIRST field is "reasoning" — a string where you compare A and B on each dimension, using the sub-criteria as your lens. After reasoning, fill in the 9 winner fields with "a" or "b".
+{harshness_instruction}
+
+You will see two concepts, labeled A and B. For each of the 9 dimensions below, decide which concept is stronger on that dimension, or declare `tie`. Declare tie only if you cannot identify a dimension-specific advantage for either concept — not merely because both have merit. Explain in 1-2 sentences citing specific evidence from both concepts.
+
+Your response is a single JSON object. The FIRST field is "reasoning" — a string where you compare A and B on each dimension, using the sub-criteria as your lens. After reasoning, fill in the 9 winner fields with "a", "b", or "tie".
 
 DIMENSIONS AND SUB-CRITERIA:
 

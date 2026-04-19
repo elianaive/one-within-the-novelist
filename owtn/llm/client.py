@@ -92,7 +92,7 @@ def get_client_llm(
             timeout=TIMEOUT,  # 10 minutes
         )
         if structured_output:
-            client = instructor.from_openai(client, mode=instructor.Mode.MD_JSON)
+            client = instructor.from_openai(client, mode=instructor.Mode.JSON)
     elif provider == "local_openai":
         client = openai.OpenAI(
             api_key=os.getenv("LOCAL_OPENAI_API_KEY", "local"),
@@ -182,7 +182,7 @@ def get_async_client_llm(
             timeout=TIMEOUT,
         )
         if structured_output:
-            client = instructor.from_openai(client, mode=instructor.Mode.MD_JSON)
+            client = instructor.from_openai(client, mode=instructor.Mode.JSON)
     elif provider == "local_openai":
         client = openai.AsyncOpenAI(
             api_key=os.getenv("LOCAL_OPENAI_API_KEY", "local"),
