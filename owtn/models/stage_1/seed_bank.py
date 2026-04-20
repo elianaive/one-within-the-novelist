@@ -54,10 +54,13 @@ class SeedBank:
         return self._by_type.get(seed_type, [])
 
     def select(
-        self, seed_type: str, exclude_ids: set[str] | None = None
+        self,
+        seed_types: str | list[str],
+        exclude_ids: set[str] | None = None,
     ) -> Seed | None:
-        """Pick a random seed of the given type, excluding already-used IDs."""
-        candidates = self.get_by_type(seed_type)
+        """Pick a random seed pooled uniformly across the given type(s)."""
+        types = [seed_types] if isinstance(seed_types, str) else seed_types
+        candidates = [s for t in types for s in self.get_by_type(t)]
         if exclude_ids:
             candidates = [s for s in candidates if s.id not in exclude_ids]
         if not candidates:

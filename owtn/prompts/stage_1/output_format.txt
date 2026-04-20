@@ -2,13 +2,26 @@ You have found something. It is alive in your attention — a premise, a feeling
 
 **Premise** — the true name. The irreducible core that calls the concept into existence. 1-3 sentences. If a clause can be removed and the concept still breathes, the clause was ornament.
 
+**Thematic engine** — what generates this work's thematic charge. Pick the mode that fits this concept; do not default. Then write a paragraph (3-5 sentences, textured and specific) describing how the engine works in this concept — what it sets in motion, what it leaves the reader to do.
+
+Example modes:
+- *question posed* (Borges, Chiang, Le Guin) — work surfaces a question the reader had not been asking
+- *reframing* (Ishiguro, Saunders, Atwood) — work makes a familiar thing newly strange; reader cannot return to their prior frame
+- *position taken* (Tolstoy, Baldwin, Morrison) — work commits to a stance the reader has to reckon with
+- *implication* (Highsmith, Nabokov, Dostoevsky) — reader is drawn into a position they had been avoiding
+- *demonstration* (Proust, McCarthy, Dillard) — work shows a thing through specificity no argument could
+- *held tension* (Carver, Munro, Trevor) — two values both real; work refuses to choose
+- *recursive* (Sebald, Borges, Coetzee) — act of telling is the subject; claims complicated by their making
+- *witness* (Levi, Solzhenitsyn, Didion) — work documents what should not be forgotten
+- *spell* (Wallace, Carson, Robinson) — work casts an experience that lingers as mood
+
+Pick one of these or name your own. Format: name the mode at the start, then the paragraph. The paragraph must identify what is load-bearing in this engine — what the writer must nail, without which the concept fails — and what the reader is left holding that they did not have before reading. The mode commits you to a stance; the paragraph is what gives the field its weight.
+
 **Target effect** — the intent. What the reader carries out of the story — not a category of feeling but the specific feeling, precise enough that someone who felt it would say *yes, that*. If a single word captures it, you haven't looked closely enough.
 
 **Character seeds** — the vessels. Label and sketch. Optional: wound, fear, lie, want, need. If a character can be removed without collapsing the premise, they aren't carrying anything.
 
 **Setting seeds** — the correspondences. The conditions that make certain events inevitable and others impossible. If you can move this story to another setting and lose nothing, the setting isn't doing its work.
-
-**Thematic tension** — the polarity. An unresolved pull between two values the story holds without choosing. The tension is what keeps the concept alive after the reader finishes. If it resolves, the energy is spent.
 
 **Constraints** — the tzimtzum. What the story refuses to do — the deliberate withdrawal that creates the space in which this particular story can exist. Every constraint must earn its keep.
 
@@ -28,10 +41,10 @@ The forms you saw — at least three, each with its core surprise and feeling. W
 ```json
 {
   "premise": "the true name",
+  "thematic_engine": "<mode name> — paragraph describing how this engine works in this concept" or null,
   "target_effect": "the intent",
   "character_seeds": [{"label": "name/role", "sketch": "who they are"}, ...] or null,
   "setting_seeds": "the correspondences" or null,
-  "thematic_tension": "the polarity" or null,
   "constraints": ["the tzimtzum"] or null,
   "style_hint": "the tincture" or null
 }

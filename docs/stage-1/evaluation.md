@@ -254,10 +254,10 @@ operates at the concept stage, but evaluating potential rather than execution:
 
 ### Key Rules
 
-- **Blind to steering.** Judges do not receive the run's steering prompt. They
-  evaluate concept quality on its own merits, never on adherence to creative
-  direction. This prevents the system from optimizing for prompt-parroting
-  rather than genuine quality.
+- **Blind to the run prompt.** Judges do not receive the run's `prompt` field.
+  They evaluate concept quality on its own merits, never on adherence to
+  creative direction. This prevents the system from optimizing for
+  prompt-parroting rather than genuine quality.
 
 - **Different model families** from whichever models are doing mutation. If
   Claude is generating concepts, GPT-4 and Gemini judge them (and vice versa).

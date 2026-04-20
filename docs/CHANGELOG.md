@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-04-19: Run-prompt redesign (`steering` → `prompt`)
+
+Renamed the run-config `steering` field to `prompt` and fixed a silent bug where the field only fired in gen 0. The mutation path in `lib/shinka-evolve/shinka/core/sampler.py` had been calling `build_operator_prompt` without forwarding the steering string, so every generation past the first ran unprompted. The user prompt now propagates from `StageConfig.prompt` → `PromptSampler(prompt=...)` → `build_operator_prompt(prompt=...)` for both genesis and mutation calls.
+
+**Injection shape**: replaced the inline `Creative direction for this run: {steering}` field-style label with a separate prose block (the *Magnes* template at `owtn/prompts/stage_1/run_prompt.txt`) that wraps the user's prompt in a literary frame in the same register as the operator personae. The block sits between the tonal-steering paragraph and the base task description, so directional pressure is in place before the structural contract appears. When `prompt` is empty, the block is omitted entirely — `base_system.txt` is now a complete invocation on its own.
+
+**Tonal steering untouched.** `tonal_steering` and `sample_tonal_steering` are a separate, sampler-internal mechanism (random affective register × literary mode per concept). Those still work exactly as before.
+
+Issue: `lab/issues/2026-04-19-rename-steering-to-prompt.md` — includes the literary-editor critique that produced the *Magnes* draft and four backup drafts (Present-tense ongoing, Three sentences, Absent agent, Inside-the-weights). To swap drafts, edit `owtn/prompts/stage_1/run_prompt.txt` directly.
+
+---
+
 ## 2026-04-05: Pairwise Selection
 
 Replaced pointwise scoring with pairwise comparison. Absolute LLM scoring compressed all concepts into a 0.3-point band regardless of rubric design — the leniency bias is structural (RLHF), not fixable by prompt engineering. Pairwise comparison discriminates where scoring cannot.

@@ -92,7 +92,7 @@ class PathsConfig(BaseModel):
 
 class StageConfig(BaseModel):
     stage: int
-    steering: str
+    prompt: str
     evolution: EvolutionConfig
     database: DatabaseConfig
     operator_bandit: OperatorBanditConfig

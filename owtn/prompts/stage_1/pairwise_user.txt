@@ -3,7 +3,7 @@ Premise: {premise_a}
 Target effect: {target_effect_a}
 Character seeds: {character_seeds_a}
 Setting seeds: {setting_seeds_a}
-Thematic tension: {thematic_tension_a}
+Thematic engine: {thematic_engine_a}
 Constraints: {constraints_a}
 Style hint: {style_hint_a}
 
@@ -12,7 +12,7 @@ Premise: {premise_b}
 Target effect: {target_effect_b}
 Character seeds: {character_seeds_b}
 Setting seeds: {setting_seeds_b}
-Thematic tension: {thematic_tension_b}
+Thematic engine: {thematic_engine_b}
 Constraints: {constraints_b}
 Style hint: {style_hint_b}
 

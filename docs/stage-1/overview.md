@@ -149,13 +149,13 @@ are available when useful, invisible when not.
 
 ---
 
-## Steering
+## Run Prompt
 
-An optional `steering` field in the run config lets a human express creative
+An optional `prompt` field in the run config lets a human express creative
 direction without constraining the evolutionary process.
 
 ```yaml
-steering: >
+prompt: >
   Stories that explore the relationship between physical spaces
   and the memories they hold. Domestic settings, the uncanny,
   objects that outlast the people who used them.
@@ -163,24 +163,29 @@ steering: >
 
 **How it works:**
 
-- When present, the steering prompt is injected into every operator's system
-  message as additional context — after the base task description, before
-  operator-specific instructions.
+- When present, the run prompt is wrapped in the *Magnes* template
+  (`owtn/prompts/stage_1/run_prompt.txt`) and injected into every operator's
+  system message — both in genesis (gen 0 cold-start) and in mutation
+  (every subsequent generation). The block sits between the tonal-steering
+  paragraph and the base task description, so the directional pressure is in
+  place before the structural contract appears.
 - Operators still do their thing. Collision still collides, Compression still
-  compresses. The steering prompt is gravitational pull, not a hard constraint.
+  compresses. The run prompt is gravitational pull, not a hard constraint.
   If the evolutionary process finds something brilliant that's off-theme, it
   should survive.
-- Seed bank selection is also filtered by tag relevance to the steering
-  direction, using the existing tag-based filtering mechanism.
-- **Judges never see the steering prompt.** Evaluation is blind to creative
+- Seed bank selection is also filtered by tag relevance to the run prompt,
+  using the existing tag-based filtering mechanism.
+- **Judges never see the run prompt.** Evaluation is blind to creative
   direction. This prevents the system from optimizing for prompt-adherence
   ("this matches the theme!") rather than quality ("this is a great concept").
-- When absent or empty, operators and seed selection behave exactly as they do
-  in an unsteered run.
+- When absent or empty, the run-prompt block is omitted entirely from the
+  system message, and operators and seed selection behave exactly as they do
+  in an unprompted run.
 
-The steering prompt is the primary mechanism behind targeted mode (see
-population.md). A competition run might steer toward the competition's theme.
-An exploratory run leaves steering empty and lets the system surprise you.
+The run prompt is the primary mechanism behind targeted mode (see
+population.md). A competition run might use the prompt to direct toward the
+competition's theme. An exploratory run leaves it empty and lets the system
+surprise you.
 
 ---
 
@@ -313,7 +318,7 @@ causal-heavy character piece.
    difficult to sustain past 2,000 words." "The reveal is powerful but the setup
    needs to earn it." These help Stage 2 focus its structural search.
 6. **Diversity metadata** — affective register and literary mode from the tonal
-   steering system. Helps Stage 2 understand the concept's aesthetic character.
+   sampling system. Helps Stage 2 understand the concept's aesthetic character.
 
 ### Mapping to Stage 2 Edge Types
 

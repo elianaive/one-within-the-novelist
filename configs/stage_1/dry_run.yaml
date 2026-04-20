@@ -6,7 +6,11 @@
 # Expected: ~4 concepts generated, evaluated, archived. ~$0.50-2.00 total.
 
 stage: 1
-steering: ""
+
+# Optional creative direction. Injected into every operator's system message
+# (genesis and mutation alike) as the *Magnes* run-prompt block. Leave empty
+# for unsteered exploration.
+prompt: ""
 
 evolution:
   num_generations: 2

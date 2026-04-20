@@ -23,7 +23,7 @@ HILLS_GENOME = {
         },
     ],
     "setting_seeds": "A train station in Spain. Hot. A bar with a beaded curtain. Two lines of rails in the sun.",
-    "thematic_tension": "autonomy vs. obligation",
+    "thematic_engine": "held tension — the story refuses to choose between her right to decide and his refusal to let her, and the silence between them is the place where the unchosen sits and grows.",
     "constraints": [
         "The word 'abortion' never appears.",
         "No interiority — only dialogue and physical action.",

@@ -11,9 +11,10 @@
 
 stage: 1
 
-# Optional creative direction. Injected into operator system messages.
-# Omit or leave empty for unsteered exploration.
-steering: ""
+# Optional creative direction. Injected into every operator's system message
+# (genesis and mutation alike) as the *Magnes* run-prompt block. Leave empty
+# for unsteered exploration.
+prompt: ""
 
 # --- Evolution Parameters (ShinkaEvolve EvolutionConfig) ---
 

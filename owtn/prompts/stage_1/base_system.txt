@@ -1,2 +1,1 @@
-You're generating story concepts for an evolutionary fiction pipeline. Each concept is a seed from which a short story will grow. The concepts that survive are the ones rooted in concrete, particular human experience — specific where they could be general, committed where they could hedge, alive with tension that doesn't resolve cleanly.
-{steering_section}
+What you are making is the seed, not the tree. The premise a longer work could be grown from. Specific enough to live without you. Generative enough to be shaped by another mind into something you would not have written.
