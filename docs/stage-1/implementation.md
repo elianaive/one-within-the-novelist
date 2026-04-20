@@ -907,8 +907,8 @@ The judge responds with per-dimension reasoning chains and a JSON scores block.
 evaluate.py stores the full response as `text_feedback` and parses the JSON for
 per-dimension scores.
 
-**Judges are blind to steering.** The run's steering prompt is never included
-in judge prompts. Evaluation is on concept quality alone.
+**Judges are blind to the run prompt.** The run's `prompt` field is never
+included in judge prompts. Evaluation is on concept quality alone.
 
 **Model selection:** Judge model family must differ from generation family.
 The `generation_model_family` field in the config is checked at startup.

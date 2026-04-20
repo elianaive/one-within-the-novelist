@@ -64,6 +64,10 @@ def _load_base_system() -> str:
     return _load_text(_PROMPTS_DIR / "base_system.txt")
 
 
+def _load_run_prompt_template() -> str:
+    return _load_text(_PROMPTS_DIR / "run_prompt.txt")
+
+
 def load_registry() -> dict[str, OperatorDef]:
     """Load all operator definitions with resolved prompt templates."""
     output_format = _load_output_format()
@@ -115,12 +119,11 @@ def inject_seed(
     seed_types = OPERATOR_SEED_TYPES.get(operator, [])
     if not seed_types:
         return ""
-    for seed_type in seed_types:
-        seed = seed_bank.select(seed_type, exclude_ids=exclude_ids)
-        if seed is not None:
-            content = seed.content if isinstance(seed.content, str) else "\n".join(seed.content)
-            return f"\nUse this as your starting point:\n\n{content}"
-    return ""
+    seed = seed_bank.select(seed_types, exclude_ids=exclude_ids)
+    if seed is None:
+        return ""
+    content = seed.content if isinstance(seed.content, str) else "\n".join(seed.content)
+    return f"\nUse this as your starting point:\n\n{content}"
 
 
 # Dimension name → regex pattern for matching headers in judge reasoning.
@@ -206,7 +209,7 @@ def build_operator_prompt(
     episodic_context: str = "",
     seed_bank: SeedBank | None = None,
     exclude_seed_ids: set[str] | None = None,
-    steering: str = "",
+    prompt: str = "",
     tonal_steering: str = "",
     is_initial: bool = False,
 ) -> tuple[str, str]:
@@ -222,20 +225,27 @@ def build_operator_prompt(
     if seed_bank is not None:
         seed_text = inject_seed(operator, seed_bank, exclude_ids=exclude_seed_ids)
 
-    # System message: operator persona first (sets distributional neighborhood),
-    # then tonal atmosphere (creative constraints early), then genome fields last
-    # (structural contract pushed to end). See docs/prompting-guide.md.
+    # System message order (see docs/prompting-guide.md):
+    #   1. Operator persona — sets distributional neighborhood
+    #   2. Tonal atmosphere — random affective register / literary mode
+    #   3. Run-prompt block — user's directional pressure (omitted if empty)
+    #   4. Base task description — structural contract last
     base_system = _load_base_system()
-    steering_section = f"\n\nCreative direction for this run: {steering}" if steering else ""
     tonal_atmosphere = f"\n\n{tonal_steering}" if tonal_steering else ""
-    genome_fields = base_system.replace("{steering_section}", steering_section)
+    run_prompt_block = (
+        _load_run_prompt_template().replace("{prompt}", prompt.strip())
+        if prompt and prompt.strip()
+        else ""
+    )
 
     parts = []
     if op.sys_format:
         parts.append(op.sys_format)
     if tonal_atmosphere.strip():
         parts.append(tonal_atmosphere.strip())
-    parts.append(genome_fields)
+    if run_prompt_block:
+        parts.append(run_prompt_block.strip())
+    parts.append(base_system)
     system_msg = "\n\n".join(parts)
 
     # Resolve {seed_content} in operator instructions.

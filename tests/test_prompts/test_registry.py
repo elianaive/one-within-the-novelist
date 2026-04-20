@@ -134,6 +134,36 @@ class TestInjectSeed:
         result = inject_seed("real_world_seed", seed_bank, exclude_ids=all_ids)
         assert result == ""
 
+    @pytest.mark.parametrize("operator,expected_types", [
+        ("thought_experiment", {"thought_experiment", "axiom", "dilemma"}),
+        ("collision", {"dilemma", "collision_pair"}),
+        ("compression", {"dilemma", "compression"}),
+    ])
+    def test_multi_type_operators_reach_all_types(
+        self, seed_bank, operator, expected_types
+    ):
+        """Every eligible seed type for a multi-type operator must be reachable.
+
+        Regression test for 2026-04-20-seed-selection-routing-and-distribution:
+        inject_seed used to iterate types in order and return on first non-empty,
+        making axiom, collision_pair, and compression seeds unreachable."""
+        contents_by_type = {
+            t: {
+                s.content if isinstance(s.content, str) else "\n".join(s.content)
+                for s in seed_bank.get_by_type(t)
+            }
+            for t in expected_types
+        }
+        seen: set[str] = set()
+        for _ in range(300):
+            out = inject_seed(operator, seed_bank)
+            body = out.split("\n\n", 1)[-1] if out else ""
+            for t, bodies in contents_by_type.items():
+                if body in bodies:
+                    seen.add(t)
+                    break
+        assert seen == expected_types, f"{operator} only reached {seen}"
+
 
 class TestBuildOperatorPrompt:
 
@@ -143,7 +173,8 @@ class TestBuildOperatorPrompt:
             registry=registry,
             is_initial=True,
         )
-        assert "story concepts" in sys_msg
+        # Base task signal: the seed-not-tree framing replaced the old "story concepts" line.
+        assert "seed, not the tree" in sys_msg
         assert "never been spoken" in user_msg.lower()
         assert len(sys_msg) > 100
         assert len(user_msg) > 100
@@ -160,7 +191,7 @@ class TestBuildOperatorPrompt:
             metrics="",
             feedback="Good originality, weak coherence.",
         )
-        assert "story concepts" in sys_msg
+        assert "seed, not the tree" in sys_msg
         assert "The parent" in user_msg
         assert genome in user_msg
         assert "Judge Feedback" in user_msg
@@ -186,23 +217,47 @@ class TestBuildOperatorPrompt:
         )
         assert "starting point" in user_msg
 
-    def test_steering_in_system(self, registry):
+    def test_prompt_in_system_genesis(self, registry):
         sys_msg, user_msg = build_operator_prompt(
             "discovery",
             registry=registry,
-            steering="Focus on maritime themes",
+            prompt="Focus on maritime themes",
             is_initial=True,
         )
         assert "maritime themes" in sys_msg
+        # Run-prompt template signal: the Magnes block frames the user prompt.
+        assert "Magnes" in sys_msg
 
-    def test_no_steering_when_empty(self, registry):
+    def test_prompt_in_system_mutation(self, registry):
+        """The user prompt must reach mutation-mode prompts too, not just gen 0."""
+        sys_msg, user_msg = build_operator_prompt(
+            "collision",
+            registry=registry,
+            parent_genome='{"premise": "test"}',
+            prompt="Focus on maritime themes",
+            is_initial=False,
+        )
+        assert "maritime themes" in sys_msg
+        assert "Magnes" in sys_msg
+
+    def test_no_prompt_block_when_empty(self, registry):
         sys_msg, user_msg = build_operator_prompt(
             "discovery",
             registry=registry,
-            steering="",
+            prompt="",
             is_initial=True,
         )
-        assert "Creative direction" not in sys_msg
+        # No prompt → no run-prompt block at all.
+        assert "Magnes" not in sys_msg
+
+    def test_no_prompt_block_when_whitespace(self, registry):
+        sys_msg, user_msg = build_operator_prompt(
+            "discovery",
+            registry=registry,
+            prompt="   \n  ",
+            is_initial=True,
+        )
+        assert "Magnes" not in sys_msg
 
     def test_output_format_resolved(self, registry):
         """Operator instructions should have {output_format} resolved."""

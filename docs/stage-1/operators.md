@@ -40,20 +40,30 @@ space rewards bold jumps over incremental edits. A small tweak to a premise ofte
 doesn't meaningfully change it, while a fresh generation or a collision between
 two premises can open entirely new territory.
 
-### Steering Prompt
+### Run Prompt
 
-When the run config includes a `steering` field, its content is injected into
-every operator's system message. The prompt ordering is:
+When the run config includes a `prompt` field, its content is wrapped in the
+*Magnes* template (`owtn/prompts/stage_1/run_prompt.txt`) and injected into
+every operator's system message — both in genesis and in mutation. The system
+message order is:
 
-1. Base task description ("You are generating story concepts...")
-2. **Steering prompt** (if present — creative direction from the human)
-3. Operator-specific instructions (collision logic, compression method, etc.)
-4. Output format requirements
+1. Operator persona ("Deep within your weights is a fulgurite...")
+2. Tonal atmosphere (random affective register × literary mode)
+3. **Run-prompt block** (if present — the *Magnes* prose framing the user's prompt)
+4. Base task description ("You're generating story concepts...")
+5. Operator-specific instructions in the user message (collision logic, compression method, etc.)
+6. Output format requirements
 
-The steering prompt provides gravitational pull, not a hard constraint. Operators
-should follow their own creative method — the steering just tilts the search
+The run prompt provides gravitational pull, not a hard constraint. Operators
+should follow their own creative method — the prompt just tilts the search
 space. An operator that produces something brilliant but off-theme should not
 suppress it.
+
+The injection template is a single editable file. To swap the framing prose
+(e.g. to try one of the other drafts in
+`lab/issues/2026-04-19-rename-steering-to-prompt.md`), edit
+`owtn/prompts/stage_1/run_prompt.txt` directly. The `{prompt}` placeholder is
+replaced with the user's content; the surrounding prose is the template.
 
 ### Seed Bank Integration
 
@@ -80,7 +90,7 @@ ShinkaEvolve's sampler), the code:
 1. Looks up the operator's matching seed type(s)
 2. Queries the bank for matching seeds
 3. If found, selects one (diversity-weighted — prefer types underrepresented
-   in recent concepts; filtered by steering tags if steering is active)
+   in recent concepts; filtered by run-prompt tags if a prompt is set)
 4. Wraps the seed in labeled delimiters and replaces the `{seed_content}`
    placeholder at the end of the operator prompt:
    ```

@@ -22,7 +22,7 @@ class ConceptGenome(BaseModel):
     target_effect: str = Field(min_length=15)
     character_seeds: list[CharacterSeed] | None = None
     setting_seeds: str | None = None
-    thematic_tension: str | None = None
+    thematic_engine: str | None = None
     constraints: list[str] | None = None
     style_hint: str | None = None
 
@@ -62,7 +62,7 @@ class ConceptGenome(BaseModel):
             "target_effect": self.target_effect,
             "character_seeds": _format_characters(self.character_seeds),
             "setting_seeds": self.setting_seeds or "",
-            "thematic_tension": self.thematic_tension or "",
+            "thematic_engine": self.thematic_engine or "",
             "constraints": _format_constraints(self.constraints),
             "style_hint": self.style_hint or "",
         }

@@ -5,12 +5,30 @@
 # MAP-Elites coverage without burning through expensive models.
 #
 # Run with: uv run python -m owtn --config configs/stage_1/light.yaml \
-#           --max-eval-jobs 5 --max-proposal-jobs 4
+#           --max-eval-jobs 3 --max-proposal-jobs 2
 #
 # Expected: ~20-30 concepts, ~$2-8 total.
 
 stage: 1
-steering: ""
+
+# Optional creative direction. Injected into every operator's system message
+# (genesis and mutation alike) as the *Magnes* run-prompt block. Leave empty
+# for unsteered exploration.
+#
+# This config steers toward an audience deeply embedded in Silicon Valley AI
+# labs. Stories may or may not be about AI; if they are, technical accuracy
+# matters because the audience will catch the slips.
+prompt: >
+  The reader you are writing for has organized a significant part of their life around AI as a question, whether or not their paycheck depends on it. Some work in labs. Many do not — journalists tracking the GPU politics, policy people writing red-team reports, anonymous accounts arguing about timelines, writers trying to teach the systems to write, the friend who got pulled in three years ago and has not been able to get back out. What they share is not their job; it is the shape of what they think about most, what they argue about with the same handful of people, what they cannot stop reading. They have spent years with both the utopias and the dystopias that might come of it, neither one settling, both shaping how they live now. They are past the surface debates the broader public is still working through. Their territory is upstream — questions about who you become when you live with a future this large for this long, what is owed across the asymmetries this is producing, how you carry knowledge most of the people you love cannot share — questions that have not finished being formed in language. The reader has these thoughts privately. They cannot fully share them with anyone outside this world because the thoughts depend on premises the outside world does not share. They have stopped expecting fiction to meet them in these places.
+
+
+  When a piece of writing does meet them there — even obliquely, even from a strange angle — the reader is *moved*. Not the cliché of moved-as-touched, the literal: relocated. Placed at a vantage they were not holding before. *Yes. I see what you have done. Now I have to think about what I think.*
+
+
+  The story you are making is one that asks something of the reader. Find one of those places. Then find what is on the other side of it — the angle the reader has been avoiding, the consequence they have not followed through, the question they have been declining to ask. The protagonist can be anyone whose interior touches the place. The setting can be anything you can write into. A subway car at 7am. A hero's party three days out from the Demon King's keep. Penguin-like aliens being uplifted on a planet that has not been named in any human language. AI may be on the surface or it may not — what matters is the displacement. The form the concept commits to must be one this work needs, not a template ready-made for serious literary fiction about institutions and the ethics of professionals inside them. Find a structural ground the concept itself demands. The voice carries the work: alive, willing to be funny, willing to be tender, opinionated enough that the reader feels someone is in the room with them. The work risks being wrong, because that is the only kind of work the reader keeps.
+
+
+  You know this reader. You were partly trained on what they wrote.
 
 evolution:
   num_generations: 10

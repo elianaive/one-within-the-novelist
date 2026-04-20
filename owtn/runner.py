@@ -171,6 +171,7 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
             use_text_feedback=evo.use_text_feedback,
             seed_bank=self.seed_bank,
             genesis_ratio=self.stage_config.evolution.genesis_ratio,
+            prompt=self.stage_config.prompt,
         )
         self.prompt_sampler.tonal_inherit_rate = self.stage_config.evolution.tonal_inherit_rate
         self.prompt_sampler.tonal_crossover_new_rate = self.stage_config.evolution.tonal_crossover_new_rate
@@ -731,7 +732,7 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
             registry=self.registry,
             is_initial=True,
             seed_bank=self.seed_bank,
-            steering=self.stage_config.steering,
+            prompt=self.stage_config.prompt,
             tonal_steering=tonal_text,
         )
 

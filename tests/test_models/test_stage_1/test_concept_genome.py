@@ -29,7 +29,7 @@ class TestParsing:
     def test_from_code_string(self):
         code = json.dumps(HILLS_GENOME)
         genome = ConceptGenome.from_code_string(code)
-        assert genome.thematic_tension == "autonomy vs. obligation"
+        assert genome.thematic_engine.startswith("held tension")
 
     def test_round_trip(self):
         genome = ConceptGenome.model_validate(HILLS_GENOME)
@@ -119,7 +119,7 @@ class TestPromptFields:
         assert fields["target_effect"] == genome.target_effect
         assert "the man" in fields["character_seeds"]
         assert "want:" in fields["character_seeds"]
-        assert fields["thematic_tension"] == "autonomy vs. obligation"
+        assert fields["thematic_engine"].startswith("held tension")
         assert "- The word" in fields["constraints"]
         assert fields["style_hint"].startswith("Spare")
 

@@ -193,20 +193,20 @@ runs, not just within them.
 ### Targeted Mode (Competition/Specific Audience)
 
 When generating for a specific competition, audience, or theme, set the
-`steering` field in the run config (see `docs/stage-1/overview.md`). The
-steering prompt is injected into every operator's system message and seed
+`prompt` field in the run config (see `docs/stage-1/overview.md`). The
+run prompt is injected into every operator's system message and seed
 bank selection is filtered by tag relevance.
 
 The operator allocation shifts to favor theme-relevant generation:
 
-- **60-70% targeted:** All operators receive the steering prompt, but the seed
+- **60-70% targeted:** All operators receive the run prompt, but the seed
   bank pre-filters to theme-relevant seeds (by tag matching). Operators naturally
-  pull toward the steering direction.
-- **20-30% wild:** Operators that ignore or only loosely follow the steering.
+  pull toward the prompt's direction.
+- **20-30% wild:** Operators that ignore or only loosely follow the prompt.
   These maintain diversity and occasionally produce surprising connections to
   the theme that targeted generation wouldn't find.
 - **10% anti-premise:** Deliberate subversion of expected responses to the theme.
-  If the steering is about "memory," anti-premise might generate concepts about
+  If the prompt is about "memory," anti-premise might generate concepts about
   *forgetting* or *false memory* or *the burden of remembering everything*.
 
 ---

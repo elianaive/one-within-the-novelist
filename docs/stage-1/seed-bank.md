@@ -238,7 +238,7 @@ Exclude seeds that are themselves clichéd or would naturally produce one of the
 - Each operator queries the bank by matching `type`. The Collision operator pulls `collision_pair` seeds. The Thought Experiment operator pulls `axiom` seeds. And so on.
 - **Graceful fallback.** If no seeds of the needed type exist, the operator falls back to pure LLM generation. Seeds are enrichment, not hard dependency.
 - **Type-diversity weighting.** Prefer seed types that are underrepresented in the current run's population. If recent concepts are heavy on `real_world` seeds, weight toward `axiom` or `constraint` or `image`.
-- **Steering-based tag filter.** When the run config includes a `steering` prompt, pre-filter seeds by `tags` relevance to the steering direction. Fall back to unfiltered random if no tags match. See `docs/stage-1/overview.md` for the full steering mechanism.
+- **Prompt-based tag filter.** When the run config includes a `prompt`, pre-filter seeds by `tags` relevance to the prompt's direction. Fall back to unfiltered random if no tags match. See `docs/stage-1/overview.md` for the full run-prompt mechanism.
 
 ---
 
