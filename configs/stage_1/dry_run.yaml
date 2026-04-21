@@ -79,6 +79,24 @@ evaluation:
     similarity_threshold: 0.85
     elevated_novelty_threshold: 3.5
     patterns_file: "data/convergence-patterns.yaml"
+  pairwise:
+    # Rationale: lab/issues/2026-04-21-rubric-reweighting.md
+    # High-weight: distinguishers that separate compelling from "mid".
+    # Low-weight: table-stakes (present-or-broken floors).
+    dim_weights:
+      indelibility: 2.00          # mid-detection
+      grip: 1.75                  # reader retention
+      novelty: 1.75               # conceptual surplus
+      generative_fertility: 1.25  # engine, not situation
+      tension_architecture: 1.00
+      emotional_depth: 1.00
+      thematic_resonance: 1.00
+      concept_coherence: 0.50     # table stakes
+      scope_calibration: 0.50     # table stakes
+    tiebreaker_threshold: 1.0     # weighted-gap at/below which tiebreaker fires
+    tiebreaker_dims:              # priority order for close contests
+      - indelibility
+      - grip
 
 handoff:
   strategy: "top_per_cell"

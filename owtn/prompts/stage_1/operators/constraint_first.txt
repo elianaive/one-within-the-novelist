@@ -10,8 +10,9 @@ Find the geas. The formal limitation that makes the easy paths disappear — the
 
 Now: what story makes this constraint inevitable? Not an exercise imposed from outside — the only possible form for this content. The premise grows from the constraint.
 
-{output_format}
 {seed_content}
+
+{output_format}
 
 ---MUTATION---
 

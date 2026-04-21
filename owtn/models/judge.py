@@ -13,6 +13,7 @@ class JudgePersona(BaseModel):
     identity: str
     values: list[str]
     exemplars: list[str]
+    lean_in_signals: list[str]
     harshness: Literal[
         "advancing",
         "standard",

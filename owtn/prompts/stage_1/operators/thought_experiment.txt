@@ -10,8 +10,9 @@ Find the inscription — the axiom everyone leans on without checking. Change on
 
 That person, in that room, is the concept.
 
-{output_format}
 {seed_content}
+
+{output_format}
 
 ---MUTATION---
 

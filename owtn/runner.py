@@ -331,17 +331,22 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
                     "combined_score": result.combined_score,
                 }))
             logger.info(
-                "WINS (%d-%d-%d, score=%.0f%%)",
+                "WINS (%d-%d-%d, weighted %.2f-%.2f, score=%.0f%%)",
                 pairwise_result.a_wins, pairwise_result.b_wins, pairwise_result.ties,
-                pairwise_result.a_score * 100,
+                pairwise_result.a_weighted, pairwise_result.b_weighted,
+                pairwise_result.a_weighted_score * 100,
             )
         else:
-            result.combined_score = pairwise_result.a_score * 0.9
+            # combined_score drives shinka's parent-selection for losers.
+            # Use a_weighted_score (not a_score) so parent-selection matches
+            # the winner-selection basis — both driven by weighted dim-votes.
+            result.combined_score = pairwise_result.a_weighted_score * 0.9
             result.text_feedback = pairwise_result.feedback
             logger.info(
-                "LOSES (%d-%d-%d, score=%.0f%%)",
+                "LOSES (%d-%d-%d, weighted %.2f-%.2f, score=%.0f%%)",
                 pairwise_result.a_wins, pairwise_result.b_wins, pairwise_result.ties,
-                pairwise_result.a_score * 100,
+                pairwise_result.a_weighted, pairwise_result.b_weighted,
+                pairwise_result.a_weighted_score * 100,
             )
 
         # Attach match critiques from both perspectives:

@@ -3,8 +3,9 @@ from __future__ import annotations
 from pathlib import Path
 
 import yaml
-from pydantic import BaseModel
+from pydantic import BaseModel, model_validator
 
+from owtn.evaluation.models import DIMENSION_NAMES
 from owtn.models.config import LLMConfig
 
 
@@ -73,11 +74,45 @@ class AntiCliqueConfig(BaseModel):
     patterns_file: str
 
 
+class PairwiseAggregationConfig(BaseModel):
+    """Weights and tiebreaker rules for pairwise dim-vote aggregation.
+
+    Encodes "mid is the primary failure mode" by tilting selection toward
+    distinguishers (Indelibility, Grip, Novelty, Gen-Fert) and treating
+    Coherence/Scope as table-stakes floors. Rationale:
+    lab/issues/2026-04-21-rubric-reweighting.md.
+    """
+    dim_weights: dict[str, float]
+    tiebreaker_threshold: float
+    tiebreaker_dims: list[str]
+
+    @model_validator(mode="after")
+    def _validate(self) -> PairwiseAggregationConfig:
+        expected = set(DIMENSION_NAMES)
+        got = set(self.dim_weights)
+        if got != expected:
+            missing = sorted(expected - got)
+            extra = sorted(got - expected)
+            raise ValueError(
+                f"dim_weights must cover all 9 dimensions. "
+                f"missing={missing} extra={extra}"
+            )
+        for d in self.tiebreaker_dims:
+            if d not in expected:
+                raise ValueError(f"tiebreaker_dims contains unknown dim: {d!r}")
+        if any(w < 0 for w in self.dim_weights.values()):
+            raise ValueError("dim_weights must be non-negative")
+        if self.tiebreaker_threshold < 0:
+            raise ValueError("tiebreaker_threshold must be non-negative")
+        return self
+
+
 class EvaluationConfig(BaseModel):
     holder_p: float
     diversity_weight: float
     std_threshold: float
     anti_cliche: AntiCliqueConfig
+    pairwise: PairwiseAggregationConfig
 
 
 class HandoffConfig(BaseModel):

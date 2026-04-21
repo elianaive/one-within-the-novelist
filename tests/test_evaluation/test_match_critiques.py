@@ -45,12 +45,13 @@ def fake_genomes():
 
 
 @pytest.fixture
-def config():
+def config(default_pairwise_cfg):
     return SimpleNamespace(
         judges=SimpleNamespace(
             judges_dir="configs/judges",
             panel=["mira-okonkwo", "tomas-varga", "sable-ahn"],
-        )
+        ),
+        evaluation=SimpleNamespace(pairwise=default_pairwise_cfg),
     )
 
 

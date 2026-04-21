@@ -118,7 +118,8 @@ class TestInjectSeed:
 
     def test_returns_content_for_matching_type(self, seed_bank):
         result = inject_seed("real_world_seed", seed_bank)
-        assert "Use this as your starting point" in result
+        # New arcane-register injection: spolia framing.
+        assert "Spolia" in result
         assert len(result) > 50
 
     def test_returns_empty_for_no_match(self, seed_bank):
@@ -215,7 +216,7 @@ class TestBuildOperatorPrompt:
             seed_bank=seed_bank,
             is_initial=True,
         )
-        assert "starting point" in user_msg
+        assert "Spolia" in user_msg
 
     def test_prompt_in_system_genesis(self, registry):
         sys_msg, user_msg = build_operator_prompt(

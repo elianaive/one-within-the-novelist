@@ -12,8 +12,9 @@ Now look at what you've gathered. Two clusters are leaning toward each other acr
 
 Show your list and clustering before the binding.
 
-{output_format}
 {seed_content}
+
+{output_format}
 
 ---MUTATION---
 

@@ -50,6 +50,7 @@ class TestLoadPanel:
                 JudgePersona(
                     id="x", name="X", identity="x",
                     values=["x"], exemplars=["x"],
+                    lean_in_signals=["x"],
                     harshness=old, priority="primary",
                     model=["gpt-4o"],
                 )
@@ -59,7 +60,26 @@ class TestLoadPanel:
             j = JudgePersona(
                 id="x", name="X", identity="x",
                 values=["x"], exemplars=["x"],
+                lean_in_signals=["x"],
                 harshness=band, priority="primary",
                 model=["gpt-4o"],
             )
             assert j.harshness == band
+
+    def test_lean_in_signals_loaded(self):
+        panel = load_panel(JUDGES_DIR, PANEL_IDS)
+        for judge in panel:
+            assert len(judge.lean_in_signals) >= 3, (
+                f"{judge.id} has fewer than 3 lean_in_signals"
+            )
+
+    def test_lean_in_signals_required(self):
+        from pydantic import ValidationError
+
+        with pytest.raises(ValidationError):
+            JudgePersona(
+                id="x", name="X", identity="x",
+                values=["x"], exemplars=["x"],
+                harshness="standard", priority="primary",
+                model=["gpt-4o"],
+            )

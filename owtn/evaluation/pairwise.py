@@ -166,34 +166,75 @@ def _classify_votes(
 
 def _aggregate(
     all_resolved: list[dict[str, str]],
-) -> tuple[dict[str, str], int, int, int]:
+    dim_weights: dict[str, float],
+) -> tuple[dict[str, str], int, int, int, float, float, float]:
     """Aggregate resolved votes across all judges.
 
-    Per dimension: majority of non-tie votes wins.
-    Returns: (dim_winners, a_total, b_total, tie_total)
+    Per dimension: majority of non-tie votes wins. Integer counts and weighted
+    totals are tracked in parallel. Integer counts are display/legacy; weighted
+    totals drive winner selection via `_select_winner`.
+
+    Returns: (dim_winners, a_wins, b_wins, ties, a_weighted, b_weighted, tie_weighted)
     """
     dim_winners = {}
-    a_total = 0
-    b_total = 0
-    tie_total = 0
+    a_wins = b_wins = tie_count = 0
+    a_weighted = b_weighted = tie_weighted = 0.0
 
     for dim in DIMENSION_NAMES:
         votes = [r[dim] for r in all_resolved]
         counts = Counter(votes)
+        weight = dim_weights[dim]
         a_count = counts.get("a", 0)
         b_count = counts.get("b", 0)
 
         if a_count > b_count:
             dim_winners[dim] = "a"
-            a_total += 1
+            a_wins += 1
+            a_weighted += weight
         elif b_count > a_count:
             dim_winners[dim] = "b"
-            b_total += 1
+            b_wins += 1
+            b_weighted += weight
         else:
             dim_winners[dim] = "tie"
-            tie_total += 1
+            tie_count += 1
+            tie_weighted += weight
 
-    return dim_winners, a_total, b_total, tie_total
+    return dim_winners, a_wins, b_wins, tie_count, a_weighted, b_weighted, tie_weighted
+
+
+def _select_winner(
+    a_weighted: float,
+    b_weighted: float,
+    dim_winners: dict[str, str],
+    champion_label: str,
+    tiebreaker_threshold: float,
+    tiebreaker_dims: list[str],
+) -> tuple[str, str | None]:
+    """Apply Option E: weighted aggregate + asymmetric tiebreaker.
+
+    When |a_weighted - b_weighted| > tiebreaker_threshold, whoever has the
+    higher weighted total wins (tiebreaker_used=None).
+
+    Otherwise (close contest): walk tiebreaker_dims in order; first dim whose
+    winner is 'a' or 'b' wins. If all tiebreaker dims are tied, champion wins
+    (incumbent advantage).
+
+    Using `<=` for threshold activation: we'd rather over-invoke the tiebreaker
+    than under-invoke it, since the tiebreaker reduces to incumbent when
+    top dims are tied.
+
+    Returns: (winner_label, tiebreaker_used).
+    """
+    gap = abs(a_weighted - b_weighted)
+    if gap > tiebreaker_threshold:
+        return ("a" if a_weighted > b_weighted else "b"), None
+
+    for dim in tiebreaker_dims:
+        w = dim_winners.get(dim)
+        if w in ("a", "b"):
+            return w, dim
+    return champion_label, "incumbent"
 
 
 def _invert_outcome(outcome: str) -> str:
@@ -280,23 +321,38 @@ def _build_match_critiques(
 
 def _format_feedback(
     dim_winners: dict[str, str],
-    a_total: int,
-    b_total: int,
+    a_wins: int,
+    b_wins: int,
+    winner: str,
     reasoning_texts: list[str],
     champion_label: str,
 ) -> str:
     """Format pairwise result as mutation feedback.
 
     The mutation model sees which dimensions the champion won and lost,
-    with judge reasoning for each.
+    with judge reasoning for each. Header uses actual `winner` (not the
+    integer dim-count) — under weighted selection, dim-counts can disagree
+    with the real winner and the mutation model must not receive
+    contradictory signals.
+
+    champion_label indicates which label ('a' or 'b') is the incumbent
+    champion. The challenger is the other label. Feedback is phrased from
+    the challenger's perspective.
     """
+    challenger_label = "b" if champion_label == "a" else "a"
     loser_label = "b" if champion_label == "a" else "a"
 
     won = [d for d, w in dim_winners.items() if w == champion_label]
     lost = [d for d, w in dim_winners.items() if w == loser_label]
     tied = [d for d, w in dim_winners.items() if w == "tie"]
 
-    lines = [f"Pairwise result: {'Won' if a_total > b_total else 'Lost'} ({a_total}-{b_total})"]
+    challenger_won = winner == challenger_label
+    # Dim-count display shows challenger's count first (a_wins is challenger's
+    # integer dim-wins in the standard runner call site).
+    lines = [
+        f"Pairwise result: {'Won' if challenger_won else 'Lost'} "
+        f"({a_wins}-{b_wins})"
+    ]
     if lost:
         lines.append(f"\nDimensions to improve (lost to champion): {', '.join(lost)}")
     if won:
@@ -392,18 +448,30 @@ async def compare(
             feedback="All judges failed — no comparison possible.",
         )
 
-    dim_winners, a_total, b_total, tie_total = _aggregate(all_resolved)
+    pw_cfg = config.evaluation.pairwise
+    (
+        dim_winners,
+        a_wins,
+        b_wins,
+        tie_count,
+        a_weighted,
+        b_weighted,
+        tie_weighted,
+    ) = _aggregate(all_resolved, pw_cfg.dim_weights)
 
-    # Overall winner: most dimension-wins. Ties favor champion.
-    if a_total > b_total:
-        winner = "a"
-    elif b_total > a_total:
-        winner = "b"
-    else:
-        winner = champion_label  # incumbent advantage
+    # Selection: weighted dim-votes + asymmetric tiebreaker (Option E).
+    # See lab/issues/2026-04-21-rubric-reweighting.md.
+    winner, tiebreaker_used = _select_winner(
+        a_weighted=a_weighted,
+        b_weighted=b_weighted,
+        dim_winners=dim_winners,
+        champion_label=champion_label,
+        tiebreaker_threshold=pw_cfg.tiebreaker_threshold,
+        tiebreaker_dims=pw_cfg.tiebreaker_dims,
+    )
 
     feedback = _format_feedback(
-        dim_winners, a_total, b_total, reasoning_texts, champion_label,
+        dim_winners, a_wins, b_wins, winner, reasoning_texts, champion_label,
     )
 
     critiques_by_label = _build_match_critiques(
@@ -424,16 +492,23 @@ async def compare(
         for d, w in dim_winners.items()
     )
     logger.info(
-        "Pairwise: %s wins %d-%d-%d (%.1fs $%.4f)  [%s]",
-        winner.upper(), a_total, b_total, tie_total, dt, total_cost, dim_summary,
+        "Pairwise: %s wins %d-%d-%d (weighted %.2f-%.2f, tiebreaker=%s) "
+        "(%.1fs $%.4f)  [%s]",
+        winner.upper(), a_wins, b_wins, tie_count,
+        a_weighted, b_weighted, tiebreaker_used or "none",
+        dt, total_cost, dim_summary,
     )
 
     return PairwiseResult(
         winner=winner,
         dimension_wins=dim_winners,
-        a_wins=a_total,
-        b_wins=b_total,
-        ties=tie_total,
+        a_wins=a_wins,
+        b_wins=b_wins,
+        ties=tie_count,
+        a_weighted=a_weighted,
+        b_weighted=b_weighted,
+        tie_weighted=tie_weighted,
+        tiebreaker_used=tiebreaker_used,
         judgments=judgments_data,
         feedback=feedback,
         critiques_by_label=critiques_by_label,

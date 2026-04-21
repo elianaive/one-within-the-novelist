@@ -123,7 +123,7 @@ def inject_seed(
     if seed is None:
         return ""
     content = seed.content if isinstance(seed.content, str) else "\n".join(seed.content)
-    return f"\nUse this as your starting point:\n\n{content}"
+    return f"\nSpolia, gathered from elsewhere and brought into this work:\n\n{content}"
 
 
 # Dimension name → regex pattern for matching headers in judge reasoning.
