@@ -190,6 +190,17 @@ Files in `owtn/prompts/` and prose fields in `configs/judges/*.yaml` are fed dir
 - **No hard-wrapping.** Don't break lines at 70-80 chars for readability. One logical sentence/paragraph = one line. Use YAML `>` (folded scalar), not `|` (literal scalar), for multi-line prose fields.
 - **No decorative blank lines.** Blank lines between template fields or list items cost tokens. Use them only where they create meaningful structure for the LLM (e.g., separating instructions from content).
 
+### Seed bank YAML gotchas (`data/seed-bank.yaml`)
+
+- **Quote bare-integer tags.** `tags: [engineering, "1981", walkway]` — pydantic's `List[str]` validation rejects unquoted integers. Year tags, count tags, and any other bare number need quotes.
+- **Use `content: >` (folded)** for prose seed content. Folded scalar joins lines with spaces. `|` (literal) preserves newlines and is almost never what you want for a seed.
+- **Cross-type unique IDs.** Uniqueness is checked globally, not per-type. Kebab-case with type prefix (`rw-`, `te-`, `axiom-`, `image-`, `constraint-`, `compression-`, `collision-`, `dilemma-`, `anti-`, `nouns-`).
+- **Section boundaries.** The file is sectioned by type with `# =====` banners. New seeds go at the end of their type section, immediately before the next banner. Don't interleave.
+
+### Expanding the seed bank
+
+For methodology on writing deep-research briefs, cross-stream curation, and the rituals that produce quality, see `docs/stage-1/seed-bank-curation.md`.
+
 ## Prompt Engineering Principles (from `docs/prompting-guide.md`)
 
 These apply when writing any LLM prompts for the pipeline:
