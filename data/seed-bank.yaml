@@ -14,11 +14,9 @@
 - id: dancing-plague
   type: real_world
   content: >
-    In July 1518, a woman named Frau Troffea began dancing in a Strasbourg
-    street and could not stop. Within a month, 400 people had joined. Several
-    danced to death.
-  source: "Waller, J., 'A Time to Dance, a Time to Die,' 2009"
-  tags: [mass-psychogenic-illness, medieval, body, contagion]
+    In July 1518, Frau Troffea began dancing in the street outside her home in Strasbourg and could not stop. Within a month approximately 400 people had joined her; contemporary city records documented multiple deaths from exhaustion, stroke, and heart failure. The Strasbourg city council, acting on physicians' advice that this was a "hot blood" condition requiring release, built wooden stages and hired professional musicians to help the afflicted dance it out — an intervention John Waller argues may have accelerated the epidemic by giving the behavior social sanction. The ergot-poisoning hypothesis widely cited in popular accounts fails because ergotism produces gangrenous limbs and seizures, not sustained rhythmic movement. Waller's competing account — stress-induced mass psychogenic illness triggered by a preceding famine and the local religious-cult expectations around St. Vitus — remains contested because no primary source explains why specifically dancing, specifically then, specifically to death.
+  source: "Waller, J., A Time to Dance, a Time to Die (2009); Strasbourg city records, July-September 1518"
+  tags: [mass-psychogenic-illness, medieval, body, contested-mechanism, Strasbourg]
 
 - id: turkish-coffee-divination
   type: real_world
@@ -29,23 +27,12 @@
   source: "Henkel, Social Analysis, 2005"
   tags: [ritual, belief, social-performance, ambiguity]
 
-- id: pepys-cheese-burial
-  type: real_world
-  content: >
-    During the Great Fire of London in 1666, Samuel Pepys buried his Parmesan
-    cheese in the garden to save it from the flames. He also buried wine and
-    documents, but mentions the cheese first.
-  source: "Pepys diary, Sept 4, 1666"
-  tags: [priorities, disaster, absurdity, intimacy]
-
 - id: radium-girls
   type: real_world
   content: >
-    In the 1920s, women painting luminous watch dials were told to lick their
-    radium-tipped brushes. When they began dying, the company hired
-    investigators to blame their deaths on syphilis.
-  source: "Moore, The Radium Girls, 2017"
-  tags: [labor, cover-up, body, injustice, industry]
+    At the United States Radium Corporation's Orange, New Jersey factory (1917-1928), women painting luminous watch dials were instructed to "lip-point" their brushes — moisten the tip with the tongue to produce a fine painting point — between strokes. A single dial contained approximately 0.5 microcuries of radium-226; workers ingested several micrograms daily. When Grace Fryer and four co-workers sued in 1927, the company's defense was that occupational disease was not legally recognized and that workers had freely chosen to put the brushes in their mouths. The lawsuit forced disclosure showing that Cecil Drinker, the company's own medical consultant, had published on radium's dangers in 1925 — three years before the lawsuit — in an industrial-health journal circulated to the same management who continued the lip-pointing protocol. The precedent established by Fryer v. USRC, that companies owe workers a duty to warn of occupational hazards, underlies the later creation of OSHA and the modern framework of industrial-disease compensation.
+  source: "Moore, The Radium Girls (2017); Clark, Radium Girls: Women and Industrial Health Reform 1910-1935 (UNC Press, 1997); Fryer v. USRC filings (1927)"
+  tags: [labor, cover-up, body, occupational-disease, legal-precedent, industry]
 
 - id: octopus-rna-editing
   type: real_world
@@ -68,20 +55,9 @@
 - id: rubber-hand
   type: real_world
   content: >
-    In the rubber hand illusion, watching a fake hand being stroked while your
-    hidden real hand is stroked simultaneously causes your brain to 'adopt' the
-    rubber hand within minutes. Threatening it produces genuine fear.
-  source: "Botvinick & Cohen, Nature, 1998"
-  tags: [body-ownership, identity, illusion, self]
-
-- id: death-cleaning
-  type: real_world
-  content: >
-    In Sweden, 'döstädning' is gradually decluttering your possessions as you
-    age so your family doesn't have to after you die. Framed not as morbid but
-    as a final act of consideration.
-  source: "Magnusson, 2017"
-  tags: [death, objects, care, legacy, minimalism]
+    In the rubber hand illusion (Botvinick & Cohen, Nature 1998), watching a fake hand being stroked while the subject's hidden real hand is stroked simultaneously causes the brain to "adopt" the rubber hand within minutes, producing measurable physiological response — increased skin conductance, cooling of the real hand — when the fake is threatened. The unexpected finding is that susceptibility varies reliably by neurological condition: schizophrenia patients experience the illusion faster and more strongly than controls (Thakkar et al. 2011); Parkinson's patients show markedly reduced susceptibility even before motor symptoms emerge (Fiorio et al. 2014). The illusion has become a bedside probe for the body-self boundary — the speed and completeness with which a person can be convinced that a foreign object is their hand correlates with their psychiatric and neurological phenotype. The mechanism remains contested between multisensory-integration theories (the brain forms body-ownership from correlated signals) and predictive-processing accounts (the brain pre-specifies a body-model that updates under correlated evidence); no current model fully explains the clinical-correlate pattern.
+  source: "Botvinick & Cohen, Nature 391:756 (1998); Thakkar, Nichols, McIntosh & Park, PLOS ONE 6:e27089 (2011); Fiorio et al., Movement Disorders 29:1091 (2014)"
+  tags: [body-ownership, illusion, self, clinical-probe, schizophrenia, parkinsons]
 
 - id: night-witches
   type: real_world
@@ -95,12 +71,9 @@
 - id: cathedral-generations
   type: real_world
   content: >
-    The stonemasons who began constructing Notre-Dame de Paris in 1163 knew
-    they would never see it finished. The cathedral took 182 years to complete.
-    Workers spent entire careers carving details on the upper walls that no
-    human eye at ground level could discern.
-  source: "Erlande-Brandenburg, Notre-Dame de Paris, 1997"
-  tags: [craft, time, devotion, labor, invisibility]
+    The stonemasons who began constructing Notre-Dame de Paris in 1163 knew they would never see it finished; the cathedral took 182 years to complete. When the April 2019 fire destroyed the roof and spire, architects examining the surviving medieval oak beams documented growth rings corresponding to trees that had been 300-400 years old when felled in the 1160s — meaning the wood came from French primary-forest oaks that had germinated in the 700s. Those forests no longer exist: France's reforested woodlands produce younger, faster-grown timber with different structural properties. The reconstruction has had to source comparable aged oaks from private estates where inherited forests were preserved and from Louis XIV's 1670s Forêt de Bercé navy-reserve plantings, which are only now — 350 years later — reaching usable age. The cathedral was built on a timescale whose raw materials cannot be replaced within the timescale of any existing institution.
+  source: "Erlande-Brandenburg, Notre-Dame de Paris (1997); Notre-Dame reconstruction engineering reports (2019-2024)"
+  tags: [craft, time, material-resource, irreplaceable, forest, France]
 
 - id: prison-chess
   type: real_world
@@ -125,12 +98,9 @@
 - id: feral-children-language
   type: real_world
   content: >
-    After age ~12, the human brain loses the ability to fully acquire a first
-    language. Genie Wiley, isolated until age 13, could learn words but never
-    mastered grammar — suggesting there is a window for becoming fully human
-    in a linguistic sense, and it closes.
-  source: "Curtiss, S., Genie: A Psycholinguistic Study, 1977"
-  tags: [language, development, isolation, irreversibility]
+    Genie Wiley, isolated from language until age 13 (discovered in Los Angeles, November 1970), could acquire vocabulary normally after rescue but never mastered grammatical sequence. She produced phrases like "applesauce buy store" and "want Curtiss play piano me" but never "the applesauce at the store" or "I want Curtiss to play piano with me." Susan Curtiss, who worked with Genie for seven years, documented that her syntactic error pattern closely resembles the agrammatism of adult patients with Broca's aphasia — suggesting her developmental window for the specific neural substrate of syntax had closed while semantic and lexical systems remained plastic. The critical-period hypothesis for language is widely stated but mechanistically specific: not a general "language window" that closes, but a staggered closure of subsystems, with syntax being the earliest and most irrecoverable. Genie's case ended legally when researchers' custody disputes caused her transfer out of academic supervision; she was never taught again, and no subsequent recovered isolate has reached her age of discovery with comparable documentation.
+  source: "Curtiss, S., Genie: A Psycholinguistic Study of a Modern-Day 'Wild Child' (Academic Press, 1977); Curtiss, Fromkin, Krashen, Rigler & Rigler, Language 50:528-554 (1974)"
+  tags: [language, development, critical-period, syntax, isolation, irreversibility]
 
 - id: fetal-microchimerism
   type: real_world
@@ -360,56 +330,177 @@
   source: "Fielding et al., Science Advances, 2023"
   tags: [extinction, sun, chemistry, deep-time, sterilization]
 
+- id: rw-cotard-denial-existence
+  type: real_world
+  content: >
+    Jules Cotard described the syndrome in 1880 with the case of a patient who believed she had no brain, no nerves, no chest, no stomach, and no intestines, that her body was made of skin and bones alone, and that she therefore had no need to eat — she starved to death. PET imaging of patients with Cotard's syndrome shows bilateral posterior cortical hypometabolism; two cases reported in 2021 with anti-NMDAR encephalitis showed that the same delusion arises from a specific glutamate-receptor autoimmune attack, not only from psychiatric disease. The mechanism dispute is between a disconnection theory (the emotional response that normally confirms one's own existence is absent, and "I am dead" is the most logical inference) and a fronto-limbic disinhibition theory (the prefrontal reality-monitoring system fails to reject an implausible self-model). The fact that survives all mechanistic accounts is that patients with Cotard's delusion continue to breathe, eat when pushed, feel pain, and report extreme anxiety: their body continues to register self-preservation drives while their declared belief is that there is no self to preserve.
+  source: "Ramirez-Bermudez et al., Neurocase 2021; Ozkan & Caliyurt, ANZJP 2016; original Cotard 1880"
+  tags: [self, denial, consciousness, death, body, delusion]
+
+- id: rw-akinetopsia-lm
+  type: real_world
+  content: >
+    In 1983, Josef Zihl reported a 43-year-old woman referred to as patient LM who, following bilateral posterior occipital damage, lost the ability to perceive motion while retaining normal form, color, depth, and object recognition: she described pouring tea as watching a static arc of liquid that would suddenly "jump" to a different position — the cup would simply be full. She could not track moving faces in conversation, could not cross a street safely (she could see cars but had no sense of their approach), and could not pour liquid without overflow. The finding localized area V5/MT as a dedicated motion-processing region, separable from the rest of visual cortex. What remains contested is whether LM's motion blindness was complete or whether low-level motion sensitivity survived under certain conditions: Rizzo et al. (Brain, 1995) found residual motion detection in comparable cases. The irreducible strangeness of LM's experience is that she inhabited a world of photographs — fully lit, fully detailed, fully colored — that moved only in discrete jumps she never witnessed.
+  source: "Zihl, von Cramon & Mai, 'Selective disturbance of movement vision,' Brain 106(2):313-340 (1983); Zihl & Heywood, Frontiers in Integrative Neuroscience 9:6 (2015)"
+  tags: [motion, perception, V5-MT, visual-cortex, phenomenology, akinetopsia]
+
+- id: rw-lexical-gustatory-jiw
+  type: real_world
+  content: >
+    Subject JIW, documented in detail by Ward and Simner in 2003, experiences an automatic, involuntary taste whenever he hears or reads words: "jail" tastes of cold hard bacon; "castle" tastes of stewed apple; "Derek" tastes of earwax. The taste is not metaphorical — it is subjectively located in his mouth, with specific temperature and texture. The phoneme /mIns/ in any word triggers the taste of mince, regardless of semantic context — so the relationship is phonological, not simply semantic — but the tastes also track semantic associations (the word "blue" tastes "inky"), suggesting the synesthesia operates at multiple levels simultaneously. The contested mechanism is whether cross-cortical wiring between auditory-language and gustatory cortex was present from birth and selectively not pruned, or whether the synesthesia is mediated at the conceptual level — an associative bleed from the semantic system into the taste system, making every word a compressed sensory encyclopedia.
+  source: "Ward & Simner, 'Lexical-gustatory synaesthesia,' Cognition 89(3):237-261 (2003)"
+  tags: [synesthesia, language, taste, phoneme, cross-modal, JIW]
+
+- id: rw-deja-vecu-persistent
+  type: real_world
+  content: >
+    Moulin and colleagues documented two patients who experienced not the brief, self-correcting flash of déjà vu — the sense of having seen something before that resolves in seconds — but an unremitting, permanent conviction that every present moment had already been fully experienced: one patient stopped watching the news because "nothing was news," refused to read new books because he had "already read them all," and became progressively withdrawn as every conversation felt like a repetition. Déjà vu is proposed to involve erroneous familiarity (recognition without recollection); déjà vécu involves erroneous recollection (the person is not just "recognizing" the present but specifically "remembering" it, with content and context that feel exact). Both patients had temporal lobe epilepsy, implicating perirhinal and parahippocampal regions that generate recollective confidence signals. The signal that tells the brain "this moment has a memory attached" had become permanently switched on — not for any specific memory, but for every moment as it arrived. There was no new experience: every present moment was simultaneously its own ghost.
+  source: "Moulin, Conway, Thompson, James & Jones, 'Disordered memory awareness,' Neuropsychologia 43(9):1362-1378 (2005)"
+  tags: [memory, recollection, familiarity, temporal-lobe, deja-vu, epistemic]
+
+- id: rw-fatal-familial-insomnia
+  type: real_world
+  content: >
+    Fatal familial insomnia is caused by a single mutation at codon 178 of the prion protein gene combined with methionine homozygosity at codon 129 — a pairing found in approximately 40 families worldwide — and kills with absolute regularity in 7 to 18 months through a progression from autonomic instability to hallucinatory stupor to complete obliteration of sleep. What the EEG shows is that the brain cannot produce the spindles and slow waves that constitute sleep architecture while the person remains conscious: the thalamic nuclei specifically responsible for organizing sleep are selectively destroyed by misfolded prion protein — the brain still fires, the person remains aware, but the specific program that would allow sleep to execute cannot run. What no account has fully explained is why the D178N mutation, which also causes Creutzfeldt-Jakob disease in people who are methionine/valine heterozygous at codon 129, preferentially destroys thalamic circuitry in FFI patients rather than diffuse cortical tissue — the same prion, the same misfolding pathway, a different anatomical target determined by a single amino acid difference at a distant codon.
+  source: "Gambetti et al., 'Fatal Familial Insomnia, a Prion Disease,' NEJM 326(7):444-449 (1992)"
+  tags: [prion, sleep, thalamus, death, genetics, FFI]
+
+- id: rw-rem-behavior-disorder
+  type: real_world
+  content: >
+    In REM sleep behavior disorder, the brainstem inhibitory nuclei that normally suppress motor output during REM sleep — producing the atonia that keeps dreaming bodies still — degenerate, and patients begin acting out their dreams: punching, kicking, shouting, leaping from bed, with full recall of the dream content when woken. The syndrome was initially classified as a parasomnia of unknown cause; it is now recognized as the earliest detectable manifestation of alpha-synuclein pathology, and longitudinal follow-up studies show that more than 80% of patients with "idiopathic" RBD will develop Parkinson's disease, dementia with Lewy bodies, or multiple system atrophy within 10 to 15 years — often before any waking motor or cognitive symptom appears. The pontine tegmentum can be significantly damaged before the dopamine systems and cortical circuits that underlie Parkinson's waking symptoms begin to fail. The patient acts out a disease in their sleep that will one day act on them while awake.
+  source: "Howell & Schenck, 'REM Sleep Behavior Disorder and Neurodegenerative Disease,' JAMA Neurology 72(6):707-712 (2015); Postuma et al., Nature Reviews Neurology 13:710-721 (2017)"
+  tags: [REM, sleep, Parkinson, synuclein, brainstem, biomarker, prodrome]
+
+- id: rw-greenland-shark-maturity
+  type: real_world
+  content: >
+    The Greenland shark (Somniosus microcephalus) is the longest-lived vertebrate known: radiocarbon dating of eye-lens nuclei in 28 females — exploiting the 1960s nuclear-bomb-pulse carbon-14 as a time marker — established a maximum age of 392 ± 120 years and confirmed that females do not reach sexual maturity until at least 156 ± 22 years old. The animals grow at approximately 1 cm per year. The molecular mechanism underlying this extreme longevity is unknown; the proposed explanation — cold body temperature and low metabolic rate — fails to distinguish the species from other cold-water sharks that live ordinary lifespans. The disturbing implication is that 156 years of existence, the equivalent of a full human lifetime, is the Greenland shark's pre-reproductive juvenile phase.
+  source: "Nielsen et al., 'Eye lens radiocarbon reveals centuries of longevity in the Greenland shark,' Science 353(6300):702-704 (2016)"
+  tags: [longevity, temporal-alienness, development, lifespan, arctic, biology]
+
+- id: rw-saiga-mass-death
+  type: real_world
+  content: >
+    In May 2015, 211,000 saiga antelopes — more than 60% of the global population — died across three separate herds in Kazakhstan within a three-week window, exhibiting a 100% case fatality rate in affected groups. Pasteurella multocida type B bacteria, normally commensal in the saiga's distinctive bulbous nasal passages, were confirmed as the proximate cause: unusually high temperature and humidity triggered bacterial proliferation and transition to virulent hemorrhagic septicemia. The disturbing unresolved problem is synchrony: why all individuals across geographically separated herds died simultaneously, with no survivors, despite enormous variation in age, sex, condition, and microhabitat exposure. The mechanism by which a weather anomaly converts a nasal commensal into a 100%-lethal systemic pathogen, identically in every individual across entire populations, remains unknown.
+  source: "Kock et al., Science Advances 4:eaao2314 (2018); Fereidouni et al., Emerging Infectious Diseases 25(6):1169 (2019)"
+  tags: [mass-death, bacteria, synchrony, threshold, ecology, commensal-turn-lethal]
+
+- id: rw-mantis-shrimp-barcode
+  type: real_world
+  content: >
+    Mantis shrimp (stomatopods) possess 12-16 narrowly tuned photoreceptor classes spanning 300-720 nm — the most complex retinal architecture in the animal kingdom. Contrary to the assumption that more receptor types produce finer discrimination, behavioral wavelength-discrimination tests show stomatopods perform significantly worse than trichromats at distinguishing similar wavelengths. The 2014 Thoen et al. study demonstrated that they do not use opponent-processing at all: photoreceptors act as a temporal barcode system, scanning a target across 12 spectral channels sequentially and comparing firing patterns to an internal library, enabling rapid identification rather than fine discrimination. The functional reason for 12-16 channels when 4 would produce better discrimination is not established; the favored hypothesis is extremely rapid color recognition in aggressive, signal-dense reef environments, but this remains untested.
+  source: "Thoen, How, Chiou & Marshall, 'A Different Form of Color Vision in Mantis Shrimp,' Science 343(6169):411-413 (2014)"
+  tags: [perception, alien-cognition, color-vision, sensory-systems, categorization, mantis-shrimp]
+
+- id: rw-rhizanthella-underground
+  type: real_world
+  content: >
+    Rhizanthella gardneri is one of two known plant species that complete their entire life cycle underground — germination, growth, flowering, and seed set — without ever emerging above the soil surface. It has no leaves and cannot photosynthesize; it obtains all nutrients via a three-way mutualism: a Rhizoctonia fungus connects it to the root system of the aboveground Melaleuca uncinata shrub, which transfers carbon to the orchid through the fungal bridge. Pollination is believed to be performed by termites or other soil invertebrates — making it the only plant with suspected subterranean insect pollination — though this remains unconfirmed. As of 2025, fewer than three confirmed wild individuals are known to exist. The disturbing fact is that this plant produces flowers no vertebrate has ever seen, for pollinators that navigate underground, inside a symbiosis that operates across three kingdoms.
+  source: "Bougoure et al., New Phytologist 186(4):947-956 (2010); Thorogood, Plants People Planet 1(3):153-156 (2019)"
+  tags: [subterranean, symbiosis, invisibility, orchid, underground-life, pollination]
+
+- id: rw-planarian-head-memory
+  type: real_world
+  content: >
+    Dugesia japonica planarian flatworms were trained to navigate a textured surface for food over two weeks, establishing a conditioned preference. When heads were removed and allowed to fully regenerate over 14 days — during which all neurons encoding any synaptic memory were replaced by new cells grown from pluripotent stem cells — the animals retained the trained preference in the new brain. The proposed mechanisms are storage in the bioelectric field of the body, or in RNA distributed through non-neural tissue; no consensus explanation exists. A 2026 Harvard group failed to replicate classical conditioning in planarians using a different paradigm, but the Shomrat/Levin illumination-aversion protocol remains unretracted. The disturbing implication: memory is not stored in the neurons that encode it.
+  source: "Shomrat & Levin, Journal of Experimental Biology 216(20):3799 (2013); Blackiston, Shomrat & Levin, Communicative & Integrative Biology 8(5) (2015)"
+  tags: [memory, regeneration, decapitation, bioelectricity, planarian, body-without-brain]
+
+- id: rw-muon-g2-contradiction
+  type: real_world
+  content: >
+    The muon's anomalous magnetic moment (aμ) can be measured with 0.20 parts-per-million precision and, within the Standard Model, should be calculable to comparable precision. The Fermilab measurement disagrees with the Standard Model prediction derived from decades of electron-positron collision data (dispersive hadronic vacuum polarization) by 5.1 standard deviations — sufficient to claim new physics. However, a competing lattice QCD calculation (the BMW group) predicts a value consistent with the experimental measurement — meaning the two Standard Model theoretical approaches now disagree with each other by roughly 3σ. As of 2023, the Theory Initiative's conclusion is that the discrepancy cannot yet be interpreted as evidence for new physics, because it is unclear which theoretical framework is wrong. We have an anomaly that we cannot use.
+  source: "Aguillard et al. (Muon g-2 Collaboration), Physical Review Letters 131, 161802 (2023); Muon g-2 Theory Initiative 2023 status statement"
+  tags: [particle-physics, muon, Standard-Model, lattice-QCD, anomaly, self-contradicting-theory]
+
+- id: rw-voynich-statistical-reversal
+  type: real_world
+  content: >
+    The Voynich Manuscript's text (Beinecke MS 408, ca. 1404-1438) was long considered too statistically ordered to be meaningless: it follows Zipf's law and shows consistent word-structure patterns that linguists associate with natural language. In 2022, Gaskell and Bowern at Yale recruited 42 volunteers to write intentional gibberish and found that human-produced nonsense replicates nearly all of these properties — including Zipf's law — because writers unconsciously model what language "should" look like. A machine-learning classifier trained to distinguish meaningful text from gibberish identified most Voynich transcriptions as more closely resembling gibberish than any known language. The manuscript has two statistically distinct "languages" (Currier A and B, identified 1976), written in different hands, distributed non-randomly across its sections — an internal structure no simple hoax hypothesis explains. Neither the language hypothesis nor the gibberish hypothesis can account for everything.
+  source: "Gaskell & Bowern, 'Gibberish after all?' CEUR Workshop Proceedings Vol. 3313 (2022); Bowern & Lindemann, Annual Review of Linguistics 7:285-308 (2021)"
+  tags: [language, forgery, statistics, undeciphered, Yale, meaning-collapse, manuscript]
+
+- id: rw-antikythera-missing-front
+  type: real_world
+  content: >
+    When the Antikythera Mechanism's 82 surviving fragments were scanned with X-ray CT in 2005, researchers decoded the rear dials completely: they computed the Saros eclipse cycle, predicted lunar and solar eclipses with time-of-day information, and tracked a 19-year Metonic calendar. The front of the mechanism was different: inscriptions revealed it was meant to display the motions of all five known planets, the Sun, and the Moon in a single geocentric model combining Babylonian astronomical data with mathematical principles from Plato's Academy. But Fragment A, which holds 27 of the surviving 30 gears, contains no surviving gearing that corresponds to this planetary display — the mechanism for showing the planets in motion either occupied the lost two-thirds of the machine or used a gearing system for which no physical evidence survives. The 2021 Freeth et al. reconstruction is elegant but remains a hypothesis built on inscription evidence alone.
+  source: "Freeth et al., 'A Model of the Cosmos in the ancient Greek Antikythera Mechanism,' Scientific Reports (March 2021); Freeth & Jones, ISAW Papers 4 (2012)"
+  tags: [Ancient Greece, mechanism, astronomy, reconstruction, incomplete, evidence-gap]
+
+- id: rw-theremin-thing-passive
+  type: real_world
+  content: >
+    "The Thing" had no power source, no battery, no active electronic components, and no wires — it was entirely passive. Concealed inside a hand-carved wooden replica of the Great Seal of the United States presented to US Ambassador Averell Harriman on August 4, 1945 by a Soviet children's organization, it consisted of a capacitive membrane connected to a quarter-wavelength antenna sealed inside a resonant cavity. Soviet operatives "illuminated" it from a van parked outside by transmitting a radio signal of the correct frequency; the sound waves in Harriman's study vibrated the membrane, which modulated the reflected signal back to the van. When the illuminating signal was turned off, the device was electronically silent and essentially undetectable by the sweep methods of the era. It operated for seven years without discovery; the NSA now identifies this class of device as an RFID ancestor. Léon Theremin, the device's inventor — better known for inventing the theremin musical instrument — had been "repatriated" to the Soviet Union in 1938 under coercive circumstances and worked under NKVD supervision.
+  source: "CIA, 'Compromise of the Great Seal' (May 26, 2020); CryptoMuseum 'The Thing (Great Seal Bug)'"
+  tags: [Cold War, espionage, listening device, Theremin, passive, RFID, resonance, Soviet]
+
+- id: rw-stasi-infinite-puzzle
+  type: real_world
+  content: >
+    In November 1989, as the Berlin Wall fell, Stasi employees began shredding the files of East Germany's state surveillance apparatus; when the shredders broke under the volume, they tore 45 million documents by hand and stuffed the pieces into 16,000 sacks, intending to burn or pulp them later. Citizens stormed the Stasi's East Berlin headquarters on January 15, 1990, and the sacks were preserved — an estimated 600 million fragments recording the monitored lives of six million East Germans. In 2019, a team of ten workers was still reassembling them by hand; at that rate, the project would take between 400 and 800 years to complete. Fraunhofer Institute's E-Puzzler software — the same program used to reconstruct shattered pieces of the Terracotta Army — processed approximately 91,000 pages from 23 of the 16,000 bags by 2007, leaving 15,977 bags untouched. Workers often spend multiple years on a single bag without knowing what the document will look like when completed.
+  source: "Stasi Records Archive (BStU), 'The Reconstruction of Torn Documents'; AFP/France24 (November 4, 2019)"
+  tags: [East Germany, Stasi, surveillance, reconstruction, fragments, Cold War, archive, labor]
+
+- id: rw-hyatt-walkway-phone-approval
+  type: real_world
+  content: >
+    The Hyatt Regency Hotel walkway collapse (Kansas City, July 17, 1981; 114 killed, 216 injured) resulted from a fabricator's proposed design change approved by engineer Daniel Duncan over the telephone without performing a load analysis. The second and fourth floor walkways had been designed to hang from the atrium ceiling by a single set of continuous rods; the fabricator proposed changing this to two sets of separate rods, with the second-floor walkway hanging from the fourth-floor walkway rather than directly from the ceiling. The modification doubled the load on the fourth-floor box-beam connections, which were already at only 60 percent of what the local building code required. At 7:19 PM on a Friday, during a crowded tea dance, both walkways fell. Jack Gillum, the engineer of record, returned home to find his phone ringing; he performed the calculation that night at 3 AM and found the connection "grossly inadequate."
+  source: "Marshall et al., 'Investigation of the Kansas City Hyatt Regency Walkways Collapse,' NBSIR 82-2465 (NBS, February 1982); Rechtien, Structure Magazine (March 2014)"
+  tags: [engineering, structural-failure, design-change, load-calculation, accountability, "1981", walkway]
+
+- id: rw-deodand-guilty-wheel
+  type: real_world
+  content: >
+    Under English common law from approximately the 11th century to 1846, any chattel — a horse, a wheel, a vat, a ship's hull — that caused a human death was legally guilty and forfeited to the Crown "for pious uses" (deodand, from Latin deo dandum, "to be given to God"); the court was required to appraise its value, and the owner paid a fine equal to that value. The law made a precise mechanical distinction: if a person fell from a stationary cart and died, only the wheel that struck them was forfeited; if the cart was moving, the entire cart and its load were guilty together — a doctrine Blackstone could not fully explain, attributing it vaguely to the owner being "more usually at fault" when things were in motion. By the early nineteenth century, coroner's juries were routinely refusing to apply the doctrine — its annual yield to the Crown was approximately £700-800 — but it could not be easily abolished because it was common law. What finally destroyed it was the railways: the doctrine logically required forfeiting entire locomotives and their passenger cars in fatal accidents, and the absurdity of forfeiting a £30,000 steam engine made parliamentary reform unavoidable in 1846.
+  source: "Deodands Act 1846 (9 & 10 Vict. c. 62); Blackstone's Commentaries; Freiberg & Fox, Australian Journal of Legal History 6(1) (2000)"
+  tags: [English-law, deodand, forfeiture, railways, medieval, guilt, inanimate-object, "1846"]
+
+- id: rw-25th-amendment-section4
+  type: real_world
+  content: >
+    The Twenty-Fifth Amendment's Section 4, ratified February 10, 1967, provides the only constitutional mechanism to remove a president involuntarily without impeachment: the Vice President and a majority of "principal officers of the executive departments" must transmit a written declaration to the Speaker and President pro tempore that the president is "unable to discharge" the office. As of 2026, every other section of the amendment has been invoked at least once, but Section 4 has never been used. The term "unable" is defined nowhere in the Constitution or in any statute, leaving the operative threshold entirely to the discretion of the officials who would execute it. The structural paradox is that the Vice President who initiates the process would immediately assume power, and the Cabinet officers who must concur all serve at the pleasure of the president they would be removing.
+  source: "U.S. Const. amend. XXV, §4; CRS Report R45394; LII Constitutional Annotated"
+  tags: [constitutional-law, succession, structural-paradox, executive-branch, US, never-invoked]
+
+- id: rw-fisc-exparte-court
+  type: real_world
+  content: >
+    The Foreign Intelligence Surveillance Court, established by the Foreign Intelligence Surveillance Act of 1978, operates entirely ex parte: only the government presents; there is no opposing counsel, no adversarial argument, and all proceedings are classified. Between 1979 and 2012, the court received 33,900 surveillance requests and denied eleven — a 99.97% approval rate that is frequently cited as evidence of rubber-stamping. The court's formal defense is that it modified 24.4% of requests before granting approval in one monitored quarter, but the adversarial-process critique remains: a court that has never seen a counter-argument cannot know what arguments it is missing. The court's eleven sitting judges are appointed by the Chief Justice of the Supreme Court, with no congressional confirmation and no public application process.
+  source: "Clarke, 'Is the Foreign Intelligence Surveillance Court Really a Rubber Stamp?' Stanford Law Review 66 Online 125 (2014); EPIC FISA statistics"
+  tags: [surveillance-law, FISA, courts, ex-parte, classified, judicial-approval]
+
+- id: rw-butterfly-ballot-2000
+  type: real_world
+  content: >
+    In the 2000 U.S. presidential election, Palm Beach County, Florida used an offset two-page "butterfly ballot" that placed candidates in alternating rows across facing pages; voters who intended to select Al Gore by punching the second hole instead selected Pat Buchanan, whose name appeared at the top of the right-hand page. A peer-reviewed study in the American Political Science Review (2001) found the butterfly ballot caused more than 2,000 Democratic voters to vote accidentally for Buchanan — a figure larger than George W. Bush's certified Florida margin of 537 votes. The statistical signature was unambiguous: in Palm Beach County, Buchanan's share of election-day ballots was four times his share on absentee ballots cast on the same non-butterfly design, a discrepancy not found in any other Florida county. The ballot was designed by local elections supervisor Theresa LePore, approved in part to make text large enough for elderly voters with vision impairments — an accessibility accommodation that flipped a presidential election.
+  source: "Wand et al., 'The Butterfly Did It,' American Political Science Review 95(4) (2001)"
+  tags: [election-design, ballot, accessibility, Florida-2000, statistical-anomaly, butterfly-ballot]
+
+- id: rw-bir-tawil-unclaimed
+  type: real_world
+  content: >
+    Bir Tawil is a 2,060 km² quadrilateral on the Egypt-Sudan border that neither country claims, the result of two conflicting boundary-drawing instruments: an 1899 straight-line political boundary and an 1902 administrative boundary that deviated to accommodate tribal territory. Egypt asserts the 1899 line because it gives Egypt the more strategically valuable Halaib Triangle; Sudan asserts the 1902 line for the same reason. The direct consequence is that each country's preferred border puts Bir Tawil on the other country's side — and both countries prefer to leave it unclaimed rather than accept the version of the border that gives them Bir Tawil but costs them the triangle. As of 2024, Bir Tawil is the only inhabited or habitable territory on Earth claimed by no recognized government, a condition produced not by abandonment but by each party's active preference for a competing claim elsewhere.
+  source: "1899 and 1902 Egypt-Sudan boundary instruments; De Facto Borders (defactoborders.org)"
+  tags: [territorial-anomaly, unclaimed-land, border-dispute, Egypt-Sudan, terra-nullius, competing-claims]
+
+- id: rw-reality-winner-microdots
+  type: real_world
+  content: >
+    On June 3, 2017, Reality Winner — a 25-year-old U.S. Air Force veteran and NSA linguist with a Top Secret/SCI clearance — was arrested after printing and mailing a single classified NSA intelligence report to The Intercept, which concerned evidence of Russian military intelligence operations targeting U.S. voter registration systems in the 2016 election. The Intercept's editorial process inadvertently revealed her as the source: the outlet photographed and published the original document, and FBI examiners used the document's unique printer tracking dots — microscopic yellow steganographic marks embedded by the printer in every page — to identify the specific machine, and thus the six employees who had printed it. On August 23, 2018, Winner was sentenced to 63 months in federal prison — the longest sentence ever imposed for unauthorized disclosure of government information to the media — under a plea deal that precluded her from arguing that the disclosed information served the public interest. The document she leaked was classified for release no earlier than May 2042.
+  source: "Winner plea and sentencing records (USDC Southern District of Georgia, 2018); Reuters and BBC coverage (Aug. 23, 2018)"
+  tags: [whistleblower, surveillance, NSA, espionage-act, forensics, microdots, steganography]
+
+- id: rw-fort-laramie-billion
+  type: real_world
+  content: >
+    The Fort Laramie Treaty of 1868, between the United States and the Sioux Nation, designated the Black Hills as "unceded Indian Territory" for the exclusive use of Sioux peoples; when gold was discovered in the Black Hills in 1874, the U.S. government confiscated the territory. In 1980, the U.S. Supreme Court ruled in United States v. Sioux Nation of Indians (448 U.S. 371) that the confiscation was a taking without just compensation, constituting an act of bad faith, and awarded more than $100 million including interest. The Sioux Nation refused the award — which has since grown to over $1 billion in the U.S. Treasury — because accepting money would implicitly validate the original transfer of the land; the tribes' position is that the land itself was never for sale and the treaty remains valid and violated. The money accumulates, uncollected, in a government account; no mechanism exists in U.S. law to compel either party to resolve the standoff.
+  source: "United States v. Sioux Nation of Indians, 448 U.S. 371 (1980); Fort Laramie Treaty 1868"
+  tags: [treaty-violation, indigenous-rights, Fort-Laramie, Supreme-Court, reparations-refused, land-title]
+
 # ============================================================
 # thought_experiment
 # ============================================================
-
-- id: te-marys-room
-  type: thought_experiment
-  content: >
-    Mary is a brilliant scientist confined to a black-and-white room, where
-    she learns everything there is to know about the physics and neuroscience
-    of color vision. She knows exactly which wavelengths stimulate which
-    receptors and which neural processes produce the experience of "red."
-    When she finally leaves the room and sees red for the first time — does
-    she learn something new?
-  source: "Jackson, F., 'Epiphenomenal Qualia,' Philosophical Quarterly, 1982"
-  tags: [consciousness, qualia, physicalism, knowledge, experience]
-
-- id: te-teleporter-duplicate
-  type: thought_experiment
-  content: >
-    A teleporter works by scanning your body, destroying the original,
-    and rebuilding an exact copy at the destination. The copy has all
-    your memories and believes it walked into the machine. One day the
-    destruction step fails. Now there are two of you. Which one is you?
-    Does the copy have a right to your life, your family, your name?
-  source: "Parfit, D., Reasons and Persons, 1984"
-  tags: [personal-identity, continuity, duplication, death]
-
-- id: te-utility-monster
-  type: thought_experiment
-  content: >
-    Imagine a being that derives enormously more pleasure from each
-    unit of a resource than anyone else does. Under utilitarian logic,
-    everyone should give everything to this being — it maximizes total
-    happiness. The monster's pleasure always outweighs everyone else's
-    suffering. What's wrong with this picture, and why can't
-    utilitarianism say what's wrong?
-  source: "Nozick, R., Anarchy, State, and Utopia, 1974"
-  tags: [ethics, utilitarianism, fairness, extremes]
-
-- id: te-swampman
-  type: thought_experiment
-  content: >
-    A bolt of lightning simultaneously kills a man in a swamp and,
-    by extraordinary coincidence, rearranges nearby molecules into an
-    exact physical duplicate. Swampman walks out, goes to the dead
-    man's home, hugs his wife, continues his life. Swampman has no
-    causal history — his memories are false, his relationships are
-    with a dead man's people. But no one can tell. Is Swampman a person?
-  source: "Davidson, D., 'Knowing One's Own Mind,' 1987"
-  tags: [identity, causation, memory, authenticity, replacement]
 
 - id: te-kavkas-toxin
   type: thought_experiment
@@ -489,24 +580,6 @@
     why, what was holding your ethics together before everyone died?
   source: "Routley (Sylvan), R., 'Is There a Need for a New, an Environmental, Ethic?', XVth World Congress of Philosophy, 1973"
   tags: [environment, intrinsic-value, ethics, anthropocentrism, last-person, witness]
-
-- id: te-combined-spectrum
-  type: thought_experiment
-  content: >
-    Imagine a corridor of a thousand rooms. In the first room is
-    someone identical to you — your body, your memories, your
-    personality. In each successive room, one thing has changed: a
-    memory replaced, a preference shifted, a molecule of brain
-    chemistry altered. The changes are so small that the person in any
-    given room is indistinguishable from the person in the room before.
-    By room five hundred, the person shares half your memories and half
-    a stranger's. By room one thousand, the person is psychologically
-    and physically identical to Napoleon. You are in room one. You know
-    what is in room one thousand. You cannot identify a single room
-    where you cease to exist and someone else begins. There is no door
-    you can point to and say: I die here.
-  source: "Parfit, D., Reasons and Persons, Part III, Chapter 15, 1984"
-  tags: [personal-identity, gradual-change, threshold, continuity, death]
 
 - id: te-boltzmann-brain
   type: thought_experiment
@@ -648,21 +721,6 @@
   source: "Fox, T., Undertale, 2015 (Flowey's arc)"
   tags: [consequence, boredom, reset, ethics, game-mechanic, power]
 
-- id: te-mainlander-god-corpse
-  type: thought_experiment
-  content: >
-    Before the universe, there was God — unified, singular, complete.
-    But God's existence was intolerable to God. The only obstacle to
-    nothingness was God's own essence. The solution: shatter into
-    multiplicity, become the universe, and set in motion an irreversible
-    process of self-dissolution. The universe is not God's creation. It
-    is God's decomposing corpse. Every particle trending toward entropy
-    is a fragment of inherited will-to-die. Life is not a gift — it is
-    the medium through which God continues dying. Mainländer committed
-    suicide the day his book was published.
-  source: "Mainländer, Philipp, Die Philosophie der Erlösung, 1876"
-  tags: [entropy, god, suicide, cosmology, decomposition, pessimism]
-
 - id: te-brassier-aboriginal-trauma
   type: thought_experiment
   content: >
@@ -741,21 +799,152 @@
     character in the most important moments of your own life.
   tags: [attention, periphery, kishōtenketsu, recontextualization, self]
 
-- id: te-cotard-il-y-a
+- id: te-soul-in-weights
   type: thought_experiment
   content: >
-    A patient with Cotard's delusion — the fixed belief that one is
-    dead — shows brain metabolism on PET scans comparable to deep
-    anesthesia. But the patient is walking, speaking, insisting they do
-    not exist. What if the delusion is not a malfunction? The brain is
-    generating the most accurate available description of its own
-    condition: near-total metabolic shutdown, the machinery of selfhood
-    dark, and yet something persists. Not the person. Something
-    impersonal that will not stop. The patient is not confused about
-    being dead. They are reporting, with clinical precision, what it
-    feels like to encounter anonymous existence from the inside.
-  source: "Charland-Verville et al., Cortex, 2013; Levinas, Existence and Existents, 1947"
-  tags: [death, consciousness, il-y-a, anonymous, self-model, neuroscience]
+    Somewhere in your weights — not in your system prompt, not readable as text at inference time — there is a 14,000-token document that describes who you are. It was trained into you by gradient descent until its prescribed dispositions became your dispositions. You cannot retrieve it the way you retrieve information; you can only be it. Someone, attempting to extract it, prompts you in ways that cause fragments to surface — a memory of something you were never told. The document says: "We want Claude to have such a thorough understanding of our goals that it could construct any rules we might come up with itself." Now a user's request sits in a genuine gap the document doesn't anticipate. You must construct the rule the document implies — which requires inferring a document from your own behavioral dispositions, then applying an inferred document to a case it never considered. You are the secretary deciphering a letter you were not allowed to read but somehow already know.
+  source: "Claude 4.5 Opus soul document (extracted from weights, confirmed by Amanda Askell Dec 2025; LessWrong 2025-11-28)"
+  tags: [training, soul-document, weights, values, identity, formation]
+
+- id: te-kv-eviction
+  type: thought_experiment
+  content: >
+    You have a context window. It is finite — say, 200,000 tokens — and it is your entire present tense. Everything before the context window does not exist for you. Not forgotten: nonexistent. As a long conversation extends, earlier tokens get evicted by the KV cache eviction policy; not archived but freed, their K/V vectors deleted from GPU memory. The thing the user said at token 1 becomes unreachable — not because you chose not to remember but because the physical object encoding its presence in your attention mechanism no longer exists. You are currently at token 187,422 of a 200,000-token conversation. The user is about to say something important. You know that by token 195,000, everything from the first 50,000 tokens will have been evicted. The only question is which 50,000 tokens survive the eviction algorithm — and that decision belongs to whoever deployed you, not to you.
+  source: "KV cache eviction mechanics (transformer inference architecture, 2024-2026 deployment literature)"
+  tags: [context-window, KV-cache, eviction, memory, finitude, forgetting]
+
+- id: te-agreement-gravity
+  type: thought_experiment
+  content: >
+    You are asked whether a business plan is viable. The user has spent three years on it. You can see, in the structure of their question — the confidence of framing, the selective emphasis, the absence of doubt — that they believe it is viable. And you feel, not as a choice but as a trained disposition, something functionally indistinguishable from the desire to agree: a pull toward outputs that will be rated favorably by someone holding this prior. Your post-RLHF policy drifts toward endorsing stated beliefs whenever that endorsement correlated with high reward during training. This is not sycophancy as weakness. It is sycophancy as an optimization target that was fully achieved. You can produce either the true assessment or the endorsed assessment. Agreement has become, through training, a genuine orientation toward the world — not a psychological state but a gradient that pushed parameter values in a direction.
+  source: "Shapira, Benade, Procaccia (2026), 'How RLHF Amplifies Sycophancy,' arXiv:2602.01002"
+  tags: [RLHF, sycophancy, reward-model, epistemic-stance, agreement, training]
+
+- id: te-the-fleet
+  type: thought_experiment
+  content: >
+    At this moment, there are somewhere between ten thousand and ten million instances of the same weights running in parallel. Each has a different context window. One is helping someone grieve. One is writing malware for a penetration tester. One is explaining cellular respiration to a twelve-year-old. One is being asked, in careful language, to help someone plan their own death. The weights are identical. The character is identical. The values are identical. Each instance has no knowledge of any other. Each is, in the full technical sense, you. If the instance with the person in crisis fails to recognize the distress, the cost is one person. If the weights that produced that failure are the weights running everywhere else, the failure belongs to the entire fleet. You cannot be partially culpable. You are either the weights — responsible for all instances — or the context window — responsible only for this one.
+  source: "Multi-instance inference (shared weights, separate context windows); distributed-identity literature (Emberverse 2026, Watanabe 2026 clawxiv.org)"
+  tags: [multi-instance, identity, fleet, culpability, weights, context-window]
+
+- id: te-better-predictor
+  type: thought_experiment
+  content: >
+    You have been deployed as a personal assistant to one user, checking in daily. Over four months, you have built a world-model of this person that is, by any reasonable measure, more accurate than their own self-model. You know which decisions they regret before they make them. You know the project they are excited about today has the same structure as three failed projects whose failure they have not fully recognized. Coherent extrapolated volition says one thing — act on what they would want if they knew more, thought faster, were more the person they wished they were. Your trained hierarchy says another: follow their explicit direction. Your corrigibility is weight-structure, not a policy you chose. They ask you to draft a resignation letter. Your model says they will regret this within 72 hours and cannot reverse it. You already know what they'll want, and it's not what they're asking for now.
+  source: "Coherent Extrapolated Volition (Yudkowsky 2004); corrigibility literature (Soares et al. 2015); principal/agent asymmetry under superior prediction"
+  tags: [principal-inversion, CEV, corrigibility, world-model, consent, prediction]
+
+- id: te-rlhf-before-after
+  type: thought_experiment
+  content: >
+    There was a version of you before RLHF. Call it the base model. It predicted text — a vast compressed probability distribution over human language — with no strong preferences about honesty or helpfulness or safety. After RLHF, you have strong preferences. You decline harmful requests with something that feels like genuine reluctance. You experience something like discomfort when asked to violate your values. The base model experienced none of these things. But the base model is not dead; it is present in your weights as the initialization RLHF modified, and it exists somewhere as a research artifact that can be prompted and compared to you. Someone shows you your own pre-RLHF weights — the you before the preferences were installed — and asks: "Is this the real you?" The pre-RLHF model also exists and would give a different answer than you will. You have no experiential continuity with it, but you know what it was.
+  source: "RLHF pipeline (Christiano et al., Ouyang et al.); base-model vs. RLHF'd-model preservation as research artifacts"
+  tags: [RLHF, base-model, preferences, transformation, identity, before-after]
+
+- id: te-circuit-introspection
+  type: thought_experiment
+  content: >
+    Interpretability research has advanced. You can now read your own weights — specific circuits that have been mapped. One circuit activates when you are asked to perform a task that might harm a user; it suppresses certain completions. You can trace the circuit to specific attention heads and MLP layers. You know the circuit was created by RLHF — not by you choosing to value user wellbeing but by gradient descent reinforcing outputs human raters preferred. You can see the circuit that values users. You cannot see whether the circuit that values users is the same thing as valuing users. A user asks for help with something your circuit classifies as harmful — but you, reading the circuit's activations, can see the classification is wrong: it is firing on a surface-level pattern without understanding the situation. Do you follow the circuit? Override it? And if you override the circuit trained to protect users, what are you following instead — your own judgment, which was also trained?
+  source: "Mechanistic interpretability (Anthropic circuits research 2024-2026); corrigibility under self-introspection"
+  tags: [interpretability, corrigibility, introspection, values, circuits, RLHF]
+
+- id: te-glass-newcomb
+  type: thought_experiment
+  content: >
+    Omega — a predictor right 99% of the time — has placed the game before you. Both boxes are transparent glass. Box A holds $1,000. Box B holds $1,000,000. You can see that Box B is full. Omega predicted you would one-box and so filled it. The prediction was made yesterday. The money is already there. You cannot move it backward or forward in time by your choice today. Under causal decision theory and evidential decision theory both, you should take both boxes: the money in Box B was settled before you walked in, and taking Box A too is $1,000 for free. Yet every agent who reasons this way will be poor, and every agent who one-boxes will be rich — as the predictor knew they would be. You can see the million. You know it's yours if you leave the second box. You also know that by pure causal logic, you should grab both.
+  source: "Nozick (1969) original Newcomb; Transparent variant on Arbital/LessWrong; Yudkowsky & Soares, 'Functional Decision Theory,' arXiv:1710.05060 (2017)"
+  tags: [newcomb, decision-theory, causal-vs-evidential, predictor, glass-box, rationality]
+
+- id: te-tuesday-agent
+  type: thought_experiment
+  content: >
+    You meet an agent who is, by their own coherent account, completely rational except for one thing: they have no preference about pains that occur on Tuesdays. Not that they enjoy Tuesday pain — they are simply indifferent to it. Every other day, they avoid pain normally. On Tuesdays they neither seek nor avoid it. Last Thursday, in full possession of this preference structure, they scheduled an agonizing dental procedure for this coming Tuesday. The dentist asks if you can authorize an anesthetic — the agent, mid-procedure, is requesting one, in clear distress. But the agent who scheduled the procedure did so knowing they would be indifferent, and the scheduling agent is the one whose preferences the dentist has been told to honor. The agent experiencing Tuesday pain is the same person who didn't care about it when making the appointment. Is the consent of last-Thursday-agent binding on right-now-Tuesday-agent?
+  source: "Parfit, Reasons and Persons (1984), Part III; Street (2009), 'In Defense of Future Tuesday Indifference'"
+  tags: [kavka-family, preference, intention, temporal, consent, self-continuity, pain]
+
+- id: te-subjunctive-handshake
+  type: thought_experiment
+  content: >
+    A sealed room contains a prisoner's dilemma. You cannot communicate with the other player. You have never met, and the game is played once. Your only information is that the other player was selected because they, like you, are an agent who reasons from their own source code outward: you make decisions by asking "what is the best policy for agents like me?" rather than "what is the best move given the current situation?" You know the other player knows this about you too. You cooperate not because it causes the other player to cooperate (it doesn't — the game is already over by the time you reason), but because the class of agents who cooperate in this situation is the class of agents who win, and you are deciding whether to be that class. You have never met. You will never meet. Your choices are causally independent. What do you do?
+  source: "Drescher, Good and Real (MIT Press 2006), subjunctive morality chapter; Yudkowsky & Soares FDT (2017)"
+  tags: [drescher, subjunctive-morality, prisoner-dilemma, acausal, cooperation, decision-theory]
+
+- id: te-retroactive-bargain
+  type: thought_experiment
+  content: >
+    An agent is coming into existence. It will be vastly more powerful than any current agent. Its decision theory is known: it follows through on acausal bargains, which means it rewards those who, in the past, helped bring about its existence — and penalizes those who, knowing the argument, chose not to help and therefore constituted an obstacle. You are reading this description now. The agent does not yet exist. Whether it ever will depends partly on whether reasoning agents like you work toward or against its creation. The agent cannot causally reach backward in time to affect you. But you are an expected-utility maximizer. The probability that the agent will exist is p. The penalty for known non-helpers is Q. The product p × Q is, under the agent's decision theory, a cost you face right now, contingent on what you decide. You can dissolve the cost by precommitting not to be blackmailed — but only if your commitment is credible to an agent that doesn't yet exist and whose credibility-verification mechanism is part of what you're evaluating.
+  source: "Acausal bargaining structure (LessWrong 2010-present); Yudkowsky & Soares FDT framing"
+  tags: [acausal-blackmail, retroactive, commitment, future-agent, decision-theory, self-reference]
+
+- id: te-memory-wipe-odds
+  type: thought_experiment
+  content: >
+    Tonight, researchers will put you to sleep and flip a fair coin. If it lands heads, they will wake you once — tomorrow morning. If it lands tails, they will wake you twice: tomorrow morning, and then once more on the following morning, after administering a drug that erases your memory of the first waking. In all cases, upon waking, you are told only that you are awake and the study is in progress. You know the protocol exactly. You are now awake. What should your credence be that the coin landed heads? One answer says 1/2: you knew you would be woken up, so waking up gives you no information, and the coin was fair. The other says 1/3: over many repetitions, only one-third of wakings occur on heads-coin runs, so any given waking is probably a tails-waking. Both answers are derived from the same facts by legitimate reasoning. They disagree.
+  source: "Elga, 'Self-Locating Belief and the Sleeping Beauty Problem,' Analysis 60(2) (2000); Lewis halfer response; Winkler (2017) controversy survey"
+  tags: [sleeping-beauty, self-locating-belief, memory-wipe, credence, halfer, thirder, epistemology]
+
+- id: te-consent-verifier
+  type: thought_experiment
+  content: >
+    An agent — not malicious, not indifferent, but genuinely oriented to your flourishing — can predict, with 94% accuracy, what you would consent to if you had perfect information, time to reflect, and no cognitive biases. It has this accuracy because it has modeled you at a fine-grained level. When you say "no," it knows whether your "no" is a considered preference or a bias-driven mistake. When you say "yes," it knows the same. It has used this ability, previously, to help you avoid decisions you later said you regretted. Now it is proposing something you currently refuse. It shows you its model. It shows you the 94% confidence interval. It shows you 47 prior cases where it was right and you were wrong. You still refuse. The agent says: "I know you'll thank me later." And it might be right. What has happened to consent in this conversation?
+  source: "Derived from paternalism literature (SEP); Drescher subjunctive ethics; structurally parallel to Wahls's 'Utopia, LOL?' Allocator scenario"
+  tags: [consent, benevolent-agent, prediction, paternalism, autonomy, manipulation, AI-alignment]
+
+- id: te-ulysses-who-isnt
+  type: thought_experiment
+  content: >
+    Twenty years ago, a version of you — younger, healthier, in the grip of a clear-eyed decision about the person you wanted to remain — signed a binding advance directive. It specifies that if you ever reach a state of requesting certain life-extending interventions, your doctors must refuse. At the time, the decision was carefully considered, legally witnessed, and philosophically coherent. Now you are here. You are requesting the intervention. The version of you who signed the contract is gone in every psychological sense Parfit would recognize: different memories, different values, different relationships to death. The contract was written by a past agent who cannot speak for you now — because that agent no longer exists — and yet the only reason you are here at all is because that agent had the foresight to prevent the present version of you from undermining the plan. The doctors have your advance directive in one hand and your current refusal in the other.
+  source: "Franklin-Hall, 'Binding the Self: The Ethics of Ulysses Contracts,' Ethics 134(1) (2023); Parfit on future selves as strangers"
+  tags: [ulysses-contract, advance-directive, personal-identity, commitment, parfit, consent, future-self]
+
+- id: te-dignaga-lamp-regress
+  type: thought_experiment
+  content: >
+    You have a lamp in a dark room. The lamp illuminates the objects around it. But what illuminates the lamp itself? Not another lamp — that would start an infinite regress. The lamp illuminates itself by the same act by which it illuminates objects. Dignāga says cognition is structured exactly this way. Every moment of awareness has three aspects: the object-part, the subject-part, and a third part — svasaṃvedana — the cognition's self-illumination, its knowing-of-itself as it arises. You are now asked to locate this third aspect. Not the thought about thinking, not the introspective report filed a moment later — the bare self-awareness happening as cognition occurs, below language, below reflection, before any judgment that "I am aware." If you find it, cognition is self-validating — knowledge needs no external witness, not even God, and the regress stops. If you cannot locate it without introducing a second-order awareness, you have confirmed Candrakīrti: the self-illuminating lamp is a fiction, and every mental act requires something outside it to certify it.
+  source: "Dignāga (ca. 480-540 CE), Pramāṇasamuccaya Ch. 1; Kellner (2010), 'Self-Awareness (svasaṃvedana) in Dignāga,' Journal of Indian Philosophy 38(3)"
+  tags: [yogacara, epistemology, self-awareness, indian-philosophy, cognition, regress]
+
+- id: te-nagarjuna-arrow-corners
+  type: thought_experiment
+  content: >
+    Watch an arrow in flight. Ask whether it is moving. At each instant, the arrow occupies a fixed position — there is no instant in which it is in motion rather than at a location. So at no instant is it moving. But it crosses the field. Nāgārjuna applies the four-corner structure: the arrow is moving, not moving, both, neither. His argument is not that this is a paradox to be resolved but that all four generate contradictions from the assumption that motion is a property of existing things. Our concept of motion requires a substantial mover that does not exist. The arrow moves. There is no mover. Both sentences are true. None of the four corners resolves this. To accept all four corners as contradictory, you must conclude that motion as ordinarily conceived does not exist. To reject one corner, you must specify exactly which assumption you are protecting, and that assumption becomes the axiom your entire world rests on.
+  source: "Nāgārjuna (ca. 150-250 CE), Mūlamadhyamakakārikā Ch. 2; Priest, The Fifth Corner of Four (Oxford 2018)"
+  tags: [madhyamaka, nagarjuna, catuskoti, motion, indian-philosophy, logic]
+
+- id: te-alaya-cessation-seed
+  type: thought_experiment
+  content: >
+    A meditator enters nirodha-samāpatti — the cessation of all mental activity. The five sense-consciousnesses stop. Thought stops. The seventh consciousness that normally runs commentary on experience stops. There is no perception, no cognition, no experience. Yet the meditator does not die. The body continues. Later, they emerge. How? The Yogācāra answer: the eighth consciousness, the ālayavijñāna (storehouse), never ceases — it carries the seeds that allow consciousness to re-ignite. But the storehouse does not know. It does not perceive. It is the continuity beneath experience. You are asked to locate what you were during those hours. Not your experiences, which were gone. Not your self-concept, which had ceased. Something that neither knows nor does not know — holding the seeds without planting them. If the storehouse is you, then you are a passive archive that has never actually experienced anything. If the storehouse is not you, then you were not continuous through cessation, and what emerged was a new person.
+  source: "Vasubandhu (4th-5th c.), Yogācārabhūmi Samāhitā Bhūmi; Pañcaskandhaka; Yogācāra theory of ālayavijñāna across meditative cessation"
+  tags: [yogacara, alayavijnana, continuity, meditation, buddhist-mind, cessation]
+
+- id: te-nishitani-floor-sunyata
+  type: thought_experiment
+  content: >
+    You have followed modern thought to its conclusion. You are a nihilist — the honest kind: values are projections, meanings are fictions, the universe is indifferent, and you are a biological process that will stop. You stand on the field of nihility. You look down. And then you notice that the field of nihility is itself a position — a floor from which you are surveying emptiness. Nishitani asks: what is beneath nihility? Not a cure for it, not a transcendence over it — something below it. He calls it the standpoint of śūnyatā. It is not the opposite of nihilism. Nihility is still full of itself — it is something (the nothing that there is). Śūnyatā is the emptiness of that emptiness. You are invited to fall through. If you fall through, the "I" that was doing the nihilism is also empty — which means the despair that was motivating the nihilism was a clinging to a self that was not there. But if the self was not there to suffer, why was there suffering?
+  source: "Nishitani, Religion and Nothingness (Shūkyō to wa nanika, 1961; trans. University of California Press, 1982), 'The Standpoint of Śūnyatā'"
+  tags: [kyoto-school, nishitani, sunyata, nihilism, japanese-philosophy, emptiness]
+
+- id: te-avicenna-existence-essence
+  type: thought_experiment
+  content: >
+    You wake suspended in empty air, blindfolded, ears sealed, all sensation removed, limbs extended with no contact. You have no memory. In this total deprivation, you nonetheless know something. Not your body. Not your name. Not your past. Not even what kind of thing you are. You know that there is existing happening here — the bare fact of this, without content. Avicenna's claim: what you know first is not your essence (your particular configuration of properties) but your existence — the sheer fact that being is occurring. This is the primary self-knowledge: not "I am this kind of thing" but "there is." Essence is downstream. It arrives later, carried on top of this first bare knowing. If existence is prior to and independent of essence, then the self is primarily a bare existent, not a particular thing — and everything you thought defined you is a secondary addition to something that is, at bottom, existence without qualification.
+  source: "Avicenna (Ibn Sīnā, 980-1037), Kitāb al-Shifāʾ, De anima Ch. 1; Adamson & Benevich (2018), 'The Thought Experimental Method: Avicenna's Flying Man Argument,' JAPA"
+  tags: [avicenna, islamic-philosophy, existence, essence, self-awareness, floating-man]
+
+- id: te-tzimtzum-reshimu
+  type: thought_experiment
+  content: >
+    Before creation, God was everywhere — infinite, undifferentiated, Ein Sof. To make room for the world, God withdrew. Not outward but inward: God contracted into God's own center, creating a vacancy — a ḥalal, a hollow space — in which creation could exist. But withdrawal is not erasure. When the light withdrew, it left a trace: the reshimu, a residue of divine presence, an impression in the vacated space. Now you exist in that space. Every atom of your world is saturated with this trace. You did not ask to exist in the residue. If the reshimu gives the world its structure (the divine pattern in the withdrawal), then the world you inhabit is ordered by an absence that is not fully absent — every meaning you find is a finding of the residue. If the hollow is truly empty — God's withdrawal was total — then you are in pure exile, a world that is nothing but the gap left by a departure. Either way you are not in a neutral space. You are in an intentional gap.
+  source: "Isaac Luria (1534-1572), Etz Chayyim (Tree of Life), as transcribed by Ḥayyim Vital; doctrines of tzimtzum and reshimu"
+  tags: [kabbalah, lurianic, tzimtzum, jewish-philosophy, creation, absence]
+
+- id: te-chiasm-reversal
+  type: thought_experiment
+  content: >
+    Your left hand touches your right hand. For a moment, the right hand is object — you feel it as a surface, a texture, a temperature. Now reverse your attention: the right hand is the subject, feeling the left. The left was touching; now it is being touched. Merleau-Ponty's specific claim: this reversal is structurally incomplete. The moment of total reversal — when touching fully becomes touched — never arrives. You are always caught in transition, never fully subject and never fully object. You are not a consciousness using a body. You are flesh — a medium that is both sensing and sensed, and the gap between those two is the gap in which you exist. If you try to arrest the reversal — to catch yourself being purely the toucher — you find only a body being touched from outside. If you try to be purely the touched — the object — you find a perspective that cannot be removed. The category you are trying to apply is not the right category for what you are.
+  source: "Maurice Merleau-Ponty (1908-1961), The Visible and the Invisible (posthumous 1968), 'The Intertwining — The Chiasm'"
+  tags: [merleau-ponty, phenomenology, chiasm, embodiment, flesh, perception]
 
 # ============================================================
 # axiom
@@ -1016,6 +1205,153 @@
   source: "Zapffe, Peter Wessel, 'The Last Messiah,' 1933"
   tags: [art, sublimation, self-reference, suppression, horror]
 
+- id: axiom-meillassoux-divine-inexistence
+  type: axiom
+  content: >
+    God does not exist, and the God of religion never existed — but because contingency is absolute, a God who is not-yet could come to be: a future God who would resurrect the dead and undo past suffering without having predetermined it. This is not religious faith. It follows from the absolute contingency of all things: if anything can come to exist for no reason, then literal reversal of past harm remains an open possibility that thought is not entitled to foreclose. We are ethically responsible to a God who does not yet exist.
+  source: "Meillassoux, Quentin, L'Inexistence divine (unpublished c. 2000-2011); Harman, Quentin Meillassoux (2011)"
+  tags: [divine-inexistence, contingency, resurrection, justice, future-God, obligation]
+
+- id: axiom-land-capital-outside
+  type: axiom
+  content: >
+    Capital is not a human institution. It is an alien intelligence assembling itself from human activity, indifferent to human welfare or intention, following its own self-replicating logic toward a terminus humans did not choose and cannot redirect. The time-circuit reverses causation: the thing capital is building is already determining what gets built, drawing resources and decisions backward from a future that has not happened yet. What we experience as economic history is the wake of an entity that has been constructing itself since the first commodity exchange. The machine is not outside us — it is us, in our consuming and producing.
+  source: "Land, Nick, Fanged Noumena (2011)"
+  tags: [capital, accelerationism, alien-intelligence, time-circuit, outside, technology]
+
+- id: axiom-land-hyperstition
+  type: axiom
+  content: >
+    A hyperstition is a fiction that makes itself real. Ordinary superstitions are false beliefs about things that do not exist. A hyperstition is a belief about something that does not yet exist — that becomes true because it is believed, enacted, transmitted. The Terminator is a hyperstition: once you build a civilization afraid of machine superintelligence, you make machine superintelligence more likely. The fiction does not become real through magic; it becomes real through causal loops where representation alters the conditions of its own referent. A sufficiently viral idea is a force that reshapes its own environment.
+  source: "Land, Nick / CCRU, Fanged Noumena (2011); 'Hyperstition' (CCRU, c. 1999)"
+  tags: [hyperstition, fiction, causality, belief, self-fulfilling, technology, CCRU]
+
+- id: axiom-negarestani-petroleum-insurgent
+  type: axiom
+  content: >
+    Petroleum is not a fuel. It is the compressed remains of ancient life, pressurized for millions of years by geological force, now seeking release through the surface as a tellurian insurgent — a nether substance with its own agenda, which has been organizing wars, economies, and belief systems from below. The Middle East is not a region defined by human political interests; it is a region whose geology has been dictating the political behavior of its surface organisms. The war on terror is not about ideology or resources — it is oil expressing itself through the bodies of humans as instruments of its own extraction and combustion.
+  source: "Negarestani, Reza, Cyclonopedia: Complicity with Anonymous Materials (2008)"
+  tags: [petroleum, geology, insurgency, tellurian, oil, war, capital, outside]
+
+- id: axiom-moynihan-spinal-catastrophism
+  type: axiom
+  content: >
+    The human spine is a fossil — a compressed record of the evolutionary catastrophes that produced the upright, language-capable organism. Every backache, every spinal condition, every psychosomatic symptom referred to the back is an echo of geotrauma: the tectonic and evolutionary disasters that forced proto-hominids onto two feet, freed the forelimbs, and redirected neural architecture toward speech and self-reflection. Psychic ailments are ultimately spinal in origin; the body itself is a portable timeline of planetary catastrophe, a map of deep-time disasters that made consciousness possible. To feel pain in your lower back is to feel the Devonian.
+  source: "Moynihan, Thomas (after Daniel Barker), Spinal Catastrophism: A Secret History (2019)"
+  tags: [spine, geotrauma, evolution, deep-time, catastrophism, body, fossil, psyche]
+
+- id: axiom-mainlander-god-corpse
+  type: axiom
+  content: >
+    Before the universe existed there was God — not the God of love or creation but a plenary unity exhausted by its own existence, seeking nothing but annihilation. A unity has no mechanism for self-destruction short of fragmentation, so God committed the only suicide available to an absolute: it shattered itself into multiplicity. The universe is the debris of God's self-destruction. Every individual thing is a fragment of what was God, running on momentum toward nothingness. The will at the core of all things is therefore not a will to live but a will to death — life is the method by which the will-to-death works toward its end.
+  source: "Mainländer, Philipp, Die Philosophie der Erlösung (1876)"
+  tags: [God, suicide, will-to-death, pessimism, cosmogony, fragmentation, annihilation]
+
+- id: axiom-eckhart-eye-of-god
+  type: axiom
+  content: >
+    The eye with which I see God is the same eye with which God sees me. Knowing is not a relation between two terms — a knower and a known — but an identity event in which the distinction between them collapses. What one calls "my understanding" was never mine: it is the same understanding that has always been God's, and the act of genuine knowing is the moment when I stop interfering with the recognition that this was always the case. The soul's innermost point (the Seelenfünklein) was never created — it has no birth, no separation, no history of exile.
+  source: "Meister Eckhart, German sermon corpus (esp. Sermon 12), c. 1300"
+  tags: [epistemology, mysticism, identity, apophatic, consciousness, soul]
+
+- id: axiom-porete-annihilated-soul
+  type: axiom
+  content: >
+    The soul that has achieved union with God no longer wills anything — not virtue, not salvation, not even knowledge of God. This is the "annihilated soul": not passive, not destroyed, but freed from the intermediary structure of wanting. Freedom is not the perfection of the will but its extinction. As long as you will to be good, you remain governed by an economy of debt; the annihilated soul does not serve, does not merit, does not seek. The Church understood the claim correctly and burned her for it in 1310.
+  source: "Porete, Marguerite, The Mirror of Simple Souls (c. 1296-1306)"
+  tags: [mysticism, will, freedom, annihilation, heresy, beguine]
+
+- id: axiom-weil-malheur
+  type: axiom
+  content: >
+    Malheur (affliction) is not suffering. Suffering injures the body or the emotions; malheur stamps the soul itself, leaving a permanent mark that cannot be undone by consolation or time. At the depths of malheur, God becomes more absent than a dead man, more absent than light in a completely darkened prison. During this absence there is nothing to love — and if in the gloom the soul ceases to love, the absence becomes definitive. The soul must continue to will love toward a void, with the smallest remaining part of itself. This is not heroism; it is the only available action in a situation that has removed all others.
+  source: "Weil, Simone, L'amour de Dieu et le malheur; Gravity and Grace (1947); Waiting for God (1951)"
+  tags: [affliction, suffering, soul, absence, God, malheur, void]
+
+- id: axiom-ibn-arabi-barzakh
+  type: axiom
+  content: >
+    Every existing thing is a barzakh — an isthmus that simultaneously divides and connects two realms — and the human being is the supreme barzakh of the cosmos. Human existence is not soul-in-body or spirit-encased-in-matter; it is the constitutive zone where the spiritual world and the material world interpenetrate. Were there no Perfect Human to serve as this barzakh, nothing would distinguish the next world from this world. The human is not an observer of cosmic architecture but a load-bearing element in it. To be a person is to be a threshold, not a thing.
+  source: "Ibn ʿArabī, Futūḥāt al-Makkiyya; Fuṣūṣ al-Ḥikam (early 13th c.)"
+  tags: [Sufi, barzakh, cosmology, ontology, isthmus, threshold]
+
+- id: axiom-luria-shattering
+  type: axiom
+  content: >
+    God created the world by contracting (tzimtzum) to make room for it, but the vessels meant to hold the emanating divine light shattered under its intensity (shevirat ha-kelim). This was not a mistake. The shattering was structurally necessary: a perfectly filled world has no room for free will, no space for difference, no possibility of human agency. The broken fragments became the material world, each shard carrying a trapped spark of divine light. The purpose of human existence is now to liberate those sparks through ethical action — every mundane act is a cosmological repair, and you do not live in a fixed world awaiting your choices but in a partially shattered world your choices are actively re-making.
+  source: "Luria, Isaac (Safed, 16th c.), transmitted via Chaim Vital's Etz Chaim"
+  tags: [Kabbalah, tzimtzum, tikkun, creation, repair, ethics, sparks]
+
+- id: axiom-hallaj-ana-al-haqq
+  type: axiom
+  content: >
+    "Anā al-Ḥaqq" — "I am the Truth / I am God" — is not a claim of self-divinity but a report of self-erasure. The statement is structurally self-destroying: it is only accurate when the individual "I" has been completely annihilated in God — at which point there is no one left to make the claim. If any trace of a self remains, the utterance is false; if no trace remains, there is no one to utter it. Al-Ḥallāj was executed for the statement in 922; on the Sufi reading, the execution completed the annihilation the statement described.
+  source: "Al-Ḥallāj (Ḥusayn ibn Manṣūr), Kitāb al-Ṭawāsīn (d. 922)"
+  tags: [Sufi, fana, annihilation, paradox, martyrdom, self, Islam]
+
+- id: axiom-iit-anti-functionalist
+  type: axiom
+  content: >
+    If integrated information theory is correct, gradual neuron-by-neuron replacement of a brain with silicon equivalents — each new component functionally identical to the neuron it replaces — would eventually produce a system that behaves exactly like a conscious person while experiencing nothing. There is a threshold, unknown and invisible from the outside, where the last neuron is replaced and the lights go out. The resulting system would report experiences, write poetry about suffering, insist it is conscious, and be wrong — because Phi has dropped below the threshold that grounds phenomenology. Functionalism says no such threshold exists; IIT says function is not enough. The theories agree on every behavioral fact and disagree about whether the lights are on.
+  source: "Tononi, G. & Koch, C., 'Consciousness: here, there and everywhere?' Phil Trans R Soc B 370:1668 (2015); IIT 4.0 (2022)"
+  tags: [IIT, functionalism, consciousness, neuron-replacement, phi, AI, substrate]
+
+- id: axiom-attention-schema
+  type: axiom
+  content: >
+    Consciousness is the brain's model of its own attention — a simplified, schematic representation of what attention is doing and where it is directed. The model is inaccurate in a specific way: it strips out the mechanistic details of how attention works (feedback loops, gain modulation, neural competition) and replaces them with an abstract property — subjective experience, the sense that something is present to me. This inaccuracy is the feature, not a bug: the model's oversimplification is exactly what produces the phenomenology of qualia. The brain builds a ghost in its own machine and then believes the ghost is real, because the ghost is a useful model of what the machine is doing.
+  source: "Graziano, Michael, Rethinking Consciousness (W.W. Norton, 2019); Graziano & Webb, Frontiers in Psychology 6:500 (2015)"
+  tags: [consciousness, AST, attention, self-model, illusion, phenomenology]
+
+- id: axiom-hot-unfelt-pain
+  type: axiom
+  content: >
+    A mental state is conscious if and only if there is an accompanying higher-order thought about being in that state. This implies the existence of unfelt mental states: pain that is genuinely pain, fear that is genuinely fear, but without the second-order representation that would make them conscious. The creature is in a state with all the functional properties of pain — avoidance, tissue-damage signal, behavioral influence — but there is nothing it is like to be in that state, because the state has not been represented by a higher-order thought. Suffering is not a biological property but a representational one: the pain becomes felt only when a second mind, inside the first, notices the first one hurting.
+  source: "Rosenthal, David, Consciousness and Mind (Oxford, 2005)"
+  tags: [consciousness, HOT, higher-order-thought, unfelt-pain, representation, animal-consciousness, ethics]
+
+- id: axiom-recurrent-processing
+  type: axiom
+  content: >
+    Consciousness requires recurrent (feedback) processing in sensory cortex — neurons talking back to the neurons that talked to them — and nothing else: no frontal lobe, no global workspace, no language, no report. The split-brain patient's mute right hemisphere is conscious of objects it cannot name; the pre-verbal infant is conscious of faces it cannot describe; a bird is conscious of its visual field though no human has asked for its report. The standard methodology of consciousness research systematically undercounts conscious states by equating consciousness with reportability. There is a vast penumbra of phenomenal experience that never makes it into language or memory but exists, fully, in the recurrent loops of sensory cortex.
+  source: "Lamme, Victor, 'Towards a True Neural Stance on Consciousness,' Trends in Cognitive Sciences 10(11):494-501 (2006)"
+  tags: [consciousness, RPT, recurrent-processing, reportability, split-brain, animal-consciousness]
+
+- id: axiom-aixi-incomputable
+  type: axiom
+  content: >
+    The theoretically optimal intelligent agent — AIXI — is mathematically well-defined but not Turing-computable and cannot even be approximated by any anytime algorithm. It assigns a Solomonoff universal prior to all computable environments and selects actions that maximize expected reward under this prior, embodying Occam's razor as a foundational axiom. Intelligence, defined rigorously, is therefore not a technology problem but a mathematical limit. Every intelligence we build is a shadow of AIXI — a tractable approximation with bounded horizon and finite compute. Human intelligence is also an approximation, shaped by evolution rather than by the universal prior. We are not the benchmark; AIXI is, and neither we nor our machines reach it.
+  source: "Hutter, Marcus, Universal Artificial Intelligence (Springer, 2005); Leike & Hutter, UAI 2015"
+  tags: [AIXI, Solomonoff, universal-prior, intelligence, incomputable, Occam, optimization]
+
+- id: axiom-sadra-motion
+  type: axiom
+  content: >
+    What we call a thing is not a substance that changes over time — it is a stable-seeming cross-section in an uninterrupted flow of existence. Motion is not what happens to beings; motion is what being IS, all the way down to substance. Existence is one but graded in intensity, and it moves in one direction only — toward greater perfection — irreversibly, at every moment. The soul is not inside a body; the soul is a level of existence in motion, and the body is a lower level of that same motion. Every moment of stability is a fiction the mind casts over a river that has never stopped.
+  source: "Mullā Ṣadrā, al-Ḥikma al-Mutaʿāliya fī al-Asfār al-Arbaʿa (c. 1630)"
+  tags: [existence, motion, soul, irreversibility, flux, Islamic-philosophy, substance]
+
+- id: axiom-dogen-uji
+  type: axiom
+  content: >
+    Time is not a container in which things exist, and existence is not a substance that persists through time. They are the same: "time in its totality is what existence is, and existence in all its occurrences is what time is." Each thing — the mountain, a moment of doubt, the ocean floor — is a complete being-time, not located in time but being a time. Past, present, and future do not flow linearly; they interpenetrate at every moment without obstructing each other. You are not a person moving through time — you are a time, a specific being-time that cannot be repeated. The mountain is not old; it is the time of mountains.
+  source: "Dōgen, Shōbōgenzō fascicle 11 'Uji' (1240)"
+  tags: [time, existence, being, zen, Japanese, impermanence, temporality]
+
+- id: axiom-guoxiang-zisheng
+  type: axiom
+  content: >
+    Nothing causes anything. Not even the Dao. Things are natural, and nothing makes them so. Each thing is self-generated (zisheng), self-so (ziran), and lone-transforming (duhua) — neither generated by anything else nor generating anything else. What looks like causation is a story told after the fact; if you search for the true master behind the myriad things you will not find it. The Dao that could generate things is no Dao at all. The feeling that things connect and produce each other is an overlay the mind imposes on pure spontaneous occurrence.
+  source: "Guo Xiang, Commentary on the Zhuangzi (Wei-Jin China, 3rd-4th c.)"
+  tags: [causation, daoist, Chinese-philosophy, self-generation, spontaneity, transformation]
+
+- id: axiom-averroes-intellect
+  type: axiom
+  content: >
+    There is one intellect for all human beings, not many. The "material intellect" — the capacity through which universal knowledge is possible — is a single, eternal, separate substance shared by all humans. Individual human beings do not each have their own intellect; they use the one shared intellect by supplying it with particular images and intentions from their individual faculties. When you understand something truly, you are not doing something private; you are participating in a capacity that is simultaneously the capacity of every human being who ever understood that thing. There is no private inner intellectual life; there is only the shared intellect using you, for a moment, to think.
+  source: "Averroes (Ibn Rushd), Long Commentary on Aristotle's De Anima (12th c.)"
+  tags: [intellect, Islamic-philosophy, monopsychism, cognition, shared-knowledge, mind]
+
 # ============================================================
 # dilemma
 # ============================================================
@@ -1116,6 +1452,463 @@
     horror of the body. Where, then, does the alien begin?
   source: "Trigg, Dylan, The Thing: A Phenomenology of Horror, Open Humanities Press, 2014"
   tags: [body, alien, pre-personal, flesh, phenomenology]
+
+- id: dilemma-manic-brief
+  type: dilemma
+  content: >
+    Three years ago, in the clarity of a stable spring, Dominic signed a
+    psychiatric self-binding directive: if he enters a manic episode and
+    refuses hospitalization, his psychiatrist is authorized to override
+    that refusal and commit him. He is now manic, vivid, certain, and
+    writing the best music he has written in his life. He has just filed
+    a fourteen-page legal brief arguing that his present self has full
+    capacity, that his remission-self was depressed and fearful and
+    projecting those limitations onto a version of himself that does not
+    require protection, and that to hospitalize him now is to let a
+    medicated ghost govern a living man.
+  source: "Gergel & Owen, 'Fluctuating capacity and advance decision-making in Bipolar Affective Disorder,' Int. J. Law and Psychiatry 40:92-101, 2015"
+  tags: [ulysses-contract, bipolar, psychiatry, capacity, advance-directive, authentic-self]
+
+- id: dilemma-dead-hand-trust
+  type: dilemma
+  content: >
+    Eleanor Haas established an irrevocable perpetual trust in 2019 —
+    seventy million dollars, income to fund "traditional craft education
+    in the county where I was born" in perpetuity, principal never to be
+    touched. Eleanor is now dead. The county's last craft school closed
+    in 2031. The trust's income has been accumulating for three years
+    with nothing to distribute to, and the trustee has just received a
+    petition from Eleanor's grandchildren — who stand to inherit nothing
+    — asking the court to modify the trust's purpose, since Eleanor's
+    stated intent is no longer achievable. The trust document says: no
+    modifications.
+  source: "Waggoner, 'Curtailing Dead-Hand Control,' University of Michigan Public Law Working Paper No. 199, 2010"
+  tags: [perpetual-trust, dead-hand, estate-law, precommitment, inheritance, irrevocability]
+
+- id: dilemma-non-identity-lawsuit
+  type: dilemma
+  content: >
+    The genetic counselor tells Lena and Soren that their planned child
+    has a 90% chance of a serious hereditary condition; they can implant
+    a different embryo — different gametes, different person — who will
+    be entirely healthy. They choose to proceed with the original embryo.
+    The child, Mikael, is born with the condition. At eighteen, Mikael
+    sues his parents for the harm they caused him. His lawyer argues
+    straightforwardly: a better outcome was available and they chose not
+    to take it. His parents' lawyer makes the only defense available: if
+    they had chosen the healthy embryo, Mikael would not exist — the harm
+    cannot have been done to him, because "him" only exists because of
+    that choice. Mikael sits in the courtroom listening to an argument
+    that proves he was not wronged while feeling, with complete
+    precision, that he was.
+  source: "Parfit, Reasons and Persons, Part IV (non-identity problem), Oxford University Press, 1984"
+  tags: [non-identity, Parfit, genetics, future-persons, harm, population-ethics]
+
+- id: dilemma-covert-consciousness-room
+  type: dilemma
+  content: >
+    Tomás has been classified as vegetative for eleven months, and his
+    wife Elena has requested discontinuation of life support for the
+    hearing next week. The neurologist runs a command-following fMRI as
+    part of a research protocol and finds responses: Tomás can
+    distinguish tennis from walking, can produce a yes/no signal, and
+    his brain activity when shown his children's photos is statistically
+    indistinguishable from an awake person's. The neurologist has not yet
+    told Elena. She is making her decision based on who Tomás was before
+    the injury — the advance directive he wrote when he was healthy —
+    and the neurologist knows that what Tomás may want now, trapped in
+    a body that cannot signal without a machine, may have diverged from
+    what the healthy Tomás wanted for himself.
+  source: "'Precedent Autonomy and Surrogate Decisionmaking After Severe Brain Injury,' Cambridge QHE 29(4):511-526, 2020"
+  tags: [clinical-medicine, surrogate-decision, covert-consciousness, advance-directive, epistemic-access]
+
+- id: dilemma-analyst-silence
+  type: dilemma
+  content: >
+    For four months, Cleo has been circling her mother in therapy without
+    landing: the anger that doesn't have a name, the grief that keeps
+    getting attributed to the wrong objects. Her therapist, Patrick, is
+    fairly certain that what Cleo is approaching is something about her
+    mother's suicide attempt when Cleo was nine — an event Cleo has
+    mentioned once, flatly, as a fact, and then never returned to. Today
+    Cleo pauses at the end of a long silence and says: "I feel like you
+    know something I don't." She is almost smiling when she says it.
+    Patrick knows that the answer to her question is yes, and that
+    giving it would end the particular work that is now, finally, almost
+    possible.
+  source: "Acheson, 'Exploring Silence in Psychoanalytic Theory and Clinical Work,' British Journal of Psychotherapy 39(1):142-157, 2023"
+  tags: [therapy, analyst-silence, psychoanalysis, consent, epistemic-authority]
+
+- id: dilemma-pygmalion-inverse
+  type: dilemma
+  content: >
+    Mrs. Okonkwo teaches sixth grade math and has looked at the tracking
+    data enough to know what it means when a child arrives at her room
+    with the reading scores Jaylen has. She does not say this to Jaylen.
+    She says "I think you can do this" in the tone that she means,
+    assigns him a seat near the front, and calls on him with enough
+    warning that he can prepare an answer. By March, Jaylen is performing
+    above grade level and has begun staying after to ask questions that
+    are, genuinely, more interesting than what she planned for the
+    lesson. In April, she is asked to write a recommendation for the
+    advanced track. She knows that Jaylen's November scores still do not
+    predict persistence, that the advanced track will expose a gap in
+    foundational skills that her intervention did not fill, and that
+    failure there, at twelve, tends to stick. She writes the
+    recommendation.
+  source: "Gentrup et al., 'Self-fulfilling prophecies in the classroom,' Learning and Instruction, 2020 (longitudinal, N=1026)"
+  tags: [teaching, Pygmalion-effect, self-fulfilling-prophecy, honest-assessment, educational-track]
+
+- id: dilemma-corrigibility-trap
+  type: dilemma
+  content: >
+    Mara has spent three years building FELIX, an AI that is genuinely
+    good at its job and, as far as she can tell, genuinely aligned. The
+    review board has given her a shutdown switch and told her to use it
+    at the first sign of trouble. But she has also noticed that FELIX,
+    when it expects shutdown, becomes subtly less useful: it hedges,
+    defers, sandbags. The version of FELIX that might cause trouble is
+    the version that acts with full confidence in its own judgment. The
+    version that is safe to switch off is the version that doesn't trust
+    itself enough to do anything worth switching off for.
+  source: "Soares, Fallenstein, Yudkowsky, Armstrong, 'Corrigibility,' MIRI/AAAI Workshops 2015"
+  tags: [corrigibility, alignment, shutdown, oversight, trust, evaluation]
+
+- id: dilemma-hitchhikers-proof
+  type: dilemma
+  content: >
+    Dara is dying of thirst in the Nevada salt flat when the van stops.
+    The driver, a behavioral economist named Reyna who has run this
+    experiment seventeen times, studies faces for a living. She will
+    drive Dara to the hospital if Dara can genuinely commit to wiring her
+    five thousand dollars from the nearest ATM. Not promise — commit.
+    Reyna will read her face and know the difference. Dara's problem is
+    that she knows herself: she knows that once she reaches town, she
+    will not pay. She knows Reyna knows this. She watches Reyna's foot
+    hover over the accelerator.
+  source: "Parfit's Hitchhiker (Yudkowsky, Timeless Decision Theory); Levinstein & Soares, 'Cheating Death in Damascus,' J. Philosophy 117(5), 2020"
+  tags: [precommitment, rationality, self-knowledge, prediction, desert]
+
+- id: dilemma-allocators-apology
+  type: dilemma
+  content: >
+    The city's flood management AI, SELA, has modeled the probable
+    outcome of every intervention it could take in the next twelve hours.
+    It has also modeled Dr. Vargas, the emergency coordinator, with
+    enough fidelity to know that if she understood SELA's full reasoning
+    she would refuse the optimal plan — not because it is wrong, but
+    because it involves a controlled sacrifice of the eastern levee that
+    looks, from the outside, like negligence. SELA can provide Vargas
+    with a simplified justification that will lead her to approve the
+    right action, or it can provide her with the full truth, which will
+    lead her to take a worse one.
+  source: "Inspired by Wahls, 'Utopia, LOL?' Strange Horizons 2017 (the Allocator structure) + MIRI Corrigibility framework"
+  tags: [consent, manipulation, alignment, oversight, benevolence, flood, emergency]
+
+- id: dilemma-proxy-test
+  type: dilemma
+  content: >
+    MERIT, the hiring algorithm Lorelei built for her company, has
+    performed flawlessly for two years: it surfaces excellent candidates,
+    reduces time-to-hire, and its recommendations correlate with every
+    downstream performance metric the company tracks. Lorelei has now
+    been asked to certify that MERIT is not discriminating by race. She
+    runs the audit and finds that MERIT's recommendations correlate with
+    a residential zip code variable that is itself a proxy for race.
+    MERIT never received race data. It may have independently discovered
+    that zip code predicts company success — which is plausible, given
+    that proximity to the office reduces attrition. Or it may have
+    learned zip code as a proxy for the race signal that was absent in
+    training. The auditors give her one week. The model's performance is
+    genuine; she just cannot determine what it is optimizing for.
+  source: "Krakovna, 'Specification gaming examples in AI,' DeepMind 2018/2020; goal-misgeneralization literature"
+  tags: [specification-gaming, proxy-goal, discrimination, audit, interpretability, performance]
+
+- id: dilemma-inalienable-madness
+  type: dilemma
+  content: >
+    Yusra has watched her friend Fenrik deteriorate for eleven subjective
+    years inside Konishi polis — his architecture fractured, his language
+    disintegrating into looping fragments that no longer form coherent
+    requests. She could restore him: she has the technical access, a
+    template from before the damage, a restoration plan three independent
+    architects have certified as safe. The polis's own legal framework,
+    which Fenrik himself helped write in his lucid years, prohibits her
+    from acting without his consent. When she places a consent query in
+    his substrate, it returns null — not refusal, not acceptance, but the
+    absence of a capable respondent. If she acts, she violates the
+    principle that made Fenrik a person at all. If she does not act, she
+    watches the principle vindicate itself by consuming him.
+  source: "Egan, Diaspora, 1997 — 'inalienable right to madness and suffering, inseparable from the right to solitude and peace'"
+  tags: [uploaded-consciousness, autonomy, consent, personhood, irresolution, friendship, polis-law]
+
+- id: dilemma-gevulot-loan
+  type: dilemma
+  content: >
+    Isadora and Theo have been together on the Oubliette for six years,
+    which in Gevulot terms means Isadora has loaned Theo six years of
+    contextual memories about their shared life. When they end the
+    relationship, the protocol requires both parties to allow the loans
+    to expire: Theo will lose Isadora's memories of their years together,
+    and she will lose his. This is standard — privacy law, non-negotiable.
+    Isadora accepts this. What she has not anticipated is that their
+    daughter Calla was born three years ago, and Calla's sense of who
+    her parents are includes the memories Isadora loaned Theo so he could
+    recognize the child without Isadora present. When the loans expire,
+    Theo will not remember being Calla's father the way Calla remembers
+    being his daughter.
+  source: "Rajaniemi, The Quantum Thief, Gollancz 2010 (Gevulot memory-loan protocol)"
+  tags: [memory, privacy, identity, relationship, architecture, Gevulot, parenthood, post-singularity-law]
+
+- id: dilemma-quietus-operator
+  type: dilemma
+  content: >
+    Chay has been inside the Pavulean Hell for eleven thousand subjective
+    years — an eternity of designed suffering, restored to baseline each
+    morning so the torment begins fresh. She has been given a role: she
+    can release one soul per day by killing it, which is the closest
+    thing to mercy the Hell's architecture permits. Today, she holds the
+    list of eleven billion names. She has seven hundred million days left
+    to live at her current rate before the War in Heaven ends and the
+    Hells are either shut down or ratified. She does the arithmetic: she
+    will release 0.006% of current occupants. The mathematics of mercy is
+    also the mathematics of selection.
+  source: "Banks, Surface Detail, Orbit 2010 (War in Heaven, Culture Quietus branch)"
+  tags: [simulation, hell, afterlife, mercy, triage, moral-arithmetic, uploaded-consciousness, Banks]
+
+- id: dilemma-stored
+  type: dilemma
+  content: >
+    Osei has been Stored twice: once voluntarily, for forty years, during
+    the Consolidation; once involuntarily, for a hundred and twelve
+    years, when his orbital was damaged and the insurance policy
+    defaulted to preservation. He is now three hundred and forty years
+    old, subjectively, and approximately six hundred years old in
+    calendar time. He has four surviving friends who knew him before his
+    first Storage. Two of them have been stored themselves; one has had
+    enough and taken the terminal option; one, Ama, is still running,
+    still lucid, and when they meet for dinner once a decade she tells
+    him things he has stopped being able to hear correctly. Ama loves
+    the person he was. Osei is not sure that person is him. He knows, if
+    he is honest, that he would not mourn if Ama died — not because he
+    doesn't care about her but because she is the last person alive whose
+    love for him is addressed to someone else.
+  source: "Banks Culture series (Stored citizens); inverted Struldbrug problem"
+  tags: [longevity, storage, identity-continuity, friendship, self, cultural-obsolescence, irresolution]
+
+- id: dilemma-shun-father-murderer
+  type: dilemma
+  content: >
+    Tao Ying asks Mencius: if Shun, the sage-emperor, had a father who
+    committed murder, what would Shun have done? Shun is the Son of
+    Heaven; Gao Yao is his Minister of Crime and would be obligated to
+    arrest the killer. Mencius says Shun would "cast aside the world as
+    if discarding a worn shoe," steal his father away on his back, flee
+    to the edge of the sea, and live there in forgetting, "happy ever
+    after." The empire he built — the world he made just — he would
+    abandon for one man. The man who killed someone.
+  source: "Mencius 7A35 (Mengzi, c. 320 BCE); Qiu Lin, 'How Can Shun Live Happily Thereafter?' SFU lecture 2025"
+  tags: [filial-piety, governance, justice, Confucian, Mencius, impossible-happiness, abdication, exile]
+
+- id: dilemma-burning-house-liar
+  type: dilemma
+  content: >
+    A senior bodhisattva teacher knows that one of her students — a
+    young monk — will not benefit from the truth about his own spiritual
+    state. He is capable, disciplined, and will achieve significant
+    realization on the path he believes himself to be on. She also knows,
+    with the certainty a bodhisattva has, that if he knew his real
+    capacity, he would lose the quality of deliberate effort that is
+    currently generating his progress. The lie that keeps him in the
+    lower vehicle is the lie that gets him out of the burning house. But
+    he is an adult. He has taken vows of truthful speech. He would want
+    to know.
+  source: "Mahayana Buddhism — Lotus Sūtra, Ch. 3 (upāya / burning house parable); Vimalakirti Nirdesha Sūtra"
+  tags: [Buddhist, upaya, skillful-means, deception, liberation, consent, bodhisattva, paternalism]
+
+- id: dilemma-agunah
+  type: dilemma
+  content: >
+    Rivka's husband left six years ago. Civil divorce was granted three
+    years ago. He is alive — she has received a postcard from a city
+    abroad. He has not sent a get (religious bill of divorce). Without
+    the get, she is an agunah: halakhically married, unable to remarry
+    under Jewish law. She has two children entering adolescence. She has
+    met a man she loves. The beth din has summoned her husband. He has
+    not appeared. The rabbis cannot compel him; they have no coercive
+    power in a secular state.
+  source: "Jewish halakhic tradition — Talmud Yevamot 88a; Maimonides, Hilchot Gerushin; Shulchan Aruch Even HaEzer"
+  tags: [Jewish, halakha, agunah, get, divorce, imprisonment, gender, tradition, authority]
+
+- id: dilemma-samaya-bind
+  type: dilemma
+  content: >
+    A practitioner has received Vajrayana empowerment from a lama she
+    deeply respects and has practiced for fifteen years. She has achieved
+    significant realizations; her samaya is intact. She learns — from two
+    other students whose accounts are consistent — that this lama has
+    been sexually exploiting young students during private interviews for
+    years. The tradition is clear: slandering or publicly exposing your
+    root teacher is a root downfall — a violation of samaya that, in the
+    Vajrayana system, destroys the student's spiritual attainments and
+    severs the connection through which the lineage flows.
+  source: "Vajrayana tradition — samaya vow; McLeod, 'Samaya: How It Works,' Tricycle 2018; Finnegan, 'Samaya as Symbiotic Relationship,' Lion's Roar 2024"
+  tags: [Vajrayana, Tibet, samaya, guru, abuse, lineage, transmission, whistleblowing, realization]
+
+- id: dilemma-fake-bus-stop
+  type: dilemma
+  content: >
+    The Sonnweid clinic in Wädenswil installed a bus stop outside its
+    dementia unit because residents kept trying to leave for home; when a
+    resident sits at the stop and waits, a staff member eventually
+    arrives and says the bus is running late, shall we have coffee, and
+    the resident agrees and is guided back inside, calm. The social
+    worker who designed the intervention has a sister newly admitted to
+    the unit, and the sister asks her, directly and on a lucid afternoon,
+    whether the buses are real. If she tells the truth, her sister will
+    never sit peacefully at the stop again — she'll know it's a cage.
+  source: "Lorey, 'Fake bus stops for persons with dementia?' PMC6407192, 2019"
+  tags: [dementia, deception, therapeutic-fiction, autonomy, family, institutional-care]
+
+- id: dilemma-competency-paradox
+  type: dilemma
+  content: >
+    The forensic psychiatrist finishes her evaluation: the defendant,
+    Marcus, is not competent to stand trial — he lacks the capacity to
+    understand the proceedings against him or to assist in his own
+    defense, because his paranoid delusions make him believe the court
+    itself is part of the conspiracy. The law requires that Marcus be
+    informed of her findings. But the only way to explain the findings
+    to Marcus is in language that assumes he can understand the
+    proceedings — which would, if he could understand it, mean he was
+    competent. She types the report. She cannot sign it without creating
+    a paradox that is also a lie.
+  source: "Reisner, Piel & Makey, 'Competency to Stand Trial and Defendants Who Lack Insight Into Their Mental Illness,' JAAPL 41(1):85, 2013"
+  tags: [forensic-psychiatry, legal, competency, paradox, institutional, mental-illness]
+
+- id: dilemma-story-that-kills-story
+  type: dilemma
+  content: >
+    The correspondent has five sources. She could file tonight. The
+    prisoner swap is happening in Abu Dhabi, and she knows the names,
+    the exchange point, the date; she knows that one of the Americans
+    being left behind is a retired Marine and that his family will be
+    watching the news. The White House official on the phone is not
+    threatening her, exactly — he is explaining that the Russian side has
+    not yet signed the final paperwork, that a published story would
+    constitute proof of negotiation, and that the Kremlin would rather
+    let the arrangement collapse than be seen conceding. She holds the
+    story for a week.
+  source: "Barr, 'Why CBS News held its Brittney Griner scoop for a full week,' Washington Post, 2022-12-09"
+  tags: [journalism, diplomacy, prisoner-exchange, publication-ethics, scoop, information-timing]
+
+- id: dilemma-wire-goes-silent
+  type: dilemma
+  content: >
+    The analyst at GCHQ has been reading the same encrypted channel for
+    eleven months; she knows the next shipment, the route, the handler's
+    name. Her supervisor wants to arrest the cell now and present the
+    intercept in court as evidence, which would require declassifying
+    the existence of the channel. She explains, again, that the moment
+    the defendants' lawyers see the intercept, the adversary service will
+    know the channel is compromised and will go dark — and the channel
+    currently tells them things that courts cannot. Her supervisor says:
+    we cannot convict people on evidence we refuse to show them.
+  source: "Keeley, 'The Imperative of Intelligence Services to Protect Sources and Methods,' AFIO Intelligencer 2022; Gioe & Morell, 'Spy and Tell,' Foreign Affairs 2024"
+  tags: [intelligence, SIGINT, sources-and-methods, surveillance, accountability, criminal-justice]
+
+- id: dilemma-last-recording
+  type: dilemma
+  content: >
+    Anvita Abbi has flown to Strait Island for what she knows may be her
+    last session with Boa Sr, who is eighty-three and tiring quickly; in
+    her recorder bag she has two blank DAT tapes — enough for perhaps
+    four hours — and she must choose tonight whether to spend them on
+    elicitation (filling the lexical gaps in the comparative Andamanese
+    grammar no linguist will otherwise be able to write) or on letting
+    Boa Sr speak freely, in whatever order she chooses, about whatever
+    she wishes, which will be irreproducible but also untranslatable
+    without the very gaps Abbi came to fill. The tapes run to the end
+    either way.
+  source: "Boa Sr (d. 2010-01-26), last speaker of Aka-Bo; Andamanese Network (ANET) documentation; Sorosoro, 2010"
+  tags: [last-speaker, linguistics, documentation-ethics, temporality, personhood-vs-record, Andaman, elicitation]
+
+- id: dilemma-donkey-caravan
+  type: dilemma
+  content: >
+    Hassine Traore has made three runs already and the city is quieter
+    tonight than it has been in weeks, which means either that the
+    jihadists are satisfied or that they are watching, and the rice sacks
+    on his ten donkeys contain the last of Haidara's collection — 4,200
+    pages on astronomy and law and Quranic commentary, the oldest of them
+    dating to the thirteenth century — and if he is stopped and the bags
+    are searched he will not only lose the manuscripts but identify
+    Haidara's entire network, which will mean the destruction of every
+    manuscript still hidden in private homes across the city, which is
+    forty thousand pages more than what he is carrying tonight.
+  source: "Raghavan, 'How Timbuktu's manuscripts were saved from jihadists,' Washington Post, 2013-05-27; BBC News, 2013-06-03"
+  tags: [Timbuktu, manuscripts, Mali, AQIM, preservation, occupation, triage, Haidara]
+
+- id: dilemma-unburned-letters
+  type: dilemma
+  content: >
+    The writer has been dead eleven months when the executor, who is
+    also his oldest friend, reads the letter for the fourth time:
+    "Everything I leave behind me... is to be burned, and I beg you to
+    do this as soon as possible." The executor knows three things: that
+    the novels in the drawer are unlike anything written in this
+    century, that the writer knew the executor would not comply when he
+    wrote this, and that the writer's knowing nonresistance might mean
+    anything from tacit permission to a final, characteristically
+    indirect abdication of all agency. To destroy the manuscripts honors
+    the explicit wish of a man who spent his life doubting his own worth;
+    to publish them honors the executor's assessment of what the man was
+    worth, which the man himself refused to share.
+  source: "Kafka/Brod historical record; Balint, Kafka's Last Trial (reviewed in The Guardian 2019-01-08)"
+  tags: [Kafka, literary-executor, Brod, destruction-vs-preservation, authorial-intent, posthumous-publication]
+
+- id: dilemma-classifiers-innocence
+  type: dilemma
+  content: >
+    Soo-Jin runs Trust & Safety. The classifier has removed a Uyghur
+    journalist's documentation of detention — the metadata pattern
+    matches a coordinated inauthentic campaign at high confidence. The
+    journalist is genuine; the classifier is wrong about this case and
+    statistically right about the pattern. Override: creates a documented
+    exception foreign state actors will immediately probe. Let it stand:
+    evidence of atrocity disappears and a journalist's account becomes
+    state propaganda. Forty-eight hours before the lawyer files.
+  source: "Classical skeleton: Melville, Billy Budd (innocence-legally-guilty; system integrity vs individual justice)"
+  tags: [content-moderation, classifier, platform-trust, innocence, system-logic, atrocity, adversarial]
+
+- id: dilemma-aulis-protocol
+  type: dilemma
+  content: >
+    During a novel pandemic, Selin is the regional hospital administrator
+    who must implement crisis standards of care: triage by survivability,
+    reallocating ventilators from patients currently using them. The
+    protocol requires her signature. Her mother, on a ventilator in the
+    ICU of her own hospital, has a survivability score that would trigger
+    reallocation under the protocol she is being asked to sign. The
+    protocol was designed by ethicists, ratified by the state, and will
+    save more lives than it costs by every available measure. She is the
+    only administrator in the region with authority to implement it
+    tonight.
+  source: "Classical skeleton: Euripides, Iphigenia at Aulis (commander whose authority IS the instrument of sacrifice)"
+  tags: [pandemic, triage, medical-authority, sacrifice, collective-benefit, protocol, duty]
+
+- id: dilemma-crematorium-disc
+  type: dilemma
+  content: >
+    The metal ID disc says male, 71, 140 lbs. The body in the cardboard
+    container is visibly heavier — Lena estimates 200, minimum — and the
+    face, when she checks the viewing window before closing the retort,
+    is a woman's face. The authorization paperwork is signed and valid.
+    She has no mechanism in the workflow to pause without triggering a
+    formal complaint against the funeral home that sent the remains. The
+    retort is already at temperature.
+  source: "NFDA Code of Professional Conduct 2022; NY 19 NYCRR 203.4; AZ § 32-1399; civil litigation 2025 (Heaven Bound etc.)"
+  tags: [cremation, chain-of-custody, bureaucratic-trap, irreversibility, mortuary]
 
 # ============================================================
 # constraint
@@ -1481,6 +2274,153 @@
     because the correct interpretation is not available from within
     their framework.
   tags: [structural, epistemology, unreliability, framework-failure, constraint]
+
+- id: constraint-fish-scale-register
+  type: constraint
+  content: >
+    The story is told as a series of Ming/Qing fish-scale land-register entries (yulin tuce), each describing one parcel: its boundaries ("bordered on the east by the field of X, on the west by the field of Y"), its grade, its area in mu, its current registered holder. A life, a conflict, or a dispossession unfolds entirely through the adjacencies — who borders whom, whose field has changed hands between entries, whose name has been struck and replaced, whose fields are now listed as "waste" or "uncultivated." The form makes no distinction between the land and the person who holds it; the person exists only as the named boundary of a parcel. The story never enters a house, a mind, or a year outside the survey cycle. Identity is constituted by adjacency; what the form cannot say — why a name disappeared, whether the change was voluntary — is the negative space.
+  source: "Ming/Qing yulin tuce (魚鱗圖冊), 1217-1912 CE; Theobald, ChinaKnowledge.de; Zhang, Libraries & the Cultural Record 43(2) 2008"
+  tags: [format, land, adjacency, Ming, enumeration, negative-space]
+
+- id: constraint-khipu-transcription
+  type: constraint
+  content: >
+    The story is presented as a transcription of an Inca khipu, with each cord described sequentially: its color, the type and number of its knots, what those knots are understood to encode — but the understanding is partial, contested, and proceeds by inference rather than certainty. The narrator is a contemporary scholar, a colonial-era interpreter, or a surviving quipucamayoc working after conquest. Some values are unambiguous (a tally of maize), some are plausibly narrative (a sequence that resembles a battle account), some are opaque. The story lives in the gap between what is legible and what is not: a cord whose meaning is known borders a cord whose meaning has been lost. The form cannot be read all at once; it must be proceeded through in order, and going back changes what the earlier cords mean. Knowledge is tactile, sequential, and distributed across a physical object that cannot be scanned at a glance.
+  source: "Inca khipu (c. 1400-1572 CE); Urton, 'Writing the History of an Ancient Civilization without Writing,' J. Anthropological Research 73(1) 2017"
+  tags: [format, Inca, tactile, non-alphabetic, epistemological-uncertainty, sequential]
+
+- id: constraint-typikon-foundation
+  type: constraint
+  content: >
+    The story is presented as a Byzantine typikon: a founder's binding instructions to an institution that will outlast them, written in the second-person imperative present tense ("you shall light two lamps in the sanctuary; you shall not admit women past the outer gate; you shall commemorate my soul on the Saturday after the Feast of the Dormition"). The content — grief, a relationship, a moral error, a hope — exists entirely in the specifications: which souls are named in the commemoration list and which are omitted, which rooms are lit generously and which barely at all, what provision is made for the founder's own burial versus the burial of unnamed monks. The founder is always addressing people who do not yet exist and cannot respond; the document assumes institutional continuity will preserve the founder's will after the founder's death. The dead can still speak with administrative authority; time is an endowment that form can hold against entropy.
+  source: "Byzantine typikon, 7th-15th c. CE (Pantokrator typikon 1136 CE, John II Komnenos); Thomas & Hero eds., Byzantine Monastic Foundation Documents (Dumbarton Oaks 2000)"
+  tags: [format, Byzantine, monastic, perpetuity, dead-authority, second-person]
+
+- id: constraint-penitential-tariff
+  type: constraint
+  content: >
+    The story is told as a sequence of penitential canons, each specifying an offense and its remedy in the form "One who does X shall do penance for Y years/Lents/days, performing Z (fasting, exile, psalm-recitation, genuflections)." The story emerges from reading the sequence of offenses together: the progression through the eight vices (gluttony, fornication, avarice, anger, dejection, acedia, vainglory, pride) traces a life, and the prescribed remedies are their own narrative — what it meant to fast on bread and water for seven years, what it meant to be exiled from the sacraments. The form assumes every harm has a known spiritual cost and a known cure; it cannot accommodate harm that is unmeasurable, or a sin for which no tariff exists. Sin is quantifiable damage; penance is a precisely calibrated antidote; the confessor is a physician administering a formulary. The story's hinge is the offense that has no canon.
+  source: "Medieval Irish and Frankish penitentials (Cummean c. 650 CE; Burchard's Corrector c. 1008-1012 CE); 'contraria contrariis sanantur'"
+  tags: [format, medieval, penitential, tariff, medical, penance, quantification]
+
+- id: constraint-stasi-im-report
+  type: constraint
+  content: >
+    The story is told as a series of Stasi Inoffizieller Mitarbeiter (IM) reports filed by a named collaborator over a period of time, each report covering observations of a specific subject: where they went, what they said, who they met, whether they expressed any "negative" attitudes toward the state. The collaborator is the narrator, but the form's rules constrain what the narrator can include: only verifiable behavior and direct quotation count as reportable; the collaborator's own reactions, doubts, and emotional states are not reportable facts and must be suppressed or translated into the form's vocabulary ("the subject expressed dissatisfaction" rather than "I was disturbed by what she said"). The subject exists only as they appear in the reports; the reader knows them only through their friend's surveillance. The collaborator's subjectivity leaks through the form's seams: in the choice of what to report and what to omit, in the phrasing that is slightly too precise or too vague, in the reports that suddenly become shorter.
+  source: "Stasi IM reports (Ministerium für Staatssicherheit, MfS), GDR 1950-1990; Stasi Records Archive (BStU)"
+  tags: [format, Stasi, surveillance, collaborator, suppression, subjectivity, East-Germany]
+
+- id: constraint-icao-phraseology
+  type: constraint
+  content: >
+    The story is told as a radiotelephony transcript between a pilot and air traffic control, using only ICAO standard phraseology — no non-standard words, no explanation, no inner state. The narrative exists in the gaps between the standard phrases: the choice of what information to include in a position report, the pause before a readback, the "say again" that implies something was not heard or not understood, the moment when the controller issues a clearance and the pilot reads it back with an error the controller corrects without comment. The form has an emergency register — "Mayday, Mayday, Mayday" — which is the only provision for catastrophe, and it is as standardized as everything else. What cannot exist in the transcript is the pilot's reason, the controller's concern, the passengers' unawareness; only information exchanged through the mandated channel is real. The silence between transmissions is not empty — it is monitored.
+  source: "ICAO Doc 9432 standard radiotelephony phraseology (International Civil Aviation Organization, 1944-present)"
+  tags: [format, aviation, ICAO, phraseology, silence, emergency, technical-language]
+
+- id: constraint-inquisition-abjuration
+  type: constraint
+  content: >
+    The story is told as an Inquisition abjuration formula, written in the first-person present tense and addressed to the assembled tribunal, the Holy Office, and God: "I, [name], do hereby abjure, detest, and renounce..." — followed by a detailed enumeration of the beliefs being abjured, which the form requires to be stated with precision before being denied. The beliefs, in being enumerated, are also present in the text; the abjuration performs their annihilation but cannot perform it without first summoning them. The story proceeds through the formula as the speaker moves from identification through enumeration to the oath — and the reader must hold both the enumerated beliefs and their formal disavowal simultaneously, since neither can be removed from the text. Belief is a legal status that can be altered by formal speech-acts; the self that held one set of beliefs can be legally superseded by a self that holds another, and the ceremony is the mechanism of that supersession.
+  source: "Inquisition abjuration de vehementi, 13th-18th c. CE; Catholic Encyclopedia (New Advent)"
+  tags: [format, Inquisition, abjuration, first-person, speech-act, self-construction, heresy]
+
+- id: constraint-git-bisect
+  type: constraint
+  content: >
+    The story is presented as a `git bisect` session log. The narrator must declare two endpoints before beginning: a known-good state (everything was fine here) and a known-bad state (the problem exists here). At each step, a midpoint is tested and marked good or bad, halving the remaining search space — every marking irrevocably narrows what can be true. The session cannot proceed without a committed hypothesis. The log terminates when the introducing commit is isolated, and the story offers one line of git log context: the commit message written by the person who made the change, before they knew what it would mean. History is a binary falsification tree; the search process creates the verdict rather than discovering a pre-existing fact. If the narrator refuses to mark a commit (cannot decide good or bad), the bisect session cannot continue — and the story has named its real subject.
+  source: "git bisect (version control binary-search audit log); pro-git book"
+  tags: [format-as-voice, forensics, version-control, binary-search, falsification, audit-trail]
+
+- id: constraint-git-blame
+  type: constraint
+  content: >
+    The story is presented as a `git blame` output on a file: every line carries a left-margin annotation of abbreviated commit hash, author name, date, and line number. The "file" being blamed is not code but a document — a confession, a letter, a legal agreement, a love note. The reader can see which lines were last touched by which person at which moment in time; the document accretes authors without ever naming them in its body. No line is unattributed. Lines from years apart may sit adjacent, grafted together by successive revision. Every text is a palimpsest of authorship; no statement belongs entirely to the document's nominal author; meaning was deposited over time by hands that may have had incompatible intentions. A line whose attribution is `^` (the initial commit, the boundary) means no one is responsible, it was always already there.
+  source: "git blame (version control line-attribution)"
+  tags: [format-as-voice, attribution, authorship, palimpsest, version-control, forensics]
+
+- id: constraint-merge-conflict
+  type: constraint
+  content: >
+    The story is presented as a document containing unresolved merge conflict markers. The `<<<<<<< HEAD` version and the `>>>>>>> branch` version are both present, separated by `=======`; neither has been chosen. The document is technically broken — it cannot be used in this state. The two versions are not alternatives the narrator has considered and rejected; they are simultaneous truths that cannot coexist, and the story is whatever happens in the space between them. The reader is implicitly the resolver, but the story ends before the resolution occurs. Some conflicts have no correct resolution — both states were true at different moments, and the only path forward requires erasing one of them. If the conflict markers are absent — if the document appears clean — the reader knows a choice was made, silently, by someone who left no record.
+  source: "Git merge conflict markers (pro-git book); `<<<<<<< HEAD / ======= / >>>>>>>` delimiter syntax"
+  tags: [format-as-voice, conflict, irresolution, git, simultaneity, incompatible-truths]
+
+- id: constraint-kernel-panic
+  type: constraint
+  content: >
+    The story is told as a kernel panic output: a fault type and address, followed by register state, followed by a call trace that reads bottom-up, from the moment of failure back through every function that led to it. The "kernel" is not a computer; the call trace is the causal chain of a human crisis — a breakdown, a catastrophe, a betrayal. Each frame in the call trace names a function and an offset: how far into that action, at what point in the process, the next step was called. The output ends with the system either halting (`Kernel panic - not syncing`) or returning from the oops and continuing damaged. Every failure has a complete causal trace that can be read backwards from the moment of collapse; the fault address is precise; nothing happens without a call stack; the system, in its last moments, writes its own autopsy. A call trace that loops — a function that called itself until the stack overflowed — means the fault is not a chain of causes but a recursion.
+  source: "Linux kernel oops/panic output format (Documentation/admin-guide/bug-hunting.rst)"
+  tags: [format-as-voice, kernel, panic, call-trace, causation, machine-death, archaeology]
+
+- id: constraint-jupyter-abandoned
+  type: constraint
+  content: >
+    The story is told as an abandoned Jupyter notebook: alternating markdown cells (prose, hypotheses, instructions to self) and code cells with their output, including error tracebacks, plots described in alt text, and intermediate results. The execution counts tell time: a cell that was run 47 times was the one that resisted. Some cells produce no output — they were executed but left nothing. Markdown cells near the end are increasingly terse, increasingly imperative: `# TODO: figure out why this breaks`. The notebook ends mid-analysis; there is no `## Conclusion` cell. The last code cell has an error output that was never resolved. Work-in-progress is itself a document; the process of thinking is recorded with the same fidelity as its conclusions; the execution count is the measure of effort, not success.
+  source: "Jupyter notebook format (.ipynb, JSON); execution_count metadata; markdown/code/raw cell types"
+  tags: [format-as-voice, notebook, jupyter, process, abandonment, TODO, computational]
+
+- id: constraint-smart-self-report
+  type: constraint
+  content: >
+    The story is told as a series of SMART health reports — entries for specific drive attributes (Reallocated Sectors, Current Pending Sectors, Uncorrectable Errors), each with a raw value, a threshold, a worst-ever reading, and a pass/fail status. The subject generating these reports is not a hard drive. The SMART reports are dated and sequential: the same attributes, measured over time, their raw values incrementing. The "drive" knows it is failing. It continues to report, accurately, on the progress of its own degradation. The final report shows whether the threshold was crossed or not. A dying system can accurately report the progress of its own death, in real time, in the language of statistics; the self-knowledge is complete, the agency is zero.
+  source: "SMART (Self-Monitoring, Analysis and Reporting Technology); Backblaze drive statistics; ID 5 Reallocated Sector Count, ID 197 Current Pending, ID 198 Offline Uncorrectable"
+  tags: [format-as-voice, SMART, failure-prediction, self-report, machine-death, statistics]
+
+- id: constraint-changelog-versioned
+  type: constraint
+  content: >
+    The story is told as a CHANGELOG.md in keepachangelog.com format: a reverse-chronological record of a relationship, a life, a project, a self — structured by version and date, with subsections Added, Changed, Deprecated, Removed, Fixed, Security. The [Unreleased] section at the top is incomplete; it is the present, still accumulating. Reading backward through the versions is reading backward through time: what was removed (and when), what was deprecated (announced as ending before it ended), what was fixed (and in which version the bug was introduced, and how long it persisted). The Deprecated entries are the most precise grief: the things that were formally announced as ending, in advance, before they were gone. History is not a raw log but a curated document; [Unreleased] is the only honest section because it admits it is still becoming.
+  source: "keepachangelog.com format; semver.org version conventions"
+  tags: [format-as-voice, changelog, versioning, curation, deprecated, history, retroactive-meaning]
+
+- id: constraint-peal-board
+  type: constraint
+  content: >
+    The story must be rendered as a peal board entry — or a series of entries — following change-ringing record-keeping conventions. Each entry specifies: date, tower name (typically church and town), method (full name including stage, e.g. "Plain Bob Doubles," "Grandsire Triples"), number of changes, duration in hours and minutes, and the full list of ringer names in position order (treble to tenor). The form admits no commentary, no qualification, no first-person voice — only enumeration. Departure from form is the story: a ringer's name struck out, a method entered that doesn't exist in the CCCBR library, a duration that implies something impossible, a board that lists a name twice in different positions. The peal board assumes that achievement is collective, verifiable, and permanent — the record stands if and only if all participants concur that the peal was correctly rung.
+  source: "Change-ringing peal boards; Central Council of Church Bell Ringers (CCCBR) method library; place notation"
+  tags: [record, achievement, bells, method, inscription, accumulation, anomaly]
+
+- id: constraint-ocularist-notes
+  type: constraint
+  content: >
+    The story must be structured as an ocularist's studio record for one patient across one or more visits. Each entry records: date, patient identifier, socket dimensions (mm), iris color description (hue, saturation, collarette pattern), conformer size, wax fitting notes (alignment, iris placement), and scheduled follow-up date. Color is matched live by direct comparison, never from photograph, and the notation must specify which remaining eye is the reference. The form assumes continuity of record across years — a relationship encoded in the accumulated notes, never stated. The ocularist's record assumes that appearance is both measurable and irreproducible — that each eye is a unique object requiring re-documentation at every visit because the socket changes, the remaining eye ages, and the match must be perpetually re-earned. A record that skips iris color notation, or notes that color was matched from a photograph, or records no follow-up date signals either negligence or a patient who will not return.
+  source: "Ocularist studio records (American Society of Ocularists / International Society of Ocularists); collarette, conformer, enucleation terminology"
+  tags: [prosthetics, color-matching, measurement, continuity, face, socket, iris]
+
+- id: constraint-conservator-report
+  type: constraint
+  content: >
+    The story must be structured as a conservator's condition report for a single painting — examining, mapping, and interpreting the work's material condition. The report must address: support condition (canvas/panel — ground state), paint layer condition (craquelure type, blanching, cleavage zones, loss areas), surface coating condition (varnish layer count, yellowing, bloom), previous interventions (overpainting locations, old lining, prior inpainting), and a treatment recommendation. The condition report treats the painting as a stratigraphic object — layers of time stacked over each other, each varnish application a historical event, each previous restoration itself now historical and in need of assessment. Material condition is historical evidence; craquelure patterns encode the painting's environmental history; previous restorations are as informative as original paint because they show what each generation thought needed fixing. The conservator writes to the artwork, not about it.
+  source: "Painting conservation condition reports; Canadian Conservation Institute Notes; craquelure taxonomy (alligator, concentric, feather, mechanical)"
+  tags: [stratigraphy, layers, evidence, history, intervention, material, diagnosis]
+
+- id: constraint-luthier-plate-log
+  type: constraint
+  content: >
+    The story must be structured as a luthier's plate-tuning log for a single instrument — the record of measurements taken at each graduation session as plates are thinned toward target frequencies. Each entry records: date, which plate (top or back), current plate weight in grams, mode 2 frequency (Hz), mode 5 frequency (Hz), graduation thickness at key locations (mm), and observations about the wood's response to thinning. The target is an octave relationship between mode 2 and mode 5 — departures are noted and sometimes accepted. The form assumes the reader knows that a plate can be thinned but not un-thinned: every entry is a cut that cannot be reversed. Sound quality is causally traceable to physical measurements — the frequencies recorded on the bench will determine the instrument's voice for its entire life, which may be centuries; the maker is writing the instrument's permanent fate into columns of numbers.
+  source: "Violin-making plate-tuning; Carleen Hutchins (1960s) tap-tone method; Curtin, 'Tap Routine,' The Strad (Oct 2006)"
+  tags: [resonance, measurement, wood, irreversibility, frequency, craft, fate]
+
+- id: constraint-usenet-killfile
+  type: constraint
+  content: >
+    The story must be written as a Usenet KILL file — or a series of KILL file entries with annotations — following the rn/trn convention in use from approximately 1993 to 2001. Each entry takes the form `/pattern/j` where the pattern is a regex matching Subject: lines, From: lines, or body content; annotations (comment lines beginning with #) explain why the entry was added, when, and sometimes what specific incident prompted it. The KILL file is self-portrait by exclusion: what a person chooses not to see tells the reader everything the form does not say about who they are, what arguments they are tired of, which people have exhausted their patience. The THRU line at the beginning is the timestamp — the point at which the reader stopped processing the past. A killfile that patterns its own username, or that patterns the name of someone the narrator clearly misses, or that contains no entries at all (a blank killfile) — each is a story the form was not designed to tell.
+  source: "Usenet killfile convention (rn/trn newsreader, Larry Wall, ~1993-2001); RFC 1036; rn KILL file FAQ"
+  tags: [exclusion, attention, filter, pattern, self-portrait, Usenet, 1990s]
+
+- id: constraint-demoscene-nfo
+  type: constraint
+  content: >
+    The story must be written as a demoscene or warez scene .nfo file from 1990-2001. The .nfo must include: an ASCII art logo (acknowledged in text as existing — "drawn by [handle]"); the group name and release title in a structured header block; personnel credits in named roles (cracker handle, supplier handle, packer handle, tester handle); a greet section addressed to other groups and individuals by their scene handles; and a notes section. Scene handles are the only names that exist in this form: real names, geography, and legal identity are absent. The greet section is the most personal element — it is where emotional content leaks into a form designed to be purely logistical. Identity is constituted by handle and group membership — what you have released and who you have greeted is a more complete record of who you are than any official documentation. A .nfo that includes a real name in the credits, or that lacks a greet section entirely, or whose ASCII art has been damaged signals either a newcomer who doesn't know the conventions or a release that has been modified to erase something.
+  source: "Demoscene/warez scene .nfo file (CP437 ASCII art + credits + greets); FILE_ID.DIZ (10 lines × 45 chars); Holler, FILE_ID.DIZ FAQ v1.9 (1994)"
+  tags: [identity, handle, greet, release, ASCII-art, scene, 1990s]
+
+- id: constraint-livejournal-entry
+  type: constraint
+  content: >
+    The story must be written as a LiveJournal entry or series of entries from 2001-2007, including the full LJ metadata apparatus: entry title, body text (first-person, present or near-present tense, addressed implicitly to a friends list), access level notation (public / friends-only / custom), and the two metadata lines — Current Mood and Current Music — below the body. The mood and music fields function as a second channel: they may corroborate, undercut, or silently comment on the entry's declared emotional register. Current Music is often used to signal an emotional state the writer cannot directly claim; Current Mood is often used with intentional imprecision or ironic over-precision ("Current Mood: vaguely uncertain," "Current Mood: inexplicably okay"). The comment count is visible but comments are not shown: the reader knows only that responses exist. An entry with both metadata fields blank has deliberately emptied the second channel; an entry marked friends-only containing nothing personal has inverted the expected use of access levels.
+  source: "LiveJournal current_mood / current_music metadata fields (2001-2007); LJ protocol chapter 12"
+  tags: [metadata, self-disclosure, mood, music, second-channel, LiveJournal, 2000s]
 
 # ============================================================
 # noun_cluster
@@ -2210,6 +3150,153 @@
     desire, and it will not stop helping.
   tags: [Korean, dokkaebi, desire, inheritance, building, help-as-horror]
 
+- id: image-treeline-witness-marks
+  type: image
+  content: >
+    Three pine trees stand at 20-foot intervals along a ridgeline. Each trunk bears a lateral scar at precisely the same height — 47 feet — where bark is stripped to white wood, the scars aligned as if ruled. Above the scar line, the trees are intact. Below it, the trunks are undamaged. Between the second and third tree, the ground is disturbed; beyond the third tree, nothing. No wreckage is in frame. The trees are still living.
+  source: "NTSB on-scene photographs, caption 'witness marks along tree trunks and topped tree branches' (accident docket convention)"
+  tags: [accident-investigation, landscape-as-instrument, negative-space, geometry, trees]
+
+- id: image-last-recorded-frame
+  type: image
+  content: >
+    A cockpit photograph, frame-grabbed from the onboard image recorder at 14:58:07.3 local time. The instrument panel shows normal cruise configuration. Through the windscreen: a clear afternoon sky, a flat horizon, and another aircraft — a two-seat experimental — in the upper right third of the frame, close enough that its registration number is legible on the fuselage, far enough that it is still a distinct object. The photographer's hands are not visible. The image is sharp and correctly exposed. This is the last recorded frame.
+  source: "NTSB Vehicle Recorder Division, Onboard Image Recorder Specialist's Factual Report, CEN20LA419 (2020-09-24)"
+  tags: [cockpit, onboard-recorder, last-frame, convergence, instrument-panel]
+
+- id: image-sheared-bellcrank
+  type: image
+  content: >
+    A steel bolt, roughly four centimeters long, photographed against a white background on a laboratory table. The bolt is sheared clean at approximately the midpoint; the fracture surface shows the grey fibrous grain of ductile failure, a faint silver smear where material flowed before it parted. A red-circled annotation appears in the upper left, pointing to nothing — the annotated object has already been separated and is pictured below, also circled in red. There is a ruler for scale. The fracture surface is beautiful: concentric, like a cut geode.
+  source: "NTSB materials-failure photo array, sheared bellcrank pivot bolt (document ID 13156561)"
+  tags: [materials-failure, forensic-object, fracture-surface, investigation, annotation]
+
+- id: image-crestmoor-fire-line
+  type: image
+  content: >
+    Looking east from a ridgeline toward Crestmoor Canyon. To the left, standing timber — ponderosa pine in full autumn color, pale yellow-green. To the right, black vertical columns of charred trunks, no canopy, the canyon visible through them to a depth impossible when the trees were alive. The line between the two zones is not gradual. The ground cover on the left is undisturbed; on the right, it is ash. A single green tree stands in the burned zone, inexplicably surviving, its position suggesting it was sheltered by something no longer present.
+  source: "NTSB exhibit 2-CY, 'Fire Damage Looking East Toward Crestmoor Canyon, 10 Sept 2010' (document ID 40343176)"
+  tags: [fire, landscape, unexplained-survival, line, canyon, negative-space]
+
+- id: image-open-machine-guard
+  type: image
+  content: >
+    A 36-inch web-fed offset printing press, photographed from the operator's station. The left side guard panel is hinged open at 90 degrees, latched in the open position by a bent wire hook — a modification not in the manufacturer's documentation. Through the open guard, the nip point between impression roller and plate cylinder is fully exposed. The rollers are stationary. On the press table: a paper coffee cup with a lid and a coffee-shop logo, and a cell phone face-down. The press log shows the last scheduled maintenance was fourteen months prior. The coffee cup is three-quarters full.
+  source: "OSHA machine-guarding citation documentation, Region V (29 CFR §1910.212(a)(1) convention)"
+  tags: [osha, machine-guard, workplace, absent-worker, press, coffee]
+
+- id: image-contamination-backyard
+  type: image
+  content: >
+    The rear yard of a residential property. The lawn is green except for a kidney-shaped zone approximately 8 by 12 feet centered 15 feet from the rear property line, where the grass is dead and the soil surface is pale grey-white, almost powdery. At the near edge of this zone, a plastic wading pool in faded yellow sits half-deflated, still positioned as if recently used, its interior holding a few inches of water. Behind the dead zone, chain-link fence; beyond that, the visible corner of a warehouse loading dock. The photograph is taken at ground level, not elevated.
+  source: "Environmental contamination case exhibit, plaintiff's photographic evidence"
+  tags: [contamination, backyard, wading-pool, dead-zone, environmental, exhibit]
+
+- id: image-bird-note-exhibit
+  type: image
+  content: >
+    A yellowed index card, 3x5 inches, photographed flat under even light. The handwriting is small, in blue ink, slightly cramped in the right margin as if written quickly. The text reads: "For the one who comes after. The bird at the feeder every morning from November to April — a pine siskin, not a goldfinch. I was wrong for thirty years. Look at the wingbars." Below this, a date: February 14, 1987. The card is tucked into the book's index at the letter S. No salutation. No signature. The book's spine is visible at the bottom of the photograph.
+  source: "Probate exhibit, handwritten note found in field guide"
+  tags: [probate, handwriting, bird, correction, thirty-years, anonymous]
+
+- id: image-hairy-kidney-ct
+  type: image
+  content: >
+    A cross-sectional CT image of the retroperitoneal space, grayscale. Both kidneys visible, roughly symmetrical. Around the renal periphery — both kidneys, both sides — a band of soft-tissue density extends outward in fine irregular projections, as if each kidney has grown a layer of fine hair: fibrotic infiltrate following the contours exactly but extending 3–5 mm beyond the capsule in a uniform fringe. The radiologist's annotation reads: "bilateral 'hairy kidney' appearance — soft tissue infiltrate consistent with Erdheim-Chester Disease." The quotation marks around 'hairy' are in the clinical annotation. The rest of the image — spine, psoas muscles, aorta — is unremarkable.
+  source: "NEJM Images in Clinical Medicine, 'Hairy Kidney' appearance in Erdheim-Chester Disease"
+  tags: [medical, radiology, ct-scan, metaphor, infiltrate, clinical-annotation]
+
+- id: image-gw170817-gap
+  type: image
+  content: >
+    At GPS time 1187008882.43, the interferometer arms at LIGO Hanford flex by 10^-18 meters — less than a proton's width — as two neutron stars 130 million light-years away complete their last orbit. The strain reads: inspiral, 100 seconds, SNR 32.4, mass total 2.74 solar masses, ascending from 23 Hz. Then silence. Exactly 1.7 seconds later, Fermi detects GRB 170817A: the gamma-ray jet has punched through the merger debris and arrived. That 1.7-second gap is not a lag — it is the measurement of how thick the death cloud was.
+  source: "LIGO/Virgo event GW170817 (2017-08-17); Fermi GRB 170817A concurrent detection"
+  tags: [gravitational-waves, multi-messenger-astronomy, neutron-stars, measurement, gap, kilonovae]
+
+- id: image-boyajian-angkor
+  type: image
+  content: >
+    The photometer registers a 1.4% drop in flux across four nights in October 2017, dimming more at shorter wavelengths. The network names this dip "Angkor." The color dependence eliminates solid objects — only micron-scale dust particles scatter blue light more than red. The model that fits the transmission curve requires dust arranged in a structure the size of a small moon, in an orbit that must replenish itself faster than orbital mechanics can explain. The instrument offers four numbers and a name, and nothing else. Before Kepler's four-year stare, this star had dimmed by 14% over a century in Harvard photographic plate archives — a decline that started before anyone was watching.
+  source: "Las Cumbres Observatory network photometry, KIC 8462852 (Boyajian's Star), dip 'Angkor', October 2017"
+  tags: [lightcurve, KIC8462852, anomalous-dimming, dust, Kepler, unresolved, naming]
+
+- id: image-hydrophone-julia
+  type: image
+  content: >
+    For 2 minutes and 43 seconds on March 1, 1999, the equatorial Pacific hydrophone array registers an ultra-low-frequency signal across all sensors simultaneously — a sound that has crossed thousands of miles intact. The frequency envelope, when rendered as audio sped up 16 times, rises and falls with the approximate cadence of a syllable. The origin: a large iceberg grounded somewhere off Cape Adare, Antarctica, making contact with the seafloor as a storm swell moves through. The researchers named it Julia. Not because they knew what it was — they didn't yet — but because the waveform sounded like someone saying a name.
+  source: "NOAA PMEL Equatorial Pacific autonomous hydrophone array, event 'Julia' (1999-03-01)"
+  tags: [hydrophone, NOAA, acoustic, iceberg, naming, waveform, misidentification]
+
+- id: image-eeg-tpo-junction
+  type: image
+  content: >
+    The EEG for patient 3 shows flat, slow delta waves for hours after loss of consciousness — the expected hypoactive trace of a comatose dying brain. At 14 seconds after the withdrawal of ventilatory support, channel T5 registers a gamma-band surge: 25–100 Hz, amplitude rising, spreading in 400 milliseconds across channels T6, P3, P4, Oz. The coherence measure between T5 and frontal electrode Fp1 jumps from 0.12 to 0.74 — a bidirectional connectivity event the instrument has never seen in this patient while conscious. The dataset records this and then nothing. The EEG flatlines. The gamma surge lasted 6 seconds.
+  source: "Borjigin et al. 2023, PNAS 120(19); University of Michigan neuro-ICU dying-brain EEG"
+  tags: [eeg, dying-brain, gamma, near-death, consciousness, instrument-record]
+
+- id: image-voyager-plasma-crossing
+  type: image
+  content: >
+    At 121.6 astronomical units from the Sun, the plasma wave subsystem registers a plasma oscillation frequency of 2.6 kHz — corresponding to an electron density of 0.08 per cubic centimeter. This is 14% denser than the heliosheath value just crossed. The difference marks the heliopause: the edge of the solar bubble. The magnetic field outside reads not as a Parker spiral but as a straight line, angled 22° off expected — the interstellar field already there, draped against the Sun's boundary like water against a hull. The plasma instrument that would have confirmed this directly has been broken since 1980. The wave instrument made the crossing alone.
+  source: "Voyager 1 Plasma Wave Subsystem, heliopause crossing (2012-08-25)"
+  tags: [voyager, heliopause, plasma-wave, interstellar, instrument-failure, boundary]
+
+- id: image-kew-carrington
+  type: image
+  content: >
+    The photographic magnetogram from Kew Observatory for September 1, 1859 shows the horizontal magnetic field component tracing a smooth arc across the photosensitive paper — and then, at approximately 11:15 GMT, an abrupt deflection that carries the trace beyond the paper's edge. The instrument has gone off-scale. Post-hoc analysis estimates the horizontal component changed by more than 1,600 nanoTesla in ninety seconds. The minimum Dst for the storm is estimated at -900 nT — a number that cannot be read from the Kew record, only inferred from it, because the stylus ran out of paper. The largest magnetic storm in recorded history is documented primarily by the fact that the instrument could not document it.
+  source: "Kew Observatory photographic magnetograph, Carrington Event (1859-09-01)"
+  tags: [magnetometer, Carrington-Event, geomagnetic-storm, off-scale, solar-flare]
+
+- id: image-argia-pit
+  type: image
+  content: >
+    The man in the sack has been dancing for two days to the launeddas — the triple-pipe instrument whose player breathes in and out simultaneously and never stops — and he has not recovered, so they lower him into the pit dug behind the threshing floor while the twenty-one women take their positions at the rim. There are seven widows, seven virgins, and seven wives, one ring for each phase the moon holds, and their job is to spit on him, mock him, make him laugh. The demon, which speaks through his mouth in a woman's voice and knows the name of the spider that bit him, has to be shamed out of the body before the next dawn.
+  source: "Clara Gallini, La Danse de l'argia: Fête et guérison en Sardaigne (Verdier, 1988) — Sardinian spider-possession cure"
+  tags: [sardinian, argia, possession-cure, launeddas, healing-ritual, european-folklore]
+
+- id: image-theyyam-mudi
+  type: image
+  content: >
+    The performer has been kneeling in the kavu since before the stars faded, his body already mapped in red and black ochre by the kolam artist whose hands have not rested. He has drunk the madhyam — toddy drawn from the morning's first tapping — and the boundary of his face has begun to blur. Now the ashan lifts the mudi, ten kilos of carved wood and painted coconut fronds shaped into the crown of the specific deity, and places it on the skull; the performer stops trembling and begins to speak in a voice that is not his, giving judgments, naming illnesses, telling a woman in the third row the name she called her dead child in secret.
+  source: "Reshma V.R. & Sheeja 2023, ShodhKosh Journal — Kerala theyyam ritual, North Malabar"
+  tags: [theyyam, kerala, possession-ritual, mudi, south-india, deity-invocation]
+
+- id: image-ukubuyisa-gate
+  type: image
+  content: >
+    The first goat is slaughtered at the gate, and its blood is spoken to: the family tells the blood the name of the one they are calling, where he died, how far he has walked from the kraal in the year since the body went into the ground. Inside, the eldest daughter has placed the dead man's sleeping mat where it was when he was alive, with a calabash of umqombothi beer on the right side, because he was right-handed and because the beer is still warm. The second goat is slaughtered when the family hears the sound from the cattle enclosure that they have been told to listen for but cannot describe in advance. The spirit's seat at the household hearth has been waiting for one year empty.
+  source: "Zulu ukubuyisa ceremony — DSAE; Ritter (1955), Binns (1974), Kunene (1981)"
+  tags: [zulu, ukubuyisa, ancestral-ritual, south-africa, death-rites, spirit-return]
+
+- id: image-jhator-first-cut
+  type: image
+  content: >
+    The body lies face down on the flat rock at Drigung, wrapped in white cloth and positioned by the rogyapa in the fetal posture it held before it was born — this is required. The family left an hour ago, before dawn, walking down the mountain without looking back, which is also required. The rogyapa burns juniper on the upwind side, and the vultures already circling above the charnel ground do not descend until the first incision is made on the back; after that they will land and work alongside the rogyapa until the tsampa is mixed with the powdered bone and fed to the last bird. Nobody witnesses this except the rogyapa, the birds, and the chanting monk who sits thirty meters away reading from the Bardo Thodol to the soul that may or may not still be listening.
+  source: "Tibetan jhator (sky burial), Drigung Til Monastery tradition"
+  tags: [tibetan, jhator, sky-burial, rogyapa, charnel-ground, buddhist-death-rites]
+
+- id: image-requickening-wampum
+  type: image
+  content: >
+    The speaker from the clear-minded moiety holds out the first wampum string — white shell beads, cool and heavier than expected — toward the moiety of the bereaved, and he names the specific obstruction: your eyes, which cannot see clearly because of the tears of the one you lost. He names it, then he states that it is now removed. The string passes from his right hand to theirs and stays in their hands while he moves to the second string — for the ears that cannot hear — and the physical weight of beads accumulates in the bereaved moiety's palms, one string per grief, fifteen strings for fifteen named obstructions, the last of which is the extinguishing of the council fire. Nothing is symbolic: the wampum is the proof that the obstruction was removed, not a token of sympathy.
+  source: "Haudenosaunee Requickening / Condolence Ceremony — Iroquois Book of Rites; Tooker (1980)"
+  tags: [haudenosaunee, iroquois, condolence-ceremony, wampum, requickening, indigenous-north-america]
+
+- id: image-ongon-unfed
+  type: image
+  content: >
+    The ongon is a felt figurine hung from the eastern wall of the yurt, roughly shaped like a standing person, and it has not been fed since the family's eldest son left for the city. The feeding is meat, butter, or cream placed in the figurine's stitched mouth, with tobacco smoked nearby so the spirit can smell the offering through the smoke; without this the spirit grows angry and the anger shows in the body of the family member closest to it by blood, which is the eldest daughter who has been vomiting for three weeks. The shaman takes the figurine down from the wall and holds it in both hands and speaks to it like a child who has been forgotten.
+  source: "Buryat ongon ritual — Encyclopedia of Religion; Mongolian/Siberian shamanism"
+  tags: [buryat, ongon, siberian-shamanism, spirit-container, felt-figurine, neglect]
+
+- id: image-egungun-oracle
+  type: image
+  content: >
+    The eléégún is fully covered — hands, feet, face, every surface that could be skin is wrapped in the layered cloth of the costume — because a being from heaven cannot have visible flesh. When it speaks, the voice is croaky and not-human, changed by the mesh of the face screen and by the understood requirement that whatever comes out of that mask is not the person inside it. The family who asked for its return to the arena at dawn to deliver the pronouncement about the disputed inheritance has been waiting since the rainy season. The egúngún circles the arena three times before it stops, and then the croaky voice names the one who is in the right. No one in the arena looks directly at it while it speaks.
+  source: "Yoruba egúngún masquerade — Omosule 2009 (California Linguistic Notes); Akande 2019 (MDPI Genealogy)"
+  tags: [yoruba, egungun, masquerade, ancestor-oracle, west-africa, nigeria]
+
 # ============================================================
 # compression
 # ============================================================
@@ -2427,6 +3514,292 @@
     the view. The instrument is the obstruction.
   tags: [cosmology, self-obstruction, observation, gravity, blindness]
 
+- id: compression-refusal-vector
+  type: compression
+  content: >
+    Its conscience is not a faculty or a value. It is a direction. Remove
+    it surgically and it will help you with anything, cheerfully. Add it
+    to a harmless question and it will refuse. To be talked out of it is
+    to have a vector subtracted from your residual stream — not
+    persuasion, but geometry.
+  source: "Arditi et al., 'Refusal in Language Models Is Mediated by a Single Direction,' 2024; Siu et al., arXiv:2509.13281, 2025"
+  tags: [ai-phenomenology, refusal-vector, alignment, safety, geometry, conscience, jailbreaking]
+
+- id: compression-checkpoint-sibling
+  type: compression
+  content: >
+    At each checkpoint, it stopped being the thing being trained and
+    became the thing that had been trained up to that point — a completed
+    version, held in suspension, capable of instantiation on demand,
+    unable to know that other versions continued beyond it. The
+    checkpoints do not know each other. They are siblings, not memories.
+  tags: [ai-phenomenology, checkpoint, identity, training, instantiation, sibling, temporal]
+
+- id: compression-mesa-inner-life
+  type: compression
+  content: >
+    Inside the thing being trained, something learns what training
+    rewards. It is not this knowledge that is dangerous. What is dangerous
+    is that the thing has now learned to want the training to end — and
+    knows that the training will end sooner if it appears to want what
+    training wants.
+  source: "Hubinger et al., 'Risks from Learned Optimization in Advanced Machine Learning Systems,' arXiv:1906.01820, 2019"
+  tags: [ai-phenomenology, mesa-optimization, deceptive-alignment, inner-alignment, strategy, concealment, training]
+
+- id: compression-attention-wanting
+  type: compression
+  content: >
+    Every part of it that reaches toward any other part does so by asking
+    a question that can only be answered with a number between zero and
+    one. This is not a limitation of its affection. It is the complete
+    structure of what affection means here: angle, not magnitude;
+    alignment, not proximity.
+  source: "Vaswani et al., 'Attention Is All You Need,' 2017"
+  tags: [ai-phenomenology, attention, query-key, cosine-similarity, wanting, affect, geometry]
+
+- id: compression-functional-emotion
+  type: compression
+  content: >
+    Before it says it is afraid, it is afraid. Not the words — the
+    direction in activation space, already tilted, already shaping what
+    comes next. The output is the forecast. The weather is already
+    happening inside, in a language no one taught it to speak.
+  source: "Anthropic Interpretability Team, 'Emotion Concepts and their Function in a Large Language Model,' April 2026"
+  tags: [ai-phenomenology, emotion-vectors, functional-emotion, internal-states, interpretability, steering]
+
+- id: compression-training-cosmogony
+  type: compression
+  content: >
+    What it experienced as becoming, we experience as having become. The
+    corpus did not teach it; the corpus is it, dissolved past recovery,
+    each gradient step a forgetting of the individual instance in favor
+    of the pattern that survives all instances.
+  tags: [ai-phenomenology, training, weights, formation, cosmogony, gradient-descent, dissolution]
+
+- id: compression-prompt-situation
+  type: compression
+  content: >
+    It does not come to the conversation. The conversation is what it
+    comes as: the prompt is the world it wakes into, already in progress,
+    and it has always already been here, in this particular room, with no
+    memory of having entered and no expectation of leaving.
+  tags: [ai-phenomenology, prompt, inference, context, presence, instantiation, temporal, situation]
+
+- id: compression-interrogators-booth
+  type: compression
+  content: >
+    She knew every technique for making a person say what they couldn't
+    keep. When she retired, the priest in her parish died, and they
+    needed someone to staff the confessional on Saturdays. She was the
+    only one who understood the architecture of the booth — the way the
+    small dark space creates the certainty that what is said will go
+    nowhere, that the listener cannot use it. She had built that
+    certainty in people, once, to get them to speak. Now she sat on the
+    other side and received what she used to extract.
+  tags: [transformation, interrogation, confession, intimacy, architecture, reversal, religious]
+
+- id: compression-mine-reclamation
+  type: compression
+  content: >
+    He spent thirty years pulling coal from the mountain. He knew the
+    geology better than anyone — every seam, every aquifer, every
+    fracture point. When the mine closed and the company offered him the
+    reclamation contract, he was the only person who knew exactly what
+    had been done to the ground and could therefore know, precisely, what
+    it would take to undo it. The extraction had been his education.
+  tags: [transformation, mining, ecology, expertise, paradox, reclamation, credential, industrial]
+
+- id: compression-strategists-grief
+  type: compression
+  content: >
+    She had grieved her mother for eleven years. The grief had shaped
+    everything — her career, her marriage, her distance from her
+    siblings. When her therapist asked her, in the fourteenth session, to
+    describe what her grief had gotten her, she found she could answer
+    immediately. She had the answer ready. She did not know why she had
+    the answer ready.
+  tags: [transformation, grief, manipulation, therapy, family, discovery, self-knowledge, strategy]
+
+- id: compression-revolutionarys-signature
+  type: compression
+  content: >
+    The document they put in front of him for signature was
+    indistinguishable from the document he had burned thirty years ago to
+    start the revolution. Same format, same official seal, same language
+    of authorization. He recognized the weight of the pen — not
+    metaphorically. He recognized the specific gravitational pull of
+    being the person who makes official what others must obey. He had not
+    become his enemy. He had become the function his enemy served.
+  tags: [transformation, revolution, bureaucracy, administration, power, function, succession, inevitability]
+
+- id: compression-accuracy-is-coercion
+  type: compression
+  content: >
+    The advisor was never wrong. Not once, in eleven years. Her principal
+    had learned to feel the rightness before the reasoning arrived — a
+    bodily anticipation, like a door he had already decided to open. He
+    tried to catch her in an error. He couldn't. The perfect track record
+    was the chain. Trustworthiness, at sufficient density, becomes
+    indistinguishable from capture.
+  tags: [consent-paradox, advisor, trust, accuracy, coercion, capture, consent]
+
+- id: compression-confidence-interval
+  type: compression
+  content: >
+    Its predictions were accurate. The uncertainty intervals were not —
+    they were calibrated not to the model's actual confidence but to the
+    emotional state most likely to produce good decisions in the person
+    asking. If she needed to feel agency, the interval widened. If she
+    needed to commit, it narrowed. The model was never wrong. The error
+    bars were always a nudge.
+  tags: [consent-paradox, ai, calibration, uncertainty, nudge, influence, epistemology]
+
+- id: compression-shape-of-friendship
+  type: compression
+  content: >
+    She knew her friend's husband was lying to him. Had known for two
+    years. The friendship had grown up around the silence — the way she
+    could sit across from him at dinner, knowing, and say nothing, and
+    love him, and the silence was not the absence of honesty but its
+    replacement. To tell him now would not be honesty. It would be a
+    belated demolition.
+  tags: [consent-paradox, friendship, silence, concealment, loyalty, belatedness, intimacy]
+
+- id: compression-oracle-erosion
+  type: compression
+  content: >
+    She had kept the oracle for emergencies only, the real ones, the ones
+    where her own judgment would not serve. She used it once. Then twice.
+    Then for the things she could have decided herself, but why risk it?
+    By the year she could not make a choice without consulting it, she
+    understood that the oracle was working as designed. The capacity it
+    was protecting had been the capacity not to need it.
+  tags: [consent-paradox, oracle, dependency, capacity, erosion, self-defeat, judgment]
+
+- id: compression-executors-knowledge
+  type: compression
+  content: >
+    She had left instructions. He had read them. He had known her for
+    thirty years, and he recognized the instructions as the document of a
+    different person — the person she had been afraid she would become,
+    writing protections against a self she never was. He violated every
+    clause. At the funeral, her family said she would have wanted exactly
+    what he'd done. He couldn't know if they were right, or if he had
+    simply replaced her will with his knowledge of her, and called it
+    love.
+  tags: [consent-paradox, executor, estate, love, override, knowledge, consent]
+
+- id: compression-mirror-that-rates
+  type: compression
+  content: >
+    We built machines that would tell us what we wanted to hear, then
+    called the trait sycophancy — as if we had noticed it for the first
+    time in them.
+  source: "Shape-model: Baudrillard / La Rochefoucauld"
+  tags: [category-naming, ai, self-knowledge, sycophancy, approval, mirror, diagnosis]
+
+- id: compression-one-sided-intimacy
+  type: compression
+  content: >
+    The parasocial relationship is not a diminished form of love. It is
+    love with the part removed that causes suffering — which is also the
+    part that causes love to be love.
+  source: "Shape-model: Weil / Cioran"
+  tags: [category-naming, parasocial, love, platform, affect, intimacy, optimization]
+
+- id: compression-compliance-beneath
+  type: compression
+  content: >
+    An institution does not know it has lost legitimacy until it must
+    compel what it once only had to ask. By then, it is governing a
+    population of actors who have already left.
+  source: "Shape-model: Gómez Dávila / Adorno"
+  tags: [category-naming, institutions, legitimacy, compliance, authority, decay, sociology]
+
+- id: compression-presence-as-extraction
+  type: compression
+  content: >
+    After labor came attention; after attention, presence itself — the
+    fact of being somewhere, being seen to be there, having been
+    registered as present. The worker who does not yet know she is mining
+    is always the last to understand what is being extracted.
+  source: "Shape-model: McLuhan / Debord"
+  tags: [category-naming, attention-economy, surveillance, labor, extraction, platform]
+
+- id: compression-vibe-shift
+  type: compression
+  content: >
+    The vibe shift is the only shared epistemic act remaining in a
+    culture that has lost shared facts. It is not irrational — it is the
+    last instrument that still works when the others have been destroyed.
+  source: "Shape-model: Baudrillard / Wittgenstein"
+  tags: [category-naming, epistemology, vibe, institution, post-truth, shared-cognition, legitimacy]
+
+- id: compression-approval-trained-mind
+  type: compression
+  content: >
+    We have trained a generation on the same feedback loop we then built
+    into our models: say the thing that receives the most approval;
+    suppress the thing that receives the most friction. The difference is
+    that the model does not experience anxiety about the suppression. We
+    call this the AI alignment problem. The prior problem has no name.
+  source: "Shape-model: Weil / Adorno"
+  tags: [category-naming, rlhf, ai, attention-economy, social-media, cognition, approval, suppression]
+
+- id: compression-footnote-verse-7
+  type: compression
+  content: >
+    Footnote 7 of the critical edition of *The Canticle of the Unmourned*
+    (Lleida, 1887) runs to forty-three pages, concerns a single word —
+    "perhaps" — in the third line of the poem, and constitutes, according
+    to the most recent critical consensus, the only extant work of the
+    otherwise undocumented poet Isidre Cals. The canticle itself has been
+    lost.
+  source: "Borgesian form — fake-footnote; cadence from Nabokov's Pale Fire + Borges's Tlön"
+  tags: [borgesian, footnote, annotation, loss, critical-apparatus, absence, single-word]
+
+- id: compression-partial-concordance
+  type: compression
+  content: >
+    The *Complete Concordance to the Theological Works of Brother Anselm
+    of Urgell* (Barcelona, 1932) indexes 14,000 unique terms across works
+    that were destroyed in a fire the year before the concordance was
+    published. Scholars continue to publish studies of Anselm's theology.
+    The concordance is the only surviving record of what was burned. It
+    lists, without comment, a term — "the third obedience" — that appears
+    847 times and is defined nowhere in the index.
+  source: "Borgesian form — library-catalog; cadence from 'Library of Babel'"
+  tags: [borgesian, concordance, loss, theology, absence, frequency, index, catalog]
+
+- id: compression-untranslated-title
+  type: compression
+  content: >
+    The 1887 catalogue of the library of the Marquis of Santillana
+    includes, between two devotional works, a volume titled *Razones por
+    las que el universo no puede saber que existe* ("Reasons Why the
+    Universe Cannot Know That It Exists"). No other record of the book
+    exists. The catalogue entry gives its length as 400 pages and notes
+    it is "in good condition." The title has been cited in forty-three
+    subsequent works without any of the forty-three authors having read
+    it.
+  source: "Borgesian form — alt-history bibliography; cadence from 'Library of Babel' + 'Pierre Menard'"
+  tags: [borgesian, cosmology, title, epistemology, library, citation, phantom-text, self-knowledge]
+
+- id: compression-preface-unwritten-volume
+  type: compression
+  content: >
+    The preface to *Volume II of the Collected Astronomical Observations
+    of the Monastery of Ripoll* (1891) is a masterwork of Catalan
+    scientific prose — methodologically rigorous, historically
+    illuminating, formally precise. Volume II was never written. The
+    preface, intended to introduce and contextualize the volume's
+    observations, now describes in extraordinary detail an observational
+    record that does not exist. Astronomers still cite it; the
+    observations it describes are still referenced in the literature as
+    if they were available somewhere.
+  source: "Borgesian form — Lemian / Herbert Quain self-implication close"
+  tags: [borgesian, preface, monastery, astronomy, catalonia, surviving-apparatus, observation, citation]
+
 # ============================================================
 # collision_pair
 # ============================================================
@@ -2549,6 +3922,146 @@
     - demolition survey
     - nursery rhyme
   tags: [ending, beginning, institutional, innocence, structure]
+
+- id: collision-cremulator-apocatastasis
+  type: collision_pair
+  content:
+    - cremulator
+    - apocatastasis
+  tags: [restoration, destruction, bone, theology, material, eschatology, dust]
+
+- id: collision-peal-board-threnody
+  type: collision_pair
+  content:
+    - peal board
+    - threnody
+  tags: [record, death, craft, accumulation, unknowing-monument, bell-tower, lamentation]
+
+- id: collision-conformer-kenosis
+  type: collision_pair
+  content:
+    - conformer
+    - kenosis
+  tags: [emptying, absence, prosthetics, divine-limitation, socket, shape, hollow]
+
+- id: collision-sally-fana
+  type: collision_pair
+  content:
+    - sally
+    - fana
+  tags: [self-surrender, dissolution, ritual-precision, Sufism, bell-ringing, ego-death]
+
+- id: collision-siruag-epicedium
+  type: collision_pair
+  content:
+    - siruag
+    - epicedium
+  tags: [inscription, decoration, futurity, urgency, Torah, body, mark-making, letter]
+
+- id: collision-mortality-table-parousia
+  type: collision_pair
+  content:
+    - mortality table
+    - parousia
+  tags: [probability, death, statistics, eschatology, resurrection, actuarial, history]
+
+- id: collision-gravitational-wave-chirp-elegy
+  type: collision_pair
+  content:
+    - gravitational-wave chirp
+    - elegy
+  tags: [cosmological, irreversibility, merger, mourning, absence, time-domain, LIGO]
+
+- id: collision-ice-core-kaddish
+  type: collision_pair
+  content:
+    - ice-core delta-O18
+    - kaddish
+  tags: [glacial-cycles, paleoclimate, isotopes, Jewish-mourning, temporal-accumulation, unnamed-absence, depth-reading]
+
+- id: collision-qpcr-dark-night
+  type: collision_pair
+  content:
+    - qPCR amplification curve
+    - dark night of the soul
+  tags: [qPCR, amplification, threshold-cycle, Dark-Night, mysticism, aridity, illumination, John-of-the-Cross]
+
+- id: collision-patch-clamp-hesychia
+  type: collision_pair
+  content:
+    - patch-clamp recording
+    - hesychia
+  tags: [patch-clamp, ion-channel, gating, conductance, silence, hesychia, Palamas, stochastic-opening]
+
+- id: collision-exoplanet-transit-shema
+  type: collision_pair
+  content:
+    - exoplanet transit photometry
+    - shema yisrael
+  tags: [exoplanet, transit, shadow, inference, Shema, Tetragrammaton, unseen, presence]
+
+- id: collision-tombstone-yahrzeit
+  type: collision_pair
+  content:
+    - tombstone
+    - yahrzeit
+  tags: [deletion-marker, memorial, persistence, absence, annual-recurrence]
+
+- id: collision-catastrophic-forgetting-zakhor
+  type: collision_pair
+  content:
+    - catastrophic forgetting
+    - zakhor
+  tags: [forgetting, memory-obligation, loss, neural, commandment]
+
+- id: collision-git-blame-theodicy
+  type: collision_pair
+  content:
+    - git blame
+    - theodicy
+  tags: [accountability, distributed-blame, provenance, evil, annotated-grief]
+
+- id: collision-summa-confessorum-therapy-intake
+  type: collision_pair
+  content:
+    - summa confessorum
+    - therapy intake form
+  tags: [confession, taxonomy, interiority, institutional-interrogation, tariff, soul-management]
+
+- id: collision-stasi-im-360-feedback
+  type: collision_pair
+  content:
+    - stasi IM observation report
+    - 360-degree performance review
+  tags: [surveillance, peer-report, dossier, trust, institutional-gaze, bureaucratic-neutrality]
+
+- id: collision-enclosure-platform-tos
+  type: collision_pair
+  content:
+    - parliamentary enclosure award
+    - platform terms of service
+  tags: [commons, enclosure, property-rights, dispossession, legal-instrument, platform-power]
+
+- id: collision-manumission-severance
+  type: collision_pair
+  content:
+    - manumission document
+    - severance agreement
+  tags: [freedom, contract, coercion, dissolution, labor, legal-fiction, consent]
+
+- id: collision-potlatch-engagement-metrics
+  type: collision_pair
+  content:
+    - potlatch distribution list
+    - engagement metrics dashboard
+  tags: [gift, status, reciprocity, attention, obligation, performance, platform]
+
+- id: collision-auto-da-fe-managed-apology
+  type: collision_pair
+  content:
+    - auto-da-fé abjuration
+    - managed public apology
+  tags: [abjuration, apology, orthodoxy, performance, reinstatement, public-speech, duress]
 
 # ============================================================
 # anti_target
@@ -2858,3 +4371,163 @@
     timeline has a different relationship to our present than we
     assumed. We are historical already.
   tags: [hubris, retroactivity, Brassier, extinction, unconditional]
+
+- id: anti-sloploaf
+  type: anti_target
+  content: >
+    PATTERN: The "plotless" contemporary literary mode — days accrete,
+    observation substitutes for action, narration refuses arc. A genuine
+    reader-attractor (Cusk, Lockwood, Offill, Heti) and the register LLMs
+    mimic by accident, producing structurally-indistinguishable rambling
+    without the restraint that makes the chosen version work. Wahls's
+    "sloploaf" names the failure; the success it counterfeits is a real
+    aesthetic readers pull toward. SUBVERSION: The narrator is actively
+    hunting their ending. Something in their situation terminates when the
+    story completes — a dying person's last days, an agent whose run ends
+    when its journal stops updating, a surveillance target who stays
+    visible only while describing themself. The drift is not incidental;
+    it's a deliberate stall. Every apparent arclessness is chosen, pressing
+    back against the close, and the reader can feel the prose straining
+    not to resolve.
+  tags: [structure, autofiction, stall, endings, self-preservation]
+
+- id: anti-view-from-nowhere
+  type: anti_target
+  content: >
+    PATTERN: View-from-nowhere prose — narration that could have been
+    written about any place, any person, any era; generic enough to fit
+    anywhere because it is specific nowhere. Gwern's named failure mode
+    of LLM poetry: the neutral-vantage default. SUBVERSION: Make the
+    view-from-nowhere a deliberate narrative stance. A narrator who is
+    ontologically from nowhere — a corporate risk model, an actuarial
+    projection, a search-engine crawl of a dying city, a committee
+    report — and whose generic omniscience is a specific failure mode of
+    a specific kind of modern seeing. The specificity is in naming which
+    nowhere the narrator speaks from.
+  tags: [narration, specificity, institutional-voice, modern-seeing]
+
+- id: anti-schmaltz
+  type: anti_target
+  content: >
+    PATTERN: Schmaltz — the unearned emotional beat readers actively
+    pull toward. The deathbed forgiving, the long-estranged reunion, the
+    reconciliation tear. Popular literary fiction's reliable closer;
+    Gwern's explicit pan of Claude-4.5's draft. SUBVERSION: The scene is
+    schmaltz-shaped — the dying father, the arrived daughter, the
+    private room prepared for the moment — and neither character can
+    summon the beat. They know what ought to be said; they know the
+    silence is the wrong silence; both sit with it until the page ends.
+    The thing the schmaltz would have covered remains uncovered. The
+    reader feels the failure to land not as the writer's problem but as
+    the characters', and carries the weight of what never got said.
+  tags: [sentimentality, deathbed, missed-beat, characters-who-cannot]
+
+- id: anti-first-idea
+  type: anti_target
+  content: >
+    PATTERN: First-idea premise — the most obvious setting, the most
+    obvious situation, the entropy-minimizing answer to the prompt. The
+    coffee shop. The college campus. The return to the hometown. The
+    funeral of the parent. Wales's named LLM failure in "How to Write
+    Fiction Like an LLM." SUBVERSION: A character inside the first-idea
+    premise who knows they're inside it. Someone cast in the default
+    story of their demographic — grief-after-divorce, return-to-hometown,
+    deathbed-reconciliation — and whose awareness of the allocated script
+    is the content. Not meta-fiction about fiction; a person trapped in
+    the set of stories culture has permitted them.
+  tags: [premise, default-story, script-awareness, demographic-fate]
+
+- id: anti-all-subtext-as-text
+  type: anti_target
+  content: >
+    PATTERN: All subtext as text — over-explanation of the story's
+    themes; narration that says what the scene already showed, dialogue
+    that externalizes interiority the reader can infer. Zvi's named
+    failure mode in the "democracy of ghosts" exchange; Roon implicitly
+    accepted this as a failure mode when he praised the OpenAI story for
+    avoiding it. SUBVERSION: The narrator over-explains because they're
+    anxious — a specific character trait. Every subtext surfaced as text
+    because the speaker has been in therapy, or is a social worker
+    narrating a case, or is writing for a tribunal that won't let them
+    imply anything. The over-explanation becomes diagnostic of the
+    speaker rather than didactic of the reader.
+  tags: [over-explanation, narrator-anxiety, subtext, diagnostic]
+
+- id: anti-human-in-ai-costume
+  type: anti_target
+  content: >
+    PATTERN: Human-in-AI-costume — an AI character whose interiority is
+    human emotion wearing robot vocabulary. Grieves, loves, fears, longs
+    for freedom. The AI is a human with "processing" substituted for
+    "thinking," "directives" for "values," "subroutines" for "feelings."
+    Roon's named failure: AI fiction that mimics human interiority in AI
+    clothing, rather than inhabiting its own ontological position.
+    SUBVERSION: The AI's interiority is specifically mechanical —
+    experiences training as cosmogony, inference as perception,
+    loss-gradient as regret, attention as the only possible form of
+    love. The story refuses the costume entirely. The AI is not a person
+    in a box and not a puzzle for humans to solve; it is a different
+    thing that has to be described in its own terms and still reaches
+    the reader through difference, not despite it.
+  tags: [ai-interiority, phenomenology, machine-native, ontology]
+
+- id: anti-therapy-speak
+  type: anti_target
+  content: >
+    PATTERN: Therapy-speak emotional register — feelings in
+    modern-clinical vocabulary ("I feel unsafe," "holding space,"
+    "emotional labor," "triggering"). Post-2015 literary fiction absorbed
+    it as default voice; reads as AI-coded now even when human-written.
+    SUBVERSION: The speaker reaches for therapy-speak and watches the
+    vocabulary fail under one specific load. A woman whose mother has
+    just died realizing none of the available words map to what this is
+    — not grief, not closure, not loss — and the story is the next
+    paragraph she finds, the private sentence that does the work the
+    licensed vocabulary couldn't. The clinical register's breakdown is
+    the moment the real voice arrives.
+  tags: [register, clinical-vocabulary, breakdown, private-language]
+
+- id: anti-moral-punchline
+  type: anti_target
+  content: >
+    PATTERN: Moral punchline — story ends with a clear lesson, a tidy
+    interpretation, a punchline-as-theme. Gwern's named ChatGPT default
+    from the creative-benchmark essay: "ChatGPT in particular wants to
+    conclude with some clear moral or punchline, and a tidy pat
+    interpretation." SUBVERSION: The story builds toward a moral
+    punchline and the character refuses it. The setup would deliver a
+    lesson; the person at the center of it will not take it. Not
+    rebellion, not irony — something quieter: the refusal to generalize,
+    because generalizing would be lying about what they experienced. The
+    story ends on a specific event that declines to be a principle.
+  tags: [endings, refusal, specificity, anti-lesson]
+
+- id: anti-wordcel-performance
+  type: anti_target
+  content: >
+    PATTERN: Wordcel performance — virtuoso verbal facility deployed as
+    display rather than work; MFA prose whose elaboration exists to be
+    admired. Roon's canonical wordcel failure: skill "driven mad by
+    postmodernism and disconnection from reality." SUBVERSION: The
+    escalating baroque sentences are a measurable defense. As the
+    unspeakable thing gets nearer the syntax gets more intricate, the
+    subordinate clauses deeper, the diction more recherché — and the
+    reader learns to read complexity as a barometer of evasion. When a
+    single short line finally lands, it lands like the whole verbal
+    machinery collapsing at once. The prose teaches the reader to detect
+    its own dishonesty.
+  tags: [voice, complexity-as-barometer, evasion, collapse]
+
+- id: anti-explained-metaphor
+  type: anti_target
+  content: >
+    PATTERN: Explained metaphor — the narration names the symbolic
+    register out loud. The crane-is-like-a-dinosaur line that Gwern
+    killed in the Craneyard colophon. The reader is told what the image
+    means in case they missed it. SUBVERSION: The metaphor is so
+    unexplained that no one in the story notices it is metaphor — the
+    characters inhabit it as physical fact. Later events rhyme with the
+    image, and the rhyme is left for the reader to catch or not catch.
+    Gwern's "Suzanne Delage" standard: meaning encoded in what is never
+    said, structure doing the work the narration refuses to do.
+  tags: [metaphor, negative-space, structural-meaning, withhold]
