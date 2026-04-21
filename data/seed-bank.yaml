@@ -1594,6 +1594,386 @@
     - the host
   tags: [body, pre-personal, biology, parasitism, persistence]
 
+- id: nouns-fashion-of-the-marked
+  type: noun_cluster
+  content:
+    - the sumptuary oath
+    - the unbroken seam
+    - the mourning collar
+    - the blood-dye
+    - the child's first silks
+    - the guild sigil
+    - the bolt of contraband cloth
+  tags: [fashion, garment, sumptuary, lineage, fantasy-economy]
+
+- id: nouns-feed-for-the-uploaded
+  type: noun_cluster
+  content:
+    - the ancestor-feed
+    - the confession thread
+    - the scheduled post
+    - the ghost-reply
+    - the dead account
+    - the like from 2089
+    - the friend you can't unfollow
+  tags: [social-media, post-singularity, dead, audience, persistence]
+
+- id: nouns-obstetrics-in-the-terraformed-city
+  type: noun_cluster
+  content:
+    - the oxygen cord
+    - the pressure-suit seam
+    - the signed consent
+    - the waiting-room bulb
+    - the mother's name-card
+    - the dust on the nursery window
+    - the second heartbeat
+  tags: [birth, off-world, consent, clinical, intimate]
+
+- id: nouns-couture-of-the-impossible
+  type: noun_cluster
+  content:
+    - the moonsilk bolt
+    - the dance-weight fabric
+    - the wind-catching sleeve
+    - the iridescence pot
+    - the dawn-commission
+    - the guild's dream-loom
+    - the season-reactive trim
+  tags: [fashion, fantasy, innovation, couture, materiality, delight]
+
+- id: nouns-cooking-show-multispecies
+  type: noun_cluster
+  content:
+    - the tasting spoon
+    - the chef's hat
+    - the translated recipe
+    - the camera operator
+    - the guest judge's extra hand
+    - the timer bell
+    - the winner's plate
+  tags: [television, cooking, multispecies, competition, applause, appetite]
+
+- id: nouns-kharmsian-deadpan
+  type: noun_cluster
+  content:
+    - the pince-nez
+    - the knitted shawl
+    - the wooden platter
+    - the nankeen trousers
+    - the spittoon
+    - the makhorka
+    - the sideboard
+  tags: [absurdist, domestic, deadpan, pivot, non-sequitur, oberiu]
+
+- id: nouns-barthelme-gifts
+  type: noun_cluster
+  content:
+    - the staple extractor
+    - the plastic label-stamper
+    - the fabric steamer
+    - the nail shortener
+    - the chains
+    - the red Buick
+    - the rabbit bones
+    - the telephone pole
+  tags: [postmodern, catalog, mythological, gifts, apparatus]
+
+- id: nouns-rabelais-feast
+  type: noun_cluster
+  content:
+    - the tripe
+    - the flagon
+    - the fundament
+    - the cratch
+    - the bum-gut
+    - the claret
+    - the salt-cellar
+    - the cork
+  tags: [carnival, grotesque-body, excess, feast, utopian]
+
+- id: nouns-kitchen-erotics
+  type: noun_cluster
+  content:
+    - the cheese-grater
+    - the eel
+    - the mortar
+    - the garlic
+    - the radish
+    - the honey-cake
+    - the sow
+    - the brine
+  tags: [domestic, erotic, aristophanic, kitchen, implement]
+
+- id: nouns-change-ringing-tower
+  type: noun_cluster
+  content:
+    - the sally
+    - the tail end
+    - the peal board
+    - the ringing chamber
+    - the stay
+    - the conductor's call
+    - the clapper
+  tags: [archaic-trade, bells, method, mathematics, english]
+
+- id: nouns-ocularist-studio
+  type: noun_cluster
+  content:
+    - the wax trial
+    - the socket
+    - the iris thread
+    - the buff wheel
+    - the conformer
+    - the pupil punch
+    - the storage case
+  tags: [craft, intimate, prosthetic, painting, fitting]
+
+- id: nouns-slumber-party-horror
+  type: noun_cluster
+  content:
+    - the sleeping bag
+    - the flashlight
+    - the mirror
+    - the darkness
+    - the door
+    - the whisper
+    - the floor
+  tags: [childhood, ritual, fear, liminal, girlhood]
+
+- id: nouns-snow-day-ritual
+  type: noun_cluster
+  content:
+    - the spoon
+    - the pillow
+    - the pajamas
+    - the windowsill
+    - the crayon
+    - the ice cube
+    - the toilet
+  tags: [childhood, ritual, hope, magical-thinking, domestic]
+
+- id: nouns-cootie-shot
+  type: noun_cluster
+  content:
+    - the pen
+    - the arm
+    - the circle
+    - the dot
+    - the shot
+    - the carrier
+    - the shout
+  tags: [childhood, playground, contagion, ritual, social]
+
+- id: nouns-real-estate-at-the-coast-that-is-leaving
+  type: noun_cluster
+  content:
+    - the disclosure form
+    - the basement mark
+    - the neighbor's driveway
+    - the listing photograph
+    - the open-house coffee
+    - the for-sale sign
+    - the buyer's car
+  tags: [real-estate, climate-collapse, disclosure, leaving, transaction]
+
+- id: nouns-merzbau-salvage
+  type: noun_cluster
+  content:
+    - the streetcar ticket
+    - the Camembert lid
+    - the cotton reel
+    - the baby's head
+    - the cuff link
+    - the urine vial
+    - the trouser button
+  tags: [dada, salvage, accretive, detritus, obsessive]
+
+- id: nouns-trimalchio-table
+  type: noun_cluster
+  content:
+    - the dormouse
+    - the peahen's egg
+    - the silver gridiron
+    - the Corinthian bronze ass
+    - the gypsum seal
+    - the crystal dice
+    - the bladder
+    - the sausage
+  tags: [parvenu, excess, feast, roman, class-performance]
+
+- id: nouns-chastushka-peasant
+  type: noun_cluster
+  content:
+    - the banya
+    - the birch rod
+    - the samovar
+    - the hayfork
+    - the zhopa
+    - the rye field
+    - the bast shoe
+    - the snow
+  tags: [russian, peasant, body, banya, matter-of-fact]
+
+- id: nouns-crematorium-shift
+  type: noun_cluster
+  content:
+    - the retort
+    - the ID disc
+    - the refractory brick
+    - the metal hoe
+    - the ash pan
+    - the cremulator
+    - the authorization paperwork
+  tags: [mortuary, trade, fire, chain-of-custody, procedure]
+
+- id: nouns-pyrotechnics-field
+  type: noun_cluster
+  content:
+    - the mortar
+    - the shell
+    - the rack
+    - the squib
+    - the cue sheet
+    - the dud flag
+    - the road flare
+  tags: [trade, spectacle, labor, danger, blue-collar]
+
+- id: nouns-farrier-stop
+  type: noun_cluster
+  content:
+    - the forge
+    - the anvil
+    - the rasp
+    - the hoof knife
+    - the water bucket
+    - the nail box
+    - the apron
+  tags: [trade, mobile, artisanal, horse, rural]
+
+- id: nouns-marbles
+  type: noun_cluster
+  content:
+    - the taw
+    - the ring
+    - the chalk
+    - the knuckle
+    - the asphalt
+    - the mib
+    - the pocket
+  tags: [childhood, competitive, game, economy, territorial]
+
+- id: nouns-crack-navigation
+  type: noun_cluster
+  content:
+    - the crack
+    - the sidewalk
+    - the hop
+    - the line
+    - the pavement
+    - the skip
+    - the breath
+  tags: [childhood, half-belief, superstition, navigation, passage]
+
+- id: nouns-bodily-oath
+  type: noun_cluster
+  content:
+    - the pinky
+    - the hook
+    - the spit
+    - the palm
+    - the cut
+    - the blood
+    - the witness
+  tags: [childhood, ritual, oath, body, gravity]
+
+- id: nouns-playground-geography
+  type: noun_cluster
+  content:
+    - the tanbark
+    - the monkey bars
+    - the divot
+    - the chain
+    - the asphalt
+    - the rung
+    - the shed corner
+  tags: [childhood, territory, psychogeography, playground, transmission]
+
+- id: nouns-hopscotch-grid
+  type: noun_cluster
+  content:
+    - the grid
+    - the chalk
+    - the stone
+    - the square
+    - the rain-fade
+    - the asphalt
+    - the toe
+  tags: [childhood, pavement, ritual, chalk, territorial]
+
+- id: nouns-toast-badman
+  type: noun_cluster
+  content:
+    - the razor
+    - the barrelhouse
+    - the mojo
+    - the .44
+    - the alley
+    - the juke joint
+    - the dirty rag
+    - the freight train
+  tags: [oral-tradition, urban, badman, toast, americana]
+
+- id: nouns-flyting-curse
+  type: noun_cluster
+  content:
+    - the midden
+    - the carrion
+    - the tyke
+    - the scab
+    - the dryte
+    - the gibbet
+    - the fatberg
+    - the clout
+  tags: [flyting, insult, curse, body, contemporary-archaic]
+
+- id: nouns-harvest-kitchen
+  type: noun_cluster
+  content:
+    - the harvest bread
+    - the first-snow soup
+    - the singing-bee honey
+    - the copper pot
+    - the shared ladle
+    - the split in the flour sack
+    - the ember saved for morning
+  tags: [cooking, communal, seasonal, abundance, failure]
+
+- id: nouns-lighthouse-keeper-log
+  type: noun_cluster
+  content:
+    - the Fresnel lens
+    - the wick
+    - the clockwork
+    - the oil reservoir
+    - the logbook
+    - the wind key
+    - the flash character
+  tags: [trade, historical, vocation, technical, maintenance]
+
+- id: nouns-hot-lava
+  type: noun_cluster
+  content:
+    - the cushion
+    - the sofa
+    - the rug
+    - the leap
+    - the book
+    - the floor
+    - the lava
+    - the unlit hallway
+  tags: [childhood, imaginative, game, domestic, threat]
+
 # ============================================================
 # image
 # ============================================================

@@ -160,6 +160,36 @@ Research finding (Amabile et al.): controlling framing ("follow these steps prec
 
 The worst clusters are thesis statements — a set of nouns assembled to make a point about a topic (e.g., all digital-age artifacts to make a point about modern alienation). The best clusters feel found, not argued.
 
+Bradbury's own closing to "Run Fast, Stand Still" describes the register the nouns should reach for:
+
+> *Conjure the nouns, alert the secret self, taste the darkness. Your own Thing stands waiting 'way up there in the attic shadows. If you speak softly, and write any old word that wants to jump out of your nerves onto the page...*
+
+A good cluster feels like it could have been *conjured* at the bottom of a dark stair, not assembled from a thesaurus. "Write any old word that wants to jump out of your nerves onto the page" is the bite test — involuntary physical reaction to a specific noun is the signal. If the whole list is neutral or dutiful, the cluster is forgettable.
+
+**The vocabulary-word trap.** The most common failure mode is collecting *interesting-sounding vocabulary* instead of concrete Bradbury nouns. Abstract nouns (THE LONELINESS, THE FREEDOM), adjectival nouns (THE SHIMMER, THE HOLLOW, THE RAVISHING), actions-as-nouns (THE RUNNING, THE FALLING), and general-purpose evocative vocabulary all fail even when they wear THE. Bradbury's own lists contain zero such words. Test: each noun must be perceivable by the senses — something you could hold, smell, hear, or enter.
+
+**The six tests.** A good `noun_cluster` seed passes all of these:
+
+1. **THE test** — every noun prefixed with THE, no exceptions.
+2. **Concrete-sensory test** — every noun is perceivable with the senses. No abstractions, no actions, no adjectives in disguise.
+3. **Dredge test** — feels *found*, not *assembled to make a point*. If you can summarize the cluster's theme in one sentence, it's a thesis-statement cluster.
+4. **Mix test** — cluster spans at least 3 of {place, object, creature/figure, phenomenon, manufactured thing, bodily sensation}. If all 7 nouns are from one domain (e.g. all kitchen objects), it's a taxonomy, not a cabinet.
+5. **Bite test** — at least one noun in the cluster produces an involuntary reaction when read. Neutral clusters are forgettable.
+6. **Leaning test** — internally coherent enough to be one pole of a collision, with room left for a second pole the `noun_list` operator will introduce.
+
+**Register balance.** The bank must produce joy, play, invention, and abundance as readily as dread, loss, and melancholy. Bradbury's own lists carry both — THE MEADOW and THE CAROUSEL alongside THE SKELETON and THE COFFIN. A cluster of purely neutral nouns fails the bite test; a cluster of purely dread-adjacent nouns biases generated concepts toward literary-heavy short fiction and forecloses comedy, romance, carnival, absurdism, euphoria. Joyful clusters are not "sanitized" — they carry charge that runs toward wonder, pleasure, abundance, triumph, play, invention.
+
+**The domain × speculative-setting heuristic.** The strongest noun-cluster seeds place a specific *domain of human activity* (with its concrete objects and procedures) into a *speculative setting* that twists the objects. Fashion history in a world of high fantasy. Social media in a post-singularity world. Real estate in a dying coastline. Mail delivery in the afterlife. The domain carries sensory-specific coherence; the setting carries the strangeness. Neither pole has to be named — the cluster *is* the tension between them. This also satisfies the leaning test automatically. Good domains tend to be bureaucratic, procedural, or deeply habitual: paperwork, rites, schedules, gossip, diagnosis, hunting, grooming, education, commuting, mourning, parenting.
+
+**Generative traditions.** Beyond Bradbury's original Midwestern-gothic register, clusters draw from many aesthetic traditions, each with a distinct texture:
+
+- **Contemporary-realist** — 20th-21st c. domestic, industrial, bodily (base register)
+- **Domain × speculative-setting** — see heuristic above
+- **Absurdist / productive-nonsense** — Kharms's OBERIU, Carroll's Snark, Barthelme's catalog-mythological, Schwitters's Merz detritus, Roussel's pun-manufactured objects (`lab/deep-research/runs/20260421_000516_nonsense-object-traditions/`)
+- **Vulgar / carnivalesque** — Rabelais, Aristophanes, Chaucer's fabliaux, Scottish flyting, Catullus, Petronius, African-American toast tradition, Russian chastushki (`lab/deep-research/runs/20260421_000416_vulgar-traditions/`)
+- **Invisible trades** — ocularists, crematorium operators, change-ringers, lighthouse keepers, pyrotechnicians, farriers, night auditors, embalmers (`lab/deep-research/runs/20260421_000445_invisible-trades-seeds/`)
+- **Children's own folklore** — the Opie/Knapp/Sutton-Smith/Bronner/Newell corpus: marbles, slumber-party ritual, cooties, snow-day ritual, friendship bracelets, hot-lava floor (`lab/deep-research/runs/20260421_003200_childrens-folklore-material/`)
+
 ---
 
 ### `image`
