@@ -160,25 +160,49 @@ class ParentBrief(BaseModel):
 
 
 class PairwiseResult(BaseModel):
-    """Aggregated pairwise comparison result across all judges and orderings."""
+    """Aggregated pairwise comparison result across all judges and orderings.
+
+    Winner-selection uses weighted dim-votes (Option E:
+    lab/issues/2026-04-21-rubric-reweighting.md). `a_wins`/`b_wins`/`ties` are
+    integer dim-counts preserved for display and match-history; the actual
+    selection decision is driven by `a_weighted`/`b_weighted` plus the
+    asymmetric tiebreaker, and the resulting signal flows through
+    `a_weighted_score` → `combined_score` for shinka parent-selection.
+    """
 
     winner: str  # "a" or "b"
     dimension_wins: dict[str, str]  # {dim_name: "a"/"b"/"tie"} majority per dim
-    a_wins: int  # total dimension-wins for concept a
-    b_wins: int  # total dimension-wins for concept b
+    a_wins: int  # total dimension-wins for concept a (integer count, display)
+    b_wins: int  # total dimension-wins for concept b (integer count, display)
     ties: int
+    a_weighted: float = 0.0    # weighted total that drove winner selection
+    b_weighted: float = 0.0
+    tie_weighted: float = 0.0  # mass of tied-dim weights (for weighted_score denom)
+    tiebreaker_used: str | None = None  # dim name, "incumbent", or None
     judgments: list[dict] = Field(default_factory=list)  # raw judge data
     feedback: str = ""  # formatted for mutation model (legacy; kept for logging)
     critiques_by_label: dict[str, MatchCritique] = Field(default_factory=dict)
 
     @property
     def a_score(self) -> float:
-        """Win percentage for concept a (ties count as 0.5)."""
+        """Integer dim-count win fraction (ties count as 0.5). Display/legacy."""
         total = self.a_wins + self.b_wins + self.ties
         return (self.a_wins + 0.5 * self.ties) / total if total else 0.0
 
     @property
     def b_score(self) -> float:
-        """Win percentage for concept b (ties count as 0.5)."""
+        """Integer dim-count win fraction (ties count as 0.5). Display/legacy."""
         total = self.a_wins + self.b_wins + self.ties
         return (self.b_wins + 0.5 * self.ties) / total if total else 0.0
+
+    @property
+    def a_weighted_score(self) -> float:
+        """Weighted win fraction. THIS is the selection signal; feeds shinka's
+        combined_score. Matches the winner-selection basis (weighted totals)."""
+        total = self.a_weighted + self.b_weighted + self.tie_weighted
+        return (self.a_weighted + 0.5 * self.tie_weighted) / total if total else 0.0
+
+    @property
+    def b_weighted_score(self) -> float:
+        total = self.a_weighted + self.b_weighted + self.tie_weighted
+        return (self.b_weighted + 0.5 * self.tie_weighted) / total if total else 0.0

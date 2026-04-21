@@ -10,6 +10,9 @@ YOUR VALUES (in order of priority):
 TASTE REFERENCES:
 {judge_exemplars}
 
+WHAT CATCHES YOUR ATTENTION (lean in and read closer when you see these — this is attention allocation, NOT a pre-score; your evaluation criteria still apply normally):
+{judge_lean_in_signals}
+
 CALIBRATION: {judge_harshness}
 
 {harshness_instruction}

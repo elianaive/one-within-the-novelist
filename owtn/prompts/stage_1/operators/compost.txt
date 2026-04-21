@@ -12,8 +12,9 @@ What does each one offer? Not the fragments themselves — the thread between th
 
 Show your reasoning before the binding.
 
-{output_format}
 {seed_content}
+
+{output_format}
 
 ---MUTATION---
 

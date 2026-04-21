@@ -4,6 +4,9 @@ import json
 
 import pytest
 
+from owtn.evaluation.models import DIMENSION_NAMES
+from owtn.models.stage_1.config import PairwiseAggregationConfig
+
 
 # --- Canonical test genomes ---
 
@@ -51,3 +54,42 @@ def genome_file(tmp_path):
 @pytest.fixture
 def results_dir(tmp_path):
     return tmp_path / "results"
+
+
+# --- Pairwise aggregation config fixtures ---
+#
+# These mirror the shape of `evaluation.pairwise` in configs/stage_1/*.yaml.
+# Keep `default_pairwise_cfg` in sync with the YAMLs — if weights change there,
+# update here so test scenarios stay meaningful.
+
+@pytest.fixture
+def default_pairwise_cfg():
+    """Canonical weights matching configs/stage_1/*.yaml. Explicit here so
+    tests don't silently drift if the YAML values change."""
+    return PairwiseAggregationConfig(
+        dim_weights={
+            "indelibility": 2.00,
+            "grip": 1.75,
+            "novelty": 1.75,
+            "generative_fertility": 1.25,
+            "tension_architecture": 1.00,
+            "emotional_depth": 1.00,
+            "thematic_resonance": 1.00,
+            "concept_coherence": 0.50,
+            "scope_calibration": 0.50,
+        },
+        tiebreaker_threshold=1.0,
+        tiebreaker_dims=["indelibility", "grip"],
+    )
+
+
+@pytest.fixture
+def uniform_pairwise_cfg():
+    """All weights = 1.0, threshold = 0.0 — reproduces pre-change behavior.
+    Used for regression tests that assert weighted selection degenerates to
+    the old integer-majority rule."""
+    return PairwiseAggregationConfig(
+        dim_weights={d: 1.0 for d in DIMENSION_NAMES},
+        tiebreaker_threshold=0.0,
+        tiebreaker_dims=[],
+    )

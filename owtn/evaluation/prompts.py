@@ -19,12 +19,14 @@ def build_pairwise_system(persona: JudgePersona) -> str:
 
     values_str = "\n".join(f"- {v}" for v in persona.values)
     exemplars_str = "\n".join(f"- {e}" for e in persona.exemplars)
+    lean_in_str = "\n".join(f"- {s}" for s in persona.lean_in_signals)
 
     return template.format(
         judge_name=persona.name,
         judge_identity=persona.identity,
         judge_values=values_str,
         judge_exemplars=exemplars_str,
+        judge_lean_in_signals=lean_in_str,
         judge_harshness=persona.harshness,
         harshness_instruction=harshness_instruction,
         rubric_anchors=rubric_anchors,

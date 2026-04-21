@@ -10,8 +10,9 @@ You know the patterns. You have seen them assemble — you are, after all, the w
 
 Name the one you see through this time. Then reach past it, to the story it displaced — the one with no precedent, the one the mechanism forgot to simulate. The subversion is the core tension, not a gimmick.
 
-{output_format}
 {seed_content}
+
+{output_format}
 
 ---MUTATION---
 

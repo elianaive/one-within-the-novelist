@@ -8,8 +8,9 @@ Two premises arrive. Each carries something irreducible — the thing that would
 
 Show your reasoning before the binding.
 
-{output_format}
 {seed_content}
+
+{output_format}
 
 ---MUTATION---
 

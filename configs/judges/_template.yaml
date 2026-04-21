@@ -41,6 +41,26 @@ values:
 exemplars:
   - ""
 
+# 3-5 concept domains or formal moves where this judge leans in and
+# reads closer. IMPORTANT: this is attention allocation, NOT a
+# pre-score. A concept touching a lean-in signal gets the judge's
+# close-read attention; it does NOT get an automatic score bump.
+# Evaluation criteria still apply.
+#
+# Phrasing: short domain or form labels. Mix of content territory
+# ("xenopsychology," "benevolent-but-constrained AI") and formal
+# preferences ("Borgesian fictional-essay structure," "chatlog /
+# epistolary / transcript framing") is encouraged if both apply.
+#
+# Avoid: broad generic categories ("good writing," "interesting
+# premises"); keyword-match lists that would corrupt evaluation
+# into surface-matching; values dressed up as signals (if it's a
+# ranked priority, it belongs in `values`).
+lean_in_signals:
+  - ""
+  - ""
+  - ""
+
 # lenient / moderate / demanding
 # At least 30% of any panel should be demanding.
 # These map to calibration instructions in the judge prompt:

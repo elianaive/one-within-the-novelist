@@ -35,7 +35,7 @@ def _judgment(winner: str) -> PairwiseJudgment:
 
 
 @pytest.mark.asyncio
-async def test_compare_logs_correct_judge_id_per_call(monkeypatch):
+async def test_compare_logs_correct_judge_id_per_call(monkeypatch, default_pairwise_cfg):
     seen: list[str] = []
 
     async def fake_query_async(*args, **kwargs):
@@ -58,7 +58,8 @@ async def test_compare_logs_correct_judge_id_per_call(monkeypatch):
         judges=SimpleNamespace(
             judges_dir="configs/judges",
             panel=["mira-okonkwo", "tomas-varga", "sable-ahn"],
-        )
+        ),
+        evaluation=SimpleNamespace(pairwise=default_pairwise_cfg),
     )
 
     await pairwise.compare(genome_a, genome_b, config)

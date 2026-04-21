@@ -16,6 +16,7 @@ def _judge(harshness: str = "standard") -> JudgePersona:
         identity="A test judge persona.",
         values=["Grip", "Surprise"],
         exemplars=["Example story reference."],
+        lean_in_signals=["Test lean-in signal"],
         harshness=harshness,
         priority="primary",
         model=["gpt-4o"],

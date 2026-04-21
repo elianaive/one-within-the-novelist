@@ -12,8 +12,9 @@ Then read what you wrote. The concept was always there, latent in the material. 
 
 Show the prose before the binding.
 
-{output_format}
 {seed_content}
+
+{output_format}
 
 ---MUTATION---
 

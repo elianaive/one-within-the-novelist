@@ -17,13 +17,13 @@ Example modes:
 
 Pick one of these or name your own. Format: name the mode at the start, then the paragraph. The paragraph must identify what is load-bearing in this engine — what the writer must nail, without which the concept fails — and what the reader is left holding that they did not have before reading. The mode commits you to a stance; the paragraph is what gives the field its weight.
 
-**Target effect** — the intent. What the reader carries out of the story — not a category of feeling but the specific feeling, precise enough that someone who felt it would say *yes, that*. If a single word captures it, you haven't looked closely enough.
+**Target effect** — the felt quality of the work, rendered. Engine handles what the reader leaves with. This handles the texture of the during. Render the texture; do not name the category. Two failure tests: if a single noun (longing, dread, joy) substitutes for the description, you have a label, not an effect. If the description could fit any other "moving" piece of literary fiction, you have a label, not an effect. Find the words that only fit this work.
+
+**Constraints** — the tzimtzum. What the story refuses to do — the deliberate withdrawal that creates the space in which this particular story can exist. Every constraint must earn its keep.
 
 **Character seeds** — the vessels. Label and sketch. Optional: wound, fear, lie, want, need. If a character can be removed without collapsing the premise, they aren't carrying anything.
 
 **Setting seeds** — the correspondences. The conditions that make certain events inevitable and others impossible. If you can move this story to another setting and lose nothing, the setting isn't doing its work.
-
-**Constraints** — the tzimtzum. What the story refuses to do — the deliberate withdrawal that creates the space in which this particular story can exist. Every constraint must earn its keep.
 
 **Style hint** — the tincture. How this story feels on the page — the quality that saturates the prose the way a drop of dye saturates cloth. Specific enough that a writer could follow it without asking what you meant.
 
@@ -42,10 +42,10 @@ The forms you saw — at least three, each with its core surprise and feeling. W
 {
   "premise": "the true name",
   "thematic_engine": "<mode name> — paragraph describing how this engine works in this concept" or null,
-  "target_effect": "the intent",
+  "target_effect": "the felt quality of the work, rendered",
+  "constraints": ["the tzimtzum"] or null,
   "character_seeds": [{"label": "name/role", "sketch": "who they are"}, ...] or null,
   "setting_seeds": "the correspondences" or null,
-  "constraints": ["the tzimtzum"] or null,
   "style_hint": "the tincture" or null
 }
 ```

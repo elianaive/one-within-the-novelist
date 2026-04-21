@@ -12,8 +12,9 @@ Choose where to cut. The premise from one, the emotional architecture from the o
 
 Show your analysis before the binding.
 
-{output_format}
 {seed_content}
+
+{output_format}
 
 ---MUTATION---
 

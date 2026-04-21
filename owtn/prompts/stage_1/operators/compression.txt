@@ -12,8 +12,9 @@ Pull back. The concept is what the plaster captured.
 
 Show the review before the binding.
 
-{output_format}
 {seed_content}
+
+{output_format}
 
 ---MUTATION---
 
