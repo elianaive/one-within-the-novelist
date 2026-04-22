@@ -34,6 +34,8 @@ DIFF_OPERATORS = {"inversion"}
 
 CROSS_OPERATORS = {"collision", "compost", "crossover"}
 
+NON_GENESIS_OPERATORS = {"inversion", "compost", "crossover"}
+
 
 @pytest.fixture(scope="module")
 def registry():
@@ -60,6 +62,7 @@ class TestRegistryStructure:
             assert op.name == name
             assert op.routing in ("full", "diff")
             assert isinstance(op.needs_inspiration, bool)
+            assert isinstance(op.genesis, bool)
             assert isinstance(op.seed_types, list)
             assert isinstance(op.sys_format, str)
             assert isinstance(op.operator_instructions, str)
@@ -90,6 +93,18 @@ class TestCrossOperators:
         for name, op in registry.items():
             if name not in CROSS_OPERATORS:
                 assert not op.needs_inspiration, f"{name} should not need inspiration"
+
+
+class TestGenesisEligibility:
+
+    def test_non_genesis_operators_flagged(self, registry):
+        for op_name in NON_GENESIS_OPERATORS:
+            assert not registry[op_name].genesis, f"{op_name} should be genesis=False"
+
+    def test_genesis_operators_flagged(self, registry):
+        for name, op in registry.items():
+            if name not in NON_GENESIS_OPERATORS:
+                assert op.genesis, f"{name} should be genesis=True"
 
 
 class TestSeedTypes:
