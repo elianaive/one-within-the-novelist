@@ -1,7 +1,8 @@
 """Stage 1 concept evolution runner — thin wrapper around ShinkaEvolveRunner.
 
 Configures the loop for JSON concept genomes, dispatches through the operator
-registry, and overrides initial population generation with cold-start allocation.
+registry, and overrides initial population generation to sample from the
+genesis-eligible subset of operators.
 """
 
 from __future__ import annotations
@@ -32,27 +33,14 @@ from owtn.models.stage_1.concept_genome import ConceptGenome
 from owtn.models.stage_1.config import StageConfig
 from owtn.models.stage_1.seed_bank import SeedBank
 from owtn.prompts import sample_tonal_steering
-from owtn.prompts.stage_1.registry import build_operator_prompt, load_registry
+from owtn.prompts.stage_1.registry import (
+    build_operator_prompt,
+    filter_genesis_eligible,
+    load_registry,
+)
 from owtn.state_logger import snapshot_generation
 
 logger = logging.getLogger(__name__)
-
-# Cold-start operator weights from docs/stage-1/population.md.
-# compost and crossover excluded — they need existing population.
-COLD_START_OPERATORS = {
-    "collision": 0.20,
-    "thought_experiment": 0.20,
-    "noun_list": 0.15,
-    "constraint_first": 0.15,
-    "anti_premise": 0.10,
-    "discovery": 0.10,
-    "compression": 0.05,
-    "real_world_seed": 0.05,
-}
-_CS_NAMES = list(COLD_START_OPERATORS.keys())
-_CS_PROBS = np.array(list(COLD_START_OPERATORS.values()))
-_CS_PROBS = _CS_PROBS / _CS_PROBS.sum()  # ensure exact 1.0
-
 
 def _build_shinka_configs(
     cfg: StageConfig,
@@ -728,7 +716,11 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
 
         Returns (code, patch_name, patch_description, total_costs, llm_metadata).
         """
-        operator = str(np.random.choice(_CS_NAMES, p=_CS_PROBS))
+        genesis_types, genesis_probs = filter_genesis_eligible(
+            self.stage_config.evolution.patch_types,
+            self.stage_config.evolution.patch_type_probs,
+        )
+        operator = str(np.random.choice(genesis_types, p=genesis_probs))
         tonal_text, register_name, mode_name = sample_tonal_steering()
         llm_context.set({"role": "generation", "operator": operator, "generation": 0})
 
