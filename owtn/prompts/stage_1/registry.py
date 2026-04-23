@@ -23,25 +23,57 @@ class OperatorDef:
     name: str
     routing: str  # "full" or "diff"
     needs_inspiration: bool  # cross-type: needs a second parent
+    genesis: bool  # can generate a concept with no parent (cold-start or mid-run genesis roll)
     seed_types: list[str]
     sys_format: str  # appended to base system message
     operator_instructions: str  # fills {operator_instructions} in templates
     mutation_preamble: str = ""  # prepended to instructions in mutation mode
 
 
+# genesis=False:
+#   inversion — diff routing needs a parent to SEARCH/REPLACE against
+#   compost, crossover — require archive inspirations, no cold-start path
 OPERATOR_DEFS: dict[str, dict] = {
-    "collision":          {"routing": "full", "cross": True},
-    "noun_list":          {"routing": "full", "cross": False},
-    "thought_experiment": {"routing": "full", "cross": False},
-    "compost":            {"routing": "full", "cross": True},
-    "crossover":          {"routing": "full", "cross": True},
-    "inversion":          {"routing": "diff", "cross": False},
-    "discovery":          {"routing": "full", "cross": False},
-    "compression":        {"routing": "full", "cross": False},
-    "constraint_first":   {"routing": "full", "cross": False},
-    "anti_premise":       {"routing": "full", "cross": False},
-    "real_world_seed":    {"routing": "full", "cross": False},
+    "collision":          {"routing": "full", "cross": True,  "genesis": True},
+    "noun_list":          {"routing": "full", "cross": False, "genesis": True},
+    "thought_experiment": {"routing": "full", "cross": False, "genesis": True},
+    "compost":            {"routing": "full", "cross": True,  "genesis": False},
+    "crossover":          {"routing": "full", "cross": True,  "genesis": False},
+    "inversion":          {"routing": "diff", "cross": False, "genesis": False},
+    "discovery":          {"routing": "full", "cross": False, "genesis": True},
+    "compression":        {"routing": "full", "cross": False, "genesis": True},
+    "constraint_first":   {"routing": "full", "cross": False, "genesis": True},
+    "anti_premise":       {"routing": "full", "cross": False, "genesis": True},
+    "real_world_seed":    {"routing": "full", "cross": False, "genesis": True},
 }
+
+
+def is_genesis_eligible(operator: str) -> bool:
+    """True if operator can generate without a parent."""
+    defn = OPERATOR_DEFS.get(operator)
+    return defn is not None and defn["genesis"]
+
+
+def filter_genesis_eligible(
+    patch_types: list[str], patch_type_probs: list[float]
+) -> tuple[list[str], list[float]]:
+    """Return (types, probs) filtered to genesis-eligible operators, renormalized.
+
+    If the filter leaves nothing, returns the inputs unchanged (caller can still
+    sample — useful for tests or stages with no registry coverage yet).
+    """
+    import numpy as np
+
+    filtered = [
+        (t, p) for t, p in zip(patch_types, patch_type_probs)
+        if is_genesis_eligible(t)
+    ]
+    if not filtered:
+        return list(patch_types), list(patch_type_probs)
+    types, probs = zip(*filtered)
+    probs_arr = np.array(probs, dtype=float)
+    probs_arr = probs_arr / probs_arr.sum()
+    return list(types), probs_arr.tolist()
 
 
 def _load_text(path: Path) -> str:
@@ -99,6 +131,7 @@ def load_registry() -> dict[str, OperatorDef]:
             name=name,
             routing=defn["routing"],
             needs_inspiration=defn["cross"],
+            genesis=defn["genesis"],
             seed_types=seed_types,
             sys_format=sys_format,
             operator_instructions=operator_body,
