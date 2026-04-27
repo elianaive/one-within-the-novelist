@@ -223,7 +223,10 @@ class TestSummarizerPromptAssembly:
         critique = _sample_critique(self_label="a", was_champion=False)
         self_genome = {"premise": "THIS genome", "target_effect": "x"}
         msg = lineage_brief._build_summarizer_user_msg(
-            self_genome, [critique], _stage_1_format_self
+            match_critiques=[critique],
+            extract_self=lambda _c: self_genome,
+            format_self=_stage_1_format_self,
+            subject=lineage_brief.LINEAGE_SUBJECT,
         )
         # Per-match header disambiguates A/B.
         assert "THIS LINEAGE was labeled 'A'" in msg
@@ -239,7 +242,10 @@ class TestSummarizerPromptAssembly:
         critique = _sample_critique(self_label="b", was_champion=True)
         self_genome = {"premise": "x", "target_effect": "y"}
         msg = lineage_brief._build_summarizer_user_msg(
-            self_genome, [critique], _stage_1_format_self
+            match_critiques=[critique],
+            extract_self=lambda _c: self_genome,
+            format_self=_stage_1_format_self,
+            subject=lineage_brief.LINEAGE_SUBJECT,
         )
         assert "champion (defending)" in msg
         assert "THIS LINEAGE was labeled 'B'" in msg

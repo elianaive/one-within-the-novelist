@@ -299,28 +299,111 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
                 program_path, results_dir, config_path, island_idx,
             ))
 
+    def _read_champion_data(self, island_idx: int) -> dict | None:
+        """Read the island's champion JSON from disk. Returns None if no
+        champion file exists or the file can't be parsed (the caller treats
+        either case as "this is the island's first concept")."""
+        champ_file = self._champions_dir / f"island_{island_idx}.json"
+        if not champ_file.exists():
+            return None
+        try:
+            return json.loads(champ_file.read_text())
+        except Exception:
+            return None
+
+    def _apply_pairwise_outcome(
+        self,
+        *,
+        result,
+        pairwise_result,
+        champion_data: dict,
+        program_path: str,
+        island_idx: int,
+    ) -> None:
+        """Score the challenger based on the pairwise verdict, mutating
+        `result` in place. Winner branch also writes the new champion file
+        immediately (the per-island lock guarantees that's race-free)."""
+        result.text_feedback = pairwise_result.feedback
+        if pairwise_result.winner == "a":
+            # Eval is serialized per island via _champion_locks[island_idx]
+            # (see _evaluate_with_pairwise), so the champion_data we read at
+            # the start of this eval still reflects the actual incumbent —
+            # no parallel challenger snuck in.
+            incumbent_score = float(champion_data.get("combined_score", 0.5))
+            result.combined_score = _challenger_succession_score(
+                match_score=pairwise_result.a_score,
+                incumbent_score=incumbent_score,
+            )
+            # Update champion file immediately so the next eval on this
+            # island (which will block on the same lock) sees the new
+            # champion when it eventually runs.
+            champ_file = self._champions_dir / f"island_{island_idx}.json"
+            champ_file.write_text(json.dumps({
+                "id": "pending",
+                "code": Path(program_path).read_text(),
+                "metadata": {},
+                "combined_score": result.combined_score,
+            }))
+            verdict = "WINS"
+        else:
+            # combined_score drives shinka's parent-selection for losers.
+            # Use a_weighted_score (not a_score) so parent-selection matches
+            # the winner-selection basis — both driven by weighted dim-votes.
+            result.combined_score = pairwise_result.a_weighted_score * 0.9
+            verdict = "LOSES"
+
+        logger.info(
+            "%s (%d-%d-%d, weighted %.2f-%.2f, score=%.0f%%)",
+            verdict,
+            pairwise_result.a_wins, pairwise_result.b_wins, pairwise_result.ties,
+            pairwise_result.a_weighted, pairwise_result.b_weighted,
+            pairwise_result.a_weighted_score * 100,
+        )
+
+    def _attach_match_critiques(
+        self,
+        *,
+        result,
+        pairwise_result,
+        champion_id: str | None,
+    ) -> tuple[Optional[object], Optional[object]]:
+        """Persist the per-perspective critiques.
+
+        - Challenger's critique goes into result.private_metrics so it
+          persists with the new program via shinka's normal metrics.json
+          → DB path.
+        - Champion's critique is appended to its existing DB row via
+          append_match_critique_threadsafe (opens its own connection).
+
+        Returns the (challenger_critique, champion_critique) pair so callers
+        can decide what to do downstream (e.g. brief refresh).
+        """
+        challenger_critique = pairwise_result.critiques_by_label.get("a")
+        champion_critique = pairwise_result.critiques_by_label.get("b")
+        if challenger_critique is not None:
+            existing = result.private_metrics.setdefault("match_critiques", [])
+            existing.append(challenger_critique.model_dump())
+        if champion_critique is not None and champion_id and champion_id != "pending":
+            self.db.append_match_critique_threadsafe(
+                champion_id, champion_critique.model_dump()
+            )
+        return challenger_critique, champion_critique
+
     async def _evaluate_with_pairwise_async(
         self, program_path: str, results_dir: str, config_path: str,
-        island_idx: int | None,
+        island_idx: int,
     ) -> None:
-        """Async implementation of validate + pairwise."""
+        """Async implementation of validate + pairwise. Linear sequence:
+        validate → load champion → parse genomes → pairwise → apply outcome
+        → attach critiques → refresh lineage briefs → write metrics.
+        """
         from owtn.evaluation.stage_1 import evaluate
 
         result = await evaluate(program_path, results_dir, config_path)
-
         if not result.correct:
             return
 
-        # Read island champion from disk.
-        champion_data = None
-        if island_idx is not None:
-            champ_file = self._champions_dir / f"island_{island_idx}.json"
-            if champ_file.exists():
-                try:
-                    champion_data = json.loads(champ_file.read_text())
-                except Exception:
-                    pass
-
+        champion_data = self._read_champion_data(island_idx)
         if champion_data is None:
             result.combined_score = 0.5
             result.text_feedback = "No champion found — initial champion."
@@ -328,7 +411,6 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
             logger.info("Initial champion (island %s, score=50%%)", island_idx)
             return
 
-        # Parse genomes for comparison.
         try:
             challenger_genome = ConceptGenome.model_validate_json(
                 Path(program_path).read_text()
@@ -341,9 +423,10 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
             self._write_eval_result(result, results_dir)
             return
 
-        challenger_name = challenger_genome.premise[:60]
-        champion_name = champion_genome.premise[:60]
-        logger.info("'%s...' vs champion '%s...' — comparing...", challenger_name, champion_name)
+        logger.info(
+            "'%s...' vs champion '%s...' — comparing...",
+            challenger_genome.premise[:60], champion_genome.premise[:60],
+        )
 
         try:
             pairwise_result = await pairwise_compare(
@@ -359,65 +442,20 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
             self._write_eval_result(result, results_dir)
             return
 
-        if pairwise_result.winner == "a":
-            # The whole eval body is serialized per island via the outer
-            # `_champion_locks[island_idx]` (see `_evaluate_with_pairwise`).
-            # That guarantees `champion_data` reflects the actual current
-            # champion (no parallel challenger has snuck in), so we can
-            # use the score we read at the start of this eval directly.
-            incumbent_score = float(champion_data.get("combined_score", 0.5))
-            result.combined_score = _challenger_succession_score(
-                match_score=pairwise_result.a_score,
-                incumbent_score=incumbent_score,
-            )
-            result.text_feedback = pairwise_result.feedback
-            # Update champion file immediately so the next eval on this
-            # island (which will block on the same lock) sees the new
-            # champion when it eventually runs.
-            if island_idx is not None:
-                champ_file = self._champions_dir / f"island_{island_idx}.json"
-                champ_file.write_text(json.dumps({
-                    "id": "pending",
-                    "code": Path(program_path).read_text(),
-                    "metadata": {},
-                    "combined_score": result.combined_score,
-                }))
-            logger.info(
-                "WINS (%d-%d-%d, weighted %.2f-%.2f, score=%.0f%%)",
-                pairwise_result.a_wins, pairwise_result.b_wins, pairwise_result.ties,
-                pairwise_result.a_weighted, pairwise_result.b_weighted,
-                pairwise_result.a_weighted_score * 100,
-            )
-        else:
-            # combined_score drives shinka's parent-selection for losers.
-            # Use a_weighted_score (not a_score) so parent-selection matches
-            # the winner-selection basis — both driven by weighted dim-votes.
-            result.combined_score = pairwise_result.a_weighted_score * 0.9
-            result.text_feedback = pairwise_result.feedback
-            logger.info(
-                "LOSES (%d-%d-%d, weighted %.2f-%.2f, score=%.0f%%)",
-                pairwise_result.a_wins, pairwise_result.b_wins, pairwise_result.ties,
-                pairwise_result.a_weighted, pairwise_result.b_weighted,
-                pairwise_result.a_weighted_score * 100,
-            )
+        self._apply_pairwise_outcome(
+            result=result,
+            pairwise_result=pairwise_result,
+            champion_data=champion_data,
+            program_path=program_path,
+            island_idx=island_idx,
+        )
 
-        # Attach match critiques from both perspectives:
-        # - Challenger's critique goes into private_metrics so it persists
-        #   with the new program via shinka's normal metrics.json → DB path.
-        # - Champion's critique is appended to its existing DB row via
-        #   append_match_critique_threadsafe (opens its own connection).
-        challenger_critique = pairwise_result.critiques_by_label.get("a")
-        champion_critique = pairwise_result.critiques_by_label.get("b")
-        if challenger_critique is not None:
-            existing = result.private_metrics.setdefault("match_critiques", [])
-            existing.append(challenger_critique.model_dump())
-
-        champion_id = champion_data.get("id") if champion_data else None
-        if champion_critique is not None:
-            if champion_id and champion_id != "pending":
-                self.db.append_match_critique_threadsafe(
-                    champion_id, champion_critique.model_dump()
-                )
+        champion_id = champion_data.get("id")
+        _, champion_critique = self._attach_match_critiques(
+            result=result,
+            pairwise_result=pairwise_result,
+            champion_id=champion_id,
+        )
 
         # Compute lineage briefs in-band, before metrics.json is written or
         # the champion's defense critique is read by any subsequent
