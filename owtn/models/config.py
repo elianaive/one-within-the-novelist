@@ -21,6 +21,13 @@ class GenerationModelConfig(BaseModel):
     weight: float = 1.0
     temperature: float = 1.0
     reasoning_effort: str = "disabled"
+    # Explicit thinking-token budget for Anthropic / Gemini reasoning models.
+    # Preferred over the discrete `reasoning_effort` enum when you want a
+    # specific budget (e.g. 6000 instead of "high"=8192). When None, the
+    # provider falls back to the THINKING_TOKENS[reasoning_effort] mapping
+    # — so existing configs without thinking_tokens keep behaving the same.
+    # Has no effect on OpenAI/DeepSeek models, which take an effort string.
+    thinking_tokens: int | None = None
     top_p: float | None = None
     top_k: int | None = None
     min_p: float | None = None

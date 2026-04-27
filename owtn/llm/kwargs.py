@@ -21,17 +21,23 @@ def sample_model_kwargs(
     top_p: Union[List[Optional[float]], Optional[float]] = None,
     top_k: Union[List[Optional[int]], Optional[int]] = None,
     min_p: Union[List[Optional[float]], Optional[float]] = None,
+    thinking_tokens: Union[List[Optional[int]], Optional[int]] = None,
 ):
     """Sample a dictionary of kwargs for a given model.
 
     All param lists (``temperatures``, ``max_tokens``, ``reasoning_efforts``,
-    ``top_p``, ``top_k``, ``min_p``) follow the same parallel-vs-broadcast
-    contract: when a list has the same length as ``model_names``, it is
-    treated as a parallel list indexed by the sampled model. When it has any
-    other length (or is a scalar), it's sampled independently via
-    ``random.choice``. This lets callers pass per-model params (e.g.
-    ``temperatures=[1.2, 1.0]`` alongside ``model_names=["ds", "claude"]``)
-    without independent sampling breaking the per-model intent.
+    ``thinking_tokens``, ``top_p``, ``top_k``, ``min_p``) follow the same
+    parallel-vs-broadcast contract: when a list has the same length as
+    ``model_names``, it is treated as a parallel list indexed by the sampled
+    model. When it has any other length (or is a scalar), it's sampled
+    independently via ``random.choice``. This lets callers pass per-model
+    params (e.g. ``temperatures=[1.2, 1.0]`` alongside
+    ``model_names=["ds", "claude"]``) without independent sampling breaking
+    the per-model intent.
+
+    Thinking-budget resolution for Anthropic/Gemini reasoning models:
+    explicit ``thinking_tokens`` int wins; falls back to
+    ``THINKING_TOKENS[reasoning_effort]`` when None.
     """
     # Make all inputs lists
     if isinstance(model_names, str):
@@ -48,6 +54,8 @@ def sample_model_kwargs(
         top_k = [top_k]
     if not isinstance(min_p, list):
         min_p = [min_p]
+    if not isinstance(thinking_tokens, list):
+        thinking_tokens = [thinking_tokens]
 
     kwargs_dict = {}
 
@@ -117,14 +125,17 @@ def sample_model_kwargs(
         if provider == "openai" and r_effort != "disabled":
             kwargs_dict["reasoning"]["summary"] = "auto"
 
-    # 4.b) SET: max_tokens for Google reasoning effort
+    # 4.b) SET: max_tokens for Google reasoning effort. Explicit
+    # `thinking_tokens` int wins over the THINKING_TOKENS[r_effort] mapping.
     elif provider == "google" and is_reasoning_model(api_model_name):
         kwargs_dict["max_tokens"] = mt_val
-        think_bool = r_effort != "disabled"
-        if think_bool:
+        ceiling = kwargs_dict["max_tokens"]
+        explicit_tt = _pick(thinking_tokens)
+        if explicit_tt is not None:
+            kwargs_dict["thinking_budget"] = explicit_tt if explicit_tt < ceiling else 1024
+        elif r_effort != "disabled":
             t = THINKING_TOKENS[r_effort]
-            thinking_tokens = t if t < kwargs_dict["max_tokens"] else 1024
-            kwargs_dict["thinking_budget"] = thinking_tokens
+            kwargs_dict["thinking_budget"] = t if t < ceiling else 1024
         else:
             if api_model_name in ("gemini-2.5-pro", "gemini-3-pro-preview"):
                 kwargs_dict["thinking_budget"] = 128
@@ -148,19 +159,23 @@ def sample_model_kwargs(
             kwargs_dict["extra_body"] = {"thinking": {"type": "enabled"}}
             kwargs_dict["reasoning_effort"] = r_effort
 
-    # 4.c) SET: max_tokens for Anthropic or Bedrock reasoning effort
+    # 4.c) SET: max_tokens for Anthropic or Bedrock reasoning effort.
+    # Explicit `thinking_tokens` int wins over the THINKING_TOKENS[r_effort]
+    # mapping; fall back to the mapping when not specified.
     elif provider in ("anthropic", "bedrock") and is_reasoning_model(api_model_name):
         kwargs_dict["max_tokens"] = min(mt_val, 64000)
-        think_bool = r_effort != "disabled"
-        if think_bool:
-            # filter thinking tokens to be smaller than max_tokens
-            # not auto THINKING_TOKENS
+        ceiling = kwargs_dict["max_tokens"]
+        explicit_tt = _pick(thinking_tokens)
+        budget: Optional[int] = None
+        if explicit_tt is not None:
+            budget = explicit_tt if explicit_tt < ceiling else 1024
+        elif r_effort != "disabled":
             t = THINKING_TOKENS[r_effort]
-            thinking_tokens = t if t < kwargs_dict["max_tokens"] else 1024
-            # sample only from thinking tokens that are valid
+            budget = t if t < ceiling else 1024
+        if budget is not None:
             kwargs_dict["thinking"] = {
                 "type": "enabled",
-                "budget_tokens": thinking_tokens,
+                "budget_tokens": budget,
             }
 
     # 4.d) SET: max_tokens for all other models
