@@ -11,11 +11,11 @@ from __future__ import annotations
 import pytest
 from pydantic import BaseModel, ValidationError
 
-from owtn.llm.providers.openai import (
-    _clean_trailing_garbage,
-    _normalize_json_keys,
-    _normalize_key,
-    _recover_from_validation_error,
+from owtn.llm.recovery import (
+    clean_trailing_garbage as _clean_trailing_garbage,
+    normalize_json_keys as _normalize_json_keys,
+    normalize_key as _normalize_key,
+    recover_from_validation_error as _recover_from_validation_error,
 )
 
 

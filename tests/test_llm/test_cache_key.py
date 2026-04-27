@@ -1,6 +1,6 @@
-"""Tests for _query_cache_key determinism and differentiation."""
+"""Tests for query_cache_key determinism and differentiation."""
 
-from owtn.llm.query import _query_cache_key
+from owtn.llm.cache import query_cache_key as _query_cache_key
 
 
 class TestCacheKeyDeterminism:
