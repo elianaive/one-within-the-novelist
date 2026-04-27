@@ -59,6 +59,10 @@ def query_deepseek(
             response_model=output_model,
             **kwargs,
         )
+        try:
+            thought = response.choices[0].message.reasoning_content or ""
+        except Exception:
+            thought = ""
         new_msg_history.append({"role": "assistant", "content": str(content)})
     else:
         response = client.chat.completions.create(
@@ -89,7 +93,9 @@ def query_deepseek(
     cached_tokens = (getattr(details, "cached_tokens", 0) or 0) if details else 0
     if not cached_tokens:
         cached_tokens = getattr(response.usage, "prompt_cache_hit_tokens", 0) or 0
-    input_cost, output_cost = calculate_cost(model, in_tokens, all_out_tokens)
+    input_cost, output_cost = calculate_cost(
+        model, in_tokens, all_out_tokens, cached_input_tokens=cached_tokens
+    )
 
     # Collect all results
     result = QueryResult(
@@ -150,6 +156,10 @@ async def query_deepseek_async(
             response_model=output_model,
             **kwargs,
         )
+        try:
+            thought = response.choices[0].message.reasoning_content or ""
+        except Exception:
+            thought = ""
         new_msg_history.append({"role": "assistant", "content": str(content)})
     else:
         response = await client.chat.completions.create(
@@ -179,7 +189,9 @@ async def query_deepseek_async(
     cached_tokens = (getattr(details, "cached_tokens", 0) or 0) if details else 0
     if not cached_tokens:
         cached_tokens = getattr(response.usage, "prompt_cache_hit_tokens", 0) or 0
-    input_cost, output_cost = calculate_cost(model, in_tokens, all_out_tokens)
+    input_cost, output_cost = calculate_cost(
+        model, in_tokens, all_out_tokens, cached_input_tokens=cached_tokens
+    )
 
     return QueryResult(
         content=content,

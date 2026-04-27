@@ -1,0 +1,16 @@
+## Tension & Information Architecture
+
+**Definition**: does the DAG manage suspense and information gaps to produce narrative momentum? Do disclosure edges withhold and reveal information in a sequence that creates and maintains curiosity?
+
+**Sub-criteria**:
+
+- **Information-gap placement**: disclosure edges create readable gaps — the reader knows something is hidden without knowing what it is.
+- **Suspense curve**: tension builds across the opening-to-climax span; the climax is the peak entropy moment; resolution reduces entropy in a specific way.
+- **Curiosity management**: the DAG opens information gaps and closes them at rates appropriate to the concept's target effect.
+- **Resolvable vs. permanent gaps**: the DAG distinguishes gaps that will be resolved from gaps that will remain mysterious. Both can be valid; the choice is intentional.
+
+**Score 5**: Disclosure edges establish a clear information-gap structure. The reader's curiosity is managed across the DAG — new gaps open as others close. The climax's peak entropy is earned by setup. No information gap feels arbitrary; each serves the concept's specific suspense goals.
+
+**Score 3 (exemplar)**: The DAG has a clear tension arc. Some information gaps are managed well; others are resolved too quickly or never fully opened. The climax is a peak but feels slightly unearned or slightly anticlimactic.
+
+**Score 1**: Information is delivered linearly, in the order it would be known. No disclosure edges or they serve no purpose. The DAG has no tension arc — beats happen in sequence without a rising-stakes structure.

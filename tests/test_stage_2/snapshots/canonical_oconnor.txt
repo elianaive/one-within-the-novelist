@@ -1,0 +1,87 @@
+STORY STRUCTURE A
+=================
+
+Beats listed in causal order. Each beat shows what it causes or reveals,
+with load-bearing details in parentheses. Per-node motifs annotated under
+the beat header; whole-story arcs and constraints listed in their own
+sections at the end.
+
+[opening] the grandmother does not want to go to Florida. She reads aloud from the paper that the Misfit, a convict, has escaped and is headed that way.
+  motifs: the grandmother's hat and lace collar [introduced]
+  -> causes [departure] they leave for Florida anyway. the grandmother dresses for the possibility of...
+      (realizes: the family overrides the grandmother's objection; her attempt to prevent the trip fails and she travels with a grievance)
+  -> discloses to [arrival] a car stops. Three men get out with a gun. the grandmother recognizes the...
+      (reframes: the newspaper-Misfit (abstract, a type) becomes the actual-Misfit (specific, in the flesh); withheld: that the Misfit and the family will intersect — the story has been staging this under the pretense of being about a tiresome family trip; disclosed_to: reader, the grandmother)
+
+[departure] they leave for Florida anyway. the grandmother dresses for the possibility of being found dead on the road in her lace collar so strangers will know she was a lady.
+  motifs: the grandmother's hat and lace collar [performed]; Pitty Sing, the cat [introduced]
+  -> causes [diner] at Red Sammy's diner, the grandmother and Red Sammy agree that a good man is...
+      (realizes: the road trip produces stops; the diner stop sets up the Misfit as a concrete presence in the moral landscape rather than a newspaper abstraction)
+
+[diner] at Red Sammy's diner, the grandmother and Red Sammy agree that a good man is hard to find; the Misfit is discussed in abstract moral terms.
+  motifs: the title phrase 'a good man is hard to find' and its echo 'you're a good man' [introduced]
+  -> motivates [detour] the grandmother remembers a plantation with a secret panel; she lies about its...
+      (agent: the grandmother; goal: to produce a memorable excursion that repairs her marginalization in the current moment; stakes: her standing as the matriarch whose judgment is worth following on this trip)
+
+[detour] the grandmother remembers a plantation with a secret panel; she lies about its location being in Georgia and persuades Bailey to take a dirt road. Pitty Sing, hidden in a basket, startles.
+  motifs: Pitty Sing, the cat [echoed]
+  -> causes [crash] the car turns over in a ditch. No one is seriously hurt. the grandmother...
+      (realizes: the dirt road with the concealed cat in the basket produces exactly the kind of accident dirt roads produce; Pitty Sing's startle is the proximate physical cause)
+  -> discloses to [grace] she reaches out and touches the Misfit on the shoulder and says, 'Why you're...
+      (reframes: the grandmother's vanity-motivated lie about the plantation is retroactively understood as the agent of her deliverance to the moment of grace; what damned her also saved her; withheld: that the detour's consequence is not punishment but confrontation with the real; disclosed_to: reader)
+
+[crash] the car turns over in a ditch. No one is seriously hurt. the grandmother realizes, as help approaches from up the road, that the plantation with the secret panel is in Tennessee, not Georgia.
+  motifs: Pitty Sing, the cat [agent]
+  -> causes [arrival] a car stops. Three men get out with a gun. the grandmother recognizes the...
+      (realizes: a wrecked car on a remote road attracts the attention of anyone passing; the Misfit is the one passing)
+
+[arrival] a car stops. Three men get out with a gun. the grandmother recognizes the Misfit by his face from the paper.
+  motifs: the Misfit's dark glasses [introduced]
+  -> causes [separation] the Misfit's two companions lead Bailey and the son into the woods; shots are...
+      (realizes: the Misfit's procedural calm — 'Hiram, take him and the boy into the woods' — produces the sequential murder of the family without anyone resisting)
+
+[separation] the Misfit's two companions lead Bailey and the son into the woods; shots are heard. The mother and baby and daughter are taken next; more shots.
+  -> causes [grandmother_pleads] the grandmother, alone with the Misfit, tries to persuade him he is a good man...
+      (realizes: alone with the Misfit, the grandmother exhausts her repertoire — social, financial, religious — looking for the lever that will make him spare her)
+
+[grandmother_pleads] the grandmother, alone with the Misfit, tries to persuade him he is a good man; she offers him money; she tells him to pray.
+  motifs: the grandmother's hat and lace collar [echoed]; the title phrase 'a good man is hard to find' and its echo 'you're a good man' [echoed]
+  -> motivates [grace] she reaches out and touches the Misfit on the shoulder and says, 'Why you're...
+      (agent: the grandmother; goal: to reach the Misfit through some register she has not yet tried, having exhausted flattery and money and piety; stakes: her life; and — unexpected to her — the terms on which her life has been lived)
+
+[grace, role=climax+pivot] she reaches out and touches the Misfit on the shoulder and says, 'Why you're one of my own children.' He springs back as if she were a snake and shoots her three times in the chest.
+  motifs: the Misfit's dark glasses [echoed]
+  -> causes [the_statement] the Misfit, cleaning his glasses, says: 'She would of been a good woman, if it...
+      (realizes: the Misfit's recoil and the shots are his response to having been addressed as kin by a dying stranger; his sentence is his attempt to settle what just happened to him)
+
+[the_statement] the Misfit, cleaning his glasses, says: 'She would of been a good woman, if it had been somebody there to shoot her every minute of her life.'
+  motifs: the Misfit's dark glasses [performed]; the title phrase 'a good man is hard to find' and its echo 'you're a good man' [inverted]
+  -> entails [no_pleasure] Bobby Lee says the old lady was a talker. the Misfit says there is no real...
+      (entails: if a person is only good when threatened (as the statement claims), then no ordinary life is a site of goodness — a conclusion the Misfit's final line reasons to from his own premises)
+
+[no_pleasure] Bobby Lee says the old lady was a talker. the Misfit says there is no real pleasure in life.
+  motifs: the grandmother's hat and lace collar [inverted]
+
+STRUCTURAL TENSIONS (long-range and reframing edges)
+  [opening] -> discloses to [arrival]
+      (reframes: the newspaper-Misfit (abstract, a type) becomes the actual-Misfit (specific, in the flesh); withheld: that the Misfit and the family will intersect — the story has been staging this under the pretense of being about a tiresome family trip; disclosed_to: reader, the grandmother)
+  [diner] -> motivates [detour]
+      (agent: the grandmother; goal: to produce a memorable excursion that repairs her marginalization in the current moment; stakes: her standing as the matriarch whose judgment is worth following on this trip)
+  [detour] -> discloses to [grace]
+      (reframes: the grandmother's vanity-motivated lie about the plantation is retroactively understood as the agent of her deliverance to the moment of grace; what damned her also saved her; withheld: that the detour's consequence is not punishment but confrontation with the real; disclosed_to: reader)
+  [grandmother_pleads] -> motivates [grace]
+      (agent: the grandmother; goal: to reach the Misfit through some register she has not yet tried, having exhausted flattery and money and piety; stakes: her life; and — unexpected to her — the terms on which her life has been lived)
+
+CHARACTER ARCS (whole-story trajectories)
+  - agent: the grandmother
+    goal: to be seen as a lady — the organizing goal of her whole life, which the story tests against the Misfit and finds has been the wrong goal
+    stakes: her self-understanding; the terms on which her life has been a life
+  - agent: the Misfit
+    goal: to reconcile a theology of Jesus-raised-the-dead with his own refusal to believe he was there to see it; to settle what he owes the world given that he cannot know
+    stakes: whether there is any pleasure in life, as he puts it at the end
+
+MOTIF THREADS (inventory; per-node mode tags shown inline above)
+  - the grandmother's hat and lace collar
+  - Pitty Sing, the cat
+  - the Misfit's dark glasses
+  - the title phrase 'a good man is hard to find' and its echo 'you're a good man'

@@ -1,0 +1,148 @@
+{
+  "concept_id": "canonical_chiang",
+  "preset": "randy_ish",
+  "target_node_count": 9,
+  "motif_threads": [
+    "the heptapod script, drawn all at once",
+    "the variational principle (Fermat's path of least time)"
+  ],
+  "concept_demands": [
+    "the DAG must include a frame-narrative beat in which the narrator addresses an unborn audience (the daughter) in second person, establishing a temporal stance from which past and future are simultaneously present"
+  ],
+  "character_arcs": [
+    {
+      "agent": "Louise",
+      "goal": "to understand a language well enough to inhabit the cognition that produces it, and then to live the life that cognition makes possible",
+      "stakes": "her own temporal structure; whether choice survives foreknowledge"
+    }
+  ],
+  "story_constraints": [],
+  "nodes": [
+    {
+      "id": "arrival",
+      "sketch": "Louise, a linguist, is summoned to interpret for aliens that have appeared in two hundred objects distributed around Earth.",
+      "role": null,
+      "motifs": []
+    },
+    {
+      "id": "daughter_intro",
+      "sketch": "Louise addresses her daughter in second person: 'Your father is going to ask me...' — the daughter is present as audience but her birth has not occurred.",
+      "role": null,
+      "motifs": []
+    },
+    {
+      "id": "first_script",
+      "sketch": "the heptapods write in circular logograms; Louise realizes each sentence is produced as a single gesture, not left-to-right.",
+      "role": null,
+      "motifs": [
+        {"motif": "the heptapod script, drawn all at once", "mode": "introduced"},
+        {"motif": "the variational principle (Fermat's path of least time)", "mode": "embodied"}
+      ]
+    },
+    {
+      "id": "physicist",
+      "sketch": "Gary explains the heptapod preference for variational principles: physics formulated as 'this is the path of least time' rather than 'this causes that.'",
+      "role": null,
+      "motifs": [
+        {"motif": "the variational principle (Fermat's path of least time)", "mode": "introduced"}
+      ]
+    },
+    {
+      "id": "pivot_perception",
+      "sketch": "Louise, immersed in Heptapod B, begins to experience time as the heptapods do — holding past and future as a single simultaneous gesture. She will remember her daughter's death before she has chosen to have her.",
+      "role": ["pivot"],
+      "motifs": [
+        {"motif": "the heptapod script, drawn all at once", "mode": "embodied"},
+        {"motif": "the variational principle (Fermat's path of least time)", "mode": "embodied"}
+      ]
+    },
+    {
+      "id": "decision_marriage",
+      "sketch": "Gary asks Louise, in a memory that is also a present moment, whether she wants to make a baby; she knows the child's life and knows the loss and says yes.",
+      "role": null,
+      "motifs": []
+    },
+    {
+      "id": "daughter_death",
+      "sketch": "the daughter, at twenty-five, dies in a climbing accident. Louise grieves and has always grieved.",
+      "role": null,
+      "motifs": []
+    },
+    {
+      "id": "heptapods_depart",
+      "sketch": "the heptapods leave without explaining their purpose. The artifacts go dark. What remains is the language, inside Louise.",
+      "role": null,
+      "motifs": [
+        {"motif": "the heptapod script, drawn all at once", "mode": "echoed"}
+      ]
+    },
+    {
+      "id": "coda",
+      "sketch": "Louise stands in the yard and prepares to live forward into the life she has already lived, choosing it because she has always chosen it.",
+      "role": null,
+      "motifs": [
+        {"motif": "the variational principle (Fermat's path of least time)", "mode": "embodied"}
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "src": "arrival",
+      "dst": "first_script",
+      "type": "causal",
+      "realizes": "contact forces the translation problem; without contact there is no linguistic object to study"
+    },
+    {
+      "src": "first_script",
+      "dst": "physicist",
+      "type": "causal",
+      "realizes": "the puzzle of whole-gesture sentences motivates a cross-disciplinary consultation. The rhyme between Fermat's least-time principle and Heptapod B is carried by shared motif presence on these two nodes — embodied on first_script, introduced on physicist — not by an implication edge"
+    },
+    {
+      "src": "physicist",
+      "dst": "pivot_perception",
+      "type": "causal",
+      "realizes": "prolonged fluency in Heptapod B reshapes Louise's cognition; the physicist's framework gives her the conceptual scaffolding she uses to interpret the shift as it happens to her"
+    },
+    {
+      "src": "pivot_perception",
+      "dst": "decision_marriage",
+      "type": "implication",
+      "entails": "if Louise now holds past and future as simultaneously present (the pivot's established state), then any decision she makes about the future is also a decision she has already made; choice survives the new temporal structure only by being redescribed as acceptance — this is something Louise herself reasons through"
+    },
+    {
+      "src": "decision_marriage",
+      "dst": "daughter_death",
+      "type": "causal",
+      "realizes": "the daughter exists because Louise said yes knowing the loss; the affirmation is the proximate cause of the grief"
+    },
+    {
+      "src": "pivot_perception",
+      "dst": "heptapods_depart",
+      "type": "causal",
+      "realizes": "the linguistic transformation is locked into Louise before the heptapods physically leave; their departure is downstream of the work being complete"
+    },
+    {
+      "src": "heptapods_depart",
+      "dst": "coda",
+      "type": "causal",
+      "realizes": "the aliens leave but the language remains in Louise; she is the surviving artifact of contact, now fully inside the time she chose"
+    },
+    {
+      "src": "daughter_intro",
+      "dst": "coda",
+      "type": "disclosure",
+      "reframes": "the second-person address to the daughter is retroactively understood as spoken from a timeline in which the daughter has already died; the opening was already the ending",
+      "withheld": "from the reader, that the narrator is speaking from after the daughter's death, in a tense that does not distinguish past from future",
+      "disclosed_to": ["reader"]
+    },
+    {
+      "src": "daughter_intro",
+      "dst": "pivot_perception",
+      "type": "disclosure",
+      "reframes": "the 'your father is going to ask me' register of the second-person frame becomes the natural speech of someone who experiences time as simultaneous; daughter_intro is reframed by the pivot",
+      "withheld": "from the reader at daughter_intro, that the frame narrative is not written from a pre-pregnancy Louise imagining the future but from a Louise whose present spans the whole life",
+      "disclosed_to": ["reader"]
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+## Beat Quality
+
+**Definition**: are beat sketches specific and evocative? Do they plant material that Stage 4 can build on? Are candidate indelible moments positioned in the DAG for Stage 4 to deliver?
+
+Note for judges: evaluate the *sketch* — 1–2 sentences describing what happens in a beat. Sketches are specificity-at-plan-level, not craft-level prose. Do not penalize a sketch for failing to be polished prose; do penalize it for being a generic placeholder.
+
+**Sub-criteria**:
+
+- **Specificity**: beat sketches contain concrete details, not abstract placeholders. "She asked whether the elephants looked like clouds" > "they made small talk."
+- **Evocative language**: sketches activate sensory or emotional imagination in the reader without becoming prose themselves.
+- **Indelibility planting**: at least one beat contains material that could become an indelible moment in prose — a specific image, an unusual action, a load-bearing object.
+- **Variety**: beats don't read like variations of each other; each has its own character.
+
+**Score 5**: Every beat is specific and evocative. Multiple beats contain planted candidate indelible moments — specific images, unusual actions, concrete objects that Stage 4 can elevate into memorable prose.
+
+**Score 3 (exemplar)**: Most beats are specific. 1–2 beats are generic or default LLM-style ("she had an important conversation with him"). One clear indelible-moment candidate is planted; others are ordinary.
+
+**Score 1**: Beats are generic placeholders ("something significant happens"). No concrete imagery, no specific actions, no load-bearing objects. The sketches read like outline slots rather than beat content. Stage 4 would have nothing to build on.

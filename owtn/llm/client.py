@@ -83,7 +83,7 @@ def get_client_llm(
         if structured_output:
             client = instructor.from_genai(
                 client,
-                mode=instructor.Mode.GEMINI_JSON,
+                mode=instructor.Mode.GENAI_STRUCTURED_OUTPUTS,
             )
     elif provider == "openrouter":
         client = openai.OpenAI(

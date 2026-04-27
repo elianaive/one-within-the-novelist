@@ -38,6 +38,11 @@ def _load_pricing_dataframe() -> pd.DataFrame:
         df["output_price"].replace("N/A", "0"), errors="coerce"
     )
 
+    # Cache-hit input price: empty/NaN means "no discount" (falls back to miss price at lookup time).
+    df["input_price_cache_hit"] = pd.to_numeric(
+        df["input_price_cache_hit"].replace("N/A", ""), errors="coerce"
+    )
+
     # Convert tier 2 price columns to numeric (empty/NaN stays as NaN)
     df["input_price_tier2"] = pd.to_numeric(
         df["input_price_tier2"].replace("N/A", ""), errors="coerce"
@@ -52,6 +57,7 @@ def _load_pricing_dataframe() -> pd.DataFrame:
     # Convert prices from per-1M-tokens to per-token
     df["input_price"] = df["input_price"] / M
     df["output_price"] = df["output_price"] / M
+    df["input_price_cache_hit"] = df["input_price_cache_hit"] / M
     df["input_price_tier2"] = df["input_price_tier2"] / M
     df["output_price_tier2"] = df["output_price_tier2"] / M
 
@@ -113,14 +119,23 @@ def get_model_prices(model_name: str, input_tokens: Optional[int] = None) -> dic
         input_price = row["input_price"]
         output_price = row["output_price"]
 
+    # Cache-hit price falls back to the miss price when not set.
+    cache_hit_price = row.get("input_price_cache_hit")
+    if cache_hit_price is None or pd.isna(cache_hit_price):
+        cache_hit_price = input_price
+
     return {
         "input_price": input_price,
         "output_price": output_price,
+        "input_price_cache_hit": cache_hit_price,
     }
 
 
 def calculate_cost(
-    model_name: str, input_tokens: int, output_tokens: int
+    model_name: str,
+    input_tokens: int,
+    output_tokens: int,
+    cached_input_tokens: int = 0,
 ) -> Tuple[float, float]:
     """Calculate input and output costs for a model with tiered pricing support.
 
@@ -130,14 +145,21 @@ def calculate_cost(
 
     Args:
         model_name: The name of the model.
-        input_tokens: Number of input tokens.
+        input_tokens: Total input tokens (including any cached portion).
         output_tokens: Number of output tokens (including thinking tokens).
+        cached_input_tokens: Subset of input_tokens billed at the cache-hit
+            rate. Defaults to 0. When the model has no cache-hit price
+            configured, cached tokens are billed at the miss rate.
 
     Returns:
         Tuple of (input_cost, output_cost).
     """
     prices = get_model_prices(model_name, input_tokens=input_tokens)
-    input_cost = prices["input_price"] * input_tokens
+    uncached = max(input_tokens - cached_input_tokens, 0)
+    input_cost = (
+        uncached * prices["input_price"]
+        + cached_input_tokens * prices["input_price_cache_hit"]
+    )
     output_cost = prices["output_price"] * output_tokens
     return input_cost, output_cost
 

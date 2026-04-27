@@ -3,7 +3,9 @@
 # Run with: uv run python -m owtn --config configs/stage_1/dry_run.yaml
 #
 # 2 generations, 2 islands, 1 judge. Cheap models throughout.
-# Expected: ~4 concepts generated, evaluated, archived. ~$0.50-2.00 total.
+# Self-critic on the generator validates the critique-revise plumbing.
+# Expected: ~4 concepts generated, evaluated, archived. ~$1-3 total
+# (self-critic adds ~2x generation cost on top of ~$0.50-1.50 baseline).
 
 stage: 1
 
@@ -27,7 +29,7 @@ evolution:
     - constraint_first
     - anti_premise
     - real_world_seed
-  patch_type_probs: [0.12, 0.08, 0.10, 0.08, 0.10, 0.05, 0.10, 0.07, 0.10, 0.10, 0.10]
+  patch_type_probs: [0.10, 0.07, 0.13, 0.07, 0.08, 0.08, 0.08, 0.07, 0.08, 0.15, 0.09]
   max_patch_resamples: 3
   llm_dynamic_selection: "ucb"
   use_text_feedback: true
@@ -60,8 +62,11 @@ operator_bandit:
   min_probability_floor: 0.02
 
 llm:
-  generation_models: ["claude-haiku-4-5-20251001"]
-  generation_model_family: "anthropic"
+  generation_models:
+    - name: "claude-haiku-4-5-20251001"
+      temperature: 1.0
+      reasoning_effort: "disabled"
+      self_critic: true
   classifier_model: "gpt-4.1-mini"
   embedding_model: "text-embedding-3-small"
 

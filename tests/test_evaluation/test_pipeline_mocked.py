@@ -39,6 +39,10 @@ class TestGateValidation:
         trivial = tmp_path / "trivial.json"
         trivial.write_text(json.dumps({
             "premise": "A person faces a challenge.",
+            "anchor_scene": {
+                "sketch": "The keeper finds his own signature in the previous keeper's log across many years.",
+                "role": "reveal",
+            },
             "target_effect": "Something unsettling and existential.",
         }))
         results_dir = tmp_path / "results"

@@ -1,0 +1,114 @@
+{
+  "concept_id": "canonical_lottery",
+  "preset": "cassandra_ish",
+  "target_node_count": 5,
+  "motif_threads": [
+    "stones",
+    "the black box",
+    "Old Man Warner's mutter"
+  ],
+  "concept_demands": [],
+  "character_arcs": [
+    {
+      "agent": "Tessie Hutchinson",
+      "goal": "to be part of the community in good standing",
+      "stakes": "her membership in the only moral order she knows"
+    }
+  ],
+  "story_constraints": [
+    {
+      "prohibits": "any villager speaking the lottery's lethal purpose aloud; naming it would rupture the ritual's performance",
+      "lifts_at": "stoning"
+    },
+    {
+      "prohibits": "procedural objection to the selection process once underway — only outcome-protest is available",
+      "lifts_at": "stoning"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "gathering",
+      "sketch": "Warm summer morning. Villagers gather in the town square; children stack stones at the edge.",
+      "role": null,
+      "motifs": [
+        {"motif": "stones", "mode": "introduced"}
+      ]
+    },
+    {
+      "id": "summers",
+      "sketch": "Mr. Summers arrives with the battered black box; heads of household are called by name in a ritual everyone knows but no one explains.",
+      "role": null,
+      "motifs": [
+        {"motif": "the black box", "mode": "introduced"},
+        {"motif": "Old Man Warner's mutter", "mode": "introduced"}
+      ]
+    },
+    {
+      "id": "hutchinson",
+      "sketch": "Bill Hutchinson draws the slip with the black dot; the family is isolated for a second round.",
+      "role": null,
+      "motifs": [
+        {"motif": "the black box", "mode": "echoed"}
+      ]
+    },
+    {
+      "id": "tessie",
+      "sketch": "The Hutchinsons redraw. Tessie Hutchinson protests the procedure; she draws her own slip and finds the black dot.",
+      "role": null,
+      "motifs": [
+        {"motif": "the black box", "mode": "echoed"}
+      ]
+    },
+    {
+      "id": "stoning",
+      "sketch": "Villagers close in. Stones are picked up. Tessie Hutchinson screams that it isn't fair. They stone her.",
+      "role": ["climax"],
+      "motifs": [
+        {"motif": "stones", "mode": "performed"},
+        {"motif": "Old Man Warner's mutter", "mode": "echoed"}
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "src": "gathering",
+      "dst": "summers",
+      "type": "causal",
+      "realizes": "the lottery is a standing annual institution with a designated official and a ritualized object"
+    },
+    {
+      "src": "summers",
+      "dst": "hutchinson",
+      "type": "causal",
+      "realizes": "procedural authority — officiousness and cheerfulness — legitimizes random lethal selection"
+    },
+    {
+      "src": "hutchinson",
+      "dst": "tessie",
+      "type": "causal",
+      "realizes": "the family is the first selection stage; individual accountability follows group selection"
+    },
+    {
+      "src": "tessie",
+      "dst": "stoning",
+      "type": "causal",
+      "realizes": "individual selection activates undivided communal execution; Tessie's resistance changes nothing"
+    },
+    {
+      "src": "gathering",
+      "dst": "stoning",
+      "type": "disclosure",
+      "reframes": "cheerful gathering becomes prelude to stoning",
+      "withheld": "from the reader, that the lottery's outcome is death",
+      "disclosed_to": ["reader"]
+    },
+    {
+      "src": "summers",
+      "dst": "stoning",
+      "type": "disclosure",
+      "reframes": "the black box's battered officiousness becomes weapon-selection apparatus",
+      "withheld": "from the reader, what the box is for",
+      "disclosed_to": ["reader"]
+    }
+  ]
+}

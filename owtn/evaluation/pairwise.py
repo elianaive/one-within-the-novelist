@@ -1,9 +1,12 @@
 """Per-criteria pairwise comparison of two concept genomes.
 
-Each judge compares on all 9 dimensions independently. Each judge sees
-both orderings (A-first, B-first) to mitigate position bias. A dimension
-vote counts only if the judge picks the same winner in both orderings;
-otherwise it's a tie. Overall winner = most dimension-wins across all judges.
+Each judge compares on all 9 dimensions independently and marks each
+dim-vote with a magnitude (narrow/clear/decisive). Each judge sees both
+orderings (A-first, B-first) to mitigate position bias; a dim vote counts
+only if both orderings agree on side, and the resolved magnitude is the
+min of the two. Overall winner = weighted sum of (dim_weight × mean
+magnitude on winning side) with asymmetric tiebreaker on close contests.
+See `lab/issues/2026-04-22-pairwise-win-margin.md`.
 """
 
 from __future__ import annotations
@@ -21,11 +24,17 @@ from owtn.evaluation.models import (
     MatchCritique,
     PairwiseJudgment,
     PairwiseResult,
+    encode_vote,
+    parse_vote,
 )
 from owtn.evaluation.prompts import build_pairwise_system, build_pairwise_user
 from owtn.llm.call_logger import llm_context
 from owtn.llm.providers.model_resolver import resolve_model_backend
-from owtn.llm.providers.pricing import is_reasoning_model
+from owtn.llm.providers.pricing import (
+    has_fixed_temperature,
+    is_reasoning_model,
+    requires_reasoning,
+)
 from owtn.llm.query import query_async
 from owtn.models.judge import JudgePersona, load_panel
 from owtn.models.stage_1.concept_genome import ConceptGenome
@@ -33,14 +42,27 @@ from owtn.models.stage_1.config import StageConfig
 
 logger = logging.getLogger(__name__)
 
-# 2000 reasoning tokens at effort=low + ~1.5k visible judgment + 2× buffer
-# against truncation-induced parse-retries. See
-# lab/issues/2026-04-18-judge-latency-variance.md for calibration.
-_JUDGE_MAX_OUTPUT_TOKENS = 6144
+# Verbose reasoning judges (qwen3.5-27b, GLM-4.7) routinely exhausted the
+# previous 6144-token cap — Stage 1 logs show ~85% truncation rate for the
+# wales (qwen) judge. The budget covers BOTH invisible reasoning tokens
+# (low-effort ≈ 2k for these models) AND visible output (~4-5k for the
+# 8-dim per-sub-criterion structured analysis). 12288 gives the reasoning-
+# spiral room to land plus a safety buffer; non-verbose models pay nothing
+# extra because this is a ceiling, not a target.
+_JUDGE_MAX_OUTPUT_TOKENS = 12288
+
+# Min mean-magnitude differential to break a tied-count dim (e.g. 2-2 on a
+# 4-judge panel). Matches the smallest gap between adjacent magnitude buckets
+# {0.5 narrow, 0.75 clear, 1.0 decisive}, so any single-bucket shift between
+# sides breaks the tie; same-bucket splits (e.g. 2 clear + 2 clear) stay tied.
+# Only applies when a_count == b_count > 0 (genuine split with magnitude on
+# both sides); 0-0-all-tie cases are unchanged. See
+# lab/issues/2026-04-24-aggregate-magnitude-tiebreaker.md.
+_MAGNITUDE_TIEBREAKER_THRESHOLD = 0.25
 
 
-def _build_judge_kwargs(model_name: str) -> dict:
-    """Build reasoning-cap kwargs for a judge call.
+def _build_judge_kwargs(judge: JudgePersona) -> tuple[str, dict]:
+    """Return ``(model_name, kwargs)`` for a judge call.
 
     - `max_output_tokens`: set for any OpenAI/OpenRouter/Azure model, not just
       reasoning ones. Non-reasoning OpenRouter upstreams (e.g. kimi-k2-0905
@@ -51,20 +73,78 @@ def _build_judge_kwargs(model_name: str) -> dict:
       reasoning-model judges. OpenAI reasoning judges also get capped —
       fine because the panel fans out in parallel and latency is gated by
       the slowest judge.
+    - ``temperature``, ``top_p``, ``top_k``: per-judge sampler params from
+      the persona YAML. Filtered provider-side to match API constraints.
 
-    Note: we previously tried `extra_body.provider.sort=throughput` with
-    `require_parameters=true` to curb backend-routing variance on OpenRouter,
-    but that forced Kimi onto a backend that leaked `[EOS]` markers into
-    JSON output, breaking every Sable call in run_20260418_181611. Dropped
-    until we find a routing recipe that doesn't trigger that upstream.
+    Note: don't re-add `extra_body.provider.sort=throughput` with
+    `require_parameters=true` to curb OpenRouter routing variance — that
+    combination forces Kimi onto a backend that leaks `[EOS]` markers into
+    JSON output and breaks every Sable call.
     """
+    model_name = judge.model[0]
     resolved = resolve_model_backend(model_name)
+    api_model = resolved.api_model_name
+    provider = resolved.provider
     kwargs: dict = {}
-    if resolved.provider in ("openai", "openrouter", "azure_openai"):
+
+    reasoning_active = False
+    openai_family = provider in ("openai", "openrouter", "azure_openai")
+    if openai_family:
         kwargs["max_output_tokens"] = _JUDGE_MAX_OUTPUT_TOKENS
-        if is_reasoning_model(resolved.api_model_name):
-            kwargs["reasoning"] = {"effort": "low"}
-    return kwargs
+        if is_reasoning_model(api_model):
+            effort = judge.reasoning_effort
+            # Models that require reasoning can't run disabled — coerce up.
+            if effort == "disabled" and requires_reasoning(api_model):
+                effort = "low"
+            if effort != "disabled":
+                kwargs["reasoning"] = {"effort": effort}
+                reasoning_active = True
+            # OpenRouter-proxied models don't honor the Responses API top-level
+            # `reasoning` kwarg uniformly. GLM-4.7 in particular runs reasoning-
+            # by-default and produces unpredictable null / truncated output when
+            # we try to disable via top-level only. The provider-specific
+            # pass-through is extra_body.reasoning.{enabled,effort} — see the
+            # OpenRouter docs. Apply to OpenRouter reasoning models.
+            if provider == "openrouter":
+                if effort == "disabled":
+                    kwargs["extra_body"] = {"reasoning": {"enabled": False}}
+                else:
+                    kwargs["extra_body"] = {
+                        "reasoning": {"enabled": True, "effort": effort}
+                    }
+    elif provider == "deepseek" and is_reasoning_model(api_model):
+        # DeepSeek reasoning models (deepseek-v4-pro, deepseek-v4-flash,
+        # deepseek-reasoner) reason by default. The OpenAI-style
+        # `reasoning_effort=disabled` is rejected (only low/medium/high
+        # accepted). The vendor-specific toggle is the `thinking` object
+        # on the request body. `disabled` drops reasoning_tokens to 0
+        # and ~3x latency reduction in measurement.
+        effort = judge.reasoning_effort
+        if effort == "disabled":
+            kwargs["extra_body"] = {"thinking": {"type": "disabled"}}
+        else:
+            kwargs["extra_body"] = {"thinking": {"type": "enabled"}}
+            reasoning_active = True
+
+    # Temperature: Anthropic extended-thinking and OpenAI reasoning force 1.0
+    # on think_temp_fixed models — match that constraint so judges never
+    # emit a bad request. Judges don't currently enable Anthropic thinking,
+    # so this only bites OpenAI reasoning judges.
+    if has_fixed_temperature(api_model) and reasoning_active:
+        kwargs["temperature"] = 1.0
+    else:
+        kwargs["temperature"] = judge.temperature
+
+    # top_p / top_k / min_p — drop where the API rejects them.
+    if judge.top_p is not None and not reasoning_active:
+        kwargs["top_p"] = judge.top_p
+    if judge.top_k is not None and not openai_family:
+        kwargs["top_k"] = judge.top_k
+    # min_p forwarded only via OpenRouter (native APIs reject it).
+    if judge.min_p is not None and provider == "openrouter":
+        kwargs["min_p"] = judge.min_p
+
+    return model_name, kwargs
 
 
 async def _judge_one_ordering(
@@ -79,8 +159,7 @@ async def _judge_one_ordering(
     llm_context.set({"role": "pairwise_judge", "judge_id": judge.id})
     system_msg = build_pairwise_system(judge)
     user_msg = build_pairwise_user(genome_a, genome_b)
-    model_name = judge.model[0]
-    judge_kwargs = _build_judge_kwargs(model_name)
+    model_name, judge_kwargs = _build_judge_kwargs(judge)
 
     # The judge's entire system message is stable across all comparisons by
     # this judge — pass it as system_prefix so Anthropic caches it (and
@@ -97,31 +176,41 @@ async def _judge_one_ordering(
 
 
 def _flip_votes(judgment: PairwiseJudgment) -> dict[str, str]:
-    """Flip a/b in votes (for the reversed ordering). Tie is identity."""
+    """Flip a/b in votes (for the reversed ordering). Magnitude and tie are
+    preserved — a judge who votes 'a_decisive' when A is labeled A should
+    flip to 'b_decisive' when A is labeled B."""
     flipped = {}
-    for dim, winner in judgment.votes().items():
-        if winner == "a":
-            flipped[dim] = "b"
-        elif winner == "b":
-            flipped[dim] = "a"
-        else:
-            flipped[dim] = winner
+    for dim, vote in judgment.votes().items():
+        if vote == "tie":
+            flipped[dim] = "tie"
+        elif vote.startswith("a_"):
+            flipped[dim] = "b_" + vote.split("_", 1)[1]
+        else:  # b_*
+            flipped[dim] = "a_" + vote.split("_", 1)[1]
     return flipped
 
 
 def _classify_resolution(fwd: str, rev: str) -> str:
     """Label the (fwd, rev) combination for diagnostic logging.
 
-    - confident-a / confident-b: both orderings agree on a winner
+    - confident-{a,b}: both orderings agree on side AND magnitude
+    - agreed-{a,b}-min-{narrow,clear,decisive}: both orderings agree on side
+      but magnitudes differ — resolved magnitude is the min (the judge
+      compressed their own confidence between orderings)
     - confident-tie: judge declared tie in both orderings
     - resolution-tie: orderings disagree on winner (position bias caught)
     - soft-tie: one ordering picked a winner, the other declared tie
     """
-    if fwd == rev:
-        if fwd == "tie":
+    fwd_side, fwd_mag = parse_vote(fwd)
+    rev_side, rev_mag = parse_vote(rev)
+    if fwd_side == rev_side:
+        if fwd_side == "tie":
             return "confident-tie"
-        return f"confident-{fwd}"
-    if fwd == "tie" or rev == "tie":
+        if fwd_mag == rev_mag:
+            return f"confident-{fwd_side}"
+        min_label = encode_vote(fwd_side, min(fwd_mag, rev_mag)).split("_", 1)[1]
+        return f"agreed-{fwd_side}-min-{min_label}"
+    if fwd_side == "tie" or rev_side == "tie":
         return "soft-tie"
     return "resolution-tie"
 
@@ -132,20 +221,25 @@ def _resolve_votes(
 ) -> dict[str, str]:
     """Resolve per-dimension votes across two orderings.
 
-    Conservative dual-ordering: a side wins only if both orderings agree on
-    that side. Anything else (disagreement, either-ordering tie) resolves to
-    tie. See issue 2026-04-18-reintroduce-harshness-pairwise.md for the full
-    case table.
+    Conservative dual-ordering extended to magnitudes: a side wins only if
+    both orderings agree on side, and the resolved magnitude is the min of
+    the two ordering magnitudes. A judge who waffles between 'decisive' and
+    'narrow' is expressing less confidence than either ordering alone; we
+    record the minimum. Side-disagreement or either-ordering tie resolves
+    to 'tie'. See `lab/issues/2026-04-22-pairwise-win-margin.md` and
+    `lab/issues/2026-04-18-reintroduce-harshness-pairwise.md`.
     """
     resolved = {}
     for dim in DIMENSION_NAMES:
         fwd = forward_votes.get(dim, "tie")
         rev = reverse_votes.get(dim, "tie")
-        if fwd == rev and fwd != "tie":
-            resolved[dim] = fwd
-        elif fwd == rev and fwd == "tie":
-            resolved[dim] = "tie"
+        fwd_side, fwd_mag = parse_vote(fwd)
+        rev_side, rev_mag = parse_vote(rev)
+
+        if fwd_side == rev_side and fwd_side != "tie":
+            resolved[dim] = encode_vote(fwd_side, min(fwd_mag, rev_mag))
         else:
+            # Either both tie, or sides disagree, or one side tied.
             resolved[dim] = "tie"
     return resolved
 
@@ -170,9 +264,22 @@ def _aggregate(
 ) -> tuple[dict[str, str], int, int, int, float, float, float]:
     """Aggregate resolved votes across all judges.
 
-    Per dimension: majority of non-tie votes wins. Integer counts and weighted
-    totals are tracked in parallel. Integer counts are display/legacy; weighted
-    totals drive winner selection via `_select_winner`.
+    Per dimension: majority of non-tie votes picks the winning side (magnitude
+    does not affect side majority — one narrow win still counts as one win).
+    Weighted contribution uses the MEAN magnitude among judges voting the
+    winning side, multiplied by the dim weight. Mean (not sum) keeps each
+    dim's contribution bounded by its weight regardless of panel size:
+    "weight × judge confidence" is the headline interpretation.
+
+    **Tied-count magnitude tiebreaker.** When `a_count == b_count > 0` (e.g.
+    a 2-2 split on a 4-judge panel), the dim is won by whichever side has
+    the higher mean magnitude if the gap is ≥ `_MAGNITUDE_TIEBREAKER_THRESHOLD`.
+    Otherwise the dim stays tied. 0-0 all-tie cases (no magnitude signal) are
+    unchanged. See `lab/issues/2026-04-24-aggregate-magnitude-tiebreaker.md`.
+
+    Integer counts (`a_wins`, `b_wins`, `ties`) are preserved for display
+    and match-history; weighted totals drive winner selection via
+    `_select_winner`.
 
     Returns: (dim_winners, a_wins, b_wins, ties, a_weighted, b_weighted, tie_weighted)
     """
@@ -182,7 +289,9 @@ def _aggregate(
 
     for dim in DIMENSION_NAMES:
         votes = [r[dim] for r in all_resolved]
-        counts = Counter(votes)
+        parsed = [parse_vote(v) for v in votes]
+        sides = [s for s, _ in parsed]
+        counts = Counter(sides)
         weight = dim_weights[dim]
         a_count = counts.get("a", 0)
         b_count = counts.get("b", 0)
@@ -190,17 +299,75 @@ def _aggregate(
         if a_count > b_count:
             dim_winners[dim] = "a"
             a_wins += 1
-            a_weighted += weight
+            a_mags = [m for s, m in parsed if s == "a"]
+            a_weighted += weight * (sum(a_mags) / len(a_mags))
         elif b_count > a_count:
             dim_winners[dim] = "b"
             b_wins += 1
-            b_weighted += weight
+            b_mags = [m for s, m in parsed if s == "b"]
+            b_weighted += weight * (sum(b_mags) / len(b_mags))
+        elif a_count > 0:
+            # Tied count, magnitude signal on both sides (e.g. 2-2 on 4 judges).
+            a_mags = [m for s, m in parsed if s == "a"]
+            b_mags = [m for s, m in parsed if s == "b"]
+            a_mean = sum(a_mags) / len(a_mags)
+            b_mean = sum(b_mags) / len(b_mags)
+            if a_mean - b_mean >= _MAGNITUDE_TIEBREAKER_THRESHOLD:
+                dim_winners[dim] = "a"
+                a_wins += 1
+                a_weighted += weight * a_mean
+            elif b_mean - a_mean >= _MAGNITUDE_TIEBREAKER_THRESHOLD:
+                dim_winners[dim] = "b"
+                b_wins += 1
+                b_weighted += weight * b_mean
+            else:
+                dim_winners[dim] = "tie"
+                tie_count += 1
+                tie_weighted += weight
         else:
+            # a_count == b_count == 0: all judges voted tie, no magnitude
+            # signal to break with.
             dim_winners[dim] = "tie"
             tie_count += 1
             tie_weighted += weight
 
     return dim_winners, a_wins, b_wins, tie_count, a_weighted, b_weighted, tie_weighted
+
+
+# Short-label map for log summaries: maps magnitude value → compact suffix
+# (1=narrow, 2=clear, 3=decisive) so "indelibility=A3" reads in a log line.
+_MAG_SHORT_LABEL: dict[float, str] = {0.5: "1", 0.75: "2", 1.0: "3"}
+
+
+def _format_dim_summary(
+    dim_winners: dict[str, str],
+    all_resolved: list[dict[str, str]],
+) -> str:
+    """Per-dim log summary with magnitude suffix on winning sides.
+
+    Format: "indelibility=A3  grip=B1  novelty==". A/B suffixes carry the
+    winning side's mean-magnitude bucket (1=narrow, 2=clear, 3=decisive);
+    '==' marks ties. Magnitudes are bucketed to the nearest canonical value
+    so mean values (e.g. a 3-judge panel with narrow/clear/decisive on one
+    dim has mean 0.75 → "2") stay readable.
+    """
+    parts = []
+    for dim, winner in dim_winners.items():
+        if winner == "tie":
+            parts.append(f"{dim}==")
+            continue
+        mags = [
+            parse_vote(r[dim])[1]
+            for r in all_resolved
+            if parse_vote(r[dim])[0] == winner
+        ]
+        if not mags:
+            parts.append(f"{dim}={winner.upper()}?")
+            continue
+        mean_mag = sum(mags) / len(mags)
+        bucket = min(_MAG_SHORT_LABEL, key=lambda v: abs(v - mean_mag))
+        parts.append(f"{dim}={winner.upper()}{_MAG_SHORT_LABEL[bucket]}")
+    return "  ".join(parts)
 
 
 def _select_winner(
@@ -486,11 +653,9 @@ async def compare(
 
     dt = time.perf_counter() - t0
 
-    # Log per-dimension breakdown.
-    dim_summary = "  ".join(
-        f"{d}={'A' if w == 'a' else 'B' if w == 'b' else '='}"
-        for d, w in dim_winners.items()
-    )
+    # Log per-dimension breakdown with magnitude suffix (1=narrow, 2=clear,
+    # 3=decisive) derived from the mean magnitude on the winning side.
+    dim_summary = _format_dim_summary(dim_winners, all_resolved)
     logger.info(
         "Pairwise: %s wins %d-%d-%d (weighted %.2f-%.2f, tiebreaker=%s) "
         "(%.1fs $%.4f)  [%s]",
