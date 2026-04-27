@@ -375,11 +375,19 @@ async def query_async(
 ) -> QueryResult:
     """Query the LLM asynchronously.
 
-    If the current ``llm_context.role`` is a generation role AND the model is
-    registered via ``register_self_critic_models``, fires a critique-revise
-    cycle after the initial call and returns the revised result. The initial
-    call is still logged (with its original role) — its tokens and cost are
-    part of the run total.
+    *Implicit state:* this function's behavior depends on two pieces of
+    process-wide state that don't appear in the signature:
+
+    - ``llm_context`` (a contextvar set by callers like the scheduler) —
+      decides whether the current call is a "generation" role.
+    - ``_self_critic_config`` (a module-level dict mutated by
+      ``register_self_critic_models``) — decides which models opt into the
+      critique-revise cycle.
+
+    When both are set such that the current call qualifies, fires a 3-call
+    critique-revise cycle and returns the revised result. The initial call
+    is still logged (with its original role) — its tokens and cost are part
+    of the run total. Otherwise behaves as a single LLM call.
     """
     result = await _query_async_single(
         model_name=model_name,

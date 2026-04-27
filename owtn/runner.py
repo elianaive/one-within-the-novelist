@@ -98,10 +98,14 @@ def _build_shinka_configs(
     return evo, db, job
 
 
-# Epsilon for champion succession. Small enough that accumulated succession
-# over hundreds of generations adds negligible score (keeping archive/threshold
-# logic undisturbed), large enough that float comparison and SQL ORDER BY
-# treat the new champion as strictly greater than the deposed incumbent.
+# Epsilon for champion succession. Constraints:
+#   - small enough that hundreds of cumulative successions stay well below
+#     the score precision floor relevant to archive/threshold logic
+#     (10^4 generations × 1e-6 = 0.01, still <<1% of a typical 0.5-1.0 score
+#     and far below any threshold currently configured)
+#   - large enough that float64 comparison and SQL ORDER BY treat the new
+#     champion as strictly greater than the deposed incumbent (well above
+#     ~2.2e-16 machine epsilon for values near 1.0)
 _SUCCESSION_EPS = 1e-6
 
 

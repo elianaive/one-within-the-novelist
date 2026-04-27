@@ -47,6 +47,12 @@ def load_seed_motif_template() -> str:
     return _load("seed_motif.txt")
 
 
+def load_champion_brief_system() -> str:
+    """System prompt for the per-tree champion-brief summarizer
+    (Stage 2 lineage equivalent)."""
+    return _load("champion_brief.txt")
+
+
 def build_seed_motif_prompt(concept: ConceptGenome) -> tuple[str, str]:
     """Assemble (system_msg, user_msg) for one seed_root extraction call.
 
