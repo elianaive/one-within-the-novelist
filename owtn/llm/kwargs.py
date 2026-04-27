@@ -19,53 +19,6 @@ THINKING_TOKENS = {
 }
 
 
-def sample_batch_kwargs(
-    num_samples: int,
-    model_names: Union[List[str], str] = "gpt-4o-mini-2024-07-18",
-    temperatures: Union[List[float], float] = 0.0,
-    max_tokens: Union[List[int], int] = 4096,
-    reasoning_efforts: Union[List[str], str] = "",
-    model_sample_probs: Optional[List[float]] = None,
-    unique_filter: bool = False,
-    top_p: Optional[float] = None,
-    top_k: Optional[int] = None,
-    min_p: Optional[float] = None,
-):
-    """Sample a dictionary of kwargs for a given model."""
-    all_kwargs = []
-    attempts = 0
-    max_attempts = num_samples * 10  # Prevent infinite loops
-
-    while len(all_kwargs) < num_samples and attempts < max_attempts:
-        kwargs_dict = sample_model_kwargs(
-            model_names=model_names,
-            temperatures=temperatures,
-            max_tokens=max_tokens,
-            reasoning_efforts=reasoning_efforts,
-            model_sample_probs=model_sample_probs,
-            top_p=top_p,
-            top_k=top_k,
-            min_p=min_p,
-        )
-
-        if unique_filter:
-            if kwargs_dict not in all_kwargs:
-                all_kwargs.append(kwargs_dict)
-        else:
-            all_kwargs.append(kwargs_dict)
-
-        attempts += 1
-
-    if len(all_kwargs) < num_samples:
-        logger.info(
-            f"Could not generate {num_samples} unique kwargs combinations "
-            f"after {max_attempts} attempts"
-        )
-        logger.info(f"Returning {len(all_kwargs)} unique kwargs combinations.")
-
-    return all_kwargs
-
-
 def sample_model_kwargs(
     model_names: Union[List[str], str] = "gpt-4o-mini-2024-07-18",
     temperatures: Union[List[float], float] = 0.0,
