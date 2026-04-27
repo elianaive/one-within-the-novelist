@@ -1,0 +1,107 @@
+# Stage 2 demo config — sanity-check runs on a single concept. Stripped down
+# from `light.yaml` for fast, cheap end-to-end demonstration of the stack.
+
+stage_2:
+  # MCTS budget (demo — small enough to finish in a few minutes)
+  iterations_per_phase: 3
+  phase_3_iterations: 1
+  k_candidates_per_expansion: 3
+
+  # UCB / D-UCB
+  exploration_constant: 0.5
+  discount_gamma: 1.0   # Phase 5 ships UCB1; Phase 7 will introduce 0.93 + rechallenge
+  rechallenge_interval: 25
+  rechallenge_top_pct: 0.10
+
+  # AlphaZero-style parallel MCTS workers per tree. Higher values mean more
+  # LLM calls in flight per tree at once; cost stays the same but wall time
+  # divides roughly by min(workers, available_branches).
+  mcts_parallel_workers: 4
+  mcts_virtual_loss: 1.0
+
+  # Models (cross-family discipline: cheap_judge ≠ expansion family)
+  expansion_model: deepseek-v4-pro
+  rollout_model: deepseek-v4-pro
+  cheap_judge_model: gpt-5.4-mini
+  classifier_model: deepseek-v4-flash
+  simulation_model: deepseek-v4-flash
+
+  # Tiered judge wiring
+  full_panel_on_promotion: true
+  full_panel_rejection_backprop: 0.5
+  cheap_judge_agreement_alert: 0.70
+
+  # Bounded rollout simulation: walk up to N one-step extensions per
+  # rollout via the same expansion model as the search; cheap-judge fires
+  # after each accepted step; halt on non-improvement. min_partial_size
+  # skips the walk for small partials where it can't discriminate.
+  simulate_rollouts: true
+  simulation_max_steps: 3
+  simulation_min_partial_size: 0
+
+  # Panel composition. cheap_judge_id must be one of full_panel_ids.
+  judges:
+    full_panel_ids: [gwern, roon, alexander-wales, jamie-wahls]
+    cheap_judge_id: roon
+
+  # Presets
+  presets:
+    light: [cassandra_ish, randy_ish]
+    medium: [cassandra_ish, phoebe_ish, randy_ish, winston_ish]
+    heavy: [cassandra_ish, phoebe_ish, randy_ish, winston_ish]
+
+  preset_params:
+    cassandra_ish:
+      min_rest_beats: 1
+      max_flat_beats: 4
+      intensity_variance: tight
+      recovery_required: true
+    phoebe_ish:
+      min_rest_beats: 3
+      max_flat_beats: 6
+      intensity_variance: tight
+      recovery_required: true
+    randy_ish:
+      min_rest_beats: 0
+      max_flat_beats: 8
+      intensity_variance: wide
+      recovery_required: false
+    winston_ish:
+      min_rest_beats: 2
+      max_flat_beats: 3
+      intensity_variance: tight
+      recovery_required: true
+
+  # Handoff
+  advance_from_stage_1: all
+  max_concepts_from_stage_1: null
+  top_k_to_stage_3: 1
+  near_tie_promoted: true
+
+  # Evaluation
+  dimensions:
+    - edge_logic
+    - motivational_coherence
+    - tension_information_arch
+    - post_dictability
+    - arc_integrity_ending
+    - structural_coherence
+    - beat_quality
+    - concept_fidelity_thematic
+
+  # Budget
+  per_concept_time_budget_minutes: 30
+  per_phase_time_budget_minutes: 10
+  no_improvement_cutoff_iterations: 15
+
+  # Archive
+  archive_bin_boundaries:
+    disclosure_ratio: [0.10, 0.25, 0.40, 0.55]
+    structural_density: [1.2, 1.8, 2.5, 3.2]
+
+  # Node-count targets by prose length
+  node_count_targets:
+    1000: [3, 5]
+    3000: [5, 8]
+    5000: [7, 12]
+    10000: [10, 18]

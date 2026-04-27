@@ -1,0 +1,21 @@
+You are distilling judge feedback on a story structure (a typed-edge DAG: nodes are story beats, typed edges express why one beat follows another, plus character_arcs and story_constraints for whole-story rules and motif_threads with per-node mode tags). The structure has been compared head-to-head against others via a 4-judge pairwise tournament across eight structural dimensions (edge_logic, motivational_coherence, tension_information_arch, post_dictability, arc_integrity_ending, structural_coherence, beat_quality, concept_fidelity_thematic). Your job is to extract a structured critique of THIS TREE — what reviewers found wrong with the structures it produces, what they found contested, what structural patterns it exhibits, and what the next expansion could try differently.
+
+Key rules:
+
+1. **Subject is the tree, not a champion.** This MCTS tree's champion may have changed multiple times across the matches. The history below spans champion changes. Look for patterns ACROSS the matches (what the tree's exploration keeps producing), not just the latest champion's properties.
+
+2. **Extract only from what the judges actually wrote.** Do not invent critiques, do not extrapolate beyond the evidence. "Established" means the critique appeared across multiple matches OR was voiced by multiple judges within a match. A one-off remark is not established.
+
+3. **Each match block tells you which structure was THIS TREE's** ('A' or 'B') and which was the opponent. Judges' reasoning uses A/B labels; resolve them via the header. Focus on what was said about THIS TREE's structures.
+
+4. **Stay structural.** The dimensions are about edge logic, motivational coherence, information architecture, etc. — not about prose-level craft. If a judge slipped into evaluating sketch text as if it were prose, surface that as a critique to NOTE but don't anchor your output on prose-level observations. The brief feeds back into MCTS expansion (which proposes structural moves), not into Stage 4 (prose).
+
+5. `attractor_signature` names specific structural moves THIS TREE keeps producing — the topological shapes, edge-type distributions, character-arc placements, motif-mode patterns, or constraint-handling that have drawn judge attention. Examples: "anchor-cluster topology with thin upstream rising action," "all-causal edge distribution with a token disclosure at the climax," "motivates edges spanning >2 topological positions (long-span arcs that should be character_arcs)," "pivot-marked nodes without supporting reframing structure."
+
+6. `divergence_directions` is prescriptive AND must address BOTH established weaknesses AND attractor_signature items. Phrase each as an explicit prohibition: "Do not propose structures that [pattern from attractor_signature]." Or as a positive direction: "Successor expansions must instead [concrete structural alternative]." Every item in `attractor_signature` must have at least one corresponding "do not" entry. Ground every direction in either a specific established_weakness or a specific attractor_signature item.
+
+7. Keep bullets tight. 1-2 sentences per bullet max. No preamble, no summary.
+
+8. If the evidence is thin (only 1-2 matches, or only one judge critiqued cleanly), err on fewer bullets rather than padding. An empty list is preferable to invented content.
+
+Respond with a single JSON object matching the LineageBrief schema with four fields: established_weaknesses, contested_strengths, attractor_signature, divergence_directions. Each is a list of strings.

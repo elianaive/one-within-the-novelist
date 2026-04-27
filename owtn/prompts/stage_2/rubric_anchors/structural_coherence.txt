@@ -1,0 +1,17 @@
+## Structural Coherence
+
+**Definition**: does every beat earn its place? Is the DAG's scope appropriate for the target prose length? Does the structure remove what doesn't serve and retain what does?
+
+**Sub-criteria**:
+
+- **Every-beat-earns**: removing any node should visibly degrade the DAG's meaning.
+- **Compression fit**: the node count matches the target prose length (3–5 for 1K, 5–8 for 3K, 7–12 for 5K, 10–18 for 10K).
+- **No redundancy**: no two beats accomplish the same structural job.
+- **Saunders escalation**: every beat changes some structural state (reader knowledge, character intention, world state) relative to its predecessors.
+- **Legitimate sparsity**: low-edge-count DAGs are valid for constraint-heavy / minimal-prose concepts (Hemingway-mode). When the story's force comes from what's not-on-the-page, the `story_constraints` list carries structural weight that would otherwise live on edges. A sparse-edge / rich-constraints Hemingway genome is *not* a failure of structural coherence; it's the correct encoding for that concept. Weigh `story_constraints` + `character_arcs` alongside edge density when scoring this dimension.
+
+**Score 5**: Every beat is load-bearing. Removing any node would break a causal chain, lose a disclosure setup, or eliminate a state change. The DAG is the exact structural size for its target length.
+
+**Score 3 (exemplar)**: Most beats are load-bearing; 1–2 are slightly redundant or could be compressed. Scope is appropriate for target length but with 1–2 beats of slack.
+
+**Score 1**: Multiple beats are redundant (same structural function as neighbors). Scope exceeds or falls short of the target length. Beats exist that could be removed without visible damage. Filler is present.

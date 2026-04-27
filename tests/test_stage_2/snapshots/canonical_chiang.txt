@@ -1,0 +1,74 @@
+STORY STRUCTURE A
+=================
+
+Beats listed in causal order. Each beat shows what it causes or reveals,
+with load-bearing details in parentheses. Per-node motifs annotated under
+the beat header; whole-story arcs and constraints listed in their own
+sections at the end.
+
+[arrival] Louise, a linguist, is summoned to interpret for aliens that have appeared in two hundred objects distributed around Earth.
+  -> causes [first_script] the heptapods write in circular logograms; Louise realizes each sentence is...
+      (realizes: contact forces the translation problem; without contact there is no linguistic object to study)
+
+[daughter_intro] Louise addresses her daughter in second person: 'Your father is going to ask me...' — the daughter is present as audience but her birth has not occurred.
+  -> discloses to [coda] Louise stands in the yard and prepares to live forward into the life she has...
+      (reframes: the second-person address to the daughter is retroactively understood as spoken from a timeline in which the daughter has already died; the opening was already the ending; withheld: from the reader, that the narrator is speaking from after the daughter's death, in a tense that does not distinguish past from future; disclosed_to: reader)
+  -> discloses to [pivot_perception] Louise, immersed in Heptapod B, begins to experience time as the heptapods do —...
+      (reframes: the 'your father is going to ask me' register of the second-person frame becomes the natural speech of someone who experiences time as simultaneous; daughter_intro is reframed by the pivot; withheld: from the reader at daughter_intro, that the frame narrative is not written from a pre-pregnancy Louise imagining the future but from a Louise whose present spans the whole life; disclosed_to: reader)
+
+[first_script] the heptapods write in circular logograms; Louise realizes each sentence is produced as a single gesture, not left-to-right.
+  motifs: the heptapod script, drawn all at once [introduced]; the variational principle (Fermat's path of least time) [embodied]
+  -> causes [physicist] Gary explains the heptapod preference for variational principles: physics...
+      (realizes: the puzzle of whole-gesture sentences motivates a cross-disciplinary consultation. The rhyme between Fermat's least-time principle and Heptapod B is carried by shared motif presence on these two nodes — embodied on first_script, introduced on physicist — not by an implication edge)
+
+[physicist] Gary explains the heptapod preference for variational principles: physics formulated as 'this is the path of least time' rather than 'this causes that.'
+  motifs: the variational principle (Fermat's path of least time) [introduced]
+  -> causes [pivot_perception] Louise, immersed in Heptapod B, begins to experience time as the heptapods do —...
+      (realizes: prolonged fluency in Heptapod B reshapes Louise's cognition; the physicist's framework gives her the conceptual scaffolding she uses to interpret the shift as it happens to her)
+
+[pivot_perception, role=pivot] Louise, immersed in Heptapod B, begins to experience time as the heptapods do — holding past and future as a single simultaneous gesture. She will remember her daughter's death before she has chosen to have her.
+  motifs: the heptapod script, drawn all at once [embodied]; the variational principle (Fermat's path of least time) [embodied]
+  -> entails [decision_marriage] Gary asks Louise, in a memory that is also a present moment, whether she wants...
+      (entails: if Louise now holds past and future as simultaneously present (the pivot's established state), then any decision she makes about the future is also a decision she has already made; choice survives the new temporal structure only by being redescribed as acceptance — this is something Louise herself reasons through)
+  -> causes [heptapods_depart] the heptapods leave without explaining their purpose. The artifacts go dark...
+      (realizes: the linguistic transformation is locked into Louise before the heptapods physically leave; their departure is downstream of the work being complete)
+
+[decision_marriage] Gary asks Louise, in a memory that is also a present moment, whether she wants to make a baby; she knows the child's life and knows the loss and says yes.
+  -> causes [daughter_death] the daughter, at twenty-five, dies in a climbing accident. Louise grieves and...
+      (realizes: the daughter exists because Louise said yes knowing the loss; the affirmation is the proximate cause of the grief)
+
+[heptapods_depart] the heptapods leave without explaining their purpose. The artifacts go dark. What remains is the language, inside Louise.
+  motifs: the heptapod script, drawn all at once [echoed]
+  -> causes [coda] Louise stands in the yard and prepares to live forward into the life she has...
+      (realizes: the aliens leave but the language remains in Louise; she is the surviving artifact of contact, now fully inside the time she chose)
+
+[daughter_death] the daughter, at twenty-five, dies in a climbing accident. Louise grieves and has always grieved.
+
+[coda] Louise stands in the yard and prepares to live forward into the life she has already lived, choosing it because she has always chosen it.
+  motifs: the variational principle (Fermat's path of least time) [embodied]
+
+STRUCTURAL TENSIONS (long-range and reframing edges)
+  [arrival] -> causes [first_script]
+      (realizes: contact forces the translation problem; without contact there is no linguistic object to study)
+  [daughter_intro] -> discloses to [pivot_perception]
+      (reframes: the 'your father is going to ask me' register of the second-person frame becomes the natural speech of someone who experiences time as simultaneous; daughter_intro is reframed by the pivot; withheld: from the reader at daughter_intro, that the frame narrative is not written from a pre-pregnancy Louise imagining the future but from a Louise whose present spans the whole life; disclosed_to: reader)
+  [daughter_intro] -> discloses to [coda]
+      (reframes: the second-person address to the daughter is retroactively understood as spoken from a timeline in which the daughter has already died; the opening was already the ending; withheld: from the reader, that the narrator is speaking from after the daughter's death, in a tense that does not distinguish past from future; disclosed_to: reader)
+  [pivot_perception] -> causes [heptapods_depart]
+      (realizes: the linguistic transformation is locked into Louise before the heptapods physically leave; their departure is downstream of the work being complete)
+  [decision_marriage] -> causes [daughter_death]
+      (realizes: the daughter exists because Louise said yes knowing the loss; the affirmation is the proximate cause of the grief)
+  [heptapods_depart] -> causes [coda]
+      (realizes: the aliens leave but the language remains in Louise; she is the surviving artifact of contact, now fully inside the time she chose)
+
+CHARACTER ARCS (whole-story trajectories)
+  - agent: Louise
+    goal: to understand a language well enough to inhabit the cognition that produces it, and then to live the life that cognition makes possible
+    stakes: her own temporal structure; whether choice survives foreknowledge
+
+MOTIF THREADS (inventory; per-node mode tags shown inline above)
+  - the heptapod script, drawn all at once
+  - the variational principle (Fermat's path of least time)
+
+CONCEPT DEMANDS (predicates the structure must satisfy — Tier 3)
+  - the DAG must include a frame-narrative beat in which the narrator addresses an unborn audience (the daughter) in second person, establishing a temporal stance from which past and future are simultaneously present
