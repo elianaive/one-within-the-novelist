@@ -44,7 +44,12 @@ class _LiteralStr(str):
 
 
 def _literal_representer(dumper, data):
-    return dumper.represent_scalar("tag:yaml.org,2002:str", data, style="|")
+    # PyYAML falls back to escaped double-quoted style if any line has
+    # trailing whitespace (space_break rule). LLM output frequently has
+    # invisible trailing spaces, which produces unreadable logs. Strip them
+    # so the readable |-block style applies.
+    cleaned = "\n".join(line.rstrip() for line in data.splitlines())
+    return dumper.represent_scalar("tag:yaml.org,2002:str", cleaned, style="|")
 
 
 _dumper = yaml.SafeDumper
