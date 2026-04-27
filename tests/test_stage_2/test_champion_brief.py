@@ -21,10 +21,13 @@ import pytest
 
 from owtn.models.stage_2.dag import DAG
 from owtn.optimizer.adapters import (
-    _stage_2_build_summarizer_user_msg,
+    TREE_SUBJECT,
+    _stage_2_extract_self_fn,
     _stage_2_format_dag_for_match,
+    _stage_2_format_self_fn,
     stage_2_render_raw_fallback,
 )
+from owtn.optimizer.lineage_brief import _build_summarizer_user_msg
 from owtn.optimizer.models import LineageBrief
 from owtn.stage_2.champion_brief import (
     TreeBriefState,
@@ -157,7 +160,7 @@ class TestCacheCadence:
         with patch("owtn.stage_2.champion_brief.query_async", side_effect=fake_query, create=True):
             # The local import in `_call_summarizer` patches at use-site;
             # provide both patches so either resolution finds the mock.
-            with patch("owtn.llm.query.query_async", side_effect=fake_query):
+            with patch("owtn.optimizer.lineage_brief.query_async", side_effect=fake_query):
                 rendered = asyncio.run(get_or_compute_brief(
                     state, classifier_model="dummy", re_summarize_every=3,
                 ))
@@ -179,7 +182,7 @@ class TestCacheCadence:
             call_count[0] += 1
             return _FakeQueryResult(content=_canned_brief())
 
-        with patch("owtn.llm.query.query_async", side_effect=fake_query):
+        with patch("owtn.optimizer.lineage_brief.query_async", side_effect=fake_query):
             # 1st call: summarizer fires.
             asyncio.run(get_or_compute_brief(
                 state, classifier_model="dummy", re_summarize_every=3,
@@ -212,7 +215,7 @@ class TestCacheCadence:
             call_count[0] += 1
             return _FakeQueryResult(content=_canned_brief())
 
-        with patch("owtn.llm.query.query_async", side_effect=fake_query):
+        with patch("owtn.optimizer.lineage_brief.query_async", side_effect=fake_query):
             asyncio.run(get_or_compute_brief(
                 state, classifier_model="dummy", re_summarize_every=3,
             ))
@@ -240,7 +243,7 @@ class TestCacheCadence:
             call_count[0] += 1
             return _FakeQueryResult(content=_canned_brief())
 
-        with patch("owtn.llm.query.query_async", side_effect=fake_query):
+        with patch("owtn.optimizer.lineage_brief.query_async", side_effect=fake_query):
             asyncio.run(get_or_compute_brief(
                 state, classifier_model="dummy", re_summarize_every=3,
             ))
@@ -269,7 +272,7 @@ class TestSummarizerFailure:
         async def failing_query(**kwargs):
             raise RuntimeError("simulated provider outage")
 
-        with patch("owtn.llm.query.query_async", side_effect=failing_query):
+        with patch("owtn.optimizer.lineage_brief.query_async", side_effect=failing_query):
             rendered = asyncio.run(get_or_compute_brief(
                 state, classifier_model="dummy",
             ))
@@ -294,7 +297,7 @@ class TestSummarizerFailure:
         async def fake_query(**kwargs):
             return _FakeQueryResult(content="raw string instead of LineageBrief")
 
-        with patch("owtn.llm.query.query_async", side_effect=fake_query):
+        with patch("owtn.optimizer.lineage_brief.query_async", side_effect=fake_query):
             rendered = asyncio.run(get_or_compute_brief(
                 state, classifier_model="dummy",
             ))
@@ -333,7 +336,12 @@ class TestFormatHelpers:
         self, lottery_dag_dict: dict,
     ) -> None:
         critique = _make_critique(self_dag_data=lottery_dag_dict)
-        msg = _stage_2_build_summarizer_user_msg([critique])
+        msg = _build_summarizer_user_msg(
+            match_critiques=[critique],
+            extract_self=_stage_2_extract_self_fn,
+            format_self=_stage_2_format_self_fn,
+            subject=TREE_SUBJECT,
+        )
         assert "THIS TREE" in msg  # not "THIS LINEAGE"
         assert "OPPONENT" in msg
 
@@ -354,7 +362,7 @@ class TestRenderWording:
         async def fake_query(**kwargs):
             return _FakeQueryResult(content=_canned_brief())
 
-        with patch("owtn.llm.query.query_async", side_effect=fake_query):
+        with patch("owtn.optimizer.lineage_brief.query_async", side_effect=fake_query):
             rendered = asyncio.run(get_or_compute_brief(
                 state, classifier_model="dummy",
             ))

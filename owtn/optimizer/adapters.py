@@ -19,8 +19,13 @@ from pathlib import Path
 from typing import Any
 
 from owtn.optimizer.lineage_brief import (
-    _format_dim_outcomes,
+    BriefSubject,
+    SelfExtractor,
+    SelfFormatter,
     get_or_compute_brief,
+    render_lineage_brief,
+    render_raw_fallback,
+    summarize_lineage,
 )
 from owtn.optimizer.population_brief import (
     PopulationBrief,
@@ -96,30 +101,22 @@ async def compute_stage_1_lineage_brief(
 
 # --- Stage 2 champion brief adapter ---------------------------------------
 #
-# Stage 2 reuses the optimizer's machinery (LineageBrief schema, _format_dim_outcomes,
-# render_lineage_brief, summarize_lineage) but supplies its own:
-# - System prompt (`owtn/prompts/stage_2/champion_brief.txt`): structure-flavored,
-#   names the tree as the subject of evaluation rather than a lineage.
-# - format_self: renders DAGs via `owtn.stage_2.rendering.render`. Stage 1 just
-#   formats premise/target_effect strings; Stage 2 needs full DAG renderings
-#   so judges' reasoning makes sense in context.
-# - Match-block wording: "THIS TREE" and "this tree's structure" instead of
-#   "THIS LINEAGE" — the system prompt and match blocks must agree on the
-#   subject term.
-# - Cache shape: caller passes (count, LineageBrief) explicitly rather than
-#   reading from a `private_metrics` dict, because Stage 2 has no DB-backed
-#   per-program storage. The `TreeBriefState` object in `owtn.stage_2.champion_brief`
-#   is what holds these fields per-tree.
-#
-# What Stage 2 does NOT reuse from Stage 1:
-# - `_stage_1_format_self` (concept-specific)
-# - The lineage_prompt.txt template (Stage-2 has structure-specific guidance
-#   like "stay structural, do not evaluate sketches as if they were prose")
-# - `optimizer.lineage_brief.summarize_lineage` itself (its match-block
-#   formatter uses LINEAGE wording; ~10 lines of LLM-call boilerplate is
-#   duplicated below to keep Stage-2 wording consistent end-to-end)
+# Stage 2 reuses the optimizer's full machinery via the BriefSubject /
+# SelfExtractor / SelfFormatter parameterization on the lineage_brief
+# functions. The only Stage-2-specific things below are:
+# - The TREE_SUBJECT (different wording at the seams).
+# - `_stage_2_format_dag_for_match` (DAG rendering instead of premise text).
+# - The system prompt (loaded via owtn.prompts.stage_2.registry).
+# - The cache shape: caller passes (count, LineageBrief) explicitly rather
+#   than via `private_metrics` because Stage 2 has no DB-backed per-program
+#   storage. `TreeBriefState` in owtn.stage_2.champion_brief holds it.
 
-_STAGE_2_SEED_PLACEHOLDER = "Initial tree — no full-panel critiques accumulated yet."
+TREE_SUBJECT = BriefSubject(
+    upper="THIS TREE",
+    narrative="this tree",
+    block_qualifier="'s structure",
+    seed_placeholder="Initial tree — no full-panel critiques accumulated yet.",
+)
 
 
 def _stage_2_load_system_prompt() -> str:
@@ -149,109 +146,23 @@ def _stage_2_format_dag_for_match(dag_data: dict) -> str:
     return rendered
 
 
-def _stage_2_format_match_block(index: int, critique: dict) -> str:
-    """Tree-flavored match-block formatter. Parallel to
-    `lineage_brief._format_match_block` but talks about THIS TREE / structures
-    rather than THIS LINEAGE / genomes."""
-    self_label = critique["self_label"]
-    opponent_label = critique["opponent_label"]
-    self_was_champion = critique.get("self_was_champion", False)
-    outcome = critique["outcome"]
-    self_dag = critique.get("self_dag", {})
-    opponent_dag = critique.get("opponent_genome", {})
-    judge_reasonings = critique.get("judge_reasonings", [])
-
-    role = "champion (defending)" if self_was_champion else "challenger"
-    lines = [
-        f"## Match {index + 1} — this tree's structure was the {role}, {outcome}",
-        "",
-        (
-            f"In this match, THIS TREE's structure was labeled '{self_label.upper()}' "
-            f"and the opponent was labeled '{opponent_label.upper()}'."
-        ),
-        "",
-        "THIS TREE's structure:",
-        _stage_2_format_dag_for_match(self_dag),
-        "",
-        "OPPONENT structure:",
-        _stage_2_format_dag_for_match(opponent_dag),
-        "",
-        (
-            f"Dimension outcomes for THIS TREE: "
-            f"{_format_dim_outcomes(critique.get('dim_outcomes', {}))}"
-        ),
-        "",
-        "### Judge reasonings",
-    ]
-    for rec in judge_reasonings:
-        jid = rec.get("judge_id", "?")
-        harsh = rec.get("harshness", "?")
-        reasoning = rec.get("reasoning", "")
-        lines.append(f"\n#### Judge {jid} (harshness={harsh})")
-        lines.append(reasoning)
-    return "\n".join(lines)
+def _stage_2_extract_self(critique: dict) -> dict:
+    """Stage 2 critiques carry the tree's iteration-specific DAG inline; the
+    lineage's "self" thus differs across critiques (the tree expanded between
+    matches). Stage 1's lineage genome is fixed, so its extractor closes over
+    a single dict; Stage 2's reads from the critique itself."""
+    return critique.get("self_dag", {}) or {}
 
 
-def _stage_2_build_summarizer_user_msg(critiques: list[dict]) -> str:
-    return "\n\n---\n\n".join(
-        _stage_2_format_match_block(i, c) for i, c in enumerate(critiques)
-    )
+# Module-level callables so the test mocks have stable references.
+_stage_2_extract_self_fn: SelfExtractor = _stage_2_extract_self
+_stage_2_format_self_fn: SelfFormatter = _stage_2_format_dag_for_match
 
 
 def stage_2_render_raw_fallback(critiques: list[dict]) -> str:
-    """Last-resort render: cold start (zero events) returns the seed
-    placeholder; summarizer failure returns the most recent 1-2 matches in
-    raw form. Tree-flavored wording so the rendered text matches the brief's
-    when both fire on the same tree."""
-    if not critiques:
-        return _STAGE_2_SEED_PLACEHOLDER
-    recent = critiques[-2:]
-    blocks = []
-    for c in recent:
-        outcome = c.get("outcome", "?")
-        role = (
-            "champion (defending)"
-            if c.get("self_was_champion") else "challenger"
-        )
-        dim_summary = _format_dim_outcomes(c.get("dim_outcomes", {}))
-        first_judge = (c.get("judge_reasonings") or [{}])[0]
-        reasoning = (first_judge.get("reasoning") or "")[:1500]
-        blocks.append(
-            f"Prior match (this tree's structure was {role}, {outcome}): "
-            f"{dim_summary}\n\n"
-            f"Sample reasoning from judge {first_judge.get('judge_id', '?')}:\n"
-            f"{reasoning}"
-        )
-    return "\n\n---\n\n".join(blocks)
-
-
-async def _stage_2_call_summarizer(
-    *,
-    user_msg: str,
-    classifier_model: str,
-) -> "LineageBrief":  # forward-string ref so we don't need to import at top
-    """One LLM call → LineageBrief. ~10 lines of `query_async` boilerplate
-    duplicated from `optimizer.lineage_brief.summarize_lineage` so we can
-    use Stage 2's tree-flavored user message + system prompt instead of
-    its LINEAGE-flavored ones. Schema reused directly."""
-    from owtn.llm.call_logger import llm_context  # local imports keep test mocks targeted
-    from owtn.llm.query import query_async
-    from owtn.optimizer.models import LineageBrief
-
-    base_ctx = dict(llm_context.get({}))
-    llm_context.set({**base_ctx, "role": "stage_2_brief_summarizer"})
-    result = await query_async(
-        model_name=classifier_model,
-        msg=user_msg,
-        system_msg=_stage_2_load_system_prompt(),
-        output_model=LineageBrief,
-    )
-    parsed = result.content
-    if not isinstance(parsed, LineageBrief):
-        raise RuntimeError(
-            f"summarizer returned unexpected content type: {type(parsed).__name__}"
-        )
-    return parsed
+    """Last-resort render with tree-flavored wording. Cold start returns the
+    seed placeholder; summarizer failure returns the most recent matches."""
+    return render_raw_fallback(critiques, TREE_SUBJECT)
 
 
 async def compute_stage_2_champion_brief(
@@ -280,24 +191,26 @@ async def compute_stage_2_champion_brief(
     - Summarizer failure: returns raw fallback render, None cache (so caller
       can retry next time).
     """
-    from owtn.optimizer.lineage_brief import render_lineage_brief
-    from owtn.optimizer.models import LineageBrief  # noqa: F401 — used in type comments
-
     if not full_panel_critiques:
-        return _STAGE_2_SEED_PLACEHOLDER, None
+        return TREE_SUBJECT.seed_placeholder, None
 
     if not force_resummarize and cached_count is not None:
         delta = len(full_panel_critiques) - cached_count
         if delta < re_summarize_every and cached_brief is not None:
             # Cache fresh — render from cached brief, signal no-update.
-            rendered = _stage_2_render_brief(cached_brief, full_panel_critiques)
+            rendered = render_lineage_brief(
+                cached_brief, full_panel_critiques, TREE_SUBJECT
+            )
             return rendered, None
 
-    # Recompute.
     try:
-        brief = await _stage_2_call_summarizer(
-            user_msg=_stage_2_build_summarizer_user_msg(full_panel_critiques),
+        brief = await summarize_lineage(
+            match_critiques=full_panel_critiques,
             classifier_model=classifier_model,
+            system_prompt=_stage_2_load_system_prompt(),
+            extract_self=_stage_2_extract_self_fn,
+            format_self=_stage_2_format_self_fn,
+            subject=TREE_SUBJECT,
         )
     except Exception as e:  # noqa: BLE001 — never crash callers on summarizer failure
         logger.warning(
@@ -305,21 +218,8 @@ async def compute_stage_2_champion_brief(
         )
         return stage_2_render_raw_fallback(full_panel_critiques), None
 
-    rendered = _stage_2_render_brief(brief, full_panel_critiques)
+    rendered = render_lineage_brief(brief, full_panel_critiques, TREE_SUBJECT)
     return rendered, (len(full_panel_critiques), brief)
-
-
-def _stage_2_render_brief(brief, critiques: list[dict]) -> str:
-    """Render a LineageBrief with tree-flavored wording. Reuses the
-    optimizer's `render_lineage_brief` and patches "lineage" → "tree" in
-    the rendered string — keeps render logic in one place rather than
-    forking the renderer."""
-    from owtn.optimizer.lineage_brief import render_lineage_brief
-
-    rendered = render_lineage_brief(brief, critiques)
-    rendered = rendered.replace("This lineage", "This tree")
-    rendered = rendered.replace("this lineage", "this tree")
-    return rendered
 
 
 # --- Stage 1 population adapter -------------------------------------------
