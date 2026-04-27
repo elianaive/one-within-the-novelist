@@ -10,13 +10,11 @@ from owtn.models.config import LLMConfig
 
 
 class AnnealingSchedule(BaseModel):
-    """Annealing schedule for generation parameters: explore early, refine later.
+    """Genesis-ratio schedule: high early (diversity), low late (refinement).
 
-    Temperature and genesis ratio both start high (diversity) and anneal down
-    (refinement) after ``warmup_fraction`` of total generations.
+    Applied after ``warmup_fraction`` of total generations. Temperature is a
+    fixed per-run setting now — see ``LLMConfig.generation_temperature``.
     """
-    temp_early: list[float] = [0.8, 0.9, 1.0]
-    temp_late: list[float] = [0.5, 0.6, 0.7]
     genesis_ratio_early: float = 0.6
     genesis_ratio_late: float = 0.1
     warmup_fraction: float = 0.4

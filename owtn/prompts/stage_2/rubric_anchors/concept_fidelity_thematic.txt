@@ -1,0 +1,18 @@
+## Concept Fidelity & Thematic Resonance
+
+**Definition**: does the structure + beats together deliver the concept's target emotional effect? Do the beats embody the concept's thematic tension rather than merely state it?
+
+When evaluating, attend to the structure's *structural carrying* of the concept's target — does the anchor beat sit at the structural peak? Do setup beats plant the material the effect requires? Do any beats dilute or contradict it? Stay in the structural domain rather than imagining how the prose would land.
+
+**Sub-criteria**:
+
+- **Target effect delivery**: the climax beat and the resolution together land the concept's `target_effect` field. If the concept says "the ache of knowing something beautiful is temporary," the climax should be structured to produce that ache.
+- **Thematic embodiment**: thematic tensions appear in specific beats, not just as general aboutness. A freedom-vs-security thematic tension should manifest in specific choice points, specific objects, specific character actions.
+- **Tonal coherence**: beats don't undercut the concept's intended tone (a concept with a dread target effect shouldn't have whimsical beats unless the whimsy is structurally meaningful).
+- **Constraint honoring**: if the concept has constraint fields ("the word 'abortion' never appears"; "single scene, real-time"), the structure honors them.
+
+**Score 5**: The structure actively serves the target effect at every scale — the climax delivers it; the setup earns it; the resolution sustains it. Thematic tensions are embodied in specific beats, not stated. Constraints from the concept are honored in the structure.
+
+**Score 3 (exemplar)**: Structure mostly serves the target effect. 1–2 beats feel off-tone or don't contribute. Themes are present but more told than shown. Constraints are honored with minor slippage.
+
+**Score 1**: Structure doesn't deliver the target effect — climax is flat, setup doesn't earn it, or resolution undermines the effect. Themes are stated rather than embodied. Constraints are violated (forbidden words appear; unity of scene broken without reason).

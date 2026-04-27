@@ -1,0 +1,35 @@
+CONCEPT (the Stage 1 concept this DAG realizes):
+{CONCEPT_JSON}
+
+CURRENT DAG:
+{DAG_RENDERING}
+
+PACING HINT: {PACING_HINT}
+
+WHAT THE JUDGES HAVE BEEN LOOKING AT IN THIS TREE (carry forward into your action choices; if "(brief not yet available)" is shown, no full-panel critiques have accumulated yet):
+{CHAMPION_BRIEF}
+
+PHASE CONTEXT: {PHASE_DESCRIPTION}
+{EXTRA_CONTEXT}
+PERMITTED EDGE TYPES IN THIS PHASE: {PERMITTED_EDGE_TYPES}
+
+TASK: Propose up to {K} candidate actions that would extend this partial DAG toward a complete structure for the concept. Each action is one of:
+
+- `add_beat`: insert a new beat attached to an existing node via a typed edge.
+- `add_edge`: add a typed edge between two existing nodes.
+- `rewrite_beat`: revise an existing node's sketch text (rare — use only when downstream additions need a subtly different setup at an earlier beat).
+
+Before proposing actions, list 3 structural gaps you see in the current DAG. Then produce actions that address them.
+
+For `add_beat`: {ADD_BEAT_DIRECTION_RULE} Leave `new_node_role` null — exactly one node in the DAG carries a non-null role (the anchor, already present); setting role on any other beat will fail validation. `new_node_id` must be unique among existing node IDs. Per-node motifs are drawn from the existing `motif_threads` list — those threads are fixed at seed time and listed in the rendered DAG above.
+
+For `add_edge`: src and dst must both exist in the current DAG. {ADD_EDGE_PHASE_RULE}
+
+Each action's `edge_payload` must populate the type-specific fields:
+- causal: `realizes` (specific mechanism, ≥4 tokens)
+- disclosure: `reframes`, `withheld`, optional `disclosed_to`. `disclosed_to` is a JSON list where each entry is a SINGLE audience — `["reader"]` or `["reader", "mother"]`, NEVER `["reader and mother"]` or `"reader, mother"`. Each non-"reader" entry must literally appear (case-insensitive substring) in the destination beat's sketch text.
+- implication: `entails` (an in-world logical consequence, NOT thematic rhyme)
+- constraint: `prohibits` (concrete diegetic prohibition)
+- motivates: `agent`, `goal`, optional `stakes`. Local scope only — the edge endpoints must be ≤2 topological positions apart in the rendered outline. Whole-story arcs go in `character_arcs`, NOT in motivates edges.
+
+Output 1-{K} actions. Emit only actions you'd defend in a critique — fewer high-leverage actions outperform many marginal ones.

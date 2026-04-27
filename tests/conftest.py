@@ -12,6 +12,10 @@ from owtn.models.stage_1.config import PairwiseAggregationConfig
 
 HILLS_GENOME = {
     "premise": "Two people at a train station discuss something they never name.",
+    "anchor_scene": {
+        "sketch": "She asks if they'll be fine afterward and he says yes; neither looks at the other, and the reader registers that both of them know he is lying.",
+        "role": "reveal",
+    },
     "target_effect": "The weight of what remains unsaid — dread, helplessness, the slow realization that silence is a form of violence.",
     "character_seeds": [
         {
@@ -37,6 +41,10 @@ HILLS_GENOME = {
 
 MINIMAL_GENOME = {
     "premise": "A lighthouse keeper discovers the light has been signaling someone.",
+    "anchor_scene": {
+        "sketch": "The keeper finds his own signature pattern in the previous keeper's logbook — the light has been signaling him across years, since before he arrived.",
+        "role": "reveal",
+    },
     "target_effect": "Creeping dread and the vertigo of complicity.",
 }
 

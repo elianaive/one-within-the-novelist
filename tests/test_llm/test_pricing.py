@@ -52,6 +52,24 @@ class TestCalculateCost:
         assert input_cost == 0.0
         assert output_cost == 0.0
 
+    def test_cache_hit_discount_applied(self):
+        # deepseek-v4-pro: miss $1.74/M, hit $0.145/M, output $3.48/M.
+        full_cost, _ = calculate_cost("deepseek-v4-pro", 1_000_000, 0)
+        discounted_cost, _ = calculate_cost(
+            "deepseek-v4-pro", 1_000_000, 0, cached_input_tokens=1_000_000
+        )
+        assert full_cost == 1.74
+        assert discounted_cost == 0.145
+
+    def test_cache_hit_falls_back_to_miss_when_unset(self):
+        # deepseek-chat has no cache-hit price configured — cached tokens
+        # should be billed at the miss rate (no discount applied).
+        no_cache_cost, _ = calculate_cost("deepseek-chat", 1_000, 0)
+        cached_cost, _ = calculate_cost(
+            "deepseek-chat", 1_000, 0, cached_input_tokens=1_000
+        )
+        assert no_cache_cost == cached_cost
+
 
 class TestIsReasoningModel:
     def test_non_reasoning_model(self):

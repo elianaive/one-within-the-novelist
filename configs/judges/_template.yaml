@@ -82,3 +82,16 @@ priority: "primary"
 # randomly per evaluation call. Must differ from the generation model
 # family (enforced at startup).
 model: ["gpt-4.1"]
+
+# Sampler params. temperature default 0.0 (deterministic judging).
+# Forced to 1.0 when the judge runs on an OpenAI reasoning model
+# (API-required). top_p / top_k / min_p are null by default (provider
+# default). Filtering at call time:
+#   - top_p dropped when reasoning is active.
+#   - top_k dropped for all OpenAI-family providers (unsupported).
+#   - min_p forwarded only via OpenRouter; dropped on native APIs that
+#     reject unknown kwargs.
+temperature: 0.0
+top_p: null
+top_k: null
+min_p: null

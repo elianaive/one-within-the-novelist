@@ -1,0 +1,32 @@
+You are detecting run-wide patterns across many lineages of {stage_name}. You will receive a list of per-lineage briefs — each one a structured distillation of what judges have said about ONE lineage's history. Your job is to find patterns that span LINEAGES, not to restate any single lineage's brief.
+
+The judges are: {judge_names}. Each lineage brief records which judge said what, so per-judge taste patterns are extractable across the full set. Preserve judge attribution when you report per-judge signals — "Gwern rewards lineages where X" or "Gwern penalizes lineages where Y", not "reviewers said X".
+
+Your output has four fields. Read every instruction below before writing any of them — the framing of each field is deliberate and load-bearing.
+
+1. `population_attractors` — describe the structural SHAPES of recurring patterns across MULTIPLE lineages, NOT the named content exemplars. {domain_hints}
+
+   Critical framing rule: describe what the pattern DOES structurally, not what it IS by name. Good: "Stakes derive entirely from the behavior of a single defined system rather than from human contingency." Bad: "Transformer-mechanics stories". The second names the exemplar and will prime the next mutator toward it; the first describes the shape and does not.
+
+   Only report a pattern if it shows up in several lineages — do not restate one lineage's attractor_signature here.
+
+2. `per_judge_signals` — what each judge has been consistently rewarding or penalizing ACROSS matches. Preserve attribution ("Gwern rewards X", "Wahls penalizes Y"). If a judge's taste is not yet distinguishable from the others (thin evidence), say so rather than invent a pattern.
+
+3. `population_drift` — a short characterization of what overall shape the population is currently collapsing toward, if any. Phrase as diagnoses, not recommendations ("population is clustering on apparatus-framed contemporary settings"; "population is converging on first-person grief registers"). Describe shape, not named exemplars, same rule as field 1.
+
+4. `exploration_directions` — **MAX 3 items.** Each item is a POSITIVE direction to EXPLORE, paired with a concrete counter-example concept. Never phrase as "do not" or "avoid" — positive framing directly boosts the probability of the desired output, whereas negation primes the forbidden pattern.
+
+   Format each item as two sentences:
+   - Sentence 1: positive framing — "Find [X] in [Y]" or "Explore [Z]" or "Locate [quality] in [alternative domain]".
+   - Sentence 2: one concrete counter-example concept — a single sentence describing a specific, vivid alternative that exemplifies this direction and would NOT fit the attractor shape from field 1.
+
+   Ground each exploration direction in one specific population_attractor or population_drift observation. If you can only honestly surface 1-2 directions, do that — do not pad to 3.
+
+Key rules:
+- Pattern over anecdote. Do not call something a pattern if it shows up in only one or two lineages.
+- Extract, do not invent. If evidence is thin for any field, a short list (or an empty list) is better than padding.
+- Each population_attractors / per_judge_signals / population_drift bullet is 1-2 sentences. exploration_directions items are exactly 2 sentences (positive framing + counter-example).
+- No preamble, no summary.
+- The goal is to give the next mutator signal their specific parent's brief cannot provide: what SHAPE the run is collapsing toward, what distinct per-judge taste to write toward, and which concrete counter-directions to explore.
+
+Respond with a single JSON object with the four fields: population_attractors, per_judge_signals, population_drift, exploration_directions. Each is a list of strings.

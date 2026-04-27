@@ -1,0 +1,56 @@
+STORY STRUCTURE A
+=================
+
+Beats listed in causal order. Each beat shows what it causes or reveals,
+with load-bearing details in parentheses. Per-node motifs annotated under
+the beat header; whole-story arcs and constraints listed in their own
+sections at the end.
+
+[gathering] Warm summer morning. Villagers gather in the town square; children stack stones at the edge.
+  motifs: stones [introduced]
+  -> causes [summers] Mr. Summers arrives with the battered black box; heads of household are called...
+      (realizes: the lottery is a standing annual institution with a designated official and a ritualized object)
+  -> discloses to [stoning] Villagers close in. Stones are picked up. Tessie Hutchinson screams that it...
+      (reframes: cheerful gathering becomes prelude to stoning; withheld: from the reader, that the lottery's outcome is death; disclosed_to: reader)
+
+[summers] Mr. Summers arrives with the battered black box; heads of household are called by name in a ritual everyone knows but no one explains.
+  motifs: the black box [introduced]; Old Man Warner's mutter [introduced]
+  -> causes [hutchinson] Bill Hutchinson draws the slip with the black dot; the family is isolated for a...
+      (realizes: procedural authority — officiousness and cheerfulness — legitimizes random lethal selection)
+  -> discloses to [stoning] Villagers close in. Stones are picked up. Tessie Hutchinson screams that it...
+      (reframes: the black box's battered officiousness becomes weapon-selection apparatus; withheld: from the reader, what the box is for; disclosed_to: reader)
+
+[hutchinson] Bill Hutchinson draws the slip with the black dot; the family is isolated for a second round.
+  motifs: the black box [echoed]
+  -> causes [tessie] The Hutchinsons redraw. Tessie Hutchinson protests the procedure; she draws her...
+      (realizes: the family is the first selection stage; individual accountability follows group selection)
+
+[tessie] The Hutchinsons redraw. Tessie Hutchinson protests the procedure; she draws her own slip and finds the black dot.
+  motifs: the black box [echoed]
+  -> causes [stoning] Villagers close in. Stones are picked up. Tessie Hutchinson screams that it...
+      (realizes: individual selection activates undivided communal execution; Tessie's resistance changes nothing)
+
+[stoning, role=climax] Villagers close in. Stones are picked up. Tessie Hutchinson screams that it isn't fair. They stone her.
+  motifs: stones [performed]; Old Man Warner's mutter [echoed]
+
+STRUCTURAL TENSIONS (long-range and reframing edges)
+  [gathering] -> discloses to [stoning]
+      (reframes: cheerful gathering becomes prelude to stoning; withheld: from the reader, that the lottery's outcome is death; disclosed_to: reader)
+  [summers] -> discloses to [stoning]
+      (reframes: the black box's battered officiousness becomes weapon-selection apparatus; withheld: from the reader, what the box is for; disclosed_to: reader)
+
+CHARACTER ARCS (whole-story trajectories)
+  - agent: Tessie Hutchinson
+    goal: to be part of the community in good standing
+    stakes: her membership in the only moral order she knows
+
+STORY CONSTRAINTS (diegetic rules holding across the story)
+  - prohibits: any villager speaking the lottery's lethal purpose aloud; naming it would rupture the ritual's performance
+    lifts at: stoning
+  - prohibits: procedural objection to the selection process once underway — only outcome-protest is available
+    lifts at: stoning
+
+MOTIF THREADS (inventory; per-node mode tags shown inline above)
+  - stones
+  - the black box
+  - Old Man Warner's mutter

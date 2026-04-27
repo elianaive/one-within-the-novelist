@@ -1,0 +1,20 @@
+## Edge Logic
+
+**Definition**: does each edge have the right type for the relationship it names, and does its payload actually hold? This combines two concerns: causal edges' `realizes` fields must name plausible mechanisms, and the broader edge-type distribution must match the relationships actually present. A merely-sequential beat labeled causal fails both: wrong type AND an unearned payload.
+
+**Sub-criteria**:
+
+- **Mechanism specificity**: the `realizes` field names a specific mechanism, not a generic one ("he was angry, so he acted" is weak; "his childhood fear of the dark, re-triggered by the blackout, pushed him past caution" is strong). Analogous specificity expected of `entails`, `prohibits`, `reframes`/`withheld`, and `goal`/`stakes` fields.
+- **Temporal-causal distinction**: merely-sequential beats are not labeled causal. A beat that happens after another without being caused by it is not causally linked.
+- **Mode match**: the dominant edge type matches the concept's mode. A thought-experiment concept leans implication-heavy; a reveal concept leans disclosure-heavy; a voice-constraint concept leans constraint-heavy; a character-collision concept leans causal + motivates. A purely single-type DAG is unusual and should be justified by the concept.
+- **Edge quality per type**: causal edges have specific mechanisms; disclosure edges have meaningful withheld information (reader-facing); constraint edges name a concrete in-world prohibition; motivates edges have specific character goals, consistent agents, and *local* scope (whole-story arcs belong in `character_arcs`, not edges).
+- **Implication is strict entailment, not thematic rhyme**: an `implication` edge names an in-world logical consequence — given A, a character could reason that B must hold. If A and B merely share thematic resonance, that's motif-carried recurrence, not implication. Demote `implication` edges whose `entails` reads as a thematic claim rather than a logical consequence.
+- **Disclosure vs. constraint**: disclosure hides/reveals from the reader; constraint prohibits in the world. A single event that does both should be encoded as both edges.
+- **Chain length integrity**: long causal chains (5+ edges) maintain specificity throughout, not degrading into "A happened, B happened, C happened" filler.
+- **No decorative edges**: removing any edge should visibly degrade the DAG. Edges whose removal changes nothing are labels without semantics.
+
+**Score 5**: Every edge has the right type for its relationship, and every payload field is specific and load-bearing. The edge type distribution matches the concept's mode with intentional variation. Whatever the distribution, it is intentional and serves the concept.
+
+**Score 3 (exemplar)**: Most edges have the right type; 1–2 are miscoded (merely-sequential beats labeled causal, or a reveal that should be disclosure labeled causal). Edge type distribution is roughly appropriate but slightly miscalibrated. Most payloads are specific; 1–2 are generic.
+
+**Score 1**: Edges are labeled but their payloads are generic ("A leads to B") or contradicted by the beat sketches. Edge type distribution is default — mostly causal with a token disclosure edge at the climax, regardless of concept. The LLM has not engaged with the typed-edge distinction. Multiple edges are decorative — removing them wouldn't change the DAG's meaning.

@@ -48,7 +48,7 @@ class TestStageConfig:
     def test_llm_loads(self):
         config = StageConfig.from_yaml(CONFIG_PATH)
         assert len(config.llm.generation_models) > 0
-        assert config.llm.generation_model_family != ""
+        assert config.llm.generation_models[0].name
 
     def test_judges_loads(self):
         config = StageConfig.from_yaml(CONFIG_PATH)

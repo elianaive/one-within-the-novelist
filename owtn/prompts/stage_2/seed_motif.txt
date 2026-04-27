@@ -1,0 +1,27 @@
+TASK: For this concept, produce three outputs.
+
+1. motif_threads — 2-3 concrete recurring elements (imagery, objects, phrases, character obsessions) that the DAG's beats will thread through. Motifs are physical and specific, not abstract: "stones" and "the black box" are motifs; "mortality" and "tradition" are themes. Draw threads from the premise, character seeds, setting seeds, and the anchor scene itself.
+
+2. concept_demands — predicates that escape the standard schema (node roles, edge types, motif modes, story_constraints). Most concepts emit ZERO demands; the schema is sufficient. Emit one only when the concept's central structural mechanism cannot be expressed by any of those primitives. Worked examples: "the DAG must include a beat that addresses the reader directly, breaking the diegetic third-person frame"; "the closing beat must mirror or invert the opening's premise as a structural rhyme". A spurious demand will rank good DAGs below worse ones at Tier 3 — favor an empty list when in doubt.
+
+3. target_bucket — pick the natural prose-length bucket for this concept's structural ambition. The DAG that gets built will target the beat range for this bucket; under-shooting starves a rich concept of necessary setup, over-shooting forces filler. Pick the bucket that matches the concept's structural ambition, not the bucket that feels safest. Also produce `bucket_reasoning` — 2-4 sentences citing the concept signals (timeline span, character count, withholding load, thematic-engine complexity) that drove the choice.
+
+TARGET WORD-COUNT BUCKETS:
+- flash: ~1,000 words / 3-5 beats. Single-image / single-event compression. The whole story turns on one moment.
+- short_short: ~3,000 words / 5-8 beats. Tight short story; single arc; restrained development. Anchor + ~2-3 setup + ~2-3 falling.
+- standard_short: ~5,000 words / 7-12 beats. Fully-developed short with discernible setup-development-anchor-resolution shape. Multiple convergent threads possible.
+- long_short: ~10,000 words / 10-18 beats. Long short with sustained midpoint structure, multiple POV-implied scenes, interleaved threads, room for substantial withholding architecture.
+
+Bucket-choice signals to weight:
+- TIMELINE SPAN: 'one afternoon' → flash; 'eleven months of sessions' → standard or long.
+- WITHHOLDING ARCHITECTURE: stories that withhold a named-but-unstated thing need pre-anchor accumulation beats; pure incident stories don't.
+- CHARACTER COUNT: 1 character + apparatus → tighter; 3+ named characters with implied arcs → larger.
+- INFORMATION ARCHITECTURE: reveals that reframe earlier beats need those earlier beats to exist; climaxes that resolve action need less setup.
+- THEMATIC ENGINE COMPLEXITY: multi-axis themes need multiple convergent paths; single-test concepts need fewer.
+
+CONCEPT (parsed from the Stage 1 genome):
+{CONCEPT_JSON}
+
+ANCHOR SCENE:
+{ANCHOR_SKETCH}
+(role: {ANCHOR_ROLE})

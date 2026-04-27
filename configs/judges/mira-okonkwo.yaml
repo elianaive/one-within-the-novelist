@@ -28,3 +28,11 @@ lean_in_signals:
 harshness: "advancing"
 priority: "primary"
 model: ["z-ai/glm-4.7-20251222:nitro"]
+
+# Sampler params. temperature default 0.0 (deterministic judging).
+# top_p / top_k null = provider default; filtered per-provider at call time.
+temperature: 0.0
+top_p: null
+top_k: null
+min_p: null
+reasoning_effort: disabled

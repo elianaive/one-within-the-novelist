@@ -163,6 +163,37 @@ Same intent, opposite mechanism. Describe the positive target. Let the model mov
 
 ---
 
+## Goals Cannot Ride in Plaintext
+
+Structured narrative-goal fields get literalized by the model when passed verbatim into generation prompts. If the prompt contains `target_effect: "dread"`, the generated prose will say *"she felt dread."* If a Stage 2 edge carries `entails: "Heptapods perceive all time at once"`, the Stage 4 prose will say *"the Heptapods perceived all time at once"* — instead of building the realization through scene-craft. This is a specific form of the "describe what IS" failure: the goal field reads as plaintext content to the model, and gets reproduced as plaintext content.
+
+Wales (*Adventures in AI Text Generation*, July 2023, archived at `lab/references/cosop/`) documented this precisely:
+
+> *"If I were writing an outline for myself, I might write: Adelia misses her grandmother… But with the LLMs, the problem I run into way too often is that it will just outright say: Adelia missed her grandmother."*
+
+The hazard persists on modern models, attenuated by better instruction-following but not eliminated. Our pipeline has goal fields at multiple handoffs:
+
+- **Stage 1 → Stage 2:** `target_effect`, `thematic_engine`
+- **Stage 2 → Stage 4:** edge payloads (`realizes`, `reframes`, `withheld`, `entails`, `prohibits`, `goal`, `stakes`)
+
+**Wrong:** dump the goal field into the prompt as a labelled value.
+```
+target_effect: dread, helplessness
+```
+
+**Right:** wrap the goal with explicit protection against literalization, and transmute it from an abstract target into a situational directive.
+```
+The reader should finish this scene with a cold-in-the-chest feeling of things
+gone wrong. Do not name this feeling. Encode it in concrete specifics —
+physical details, pauses, what is not said.
+```
+
+The same pattern applies to edge payloads: an `entails: X` payload must be wrapped as *"the reader should realize X through what happens — do not have a character state this proposition."*
+
+The `target_effect` / payload field itself is still useful — for selection and judging, downstream comparison, and QD archiving. What must not happen is passing it raw into any generation prompt that produces prose the reader will see.
+
+---
+
 ## Focusing Constraints > Exclusionary Constraints
 
 A constraint that specifies a generative starting point ("your concept must involve X") outperforms a constraint that specifies a prohibition ("your concept must not use Y"). Focusing constraints direct attention toward a productive region of the creative space. Exclusionary constraints narrow the space but give no direction.

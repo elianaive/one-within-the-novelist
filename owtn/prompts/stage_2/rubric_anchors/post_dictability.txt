@@ -1,0 +1,16 @@
+## Post-dictability
+
+**Definition**: do the DAG's surprises feel inevitable in retrospect? When a disclosure edge reveals information that reframes earlier beats, does the reframe feel earned — like the story was always going there?
+
+**Sub-criteria**:
+
+- **Retrospective coherence**: after a disclosure edge's reveal, the reader should be able to trace the withheld information backwards through the beats that hinted at it.
+- **Earned-not-forced**: surprising turns are grounded in earlier structural material, not imposed by LLM default ("suddenly, everything changed").
+- **Initiatoriness**: how well the ending explains prior events. A strong ending doesn't contradict the setup; it reframes it.
+- **Immutability preservation**: the ending doesn't violate established facts of the story world (the DAG doesn't have the climax happen in a world that the opening shows is impossible).
+
+**Score 5**: Surprising disclosures feel inevitable on re-reading. Each `withheld` field's content is traceable through earlier beats — the setup was always pointing here, even if the reader couldn't see it.
+
+**Score 3 (exemplar)**: Most surprising moments are retrospectively coherent. One or two reveals feel slightly imposed — the setup hints are present but thin. The ending is consistent with established facts but doesn't strongly reframe earlier beats.
+
+**Score 1**: Surprises feel arbitrary — the `withheld` fields reference information the beats never hinted at. The ending contradicts or ignores established setup. Disclosure edges are labeled but don't produce retrospective coherence.

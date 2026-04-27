@@ -240,9 +240,9 @@ class TestBuildOperatorPrompt:
             prompt="Focus on maritime themes",
             is_initial=True,
         )
-        assert "maritime themes" in sys_msg
-        # Run-prompt template signal: the Magnes block frames the user prompt.
-        assert "Magnes" in sys_msg
+        # Run-prompt block now lives in user_msg, not sys_msg.
+        assert "maritime themes" in user_msg
+        assert "<user_prompt>" in user_msg
 
     def test_prompt_in_system_mutation(self, registry):
         """The user prompt must reach mutation-mode prompts too, not just gen 0."""
@@ -253,8 +253,8 @@ class TestBuildOperatorPrompt:
             prompt="Focus on maritime themes",
             is_initial=False,
         )
-        assert "maritime themes" in sys_msg
-        assert "Magnes" in sys_msg
+        assert "maritime themes" in user_msg
+        assert "<user_prompt>" in user_msg
 
     def test_no_prompt_block_when_empty(self, registry):
         sys_msg, user_msg = build_operator_prompt(
@@ -264,7 +264,8 @@ class TestBuildOperatorPrompt:
             is_initial=True,
         )
         # No prompt → no run-prompt block at all.
-        assert "Magnes" not in sys_msg
+        assert "<user_prompt>" not in sys_msg
+        assert "<user_prompt>" not in user_msg
 
     def test_no_prompt_block_when_whitespace(self, registry):
         sys_msg, user_msg = build_operator_prompt(
@@ -273,7 +274,8 @@ class TestBuildOperatorPrompt:
             prompt="   \n  ",
             is_initial=True,
         )
-        assert "Magnes" not in sys_msg
+        assert "<user_prompt>" not in sys_msg
+        assert "<user_prompt>" not in user_msg
 
     def test_output_format_resolved(self, registry):
         """Operator instructions should have {output_format} resolved."""
@@ -411,16 +413,16 @@ class TestBuildMutationFeedback:
         assert build_mutation_feedback(None, {}) == ""
         assert build_mutation_feedback("  ", {}) == ""
 
-    def test_prefers_precomputed_parent_brief_from_private_metrics(self):
-        """When runner has precomputed a parent brief, pass it through verbatim."""
+    def test_prefers_precomputed_lineage_brief_from_private_metrics(self):
+        """When runner has precomputed a lineage brief, pass it through verbatim."""
         rendered = (
-            "This concept has been evaluated in 3 matches...\n\n"
+            "This lineage has been evaluated in 3 matches...\n\n"
             "## Established weaknesses\n- Hook relies on withheld information..."
         )
         result = build_mutation_feedback(
             "legacy text_feedback that should be ignored",
             {"dimensions": self.SAMPLE_DIMENSIONS},
-            {"parent_brief_rendered": rendered},
+            {"lineage_brief_rendered": rendered},
         )
         assert result == rendered
 
@@ -429,7 +431,7 @@ class TestBuildMutationFeedback:
         result = build_mutation_feedback(
             "raw feedback text here",
             {"dimensions": self.SAMPLE_DIMENSIONS},
-            {},  # no parent_brief_rendered key
+            {},  # no lineage_brief_rendered key
         )
         assert "raw feedback text" in result
         assert len(result) <= 500

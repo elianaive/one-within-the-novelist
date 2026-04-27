@@ -35,7 +35,12 @@ asyncio_mode = "auto"
 markers = ["live_api: tests requiring real API calls (require API keys, cost money)"]
 
 [dependency-groups]
-dev = ["pytest", "pytest-asyncio", "ruff"]
+dev = [
+    "dspy-ai>=3.2.0",
+    "pytest",
+    "pytest-asyncio",
+    "ruff",
+]
 
 [tool.uv.sources]
 shinka-evolve = { path = "lib/shinka-evolve", editable = true }

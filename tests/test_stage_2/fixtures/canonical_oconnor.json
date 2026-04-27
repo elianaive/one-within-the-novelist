@@ -1,0 +1,198 @@
+{
+  "concept_id": "canonical_oconnor",
+  "preset": "cassandra_ish",
+  "target_node_count": 11,
+  "motif_threads": [
+    "the grandmother's hat and lace collar",
+    "Pitty Sing, the cat",
+    "the Misfit's dark glasses",
+    "the title phrase 'a good man is hard to find' and its echo 'you're a good man'"
+  ],
+  "concept_demands": [],
+  "character_arcs": [
+    {
+      "agent": "the grandmother",
+      "goal": "to be seen as a lady — the organizing goal of her whole life, which the story tests against the Misfit and finds has been the wrong goal",
+      "stakes": "her self-understanding; the terms on which her life has been a life"
+    },
+    {
+      "agent": "the Misfit",
+      "goal": "to reconcile a theology of Jesus-raised-the-dead with his own refusal to believe he was there to see it; to settle what he owes the world given that he cannot know",
+      "stakes": "whether there is any pleasure in life, as he puts it at the end"
+    }
+  ],
+  "story_constraints": [],
+  "nodes": [
+    {
+      "id": "opening",
+      "sketch": "the grandmother does not want to go to Florida. She reads aloud from the paper that the Misfit, a convict, has escaped and is headed that way.",
+      "role": null,
+      "motifs": [
+        {"motif": "the grandmother's hat and lace collar", "mode": "introduced"}
+      ]
+    },
+    {
+      "id": "departure",
+      "sketch": "they leave for Florida anyway. the grandmother dresses for the possibility of being found dead on the road in her lace collar so strangers will know she was a lady.",
+      "role": null,
+      "motifs": [
+        {"motif": "the grandmother's hat and lace collar", "mode": "performed"},
+        {"motif": "Pitty Sing, the cat", "mode": "introduced"}
+      ]
+    },
+    {
+      "id": "diner",
+      "sketch": "at Red Sammy's diner, the grandmother and Red Sammy agree that a good man is hard to find; the Misfit is discussed in abstract moral terms.",
+      "role": null,
+      "motifs": [
+        {"motif": "the title phrase 'a good man is hard to find' and its echo 'you're a good man'", "mode": "introduced"}
+      ]
+    },
+    {
+      "id": "detour",
+      "sketch": "the grandmother remembers a plantation with a secret panel; she lies about its location being in Georgia and persuades Bailey to take a dirt road. Pitty Sing, hidden in a basket, startles.",
+      "role": null,
+      "motifs": [
+        {"motif": "Pitty Sing, the cat", "mode": "echoed"}
+      ]
+    },
+    {
+      "id": "crash",
+      "sketch": "the car turns over in a ditch. No one is seriously hurt. the grandmother realizes, as help approaches from up the road, that the plantation with the secret panel is in Tennessee, not Georgia.",
+      "role": null,
+      "motifs": [
+        {"motif": "Pitty Sing, the cat", "mode": "agent"}
+      ]
+    },
+    {
+      "id": "arrival",
+      "sketch": "a car stops. Three men get out with a gun. the grandmother recognizes the Misfit by his face from the paper.",
+      "role": null,
+      "motifs": [
+        {"motif": "the Misfit's dark glasses", "mode": "introduced"}
+      ]
+    },
+    {
+      "id": "separation",
+      "sketch": "the Misfit's two companions lead Bailey and the son into the woods; shots are heard. The mother and baby and daughter are taken next; more shots.",
+      "role": null,
+      "motifs": []
+    },
+    {
+      "id": "grandmother_pleads",
+      "sketch": "the grandmother, alone with the Misfit, tries to persuade him he is a good man; she offers him money; she tells him to pray.",
+      "role": null,
+      "motifs": [
+        {"motif": "the grandmother's hat and lace collar", "mode": "echoed"},
+        {"motif": "the title phrase 'a good man is hard to find' and its echo 'you're a good man'", "mode": "echoed"}
+      ]
+    },
+    {
+      "id": "grace",
+      "sketch": "she reaches out and touches the Misfit on the shoulder and says, 'Why you're one of my own children.' He springs back as if she were a snake and shoots her three times in the chest.",
+      "role": ["climax", "pivot"],
+      "motifs": [
+        {"motif": "the Misfit's dark glasses", "mode": "echoed"}
+      ]
+    },
+    {
+      "id": "the_statement",
+      "sketch": "the Misfit, cleaning his glasses, says: 'She would of been a good woman, if it had been somebody there to shoot her every minute of her life.'",
+      "role": null,
+      "motifs": [
+        {"motif": "the Misfit's dark glasses", "mode": "performed"},
+        {"motif": "the title phrase 'a good man is hard to find' and its echo 'you're a good man'", "mode": "inverted"}
+      ]
+    },
+    {
+      "id": "no_pleasure",
+      "sketch": "Bobby Lee says the old lady was a talker. the Misfit says there is no real pleasure in life.",
+      "role": null,
+      "motifs": [
+        {"motif": "the grandmother's hat and lace collar", "mode": "inverted"}
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "src": "opening",
+      "dst": "departure",
+      "type": "causal",
+      "realizes": "the family overrides the grandmother's objection; her attempt to prevent the trip fails and she travels with a grievance"
+    },
+    {
+      "src": "departure",
+      "dst": "diner",
+      "type": "causal",
+      "realizes": "the road trip produces stops; the diner stop sets up the Misfit as a concrete presence in the moral landscape rather than a newspaper abstraction"
+    },
+    {
+      "src": "diner",
+      "dst": "detour",
+      "type": "motivates",
+      "agent": "the grandmother",
+      "goal": "to produce a memorable excursion that repairs her marginalization in the current moment",
+      "stakes": "her standing as the matriarch whose judgment is worth following on this trip"
+    },
+    {
+      "src": "detour",
+      "dst": "crash",
+      "type": "causal",
+      "realizes": "the dirt road with the concealed cat in the basket produces exactly the kind of accident dirt roads produce; Pitty Sing's startle is the proximate physical cause"
+    },
+    {
+      "src": "crash",
+      "dst": "arrival",
+      "type": "causal",
+      "realizes": "a wrecked car on a remote road attracts the attention of anyone passing; the Misfit is the one passing"
+    },
+    {
+      "src": "opening",
+      "dst": "arrival",
+      "type": "disclosure",
+      "reframes": "the newspaper-Misfit (abstract, a type) becomes the actual-Misfit (specific, in the flesh)",
+      "withheld": "that the Misfit and the family will intersect — the story has been staging this under the pretense of being about a tiresome family trip",
+      "disclosed_to": ["reader", "the grandmother"]
+    },
+    {
+      "src": "arrival",
+      "dst": "separation",
+      "type": "causal",
+      "realizes": "the Misfit's procedural calm — 'Hiram, take him and the boy into the woods' — produces the sequential murder of the family without anyone resisting"
+    },
+    {
+      "src": "separation",
+      "dst": "grandmother_pleads",
+      "type": "causal",
+      "realizes": "alone with the Misfit, the grandmother exhausts her repertoire — social, financial, religious — looking for the lever that will make him spare her"
+    },
+    {
+      "src": "grandmother_pleads",
+      "dst": "grace",
+      "type": "motivates",
+      "agent": "the grandmother",
+      "goal": "to reach the Misfit through some register she has not yet tried, having exhausted flattery and money and piety",
+      "stakes": "her life; and — unexpected to her — the terms on which her life has been lived"
+    },
+    {
+      "src": "grace",
+      "dst": "the_statement",
+      "type": "causal",
+      "realizes": "the Misfit's recoil and the shots are his response to having been addressed as kin by a dying stranger; his sentence is his attempt to settle what just happened to him"
+    },
+    {
+      "src": "the_statement",
+      "dst": "no_pleasure",
+      "type": "implication",
+      "entails": "if a person is only good when threatened (as the statement claims), then no ordinary life is a site of goodness — a conclusion the Misfit's final line reasons to from his own premises"
+    },
+    {
+      "src": "detour",
+      "dst": "grace",
+      "type": "disclosure",
+      "reframes": "the grandmother's vanity-motivated lie about the plantation is retroactively understood as the agent of her deliverance to the moment of grace; what damned her also saved her",
+      "withheld": "that the detour's consequence is not punishment but confrontation with the real",
+      "disclosed_to": ["reader"]
+    }
+  ]
+}

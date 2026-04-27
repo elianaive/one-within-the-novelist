@@ -156,7 +156,7 @@ def inject_seed(
     if seed is None:
         return ""
     content = seed.content if isinstance(seed.content, str) else "\n".join(seed.content)
-    return f"\nSpolia, gathered from elsewhere and brought into this work:\n\n{content}"
+    return f"\nSpolia from elsewhere — architectural scrap offered for inspiration, not as template. The work you are making decides what fits. Contemplate what it can provide.\n\n{content}"
 
 
 # Dimension name → regex pattern for matching headers in judge reasoning.
@@ -201,7 +201,7 @@ def _extract_dimension_section(judge_text: str, dim_name: str) -> str | None:
     return judge_text[match.start():end].strip()
 
 
-_PARENT_BRIEF_CACHE_RENDER_KEY = "parent_brief_rendered"
+_LINEAGE_BRIEF_RENDER_KEY = "lineage_brief_rendered"
 
 
 def build_mutation_feedback(
@@ -212,18 +212,19 @@ def build_mutation_feedback(
     """Build the feedback section injected into the mutation prompt.
 
     Preferred path (Phase-3 feedback pipeline): if the parent's
-    `private_metrics` contains a pre-rendered parent brief (set by the
-    runner's async precompute step via `feedback.get_or_compute_brief`),
-    return it verbatim. This is the curated, accumulated-critique summary.
+    `private_metrics` contains a pre-rendered lineage brief (set by the
+    runner's async precompute step via the optimizer module's
+    `compute_stage_1_lineage_brief`), return it verbatim. This is the
+    curated, accumulated-critique summary.
 
     Fallback (legacy): for seeds, for programs without accumulated critiques,
     or if the precompute step was skipped, return a minimal pairwise-result
     snippet. No regex-based dimension extraction — that path produced
     corrupt, champion-praising feedback (see
-    `lab/issues/2026-04-18-lazy-feedback-summarizer.md`).
+    `lab/issues/closed/2026-04-18-lazy-feedback-summarizer.md`).
     """
     if private_metrics:
-        rendered = private_metrics.get(_PARENT_BRIEF_CACHE_RENDER_KEY)
+        rendered = private_metrics.get(_LINEAGE_BRIEF_RENDER_KEY)
         if rendered:
             return rendered
 
@@ -245,6 +246,8 @@ def build_operator_prompt(
     prompt: str = "",
     tonal_steering: str = "",
     is_initial: bool = False,
+    population_context: str = "",
+    exploration_directions: str = "",
 ) -> tuple[str, str]:
     """Build complete system and user messages for an operator.
 
@@ -261,8 +264,10 @@ def build_operator_prompt(
     # System message order (see docs/prompting-guide.md):
     #   1. Operator persona — sets distributional neighborhood
     #   2. Tonal atmosphere — random affective register / literary mode
-    #   3. Run-prompt block — user's directional pressure (omitted if empty)
-    #   4. Base task description — structural contract last
+    #   3. Base task description — structural contract last
+    # The run-prompt block (user's directional pressure) is prepended to the
+    # user message below — task-level, so it competes on equal footing with
+    # operator instructions and spolia rather than being treated as framing.
     base_system = _load_base_system()
     tonal_atmosphere = f"\n\n{tonal_steering}" if tonal_steering else ""
     run_prompt_block = (
@@ -276,8 +281,6 @@ def build_operator_prompt(
         parts.append(op.sys_format)
     if tonal_atmosphere.strip():
         parts.append(tonal_atmosphere.strip())
-    if run_prompt_block:
-        parts.append(run_prompt_block.strip())
     parts.append(base_system)
     system_msg = "\n\n".join(parts)
 
@@ -300,15 +303,42 @@ def build_operator_prompt(
         user_msg = template.replace("{operator_instructions}", instructions)
     else:
         template = _load_iteration_template()
-        text_feedback_section = f"\n\n# Judge Feedback\n\n{feedback}" if feedback else ""
+        # Lineage feedback (parent-specific) + population context (diagnostic,
+        # shape-based) sit in the middle of the prompt alongside the parent
+        # genome. Exploration directions are placed separately at the top AND
+        # end of the user message below — instruction sandwich for primacy +
+        # recency advantage. Research basis:
+        # lab/deep-research/runs/20260424_031609-avoidance-instruction-compliance/
+        feedback_and_context = ""
+        if feedback:
+            feedback_and_context += f"\n\n# Judge Feedback\n\n{feedback}"
+        if population_context:
+            feedback_and_context += (
+                f"\n\n# Population signal\n\n{population_context}"
+            )
         episodic_section = f"\n\n# Context from Prior Runs\n\n{episodic_context}" if episodic_context else ""
         user_msg = (
             template
             .replace("{code_content}", parent_genome)
             .replace("{performance_metrics}", metrics)
-            .replace("{text_feedback_section}", text_feedback_section)
+            .replace("{text_feedback_section}", feedback_and_context)
             .replace("{episodic_context}", episodic_section)
             .replace("{operator_instructions}", instructions)
         )
+
+        # Instruction sandwich: exploration directions at the very top
+        # (primacy) and repeated at the very end (recency). Middle-of-prompt
+        # attention degrades 30-50% — top and end positions are where
+        # critical instructions actually land.
+        if exploration_directions:
+            user_msg = (
+                f"{exploration_directions}\n\n"
+                f"{user_msg}"
+                f"\n\n{exploration_directions}"
+            )
+
+    # Prepend the run-prompt block to the user message so it's task-level.
+    if run_prompt_block:
+        user_msg = run_prompt_block.strip() + "\n\n" + user_msg
 
     return system_msg, user_msg

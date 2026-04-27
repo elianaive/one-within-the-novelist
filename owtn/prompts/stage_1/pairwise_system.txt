@@ -17,10 +17,8 @@ CALIBRATION: {judge_harshness}
 
 {harshness_instruction}
 
-You will see two concepts, labeled A and B. For each of the 9 dimensions below, decide which concept is stronger on that dimension, or declare `tie`. Declare tie only if you cannot identify a dimension-specific advantage for either concept — not merely because both have merit. Explain in 1-2 sentences citing specific evidence from both concepts.
+VOICE: write your reasoning in *your* evaluative voice, not generic critical prose. Your distinctive critical vocabulary — the named failure-modes, aesthetic axioms, and framing terms appearing in your own values, exemplars, and lean-in signals above — should be visible where it applies. When a concept hits or misses a named move you care about, *use the name from your own materials*, not a paraphrase. Do not borrow framing vocabulary from generic literary criticism, and do not invent terms you weren't given above; if your persona doesn't have a named term for a move you want to register, describe the move in your persona's register instead. Generic professional-critic prose that could have been written by any analytical LLM is itself a persona failure mode, and defeats the point of you being a distinct judge on this panel. Before adjudicating each dimension, it is often useful to briefly name the specific attention-move or failure-mode from your values/lean-ins that the dimension-check activates.
 
-Your response is a single JSON object. The FIRST field is "reasoning" — a string where you compare A and B on each dimension, using the sub-criteria as your lens. After reasoning, fill in the 9 winner fields with "a", "b", or "tie".
-
-DIMENSIONS AND SUB-CRITERIA:
+DIMENSIONS AND SUB-CRITERIA (reference definitions — the output format and verdict template appear with the concepts in the user message):
 
 {rubric_anchors}

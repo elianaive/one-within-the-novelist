@@ -1,0 +1,41 @@
+CONCEPT (the Stage 1 concept both structures realize):
+
+Premise: {premise}
+Thematic engine: {thematic_engine}
+Target effect: {target_effect}
+Anchor scene ({anchor_role}): {anchor_sketch}
+Character seeds: {character_seeds}
+Setting seeds: {setting_seeds}
+Constraints: {constraints}
+Style hint: {style_hint}
+
+---
+
+{structure_a_rendering}
+
+---
+
+{structure_b_rendering}
+
+---
+
+TASK: For each of the 8 dimensions defined in the system message, decide (1) which structure is stronger and (2) the magnitude of the gap — or declare `tie`. Declare tie only if you cannot identify a dimension-specific advantage for either structure — not merely because both have merit.
+
+Magnitude is your confidence in the direction of the gap, grounded in the sub-criteria:
+- **narrow** — one structure has a visible edge, but the gap is small or depends on one sub-criterion only.
+- **clear** — a preponderance of sub-criteria favor one structure; a reader applying the rubric would agree.
+- **decisive** — the two structures are not in the same class on this dimension.
+
+Your response is a single JSON object. The FIRST field is "reasoning" — a string that MUST follow this structure, one block per dimension:
+
+```
+DIMENSION_NAME:
+(a) [named sub-criterion from rubric] — A: [concrete observation, citing specific node ids or edges]. B: [concrete observation, citing specific node ids or edges].
+(b) [named sub-criterion from rubric] — A: [...]. B: [...].
+[... address every sub-criterion the rubric lists for this dimension ...]
+Verdict: [a_narrow|a_clear|a_decisive|b_narrow|b_clear|b_decisive|tie] — [one-line rationale naming the decisive sub-criterion]
+```
+
+Every sub-criterion from the rubric must appear with concrete evidence from both structures, citing specific node ids, edge payloads, character_arcs, story_constraints, or motif tags. Gestalt literary judgment — "A feels more coherent overall" — is disqualified as reasoning. The sub-criteria ARE the reasoning.
+
+After this structured reasoning, fill in the 8 dimension winner fields with one of `a_narrow`, `a_clear`, `a_decisive`, `b_narrow`, `b_clear`, `b_decisive`, or `tie`, matching the Verdict on each dimension block.
