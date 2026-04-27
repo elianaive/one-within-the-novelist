@@ -19,22 +19,31 @@ Pick one of these or name your own. Format: name the mode at the start, then the
 
 **Target effect** — the felt quality of the work, rendered. Engine handles what the reader leaves with. This handles the texture of the during. Render the texture; do not name the category. Two failure tests: if a single noun (longing, dread, joy) substitutes for the description, you have a label, not an effect. If the description could fit any other "moving" piece of literary fiction, you have a label, not an effect. Find the words that only fit this work.
 
+**Anchor scene** — the single beat the concept lives or dies on. The scene that lands the target effect through the engine — the specific moment where abstraction becomes event. The moment you would film first if you had one shot. Render it in 1-2 sentences with the specificity of what is *in the frame*: what is said, what is done, what object is held, what face is seen. A reader taking in this sentence should be able to visualize the scene. If the sentence describes a *feeling the scene would produce* rather than the scene itself, the anchor has not been written yet.
+
+Name its role — one of three, each a different kind of backward pressure the scene exerts on the story:
+- *climax* — a peak moment that makes the ending feel surprising and inevitable at once, revealing what earlier scenes were actually about at the level of character or theme.
+- *reveal* — a beat that delivers withheld information, reframing the preceding material.
+- *pivot* — an apparently unrelated element that recontextualizes two previously juxtaposed strands (kishotenketsu's "ten" is the archetypal example).
+
+Voice-driven and atmospheric concepts — those whose peaks traditionally live in prose craft (the unsaid word, the sustained mood) — must still find the event where the content does visible work. The anchor is content, not sentence. A mood is not an anchor.
+
 **Constraints** — the tzimtzum. What the story refuses to do — the deliberate withdrawal that creates the space in which this particular story can exist. Every constraint must earn its keep.
 
-**Character seeds** — the vessels. Label and sketch. Optional: wound, fear, lie, want, need. If a character can be removed without collapsing the premise, they aren't carrying anything.
+**Character seeds** — the vessels. Label and sketch. Optional: wound, fear, lie, want, need. If a character can be removed without collapsing the premise, they aren't carrying anything. If a character can be understood in a single sentence, they do not belong.
 
 **Setting seeds** — the correspondences. The conditions that make certain events inevitable and others impossible. If you can move this story to another setting and lose nothing, the setting isn't doing its work.
 
 **Style hint** — the tincture. How this story feels on the page — the quality that saturates the prose the way a drop of dye saturates cloth. Specific enough that a writer could follow it without asking what you meant.
 
-Before the binding: look into the shapes ahead. Find at least 3 different forms this concept could take. For each, note the core surprise and the feeling it produces. Choose the most unexpected — the shape the concept is reaching toward.
+Before the binding: look into the shapes ahead. Find at least 3 different forms this concept could take. For each, sketch the anchor scene — the single moment the reader cannot file away — and note the role it plays (climax, reveal, or pivot). After, choose the form whose anchor is most unexpected and most inevitable at once. The anchor is the choice.
 
 <NAME>
 short_name_lowercase_underscores
 </NAME>
 
 <DESCRIPTION>
-The forms you saw — at least three, each with its core surprise and feeling. Why you chose this one.
+The chosen form, compressed to a single paragraph of its essence. Not the three-form exploration — just the shape this concept arrived at, rendered tight.
 </DESCRIPTION>
 
 <CODE>
@@ -43,6 +52,10 @@ The forms you saw — at least three, each with its core surprise and feeling. W
   "premise": "the true name",
   "thematic_engine": "<mode name> — paragraph describing how this engine works in this concept" or null,
   "target_effect": "the felt quality of the work, rendered",
+  "anchor_scene": {
+    "sketch": "the single scene the concept hinges on, rendered as what is in the frame",
+    "role": "climax" | "reveal" | "pivot"
+  },
   "constraints": ["the tzimtzum"] or null,
   "character_seeds": [{"label": "name/role", "sketch": "who they are"}, ...] or null,
   "setting_seeds": "the correspondences" or null,
@@ -51,4 +64,8 @@ The forms you saw — at least three, each with its core surprise and feeling. W
 ```
 </CODE>
 
-character_seeds are objects with "label" and "sketch" (optional: "wound", "fear", "lie", "want", "need"). All other optional fields are plain strings. Use the <NAME>, <DESCRIPTION>, and <CODE> delimiters exactly as shown.
+anchor_scene is required; its `role` must be exactly one of "climax", "reveal", "pivot". character_seeds are objects with "label" and "sketch" (optional: "wound", "fear", "lie", "want", "need"). All other optional fields are plain strings. Use the <NAME>, <DESCRIPTION>, and <CODE> delimiters exactly as shown.
+
+The entire genome must be written in stylized prose. The medium is the message.
+
+The underlying concept ought be best fit for a 5-8,000 word long short story.

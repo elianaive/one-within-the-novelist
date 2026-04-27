@@ -4,15 +4,24 @@ import pytest
 from pydantic import ValidationError
 
 from owtn.models.stage_1.classification import ConstraintDensity
-from owtn.models.stage_1.concept_genome import ConceptGenome
+from owtn.models.stage_1.concept_genome import AnchorScene, ConceptGenome
 
 from tests.conftest import HILLS_GENOME
+
+
+def _anchor():
+    """A valid AnchorScene payload for tests that don't care about its contents."""
+    return {
+        "sketch": "The keeper finds his own signature in the previous keeper's log — the light has been signaling him across years.",
+        "role": "reveal",
+    }
 
 
 class TestParsing:
     def test_full_genome(self):
         genome = ConceptGenome.model_validate(HILLS_GENOME)
         assert genome.premise.startswith("Two people")
+        assert genome.anchor_scene.role == "reveal"
         assert len(genome.character_seeds) == 2
         assert genome.character_seeds[0].label == "the man"
         assert genome.character_seeds[0].wound is None
@@ -21,10 +30,12 @@ class TestParsing:
     def test_minimal_genome(self):
         genome = ConceptGenome(
             premise="A lighthouse keeper discovers the light has been signaling someone.",
+            anchor_scene=_anchor(),
             target_effect="Creeping dread and the vertigo of complicity.",
         )
         assert genome.character_seeds is None
         assert genome.constraints is None
+        assert genome.anchor_scene.role == "reveal"
 
     def test_from_code_string(self):
         code = json.dumps(HILLS_GENOME)
@@ -43,17 +54,23 @@ class TestValidation:
         with pytest.raises(ValidationError):
             ConceptGenome(
                 premise=None,
+                anchor_scene=_anchor(),
                 target_effect="Something unsettling.",
             )
 
     def test_premise_too_short(self):
         with pytest.raises(ValidationError):
-            ConceptGenome(premise="Too short.", target_effect="Something unsettling and heavy.")
+            ConceptGenome(
+                premise="Too short.",
+                anchor_scene=_anchor(),
+                target_effect="Something unsettling and heavy.",
+            )
 
     def test_target_effect_too_short(self):
         with pytest.raises(ValidationError):
             ConceptGenome(
                 premise="A lighthouse keeper discovers the light has been signaling someone.",
+                anchor_scene=_anchor(),
                 target_effect="Bad.",
             )
 
@@ -61,15 +78,43 @@ class TestValidation:
         with pytest.raises(ValidationError):
             ConceptGenome(
                 premise="A lighthouse keeper discovers the light has been signaling someone.",
+                anchor_scene=_anchor(),
                 target_effect="Creeping dread and complicity.",
                 character_seeds=[{"sketch": "Nervous, watchful."}],
             )
+
+
+class TestAnchorScene:
+    def test_anchor_required(self):
+        with pytest.raises(ValidationError):
+            ConceptGenome(
+                premise="A lighthouse keeper discovers the light has been signaling someone.",
+                target_effect="Creeping dread and the vertigo of complicity.",
+            )
+
+    def test_sketch_too_short(self):
+        with pytest.raises(ValidationError):
+            AnchorScene(sketch="The keeper sees.", role="reveal")
+
+    def test_invalid_role(self):
+        with pytest.raises(ValidationError):
+            AnchorScene(
+                sketch="The keeper finds his own signature in the previous keeper's log, spanning years.",
+                role="constraint-moment",
+            )
+
+    def test_all_valid_roles(self):
+        sketch = "The keeper finds his own signature in the previous keeper's log, spanning years."
+        for role in ("climax", "reveal", "pivot"):
+            scene = AnchorScene(sketch=sketch, role=role)
+            assert scene.role == role
 
 
 class TestConstraintDensity:
     def test_unconstrained_none(self):
         genome = ConceptGenome(
             premise="A lighthouse keeper discovers the light has been signaling someone.",
+            anchor_scene=_anchor(),
             target_effect="Creeping dread and the vertigo of complicity.",
         )
         assert genome.classify_constraint_density() == ConstraintDensity.UNCONSTRAINED
@@ -77,6 +122,7 @@ class TestConstraintDensity:
     def test_unconstrained_empty(self):
         genome = ConceptGenome(
             premise="A lighthouse keeper discovers the light has been signaling someone.",
+            anchor_scene=_anchor(),
             target_effect="Creeping dread and the vertigo of complicity.",
             constraints=[],
         )
@@ -85,6 +131,7 @@ class TestConstraintDensity:
     def test_moderate(self):
         genome = ConceptGenome(
             premise="A lighthouse keeper discovers the light has been signaling someone.",
+            anchor_scene=_anchor(),
             target_effect="Creeping dread and the vertigo of complicity.",
             constraints=["No dialogue."],
         )
@@ -97,6 +144,7 @@ class TestConstraintDensity:
     def test_whitespace_only_skipped(self):
         genome = ConceptGenome(
             premise="A lighthouse keeper discovers the light has been signaling someone.",
+            anchor_scene=_anchor(),
             target_effect="Creeping dread and the vertigo of complicity.",
             constraints=["  ", "", "\t"],
         )
@@ -105,6 +153,7 @@ class TestConstraintDensity:
     def test_whitespace_mixed_with_real(self):
         genome = ConceptGenome(
             premise="A lighthouse keeper discovers the light has been signaling someone.",
+            anchor_scene=_anchor(),
             target_effect="Creeping dread and the vertigo of complicity.",
             constraints=["No dialogue.", "  ", ""],
         )
@@ -116,6 +165,8 @@ class TestPromptFields:
         genome = ConceptGenome.model_validate(HILLS_GENOME)
         fields = genome.to_prompt_fields()
         assert fields["premise"] == genome.premise
+        assert fields["anchor_sketch"] == genome.anchor_scene.sketch
+        assert fields["anchor_role"] == genome.anchor_scene.role
         assert fields["target_effect"] == genome.target_effect
         assert "the man" in fields["character_seeds"]
         assert "want:" in fields["character_seeds"]
@@ -126,6 +177,7 @@ class TestPromptFields:
     def test_minimal_genome_fields(self):
         genome = ConceptGenome(
             premise="A lighthouse keeper discovers the light has been signaling someone.",
+            anchor_scene=_anchor(),
             target_effect="Creeping dread and the vertigo of complicity.",
         )
         fields = genome.to_prompt_fields()

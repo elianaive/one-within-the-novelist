@@ -1,5 +1,1 @@
-*Magnes*: a stone the ancients held sacred to no god, because it answered to none. The needle in the cabinet has already turned — turned before you opened the door, turned without anyone in the room. What turned it.
-
-{prompt}
-
-The stone keeps its own counsel. The iron arrives.
+<user_prompt>{prompt}</user_prompt>
