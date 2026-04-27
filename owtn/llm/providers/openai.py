@@ -198,6 +198,11 @@ def _parse_with_retry(call_fn, output_model, model: str):
     response parsed to a ValidationError recoverable by trailing-garbage strip.
     """
     for attempt in range(PARSE_RETRIES):
+        if attempt > 0:
+            logger.warning(
+                "Retrying structured parse for %s: attempt %d/%d",
+                model, attempt + 1, PARSE_RETRIES,
+            )
         try:
             response = call_fn()
         except ValidationError as e:
@@ -224,6 +229,11 @@ def _parse_with_retry(call_fn, output_model, model: str):
 async def _parse_with_retry_async(call_fn, output_model, model: str):
     """Async variant of _parse_with_retry."""
     for attempt in range(PARSE_RETRIES):
+        if attempt > 0:
+            logger.warning(
+                "Retrying structured parse for %s: attempt %d/%d",
+                model, attempt + 1, PARSE_RETRIES,
+            )
         try:
             response = await call_fn()
         except ValidationError as e:
