@@ -17,7 +17,7 @@ from typing import Optional, Type
 from pydantic import BaseModel
 
 # Public API re-exports.
-from .api import query
+from .api import query  # noqa: F401  (used by tests and shinka shim)
 from .cache import query_cache_key as _query_cache_key  # noqa: F401  (test surface)
 from .providers import QueryResult  # noqa: F401  (test surface)
 

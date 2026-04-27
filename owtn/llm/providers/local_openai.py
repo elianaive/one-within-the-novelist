@@ -17,7 +17,6 @@ from pydantic import BaseModel
 
 from ..result import QueryResult
 from .base import TIMEOUT, resolve_effort, resolve_temperature
-from .model_resolver import ResolvedModel
 from .pricing import calculate_cost, model_exists
 
 logger = logging.getLogger(__name__)

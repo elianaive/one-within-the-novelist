@@ -33,7 +33,6 @@ from typing import Any, Mapping, Optional, Protocol, Type
 from pydantic import BaseModel
 
 from ..result import QueryResult
-from .model_resolver import ResolvedModel
 from .pricing import (
     has_fixed_temperature,
     is_reasoning_model,

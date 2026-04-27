@@ -8,7 +8,7 @@ display that runner.py and call_logger.py rely on.
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass, field
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 
 @dataclass(frozen=True, slots=True)
