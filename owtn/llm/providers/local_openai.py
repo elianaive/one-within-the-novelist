@@ -91,10 +91,11 @@ class LocalOpenAIProvider:
         return self._async_clients[base_url]
 
     def build_call_kwargs(self, *, api_model: str, requested: Mapping[str, Any]) -> dict:
-        """Local backends have no provider-specific quirks beyond what was
-        passed in. We just forward the standard kwargs."""
+        """Local backends have no provider-specific quirks. Forward standard kwargs."""
         effort = resolve_effort(api_model, requested.get("reasoning_effort", "disabled"))
-        out: dict = {"max_tokens": requested.get("max_tokens", 4096)}
+        out: dict = {}
+        if (v := requested.get("max_tokens")) is not None:
+            out["max_tokens"] = v
         temp = resolve_temperature(api_model, requested.get("temperature"), effort)
         if temp is not None:
             out["temperature"] = temp

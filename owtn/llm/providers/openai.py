@@ -220,33 +220,24 @@ class OpenAIProvider:
 
     def build_call_kwargs(self, *, api_model: str, requested: Mapping[str, Any]) -> dict:
         """OpenAI shape: max_output_tokens (not max_tokens), reasoning dict
-        for reasoning models, no top_k support, top_p dropped under reasoning."""
+        only when effort is active, no top_k support, top_p dropped under reasoning."""
         effort = resolve_effort(api_model, requested.get("reasoning_effort", "disabled"))
         out: dict = {}
-        max_tokens = requested.get("max_tokens", 4096)
+        if (v := requested.get("max_tokens")) is not None:
+            out["max_output_tokens"] = v
         reasoning = is_reasoning_model(api_model)
+        reasoning_active = reasoning and effort != "disabled"
 
-        if reasoning:
-            out["max_output_tokens"] = max_tokens
-            if effort == "disabled":
-                out["reasoning"] = {"effort": None}
-            elif effort == "min":
-                out["reasoning"] = {"effort": "low"}
-            elif effort == "max":
-                out["reasoning"] = {"effort": "high"}
-            else:
-                out["reasoning"] = {"effort": effort}
-            if self.name == "openai" and effort != "disabled":
-                out["reasoning"]["summary"] = "auto"
-        else:
-            out["max_output_tokens"] = max_tokens
+        if reasoning_active:
+            api_effort = "low" if effort == "min" else ("high" if effort == "max" else effort)
+            out["reasoning"] = {"effort": api_effort}
 
         temp = resolve_temperature(api_model, requested.get("temperature"), effort)
         if temp is not None:
             out["temperature"] = temp
 
         # top_p forbidden under reasoning; top_k unsupported by OpenAI family.
-        if not reasoning and (v := requested.get("top_p")) is not None:
+        if not reasoning_active and (v := requested.get("top_p")) is not None:
             out["top_p"] = v
         return out
 
@@ -377,7 +368,9 @@ class AzureOpenAIProvider(OpenAIProvider):
 
 class OpenRouterProvider(OpenAIProvider):
     """OpenRouter — OpenAI-compatible proxy. Different client + extras for
-    min_p (passed through to upstream provider)."""
+    min_p (passed through to upstream provider) and the GLM-4.7-style
+    extra_body.reasoning workaround (some OpenRouter upstreams ignore the
+    Responses API top-level `reasoning` kwarg)."""
 
     name = "openrouter"
 
@@ -397,8 +390,20 @@ class OpenRouterProvider(OpenAIProvider):
 
     def build_call_kwargs(self, *, api_model: str, requested: Mapping[str, Any]) -> dict:
         out = super().build_call_kwargs(api_model=api_model, requested=requested)
+
+        # OpenRouter reasoning models always carry the extra_body workaround:
+        # the top-level Responses API `reasoning` kwarg isn't honored
+        # uniformly (GLM-4.7, Kimi reason-by-default unless extra_body says
+        # otherwise). Mirror the effort state so both paths agree.
+        if is_reasoning_model(api_model):
+            effort = resolve_effort(api_model, requested.get("reasoning_effort", "disabled"))
+            if effort == "disabled":
+                out["extra_body"] = {"reasoning": {"enabled": False}}
+            else:
+                out["extra_body"] = {"reasoning": {"enabled": True, "effort": effort}}
+
         # OpenRouter forwards arbitrary sampler params to the upstream.
-        if (v := requested.get("min_p")) is not None and "reasoning" not in out:
+        if (v := requested.get("min_p")) is not None:
             out["min_p"] = v
         return out
 

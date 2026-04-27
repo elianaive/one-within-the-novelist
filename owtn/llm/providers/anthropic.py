@@ -153,9 +153,10 @@ class AnthropicProvider:
         """Anthropic shape: max_tokens (capped at 64k), thinking dict for
         extended-thinking models, top_p/top_k forbidden under thinking."""
         effort = resolve_effort(api_model, requested.get("reasoning_effort", "disabled"))
-        out: dict = {
-            "max_tokens": min(requested.get("max_tokens", ANTHROPIC_DEFAULT_MAX_TOKENS), ANTHROPIC_MAX_TOKENS_CEILING),
-        }
+        out: dict = {}
+        if (v := requested.get("max_tokens")) is not None:
+            out["max_tokens"] = min(v, ANTHROPIC_MAX_TOKENS_CEILING)
+
         temp = resolve_temperature(api_model, requested.get("temperature"), effort)
         if temp is not None:
             out["temperature"] = temp
@@ -163,7 +164,8 @@ class AnthropicProvider:
         thinking_active = effort != "disabled" and is_reasoning_model(api_model)
         if thinking_active:
             t = THINKING_TOKENS[effort]
-            budget = t if t < out["max_tokens"] else 1024
+            ceiling = out.get("max_tokens", ANTHROPIC_DEFAULT_MAX_TOKENS)
+            budget = t if t < ceiling else 1024
             out["thinking"] = {"type": "enabled", "budget_tokens": budget}
         else:
             # top_p/top_k are forbidden when thinking is enabled.

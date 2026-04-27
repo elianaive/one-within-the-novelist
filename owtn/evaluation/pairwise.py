@@ -29,12 +29,8 @@ from owtn.evaluation.models import (
 )
 from owtn.evaluation.prompts import build_pairwise_system, build_pairwise_user
 from owtn.llm.call_logger import llm_context
+from owtn.llm.providers import PROVIDERS
 from owtn.llm.providers.model_resolver import resolve_model_backend
-from owtn.llm.providers.pricing import (
-    has_fixed_temperature,
-    is_reasoning_model,
-    requires_reasoning,
-)
 from owtn.llm.query import query_async
 from owtn.models.judge import JudgePersona, load_panel
 from owtn.models.stage_1.concept_genome import ConceptGenome
@@ -64,86 +60,35 @@ _MAGNITUDE_TIEBREAKER_THRESHOLD = 0.25
 def _build_judge_kwargs(judge: JudgePersona) -> tuple[str, dict]:
     """Return ``(model_name, kwargs)`` for a judge call.
 
-    - `max_output_tokens`: set for any OpenAI/OpenRouter/Azure model, not just
-      reasoning ones. Non-reasoning OpenRouter upstreams (e.g. kimi-k2-0905
-      via :nitro) were observed truncating judgments mid-JSON in
-      run_20260418_184314 — consistent with a tight provider default cap.
-      This is a ceiling, so it's a no-op on models that finish within it.
-    - `reasoning: {effort: low}`: bounds the reasoning-token spiral on
-      reasoning-model judges. OpenAI reasoning judges also get capped —
-      fine because the panel fans out in parallel and latency is gated by
-      the slowest judge.
-    - ``temperature``, ``top_p``, ``top_k``: per-judge sampler params from
-      the persona YAML. Filtered provider-side to match API constraints.
+    Delegates to the model's Provider for the heavy lifting (per-provider
+    rewriting of reasoning effort, temperature forcing under
+    think_temp_fixed, top_p/k filtering, OpenRouter extra_body workaround,
+    DeepSeek thinking toggle). Judge-specific behavior is just two things:
+
+    - `max_tokens`: only set for OpenAI/OpenRouter/Azure judges. Non-reasoning
+      OpenRouter upstreams (e.g. kimi-k2-0905 via :nitro) were observed
+      truncating mid-JSON — this is a ceiling override. Other providers
+      have generous defaults; we omit max_tokens there.
 
     Note: don't re-add `extra_body.provider.sort=throughput` with
     `require_parameters=true` to curb OpenRouter routing variance — that
-    combination forces Kimi onto a backend that leaks `[EOS]` markers into
-    JSON output and breaks every Sable call.
+    combination forces Kimi onto a backend that leaks `[EOS]` markers.
     """
     model_name = judge.model[0]
     resolved = resolve_model_backend(model_name)
-    api_model = resolved.api_model_name
-    provider = resolved.provider
-    kwargs: dict = {}
+    provider = PROVIDERS[resolved.provider]
 
-    reasoning_active = False
-    openai_family = provider in ("openai", "openrouter", "azure_openai")
-    if openai_family:
-        kwargs["max_output_tokens"] = _JUDGE_MAX_OUTPUT_TOKENS
-        if is_reasoning_model(api_model):
-            effort = judge.reasoning_effort
-            # Models that require reasoning can't run disabled — coerce up.
-            if effort == "disabled" and requires_reasoning(api_model):
-                effort = "low"
-            if effort != "disabled":
-                kwargs["reasoning"] = {"effort": effort}
-                reasoning_active = True
-            # OpenRouter-proxied models don't honor the Responses API top-level
-            # `reasoning` kwarg uniformly. GLM-4.7 in particular runs reasoning-
-            # by-default and produces unpredictable null / truncated output when
-            # we try to disable via top-level only. The provider-specific
-            # pass-through is extra_body.reasoning.{enabled,effort} — see the
-            # OpenRouter docs. Apply to OpenRouter reasoning models.
-            if provider == "openrouter":
-                if effort == "disabled":
-                    kwargs["extra_body"] = {"reasoning": {"enabled": False}}
-                else:
-                    kwargs["extra_body"] = {
-                        "reasoning": {"enabled": True, "effort": effort}
-                    }
-    elif provider == "deepseek" and is_reasoning_model(api_model):
-        # DeepSeek reasoning models (deepseek-v4-pro, deepseek-v4-flash,
-        # deepseek-reasoner) reason by default. The OpenAI-style
-        # `reasoning_effort=disabled` is rejected (only low/medium/high
-        # accepted). The vendor-specific toggle is the `thinking` object
-        # on the request body. `disabled` drops reasoning_tokens to 0
-        # and ~3x latency reduction in measurement.
-        effort = judge.reasoning_effort
-        if effort == "disabled":
-            kwargs["extra_body"] = {"thinking": {"type": "disabled"}}
-        else:
-            kwargs["extra_body"] = {"thinking": {"type": "enabled"}}
-            reasoning_active = True
+    requested: dict = {
+        "reasoning_effort": judge.reasoning_effort,
+        "temperature": judge.temperature,
+        "top_p": judge.top_p,
+        "top_k": judge.top_k,
+        "min_p": judge.min_p,
+    }
+    if resolved.provider in ("openai", "openrouter", "azure_openai"):
+        requested["max_tokens"] = _JUDGE_MAX_OUTPUT_TOKENS
 
-    # Temperature: Anthropic extended-thinking and OpenAI reasoning force 1.0
-    # on think_temp_fixed models — match that constraint so judges never
-    # emit a bad request. Judges don't currently enable Anthropic thinking,
-    # so this only bites OpenAI reasoning judges.
-    if has_fixed_temperature(api_model) and reasoning_active:
-        kwargs["temperature"] = 1.0
-    else:
-        kwargs["temperature"] = judge.temperature
-
-    # top_p / top_k / min_p — drop where the API rejects them.
-    if judge.top_p is not None and not reasoning_active:
-        kwargs["top_p"] = judge.top_p
-    if judge.top_k is not None and not openai_family:
-        kwargs["top_k"] = judge.top_k
-    # min_p forwarded only via OpenRouter (native APIs reject it).
-    if judge.min_p is not None and provider == "openrouter":
-        kwargs["min_p"] = judge.min_p
-
+    kwargs = provider.build_call_kwargs(api_model=resolved.api_model_name, requested=requested)
     return model_name, kwargs
 
 
