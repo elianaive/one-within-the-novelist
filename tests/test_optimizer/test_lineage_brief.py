@@ -1,18 +1,27 @@
-"""Tests for the lazy parent-brief summarizer module.
+"""Tests for the lazy lineage-brief summarizer.
 
-See `lab/issues/2026-04-18-lazy-feedback-summarizer.md` — Phase 2.
+Moved from `tests/test_evaluation/test_feedback.py` as part of the
+`owtn/optimizer/` refactor. See
+`lab/issues/2026-04-24-refactor-feedback-to-optimizer-module.md`.
+
+History: `lab/issues/closed/2026-04-18-lazy-feedback-summarizer.md` — Phase 2.
 """
 
 from __future__ import annotations
 
 import pytest
 
-from owtn.evaluation import feedback
-from owtn.evaluation.models import ParentBrief
+from owtn.optimizer import lineage_brief
+from owtn.optimizer.adapters import (
+    _stage_1_format_self,
+    _stage_1_lineage_system_prompt,
+    compute_stage_1_lineage_brief,
+)
+from owtn.optimizer.models import LineageBrief
 
 
-def _sample_brief() -> ParentBrief:
-    return ParentBrief(
+def _sample_brief() -> LineageBrief:
+    return LineageBrief(
         established_weaknesses=[
             "Hook relies on withheld information rather than an embodied image.",
         ],
@@ -68,11 +77,11 @@ def _sample_critique(
     }
 
 
-class TestRenderParentBrief:
+class TestRenderLineageBrief:
     def test_single_match_challenger_phrasing(self):
         brief = _sample_brief()
         critiques = [_sample_critique(was_champion=False)]
-        out = feedback.render_parent_brief(brief, critiques)
+        out = lineage_brief.render_lineage_brief(brief, critiques)
         assert "1 match" in out
         assert "1 as challenger" in out
         assert "0 as defender" in out
@@ -86,19 +95,19 @@ class TestRenderParentBrief:
             _sample_critique(was_champion=True),
             _sample_critique(was_champion=True),
         ]
-        out = feedback.render_parent_brief(brief, critiques)
+        out = lineage_brief.render_lineage_brief(brief, critiques)
         assert "3 matches" in out
         assert "1 as challenger" in out
         assert "2 as defender" in out
 
     def test_empty_sections_render_none_marker(self):
-        brief = ParentBrief(
+        brief = LineageBrief(
             established_weaknesses=[],
             contested_strengths=[],
             attractor_signature=[],
             divergence_directions=[],
         )
-        out = feedback.render_parent_brief(brief, [_sample_critique()])
+        out = lineage_brief.render_lineage_brief(brief, [_sample_critique()])
         assert "(none identified)" in out
 
 
@@ -106,37 +115,37 @@ class TestCacheFreshness:
     def test_fresh_when_count_matches(self):
         pm = {
             "match_critiques": [_sample_critique()],
-            "parent_brief_cache": {
+            "lineage_brief_cache": {
                 "count": 1,
                 "brief": _sample_brief().model_dump(),
             },
         }
-        assert feedback._cache_is_fresh(pm, 1) is True
+        assert lineage_brief._cache_is_fresh(pm, 1) is True
 
     def test_stale_when_count_grew(self):
         pm = {
             "match_critiques": [_sample_critique(), _sample_critique()],
-            "parent_brief_cache": {
+            "lineage_brief_cache": {
                 "count": 1,
                 "brief": _sample_brief().model_dump(),
             },
         }
-        assert feedback._cache_is_fresh(pm, 2) is False
+        assert lineage_brief._cache_is_fresh(pm, 2) is False
 
     def test_stale_when_no_cache(self):
         pm = {"match_critiques": [_sample_critique()]}
-        assert feedback._cache_is_fresh(pm, 1) is False
+        assert lineage_brief._cache_is_fresh(pm, 1) is False
 
 
 class TestGetOrComputeBrief:
     @pytest.mark.asyncio
     async def test_empty_critiques_returns_seed_placeholder(self):
-        render, payload = await feedback.get_or_compute_brief(
+        render, payload = await compute_stage_1_lineage_brief(
             self_genome={"premise": "x", "target_effect": "y"},
             private_metrics={},
             classifier_model="irrelevant",
         )
-        assert "Initial concept" in render
+        assert "Initial lineage" in render
         assert payload is None
 
     @pytest.mark.asyncio
@@ -144,16 +153,16 @@ class TestGetOrComputeBrief:
         async def explode(*args, **kwargs):
             raise RuntimeError("must not be called")
 
-        monkeypatch.setattr(feedback, "summarize_parent", explode)
+        monkeypatch.setattr(lineage_brief, "summarize_lineage", explode)
 
         pm = {
             "match_critiques": [_sample_critique()],
-            "parent_brief_cache": {
+            "lineage_brief_cache": {
                 "count": 1,
                 "brief": _sample_brief().model_dump(),
             },
         }
-        render, payload = await feedback.get_or_compute_brief(
+        render, payload = await compute_stage_1_lineage_brief(
             self_genome={"premise": "x", "target_effect": "y"},
             private_metrics=pm,
             classifier_model="irrelevant",
@@ -170,16 +179,16 @@ class TestGetOrComputeBrief:
             calls.append(kwargs)
             return _sample_brief()
 
-        monkeypatch.setattr(feedback, "summarize_parent", fake_summarize)
+        monkeypatch.setattr(lineage_brief, "summarize_lineage", fake_summarize)
 
         pm = {
             "match_critiques": [_sample_critique(), _sample_critique()],
-            "parent_brief_cache": {
+            "lineage_brief_cache": {
                 "count": 1,
                 "brief": _sample_brief().model_dump(),
             },
         }
-        render, payload = await feedback.get_or_compute_brief(
+        render, payload = await compute_stage_1_lineage_brief(
             self_genome={"premise": "x", "target_effect": "y"},
             private_metrics=pm,
             classifier_model="gpt-4.1-mini",
@@ -196,10 +205,10 @@ class TestGetOrComputeBrief:
         async def fail(**kwargs):
             raise RuntimeError("summarizer boom")
 
-        monkeypatch.setattr(feedback, "summarize_parent", fail)
+        monkeypatch.setattr(lineage_brief, "summarize_lineage", fail)
 
         pm = {"match_critiques": [_sample_critique()]}
-        render, payload = await feedback.get_or_compute_brief(
+        render, payload = await compute_stage_1_lineage_brief(
             self_genome={"premise": "x", "target_effect": "y"},
             private_metrics=pm,
             classifier_model="gpt-4.1-mini",
@@ -213,9 +222,11 @@ class TestSummarizerPromptAssembly:
     def test_user_msg_contains_match_header_and_labels(self):
         critique = _sample_critique(self_label="a", was_champion=False)
         self_genome = {"premise": "THIS genome", "target_effect": "x"}
-        msg = feedback._build_summarizer_user_msg(self_genome, [critique])
+        msg = lineage_brief._build_summarizer_user_msg(
+            self_genome, [critique], _stage_1_format_self
+        )
         # Per-match header disambiguates A/B.
-        assert "THIS CONCEPT was labeled 'A'" in msg
+        assert "THIS LINEAGE was labeled 'A'" in msg
         assert "opponent was labeled 'B'" in msg
         assert "THIS genome" in msg
         # Judge reasonings present per-judge.
@@ -227,6 +238,25 @@ class TestSummarizerPromptAssembly:
     def test_champion_match_header_shows_defending(self):
         critique = _sample_critique(self_label="b", was_champion=True)
         self_genome = {"premise": "x", "target_effect": "y"}
-        msg = feedback._build_summarizer_user_msg(self_genome, [critique])
+        msg = lineage_brief._build_summarizer_user_msg(
+            self_genome, [critique], _stage_1_format_self
+        )
         assert "champion (defending)" in msg
-        assert "THIS CONCEPT was labeled 'B'" in msg
+        assert "THIS LINEAGE was labeled 'B'" in msg
+
+
+class TestStage1AdapterPlaceholders:
+    """The Stage 1 adapter must fill the generic prompt template so none of
+    the `{…}` placeholders leak through into the system message."""
+
+    def test_no_unresolved_placeholders(self):
+        prompt = _stage_1_lineage_system_prompt()
+        assert "{" not in prompt or "}" not in prompt, (
+            "Unresolved placeholder in Stage 1 lineage prompt:\n" + prompt
+        )
+
+    def test_stage_1_domain_hints_present(self):
+        prompt = _stage_1_lineage_system_prompt()
+        assert "fiction concept" in prompt
+        assert "nine resonance dimensions" in prompt
+        assert "LineageBrief" in prompt

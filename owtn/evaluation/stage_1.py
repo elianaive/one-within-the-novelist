@@ -41,6 +41,8 @@ def _is_trivial(genome: ConceptGenome) -> str | None:
             return f"Trivial premise (matched: {pattern.pattern})"
         if pattern.search(genome.target_effect):
             return f"Trivial target_effect (matched: {pattern.pattern})"
+        if pattern.search(genome.anchor_scene.sketch):
+            return f"Trivial anchor_scene sketch (matched: {pattern.pattern})"
     return None
 
 

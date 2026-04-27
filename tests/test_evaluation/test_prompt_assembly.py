@@ -71,8 +71,15 @@ class TestHarshnessCalibrationRendering:
         assert "CALIBRATION: failing_unless_exceptional" in prompt
         assert "exceptionally" in prompt
 
-    def test_minimum_evidence_tie_phrasing_present(self):
-        """Lazy-default guardrail must be rendered regardless of band."""
-        prompt = build_pairwise_system(_judge("standard"))
-        assert "dimension-specific advantage" in prompt
-        assert "not merely because both have merit" in prompt
+    def test_anti_position_bias_guardrails_present(self):
+        """Position-bias guardrails must be rendered in the user message —
+        counterfactual reversal check + fingerprint-anchored verdicts.
+        """
+        genome_a = ConceptGenome.model_validate(HILLS_GENOME)
+        genome_b = ConceptGenome.model_validate(HILLS_GENOME)
+        prompt = build_pairwise_user(genome_a, genome_b)
+        # Fingerprint-anchored reasoning (decouples verdict from A/B label)
+        assert "FP1" in prompt and "FP2" in prompt
+        # Counterfactual reversal check (forces tie when verdict isn't robust)
+        assert "Counterfactual reversal check" in prompt
+        assert "output `tie`" in prompt

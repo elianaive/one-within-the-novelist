@@ -1,19 +1,67 @@
 CONCEPT A:
 Premise: {premise_a}
+Thematic engine: {thematic_engine_a}
 Target effect: {target_effect_a}
+Anchor scene ({anchor_role_a}): {anchor_sketch_a}
 Character seeds: {character_seeds_a}
 Setting seeds: {setting_seeds_a}
-Thematic engine: {thematic_engine_a}
 Constraints: {constraints_a}
 Style hint: {style_hint_a}
 
 CONCEPT B:
 Premise: {premise_b}
+Thematic engine: {thematic_engine_b}
 Target effect: {target_effect_b}
+Anchor scene ({anchor_role_b}): {anchor_sketch_b}
 Character seeds: {character_seeds_b}
 Setting seeds: {setting_seeds_b}
-Thematic engine: {thematic_engine_b}
 Constraints: {constraints_b}
 Style hint: {style_hint_b}
 
-For each dimension, compare A and B using the sub-criteria. State the winner ("a" or "b") and why.
+---
+
+TASK: Compare two concepts without letting their labels (A/B) influence your verdict. The same pair will be evaluated twice with swapped labels; your judgment must depend only on concept content, never on reading order. Any verdict that flips when the concepts are reversed will be discarded.
+
+Use content fingerprints to label concepts throughout — never "A" or "B" inside dimension reasoning. **Declare your fingerprints ONCE at the very start, then use those exact same labels and quotes consistently across all 9 dimensions.**
+
+**Setup (one time, before any dimension)**: Read both premises. From each, extract a single distinctive 4‑8 word quote that captures the concept's central move. Call these FP1 and FP2 — these are stable identifiers for the entire judgment. Note which prompt label (A or B) each fingerprint came from. After this setup, do NOT re-declare or change FP1 / FP2 in subsequent dimension blocks.
+
+For each dimension, follow this procedure:
+
+1. **Independent strengths**: Describe the single strongest feature of FP1's concept on this dimension, anchored with a concrete premise detail. Then do the same for FP2's concept, independently.
+
+2. **Sub‑criterion analysis**: Walk through every listed sub‑criterion. For each, note what FP1 offers, what FP2 offers, and which side (if any) has the edge.
+
+3. **Initial overall edge**: After the sub‑criterion review, which fingerprint's concept makes the stronger total case on this dimension? State the edge as "FP1 narrow/clear/decisive", "FP2 narrow/clear/decisive", or "balanced".
+
+4. **Adversarial check**: Identify the one sub‑criterion where the currently non‑favored fingerprint makes its best counter‑argument. If that counter‑argument is compelling, consider downgrading the magnitude or defaulting to tie.
+
+5. **Counterfactual reversal check**: Mentally re‑evaluate imagining you encountered FP2's concept first, FP1 second. Compare with the initial edge.
+   - If the winner flips to the other fingerprint → output `tie`.
+   - If the winner stays the same but magnitude is smaller in the reversed view → use the smaller magnitude.
+   - If both winner and magnitude are identical → keep.
+
+6. **Final robust winner**: State which fingerprint wins and at what magnitude, or declare tie.
+
+After all 9 dimensions, map fingerprints back to labels using the FP→label correspondence you declared at the top. Output the 9 dimension fields using `a_narrow` / `a_clear` / `a_decisive` if the winning fingerprint is the one from concept-labeled-A, `b_*` if from concept-labeled-B, or `tie`.
+
+Your entire response is a single JSON object with a "reasoning" string and nine dimension winner fields (novelty, grip, tension_architecture, emotional_depth, thematic_resonance, concept_coherence, generative_fertility, scope_calibration, indelibility). The "reasoning" string must be structured as follows:
+
+Setup:
+FP1 = "[exact quote from one premise]" (corresponds to concept labeled [A or B])
+FP2 = "[exact quote from the other premise]" (corresponds to concept labeled [B or A])
+
+DIMENSION_NAME:
+Independent FP1 strength: [one‑sentence detail]
+Independent FP2 strength: [one‑sentence detail]
+Sub‑criterion analysis:
+- [sub‑criterion 1]: FP1: [detail]. FP2: [detail]. Edge: [FP1 / FP2 / neither]
+- [sub‑criterion 2]: …
+Initial overall edge: [FP1/FP2 win with magnitude, or balanced]
+Adversarial check: [strongest sub‑criterion for the other fingerprint; significance]
+Reversed‑perspective edge: [overall edge imagining FP2 first, FP1 second]
+Final robust winner: [winning fingerprint + final magnitude, or tie]
+
+[repeat for all 9 dimensions, using the same FP1/FP2 labels declared in Setup — do NOT re‑introduce a Fingerprints: line in any dimension block]
+
+After the structured reasoning, fill in the nine dimension winner fields with one of `a_narrow`, `a_clear`, `a_decisive`, `b_narrow`, `b_clear`, `b_decisive`, or `tie`, derived from each dimension's final robust winner combined with the FP→label correspondence declared in Setup.
