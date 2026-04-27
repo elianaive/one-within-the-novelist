@@ -151,3 +151,33 @@ class TestMinPFilter:
             min_p=0.1,
         )
         assert "min_p" not in kw
+
+
+class TestMaxTokensParallelList:
+    """`max_tokens` honors the same parallel-list contract as the other params:
+    when len(max_tokens) == len(model_names), it's indexed by the sampled model.
+    """
+
+    def test_parallel_indexed_when_lengths_match(self):
+        # Each model has a distinct max_tokens; sampler must pick by index.
+        # claude-sonnet-4-6 → anthropic; deepseek-v4-pro → deepseek (max_tokens key).
+        for _ in range(20):
+            kw = sample_model_kwargs(
+                model_names=["claude-sonnet-4-6", "deepseek-v4-pro"],
+                temperatures=[1.0, 1.0],
+                reasoning_efforts=["disabled", "disabled"],
+                max_tokens=[8192, 4096],
+            )
+            if kw["model_name"] == "claude-sonnet-4-6":
+                assert kw["max_tokens"] == 8192
+            else:
+                assert kw["max_tokens"] == 4096
+
+    def test_scalar_broadcasts(self):
+        kw = sample_model_kwargs(
+            model_names=["claude-sonnet-4-6", "claude-haiku-4-5-20251001"],
+            temperatures=[1.0, 1.0],
+            reasoning_efforts=["disabled", "disabled"],
+            max_tokens=8192,
+        )
+        assert kw["max_tokens"] == 8192

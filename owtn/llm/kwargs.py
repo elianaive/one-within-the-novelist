@@ -78,10 +78,13 @@ def sample_model_kwargs(
 ):
     """Sample a dictionary of kwargs for a given model.
 
-    When a param list has the same length as ``model_names``, it is treated as
-    a parallel list indexed by the sampled model. When it has length 1 or is
-    a scalar, it broadcasts to every model. This lets callers pass per-model
-    params (e.g. ``temperatures=[1.2, 1.0]`` alongside ``model_names=["ds", "claude"]``)
+    All param lists (``temperatures``, ``max_tokens``, ``reasoning_efforts``,
+    ``top_p``, ``top_k``, ``min_p``) follow the same parallel-vs-broadcast
+    contract: when a list has the same length as ``model_names``, it is
+    treated as a parallel list indexed by the sampled model. When it has any
+    other length (or is a scalar), it's sampled independently via
+    ``random.choice``. This lets callers pass per-model params (e.g.
+    ``temperatures=[1.2, 1.0]`` alongside ``model_names=["ds", "claude"]``)
     without independent sampling breaking the per-model intent.
     """
     # Make all inputs lists
@@ -127,6 +130,8 @@ def sample_model_kwargs(
     api_model_name = resolved_model.api_model_name
     provider = resolved_model.provider
 
+    mt_val = _pick(max_tokens)
+
     # 2. SAMPLE: reasoning effort (per-model when list matches model count)
     if is_reasoning_model(api_model_name):
         r_effort = _pick(reasoning_efforts)
@@ -152,7 +157,7 @@ def sample_model_kwargs(
     if provider in ("openai", "openrouter", "azure_openai") and is_reasoning_model(
         api_model_name
     ):
-        kwargs_dict["max_output_tokens"] = random.choice(max_tokens)
+        kwargs_dict["max_output_tokens"] = mt_val
         if r_effort == "disabled":
             kwargs_dict["reasoning"] = {"effort": None}
         elif r_effort == "min":
@@ -168,7 +173,7 @@ def sample_model_kwargs(
 
     # 4.b) SET: max_tokens for Google reasoning effort
     elif provider == "google" and is_reasoning_model(api_model_name):
-        kwargs_dict["max_tokens"] = random.choice(max_tokens)
+        kwargs_dict["max_tokens"] = mt_val
         think_bool = r_effort != "disabled"
         if think_bool:
             t = THINKING_TOKENS[r_effort]
@@ -190,7 +195,7 @@ def sample_model_kwargs(
     # Kwarg-omission leaves the server default (reasoning-on), so we must
     # explicitly send `thinking={"type": "disabled"}` to actually turn off.
     elif provider == "deepseek" and is_reasoning_model(api_model_name):
-        kwargs_dict["max_tokens"] = random.choice(max_tokens)
+        kwargs_dict["max_tokens"] = mt_val
         if r_effort == "disabled":
             kwargs_dict["extra_body"] = {"thinking": {"type": "disabled"}}
         else:
@@ -199,7 +204,7 @@ def sample_model_kwargs(
 
     # 4.c) SET: max_tokens for Anthropic or Bedrock reasoning effort
     elif provider in ("anthropic", "bedrock") and is_reasoning_model(api_model_name):
-        kwargs_dict["max_tokens"] = min(random.choice(max_tokens), 64000)
+        kwargs_dict["max_tokens"] = min(mt_val, 64000)
         think_bool = r_effort != "disabled"
         if think_bool:
             # filter thinking tokens to be smaller than max_tokens
@@ -216,9 +221,9 @@ def sample_model_kwargs(
     else:
         # Non-reasoning models or other providers
         if provider in ("anthropic", "bedrock", "deepseek", "local_openai"):
-            kwargs_dict["max_tokens"] = random.choice(max_tokens)
+            kwargs_dict["max_tokens"] = mt_val
         else:
-            kwargs_dict["max_output_tokens"] = random.choice(max_tokens)
+            kwargs_dict["max_output_tokens"] = mt_val
 
     # 5. SET: top_p / top_k when supported. Dropped for OpenAI reasoning
     # (top_p ignored/disallowed, top_k unsupported) and for Anthropic under
