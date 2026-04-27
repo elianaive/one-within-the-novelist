@@ -1,7 +1,7 @@
 import backoff
 import anthropic
 from .pricing import calculate_cost
-from .result import QueryResult
+from ..result import QueryResult
 import logging
 
 logger = logging.getLogger(__name__)
