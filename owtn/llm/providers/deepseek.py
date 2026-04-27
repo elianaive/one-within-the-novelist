@@ -140,9 +140,11 @@ class DeepSeekProvider:
 
     def build_call_kwargs(self, *, api_model: str, requested: Mapping[str, Any]) -> dict:
         """DeepSeek shape: max_tokens (yes, the OpenAI legacy chat name),
-        thinking toggle via extra_body, top_p supported but no top_k."""
+        thinking toggle via extra_body, top_p/top_k supported."""
         effort = resolve_effort(api_model, requested.get("reasoning_effort", "disabled"))
-        out: dict = {"max_tokens": requested.get("max_tokens", 4096)}
+        out: dict = {}
+        if (v := requested.get("max_tokens")) is not None:
+            out["max_tokens"] = v
 
         temp = resolve_temperature(api_model, requested.get("temperature"), effort)
         if temp is not None:
@@ -157,6 +159,8 @@ class DeepSeekProvider:
 
         if (v := requested.get("top_p")) is not None:
             out["top_p"] = v
+        if (v := requested.get("top_k")) is not None:
+            out["top_k"] = v
         return out
 
     @backoff.on_exception(
