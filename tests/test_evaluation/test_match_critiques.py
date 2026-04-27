@@ -35,10 +35,18 @@ def _all_votes(winner: str) -> PairwiseJudgment:
 def fake_genomes():
     challenger = ConceptGenome(
         premise="Challenger: a cartographer who misremembers a forgotten country.",
+        anchor_scene={
+            "sketch": "The cartographer recognizes, on an unmarked map from 1923, her own mistake — drawn there, half a century before she made it.",
+            "role": "reveal",
+        },
         target_effect="The vertigo of reverse-inventing a homeland.",
     )
     champion = ConceptGenome(
         premise="Champion: a lighthouse keeper translates the sea's silences.",
+        anchor_scene={
+            "sketch": "The keeper writes down what he thinks the sea did not say, and the next morning finds someone has written back in the margins of his log.",
+            "role": "reveal",
+        },
         target_effect="Dread and complicity.",
     )
     return challenger, champion
@@ -58,8 +66,9 @@ def config(default_pairwise_cfg):
 def _prefer_challenger_fake(challenger_premise: str):
     """Return a fake_query_async that consistently prefers the challenger
     across both orderings. In the forward ordering (challenger=A) it votes
-    'a'; in the reverse ordering (challenger=B) it votes 'b'. This matches
-    a position-consistent judge who genuinely prefers the challenger."""
+    'a_clear'; in the reverse ordering (challenger=B) it votes 'b_clear'.
+    This matches a position-consistent judge who genuinely prefers the
+    challenger."""
 
     async def fake(*args, **kwargs):
         user = kwargs.get("msg", "")
@@ -68,9 +77,9 @@ def _prefer_challenger_fake(challenger_premise: str):
         # challenger is labeled A.
         a_block = user.split("CONCEPT A:", 1)[-1].split("CONCEPT B:", 1)[0]
         if challenger_premise in a_block:
-            vote = "a"  # challenger is A → prefer A
+            vote = "a_clear"  # challenger is A → prefer A
         else:
-            vote = "b"  # challenger is B → prefer B
+            vote = "b_clear"  # challenger is B → prefer B
         return _FakeResult(_all_votes(vote))
 
     return fake
@@ -125,7 +134,7 @@ async def test_champion_retains_produces_tied_outcomes(
     challenger, champion = fake_genomes
 
     async def fake_query_async(*args, **kwargs):
-        return _FakeResult(_all_votes("tie"))
+        return _FakeResult(_all_votes("tie"))  # tie unchanged under magnitudes
 
     monkeypatch.setattr(pairwise, "query_async", fake_query_async)
 
@@ -186,7 +195,7 @@ async def test_judge_reasonings_attached_to_both_critiques(
         assert rec.harshness in {
             "advancing", "standard", "demanding", "failing_unless_exceptional",
         }
-        assert "All dims go to a" in rec.reasoning
+        assert "All dims go to a_clear" in rec.reasoning
 
 
 @pytest.mark.asyncio

@@ -23,17 +23,17 @@ _UNIFORM_WEIGHTS = {d: 1.0 for d in DIMENSION_NAMES}
 
 
 def _judgment(**votes) -> PairwiseJudgment:
-    """Build a PairwiseJudgment with per-dim votes; unspecified dims default to 'a'."""
-    full = {dim: votes.get(dim, "a") for dim in DIMENSION_NAMES}
+    """Build a PairwiseJudgment with per-dim votes; unspecified dims default to 'a_clear'."""
+    full = {dim: votes.get(dim, "a_clear") for dim in DIMENSION_NAMES}
     return PairwiseJudgment(reasoning="stub", **full)
 
 
 class TestFlipVotes:
-    def test_flip_a_and_b(self):
-        j = _judgment(novelty="a", grip="b")
+    def test_flip_a_and_b_preserves_magnitude(self):
+        j = _judgment(novelty="a_decisive", grip="b_narrow")
         flipped = _flip_votes(j)
-        assert flipped["novelty"] == "b"
-        assert flipped["grip"] == "a"
+        assert flipped["novelty"] == "b_decisive"
+        assert flipped["grip"] == "a_narrow"
 
     def test_tie_is_identity(self):
         j = _judgment(novelty="tie")
@@ -42,22 +42,27 @@ class TestFlipVotes:
 
 
 class TestResolveVotes:
-    """The 9 combinations from the case table."""
+    """Dual-ordering resolution — side must agree, magnitude takes min."""
 
     @pytest.mark.parametrize("fwd,rev,expected", [
-        # Same-side agreement → that side
-        ("a", "a", "a"),
-        ("b", "b", "b"),
+        # Same side + same magnitude → identity
+        ("a_clear", "a_clear", "a_clear"),
+        ("b_decisive", "b_decisive", "b_decisive"),
+        ("a_narrow", "a_narrow", "a_narrow"),
+        # Same side + different magnitude → min (conservative)
+        ("a_decisive", "a_narrow", "a_narrow"),
+        ("a_clear", "a_decisive", "a_clear"),
+        ("b_decisive", "b_clear", "b_clear"),
         # Same tie → tie
         ("tie", "tie", "tie"),
-        # Position disagreement → tie (resolution-tie)
-        ("a", "b", "tie"),
-        ("b", "a", "tie"),
+        # Side disagreement → tie (resolution-tie)
+        ("a_clear", "b_clear", "tie"),
+        ("b_decisive", "a_narrow", "tie"),
         # One-side uncertainty → tie (soft-tie; conservative)
-        ("a", "tie", "tie"),
-        ("tie", "a", "tie"),
-        ("b", "tie", "tie"),
-        ("tie", "b", "tie"),
+        ("a_clear", "tie", "tie"),
+        ("tie", "a_decisive", "tie"),
+        ("b_narrow", "tie", "tie"),
+        ("tie", "b_clear", "tie"),
     ])
     def test_case_table(self, fwd, rev, expected):
         fwd_votes = {d: fwd for d in DIMENSION_NAMES}
@@ -69,26 +74,35 @@ class TestResolveVotes:
 
 class TestClassifyResolution:
     @pytest.mark.parametrize("fwd,rev,expected", [
-        ("a", "a", "confident-a"),
-        ("b", "b", "confident-b"),
+        # Same side + same magnitude → confident-<side>
+        ("a_clear", "a_clear", "confident-a"),
+        ("b_decisive", "b_decisive", "confident-b"),
+        ("a_narrow", "a_narrow", "confident-a"),
+        # Same side + magnitude mismatch → agreed-<side>-min-<label>
+        ("a_decisive", "a_narrow", "agreed-a-min-narrow"),
+        ("a_clear", "a_decisive", "agreed-a-min-clear"),
+        ("b_decisive", "b_clear", "agreed-b-min-clear"),
+        # Same tie
         ("tie", "tie", "confident-tie"),
-        ("a", "b", "resolution-tie"),
-        ("b", "a", "resolution-tie"),
-        ("a", "tie", "soft-tie"),
-        ("tie", "a", "soft-tie"),
-        ("b", "tie", "soft-tie"),
-        ("tie", "b", "soft-tie"),
+        # Side disagreement
+        ("a_clear", "b_clear", "resolution-tie"),
+        ("b_decisive", "a_narrow", "resolution-tie"),
+        # Soft-tie
+        ("a_clear", "tie", "soft-tie"),
+        ("tie", "a_decisive", "soft-tie"),
+        ("b_narrow", "tie", "soft-tie"),
+        ("tie", "b_clear", "soft-tie"),
     ])
     def test_classifications(self, fwd, rev, expected):
         assert _classify_resolution(fwd, rev) == expected
 
     def test_classify_votes_covers_all_dims(self):
-        fwd = {d: "a" for d in DIMENSION_NAMES}
-        rev = {d: "a" for d in DIMENSION_NAMES}
+        fwd = {d: "a_clear" for d in DIMENSION_NAMES}
+        rev = {d: "a_clear" for d in DIMENSION_NAMES}
         fwd["novelty"] = "tie"
         rev["novelty"] = "tie"
-        fwd["grip"] = "a"
-        rev["grip"] = "b"
+        fwd["grip"] = "a_clear"
+        rev["grip"] = "b_clear"
         classes = _classify_votes(fwd, rev)
         assert classes["novelty"] == "confident-tie"
         assert classes["grip"] == "resolution-tie"
@@ -96,11 +110,12 @@ class TestClassifyResolution:
 
 
 class TestAggregate:
-    """Tie = abstention, not veto. Majority of non-tie votes per dim wins.
+    """Tie = abstention, not veto. Majority of non-tie votes picks the winning
+    side; weighted contribution = dim_weight × mean magnitude on winning side.
 
-    These tests use uniform weights (1.0 everywhere) so integer counts match
-    the weighted totals — the underlying resolution logic is unchanged by
-    weighting; it's the selection step (`_select_winner`) that weights matter for.
+    These tests use uniform weights (1.0 everywhere). All votes are `_clear`
+    (magnitude 0.75) unless otherwise noted, so each dim contributes 0.75 to
+    the winning side's weighted total.
     """
 
     def _mk(self, *votes_per_judge) -> list[dict[str, str]]:
@@ -112,20 +127,22 @@ class TestAggregate:
 
     def test_two_a_one_tie_gives_a(self):
         resolved = [
-            {d: "a" for d in DIMENSION_NAMES},
-            {d: "a" for d in DIMENSION_NAMES},
+            {d: "a_clear" for d in DIMENSION_NAMES},
+            {d: "a_clear" for d in DIMENSION_NAMES},
             {d: "tie" for d in DIMENSION_NAMES},
         ]
         dim_winners, a, b, ties, a_w, b_w, tie_w = _aggregate(resolved, _UNIFORM_WEIGHTS)
         assert a == 9 and b == 0 and ties == 0
-        assert a_w == 9.0 and b_w == 0.0 and tie_w == 0.0
+        # Mean magnitude among A-voters (both voted _clear) = 0.75. Per dim
+        # contribution = 1.0 × 0.75 = 0.75. 9 dims → 6.75.
+        assert a_w == pytest.approx(6.75) and b_w == 0.0 and tie_w == 0.0
         for d in DIMENSION_NAMES:
             assert dim_winners[d] == "a"
 
     def test_one_a_one_b_one_tie_gives_tie(self):
         resolved = [
-            {d: "a" for d in DIMENSION_NAMES},
-            {d: "b" for d in DIMENSION_NAMES},
+            {d: "a_clear" for d in DIMENSION_NAMES},
+            {d: "b_clear" for d in DIMENSION_NAMES},
             {d: "tie" for d in DIMENSION_NAMES},
         ]
         dim_winners, a, b, ties, a_w, b_w, tie_w = _aggregate(resolved, _UNIFORM_WEIGHTS)
@@ -135,13 +152,14 @@ class TestAggregate:
     def test_one_a_two_ties_gives_a(self):
         """Single non-tie vote still wins — abstention does not veto."""
         resolved = [
-            {d: "a" for d in DIMENSION_NAMES},
+            {d: "a_clear" for d in DIMENSION_NAMES},
             {d: "tie" for d in DIMENSION_NAMES},
             {d: "tie" for d in DIMENSION_NAMES},
         ]
         dim_winners, a, b, ties, a_w, b_w, tie_w = _aggregate(resolved, _UNIFORM_WEIGHTS)
         assert a == 9 and b == 0 and ties == 0
-        assert a_w == 9.0 and b_w == 0.0
+        # Single A-voter at _clear → mean magnitude 0.75 → 9 × 0.75 = 6.75.
+        assert a_w == pytest.approx(6.75) and b_w == 0.0
 
     def test_all_ties_gives_all_tie(self):
         resolved = [{d: "tie" for d in DIMENSION_NAMES} for _ in range(3)]
@@ -150,19 +168,20 @@ class TestAggregate:
         assert tie_w == 9.0
 
     def test_weights_propagate_to_weighted_totals(self, default_pairwise_cfg):
-        """Under production weights, a win on Indelibility contributes 2.0,
-        not 1.0 — this is the actual behavioral change under test."""
+        """Under production weights with all votes at `_clear`, each dim
+        contributes weight × 0.75 to the winning side."""
         resolved = [
-            {d: ("a" if d == "indelibility" else "b") for d in DIMENSION_NAMES}
+            {d: ("a_clear" if d == "indelibility" else "b_clear") for d in DIMENSION_NAMES}
         ]
         dim_winners, a, b, ties, a_w, b_w, tie_w = _aggregate(
             resolved, default_pairwise_cfg.dim_weights,
         )
         assert a == 1 and b == 8
-        # A won only Indelibility → a_w = 2.00. B won the other 8 dims.
-        assert a_w == 2.00
+        # A won only Indelibility → a_w = 2.00 × 0.75 = 1.5
+        assert a_w == pytest.approx(1.5, abs=1e-6)
         # B's weight = sum of all except indelibility = 10.75 - 2.00 = 8.75
-        assert b_w == pytest.approx(8.75, abs=1e-6)
+        # At _clear magnitude: b_w = 8.75 × 0.75 = 6.5625
+        assert b_w == pytest.approx(6.5625, abs=1e-6)
 
 
 class TestSelectWinner:

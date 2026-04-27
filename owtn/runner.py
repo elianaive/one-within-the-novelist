@@ -47,6 +47,19 @@ def _build_shinka_configs(
     config_path: str,
 ) -> tuple[ShinkaEvolutionConfig, ShinkaDatabaseConfig, LocalJobConfig]:
     """Translate our StageConfig into ShinkaEvolve dataclass configs."""
+    # Per-model generation params: flatten list[GenerationModelConfig] into
+    # parallel lists indexed by model. sample_model_kwargs picks a model by
+    # weight, then uses the same index across all parallel lists to build a
+    # consistent per-model kwargs bundle.
+    gm = cfg.llm.generation_models
+    llm_kwargs = {
+        "temperatures": [m.temperature for m in gm],
+        "max_tokens": 16384,
+        "reasoning_efforts": [m.reasoning_effort for m in gm],
+        "top_p": [m.top_p for m in gm],
+        "top_k": [m.top_k for m in gm],
+        "min_p": [m.min_p for m in gm],
+    }
     evo = ShinkaEvolutionConfig(
         task_sys_msg=None,  # set by PromptSampler via registry
         language=cfg.evolution.language,
@@ -54,7 +67,8 @@ def _build_shinka_configs(
         patch_type_probs=cfg.evolution.patch_type_probs,
         num_generations=cfg.evolution.num_generations,
         max_patch_resamples=cfg.evolution.max_patch_resamples,
-        llm_models=cfg.llm.generation_models,
+        llm_models=[m.name for m in gm],
+        llm_kwargs=llm_kwargs,
         llm_dynamic_selection=cfg.evolution.llm_dynamic_selection,
         use_text_feedback=cfg.evolution.use_text_feedback,
         evolve_prompts=cfg.evolution.evolve_prompts,
@@ -141,6 +155,15 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
         # See lab/issues/2026-04-19-parallel-eval-champion-race.md.
         self._champion_locks: dict[int, threading.Lock] = defaultdict(threading.Lock)
 
+        # Run-wide population brief. Recomputed end-of-gen from all cached
+        # lineage briefs; injected into next gen's mutation prompts as
+        # ambient pressure. Split into two blocks: context (middle of prompt)
+        # and exploration_directions (top + end — instruction sandwich for
+        # primacy + recency). None until the first end-of-gen tick fires, or
+        # indefinitely if LLMConfig.run_brief_model is not set.
+        self._latest_population_context: str | None = None
+        self._latest_exploration_directions: str | None = None
+
         super().__init__(
             evo_config=evo,
             job_config=job,
@@ -170,6 +193,18 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
         self._champions_dir = Path(self.results_dir) / "champions"
         self._champions_dir.mkdir(parents=True, exist_ok=True)
         self.scheduler.config.eval_function = self._evaluate_with_pairwise
+
+        # Opt-in critique-revise cycle for configured generators. Fires after
+        # every generation/genesis/mutation call on a listed model. Value is
+        # the critic-call reasoning_effort override; "disabled" (the default)
+        # strips thinking kwargs so the critic isn't re-thinking the same
+        # ground the generator already covered.
+        from owtn.llm.query import register_self_critic_models
+        register_self_critic_models({
+            m.name: m.self_critic_reasoning_effort
+            for m in self.stage_config.llm.generation_models
+            if m.self_critic
+        })
 
     def _write_champions_to_disk(self) -> None:
         """Write each island's current champion genome to disk.
@@ -355,12 +390,12 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
                     champion_id, champion_critique.model_dump()
                 )
 
-        # Compute parent briefs in-band, before metrics.json is written or
+        # Compute lineage briefs in-band, before metrics.json is written or
         # the champion's defense critique is read by any subsequent
         # mutation prompt. This eliminates the precompute race
-        # (lab/issues/2026-04-19-parent-brief-precompute-race.md) — by the
-        # time shinka adds the challenger to DB or picks the champion as a
-        # parent, both have fresh `parent_brief_rendered` in their rows.
+        # (lab/issues/closed/2026-04-19-parent-brief-precompute-race.md) — by
+        # the time shinka adds the challenger to DB or picks the champion as
+        # a parent, both have fresh `lineage_brief_rendered` in their rows.
         await self._compute_briefs_in_band(
             result=result,
             challenger_genome=challenger_genome,
@@ -378,27 +413,27 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
         champion_id: str | None,
         champion_genome: ConceptGenome | None,
     ) -> None:
-        """Refresh parent briefs for the challenger (in-memory) and the
+        """Refresh lineage briefs for the challenger (in-memory) and the
         champion (via DB threadsafe write). Called from the eval worker
         before metrics.json is written, so shinka's subsequent reads see
         fresh briefs without depending on the per-generation precompute.
-        See lab/issues/2026-04-19-parent-brief-precompute-race.md.
+        See lab/issues/closed/2026-04-19-parent-brief-precompute-race.md.
         """
-        from owtn.evaluation.feedback import get_or_compute_brief
+        from owtn.optimizer.adapters import compute_stage_1_lineage_brief
 
         classifier_model = self.stage_config.llm.classifier_model
 
         # Challenger: brief reflects the single just-completed match,
         # already attached to result.private_metrics["match_critiques"].
         try:
-            rendered, payload = await get_or_compute_brief(
+            rendered, payload = await compute_stage_1_lineage_brief(
                 self_genome=challenger_genome.model_dump(),
                 private_metrics=result.private_metrics,
                 classifier_model=classifier_model,
             )
             if payload is not None:
-                result.private_metrics["parent_brief_cache"] = payload
-            result.private_metrics["parent_brief_rendered"] = rendered
+                result.private_metrics["lineage_brief_cache"] = payload
+            result.private_metrics["lineage_brief_rendered"] = rendered
         except Exception as e:
             logger.warning("Challenger brief computation failed: %s", e)
 
@@ -414,13 +449,13 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
                 champ_pm = self.db.get_program_private_metrics_threadsafe(
                     champion_id
                 )
-                rendered, payload = await get_or_compute_brief(
+                rendered, payload = await compute_stage_1_lineage_brief(
                     self_genome=champion_genome.model_dump(),
                     private_metrics=champ_pm,
                     classifier_model=classifier_model,
                 )
                 if payload is not None:
-                    self.db.set_parent_brief_threadsafe(
+                    self.db.set_lineage_brief_threadsafe(
                         champion_id, payload, rendered
                     )
             except Exception as e:
@@ -467,6 +502,14 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
         # Post-evolution: Swiss tournament across island champions.
         await self._run_final_tournament()
 
+        # End-of-run statistics report — judge diagnostics, cost breakdown,
+        # evolution dynamics. Appended to evolution_run.log + stats.json.
+        try:
+            from owtn.stats_report import write_stats
+            write_stats(Path(self.results_dir))
+        except Exception as e:
+            logger.warning("Failed to write stats report: %s", e)
+
     async def _update_completed_generations(self):
         """Snapshot state, write champions to disk, and anneal after each generation."""
         old = self.completed_generations
@@ -475,11 +518,46 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
             gen = self.completed_generations - 1
             self._write_champions_to_disk()
             await self._precompute_parent_briefs()
+            # Population brief reads from the just-refreshed lineage briefs;
+            # order is load-bearing (lineage first, then population).
+            await self._compute_population_brief()
             self._snapshot(gen)
             self._anneal(gen)
 
+    async def _compute_population_brief(self) -> None:
+        """End-of-gen: regenerate the run-wide population brief from all
+        cached lineage briefs. Stores two rendered blocks on the runner —
+        `population_context` (goes in the middle of the mutation prompt) and
+        `exploration_directions` (goes at top AND end of the user message,
+        instruction-sandwich style for primacy + recency).
+
+        Skipped entirely if `LLMConfig.run_brief_model` is not set.
+        """
+        model = self.stage_config.llm.run_brief_model
+        if not model:
+            return
+        from owtn.optimizer.adapters import compute_stage_1_population_brief
+
+        try:
+            result = await compute_stage_1_population_brief(
+                db=self.db,
+                run_brief_model=model,
+                judge_names=list(self.stage_config.judges.panel),
+            )
+        except Exception as e:
+            logger.warning("Population brief computation failed: %s", e)
+            return
+        if result is not None:
+            context, directions = result
+            self._latest_population_context = context
+            self._latest_exploration_directions = directions
+            # PromptSampler.sample() reads these attributes when building
+            # each mutation's user message.
+            self.prompt_sampler.population_context = context
+            self.prompt_sampler.exploration_directions = directions
+
     async def _precompute_parent_briefs(self) -> None:
-        """Refresh ParentBrief for any program whose match_critiques has grown.
+        """Refresh LineageBrief for any program whose match_critiques has grown.
 
         Called post-generation, before the next generation's mutation phase.
         Iterates *all* correct programs (not just current island champions)
@@ -493,7 +571,7 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
         Uses lazy caching keyed on `len(match_critiques)`: programs whose
         critique count hasn't grown since the last brief are skipped.
         """
-        from owtn.evaluation.feedback import get_or_compute_brief
+        from owtn.optimizer.adapters import compute_stage_1_lineage_brief
         import json
 
         classifier_model = self.stage_config.llm.classifier_model
@@ -513,7 +591,7 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
             critique_count = len(pm.get("match_critiques") or [])
             if critique_count == 0:
                 continue
-            cached_count = (pm.get("parent_brief_cache") or {}).get("count")
+            cached_count = (pm.get("lineage_brief_cache") or {}).get("count")
             if cached_count == critique_count:
                 continue  # cache fresh — skip
 
@@ -526,7 +604,7 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
                 )
                 continue
             try:
-                rendered, payload = await get_or_compute_brief(
+                rendered, payload = await compute_stage_1_lineage_brief(
                     self_genome=self_genome,
                     private_metrics=pm,
                     classifier_model=classifier_model,
@@ -536,12 +614,12 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
                     "Brief precompute failed for %s: %s", program_id[:8], e,
                 )
                 continue
-            if payload is None and pm.get("parent_brief_rendered") == rendered:
+            if payload is None and pm.get("lineage_brief_rendered") == rendered:
                 continue  # nothing to write
             new_pm = dict(pm)
             if payload is not None:
-                new_pm["parent_brief_cache"] = payload
-            new_pm["parent_brief_rendered"] = rendered
+                new_pm["lineage_brief_cache"] = payload
+            new_pm["lineage_brief_rendered"] = rendered
             try:
                 self.db.cursor.execute(
                     "UPDATE programs SET private_metrics = ? WHERE id = ?",
@@ -686,18 +764,21 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
             )
 
     def _anneal(self, generation: int) -> None:
-        """Anneal temperature and genesis ratio: high early, lower late."""
+        """Anneal genesis ratio: high early, lower late.
+
+        Temperature is fixed per-model (`GenerationModelConfig.temperature`),
+        not annealed.
+        """
         sched = self.stage_config.evolution.annealing
         total = self.stage_config.evolution.num_generations
         warmup_gens = int(total * sched.warmup_fraction)
         is_early = generation < warmup_gens
-        self.llm.temperatures = sched.temp_early if is_early else sched.temp_late
         self.prompt_sampler.genesis_ratio = (
             sched.genesis_ratio_early if is_early else sched.genesis_ratio_late
         )
         logger.debug(
-            "Generation %d: temps=%s, genesis_ratio=%.2f",
-            generation, self.llm.temperatures, self.prompt_sampler.genesis_ratio,
+            "Generation %d: genesis_ratio=%.2f",
+            generation, self.prompt_sampler.genesis_ratio,
         )
 
     def _snapshot(self, generation: int) -> None:
@@ -737,6 +818,13 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
         model_posterior = None
         if self.llm_selection is not None:
             model_sample_probs, model_posterior = self.llm_selection.select_llm()
+        else:
+            # Build sampling probs from per-model weights when present.
+            gm = self.stage_config.llm.generation_models
+            weights = [m.weight for m in gm]
+            total = sum(weights)
+            if total > 0:
+                model_sample_probs = [w / total for w in weights]
 
         llm_kwargs = self.llm.get_kwargs(model_sample_probs=model_sample_probs)
         total_costs = 0.0

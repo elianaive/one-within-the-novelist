@@ -41,16 +41,22 @@ async def test_compare_logs_correct_judge_id_per_call(monkeypatch, default_pairw
     async def fake_query_async(*args, **kwargs):
         ctx = llm_context.get({})
         seen.append(ctx.get("judge_id", "<missing>"))
-        return _FakeResult(_judgment("a"))
+        return _FakeResult(_judgment("a_clear"))
 
     monkeypatch.setattr(pairwise, "query_async", fake_query_async)
 
+    _anchor = {
+        "sketch": "The cartographer recognizes, on an old map, her own mistake — drawn there, decades before she made it.",
+        "role": "reveal",
+    }
     genome_a = ConceptGenome(
         premise="A first test concept premise long enough.",
+        anchor_scene=_anchor,
         target_effect="first target effect.",
     )
     genome_b = ConceptGenome(
         premise="A second test concept premise long enough.",
+        anchor_scene=_anchor,
         target_effect="second target effect.",
     )
 
