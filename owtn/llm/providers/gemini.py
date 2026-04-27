@@ -174,7 +174,13 @@ class GeminiProvider:
         self, *, system_msg: str, kwargs: dict, output_model: Optional[Type[BaseModel]]
     ) -> types.GenerateContentConfig:
         """Build the GenerateContentConfig from our kwargs shape. Includes
-        the schema if structured output is requested."""
+        the schema if structured output is requested.
+
+        Gemini's schema converter rejects `discriminator` (pydantic
+        discriminated unions) and `oneOf` (uses `any_of` instead). We
+        validate up-front so the failure is clear rather than a generic
+        Pydantic ValidationError surfaced from the SDK.
+        """
         config_kwargs: dict[str, Any] = {
             "temperature": float(kwargs.get("temperature", 0.8)),
             "top_p": float(kwargs.get("top_p", 1.0)),
@@ -186,6 +192,7 @@ class GeminiProvider:
         if (top_k := kwargs.get("top_k")) is not None:
             config_kwargs["top_k"] = int(top_k)
         if output_model is not None:
+            _check_gemini_schema_compatible(output_model)
             config_kwargs["response_mime_type"] = "application/json"
             config_kwargs["response_schema"] = output_model
         return types.GenerateContentConfig(**config_kwargs)
@@ -285,6 +292,26 @@ def _merge_prefix(system_msg: str, system_prefix: Optional[str]) -> str:
     if system_prefix:
         return system_prefix + "\n\n" + system_msg
     return system_msg
+
+
+def _check_gemini_schema_compatible(output_model: Type[BaseModel]) -> None:
+    """Raise a clear error if the model's JSON schema uses constructs
+    Gemini's response_schema doesn't support (`discriminator`, `oneOf`).
+
+    Pydantic's discriminated unions emit `discriminator` + `oneOf` which
+    Gemini rejects (it only accepts `any_of`). Today no production callsite
+    routes a discriminated union through Gemini — Stage 2 expansion uses
+    Claude — but the failure mode would otherwise be a cryptic SDK
+    Pydantic ValidationError. Catch it up front."""
+    schema = output_model.model_json_schema()
+    schema_str = str(schema)
+    if "'discriminator'" in schema_str or '"discriminator"' in schema_str:
+        raise NotImplementedError(
+            f"Gemini's response_schema doesn't accept discriminated unions "
+            f"(found in {output_model.__name__}). Use a non-Gemini provider "
+            f"for this output model, or restructure the schema to use "
+            f"plain Union without a discriminator."
+        )
 
 
 # Module-level singleton.
