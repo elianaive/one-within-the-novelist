@@ -2,12 +2,14 @@
 #
 # 20 generations, 10 islands, 3 judges. Strong generation and judge
 # models with dynamic island spawning and operator bandit. Full
-# evolution dynamics.
+# evolution dynamics. Self-critic on the generator (critique-revise
+# cycle on every generation/genesis/mutation).
 #
 # Run with: uv run python -m owtn --config configs/stage_1/medium.yaml \
 #           --max-eval-jobs 5 --max-proposal-jobs 4
 #
-# Expected: ~50-80 concepts, ~$15-40 total.
+# Expected: ~50-80 concepts, ~$30-80 total (self-critic adds ~2x
+# generation-side cost on top of the ~$15-40 baseline).
 
 stage: 1
 
@@ -33,7 +35,7 @@ evolution:
     - constraint_first
     - anti_premise
     - real_world_seed
-  patch_type_probs: [0.12, 0.08, 0.10, 0.08, 0.10, 0.05, 0.10, 0.07, 0.10, 0.10, 0.10]
+  patch_type_probs: [0.10, 0.07, 0.13, 0.07, 0.08, 0.08, 0.08, 0.07, 0.08, 0.15, 0.09]
   max_patch_resamples: 3
   llm_dynamic_selection: "ucb"
   use_text_feedback: true             # critical: feeds judge reasoning back into mutation prompts
@@ -72,9 +74,16 @@ operator_bandit:
 # --- LLM Models ---
 
 llm:
-  # Models for concept generation (mutation operators)
-  generation_models: ["claude-sonnet-4-6"]
-  generation_model_family: "anthropic"
+  # Per-model generation params. Each entry has its own sampling params; the
+  # pipeline picks one by `weight` (uniform when all equal) then uses THAT
+  # model's params. reasoning_effort = "disabled"|"min"|"low"|"medium"|"high"|"max"
+  # — non-"disabled" enables extended thinking on Anthropic / reasoning on
+  # OpenAI/DeepSeek. top_p/top_k/min_p dropped where API forbids.
+  generation_models:
+    - name: "claude-sonnet-4-6"
+      temperature: 1.0           # claude forces 1.0 when thinking is on anyway
+      reasoning_effort: "high"
+      self_critic: true
 
   # Judge models are set per-judge in configs/judges/<id>.yaml
 
