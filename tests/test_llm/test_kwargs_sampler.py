@@ -181,3 +181,72 @@ class TestMaxTokensParallelList:
             max_tokens=8192,
         )
         assert kw["max_tokens"] == 8192
+
+
+class TestExplicitThinkingTokens:
+    """`thinking_tokens` int override on Anthropic / Gemini reasoning paths
+    in sample_model_kwargs (the generation path used by ShinkaEvolve)."""
+
+    def test_anthropic_thinking_tokens_overrides_effort(self):
+        kw = sample_model_kwargs(
+            model_names="claude-sonnet-4-6",
+            temperatures=1.0,
+            reasoning_efforts="low",   # would map to 2048
+            thinking_tokens=6000,      # but explicit wins
+            max_tokens=16384,
+        )
+        assert kw["thinking"]["budget_tokens"] == 6000
+
+    def test_anthropic_falls_back_to_effort_when_unset(self):
+        """Backward compat — existing configs without thinking_tokens keep
+        getting THINKING_TOKENS[effort]."""
+        from owtn.llm.providers.base import THINKING_TOKENS
+        kw = sample_model_kwargs(
+            model_names="claude-sonnet-4-6",
+            temperatures=1.0,
+            reasoning_efforts="high",
+            max_tokens=16384,
+        )
+        assert kw["thinking"]["budget_tokens"] == THINKING_TOKENS["high"]
+
+    def test_thinking_tokens_parallel_list_per_model(self):
+        """When thinking_tokens is a list parallel to model_names, the
+        sampled model's index picks the right value."""
+        seen_claude = seen_other = False
+        for _ in range(30):
+            kw = sample_model_kwargs(
+                model_names=["claude-sonnet-4-6", "deepseek-chat"],
+                temperatures=[1.0, 0.7],
+                reasoning_efforts=["low", "disabled"],
+                thinking_tokens=[5000, None],
+                max_tokens=[16384, 4096],
+            )
+            if kw["model_name"] == "claude-sonnet-4-6":
+                assert kw["thinking"]["budget_tokens"] == 5000
+                seen_claude = True
+            else:
+                # deepseek-chat is non-reasoning; no thinking on its path.
+                assert "thinking" not in kw
+                seen_other = True
+        assert seen_claude and seen_other
+
+    def test_anthropic_thinking_tokens_alone_enables_thinking(self):
+        """Setting thinking_tokens but leaving effort=disabled still turns
+        thinking on with the explicit budget."""
+        kw = sample_model_kwargs(
+            model_names="claude-sonnet-4-6",
+            temperatures=1.0,
+            reasoning_efforts="disabled",
+            thinking_tokens=4000,
+            max_tokens=16384,
+        )
+        assert kw["thinking"] == {"type": "enabled", "budget_tokens": 4000}
+
+    def test_anthropic_neither_set_no_thinking(self):
+        kw = sample_model_kwargs(
+            model_names="claude-sonnet-4-6",
+            temperatures=1.0,
+            reasoning_efforts="disabled",
+            max_tokens=16384,
+        )
+        assert "thinking" not in kw

@@ -410,3 +410,119 @@ class TestSystemPrefixWiring:
         assert sys_msg.startswith("cached prefix")
         assert "judge instructions" in sys_msg
         assert "Respond with a single valid JSON object" in sys_msg
+
+
+# ---------- Explicit thinking_tokens override ----------
+
+
+class TestExplicitThinkingTokens:
+    """`thinking_tokens` is the preferred way to set Anthropic/Gemini
+    reasoning budget — overrides the legacy THINKING_TOKENS[effort] mapping.
+    Has no effect on OpenAI/DeepSeek (those APIs take an effort string)."""
+
+    def test_anthropic_thinking_tokens_overrides_effort_lookup(self):
+        from owtn.llm.providers.anthropic import AnthropicProvider
+
+        out = AnthropicProvider().build_call_kwargs(
+            api_model="claude-sonnet-4-6",
+            requested={
+                "reasoning_effort": "low",   # would map to 2048
+                "thinking_tokens": 6000,     # but explicit wins
+                "max_tokens": 16384,
+            },
+        )
+        assert out["thinking"]["budget_tokens"] == 6000
+
+    def test_anthropic_thinking_tokens_clamped_under_max(self):
+        """When the explicit budget exceeds max_tokens, fall back to 1024."""
+        from owtn.llm.providers.anthropic import AnthropicProvider
+
+        out = AnthropicProvider().build_call_kwargs(
+            api_model="claude-sonnet-4-6",
+            requested={
+                "reasoning_effort": "low",
+                "thinking_tokens": 20000,    # > max_tokens (4096)
+                "max_tokens": 4096,
+            },
+        )
+        assert out["thinking"]["budget_tokens"] == 1024
+
+    def test_anthropic_falls_back_to_effort_when_thinking_tokens_unset(self):
+        """Backward-compat: existing configs without thinking_tokens keep
+        getting the THINKING_TOKENS[effort] mapping."""
+        from owtn.llm.providers.anthropic import AnthropicProvider
+        from owtn.llm.providers.base import THINKING_TOKENS
+
+        out = AnthropicProvider().build_call_kwargs(
+            api_model="claude-sonnet-4-6",
+            requested={"reasoning_effort": "high", "max_tokens": 16384},
+        )
+        assert out["thinking"]["budget_tokens"] == THINKING_TOKENS["high"]
+
+    def test_gemini_thinking_tokens_overrides_effort_lookup(self):
+        from owtn.llm.providers.gemini import GeminiProvider
+
+        out = GeminiProvider().build_call_kwargs(
+            api_model="gemini-3-pro-preview",
+            requested={
+                "reasoning_effort": "low",
+                "thinking_tokens": 3000,
+                "max_tokens": 16384,
+            },
+        )
+        assert out["thinking_budget"] == 3000
+
+    def test_openai_ignores_thinking_tokens(self):
+        """OpenAI takes effort as a string; thinking_tokens is silently
+        ignored (no provider knob to set it)."""
+        from owtn.llm.providers.openai import OpenAIProvider
+
+        out = OpenAIProvider().build_call_kwargs(
+            api_model="gpt-5.4-mini",
+            requested={
+                "reasoning_effort": "low",
+                "thinking_tokens": 9999,
+                "max_tokens": 4096,
+            },
+        )
+        assert out["reasoning"] == {"effort": "low"}
+        # No thinking_budget anywhere in OpenAI shape.
+        assert "thinking_budget" not in out
+        assert "thinking_tokens" not in out
+
+    def test_deepseek_ignores_thinking_tokens(self):
+        from owtn.llm.providers.deepseek import DeepSeekProvider
+
+        out = DeepSeekProvider().build_call_kwargs(
+            api_model="deepseek-v4-pro",
+            requested={
+                "reasoning_effort": "medium",
+                "thinking_tokens": 9999,
+            },
+        )
+        assert "thinking_budget" not in out
+        assert "thinking_tokens" not in out
+        assert out["reasoning_effort"] == "medium"
+
+    def test_anthropic_thinking_tokens_only_no_effort(self):
+        """thinking_tokens alone (effort='disabled') still enables thinking."""
+        from owtn.llm.providers.anthropic import AnthropicProvider
+
+        out = AnthropicProvider().build_call_kwargs(
+            api_model="claude-sonnet-4-6",
+            requested={
+                "reasoning_effort": "disabled",
+                "thinking_tokens": 4000,
+                "max_tokens": 16384,
+            },
+        )
+        assert out["thinking"]["budget_tokens"] == 4000
+
+    def test_anthropic_no_thinking_when_neither_set(self):
+        from owtn.llm.providers.anthropic import AnthropicProvider
+
+        out = AnthropicProvider().build_call_kwargs(
+            api_model="claude-sonnet-4-6",
+            requested={"reasoning_effort": "disabled", "max_tokens": 16384},
+        )
+        assert "thinking" not in out

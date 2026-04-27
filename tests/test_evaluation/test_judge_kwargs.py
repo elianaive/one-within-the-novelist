@@ -17,6 +17,7 @@ def _judge(
     top_k: int | None = None,
     min_p: float | None = None,
     reasoning_effort: str = "disabled",
+    thinking_tokens: int | None = None,
 ) -> JudgePersona:
     return JudgePersona(
         id="test",
@@ -33,6 +34,7 @@ def _judge(
         top_k=top_k,
         min_p=min_p,
         reasoning_effort=reasoning_effort,
+        thinking_tokens=thinking_tokens,
     )
 
 
@@ -166,3 +168,35 @@ class TestSignatureReturnsModelName:
         model, kwargs = _build_judge_kwargs(_judge("gpt-4.1"))
         assert model == "gpt-4.1"
         assert isinstance(kwargs, dict)
+
+
+class TestJudgeExplicitThinkingTokens:
+    """thinking_tokens on a JudgePersona overrides the
+    THINKING_TOKENS[reasoning_effort] mapping for Anthropic / Gemini judges."""
+
+    def test_anthropic_judge_uses_explicit_thinking_tokens(self):
+        _, kwargs = _build_judge_kwargs(
+            _judge(
+                "claude-sonnet-4-6",
+                reasoning_effort="low",
+                thinking_tokens=6000,
+            )
+        )
+        assert kwargs["thinking"]["budget_tokens"] == 6000
+
+    def test_anthropic_judge_falls_back_to_effort(self):
+        from owtn.llm.providers.base import THINKING_TOKENS
+
+        _, kwargs = _build_judge_kwargs(
+            _judge("claude-sonnet-4-6", reasoning_effort="medium")
+        )
+        assert kwargs["thinking"]["budget_tokens"] == THINKING_TOKENS["medium"]
+
+    def test_openai_judge_ignores_thinking_tokens(self):
+        """OpenAI judges take effort as a string; thinking_tokens has no
+        effect on the wire shape (no thinking_budget anywhere)."""
+        _, kwargs = _build_judge_kwargs(
+            _judge("gpt-5.4-mini", thinking_tokens=9999)
+        )
+        assert "thinking_budget" not in kwargs
+        assert "thinking_tokens" not in kwargs

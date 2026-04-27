@@ -45,6 +45,29 @@ _RETRY_EXCEPTIONS = (
 )
 
 
+def _resolve_thinking_budget(
+    *,
+    api_model: str,
+    effort: str,
+    explicit_tokens: Optional[int],
+    ceiling: int,
+) -> Optional[int]:
+    """Decide the thinking budget for an Anthropic call.
+
+    Returns None when thinking should be off (non-reasoning model, or
+    effort=disabled and no explicit override). Otherwise returns an int,
+    clamped below `ceiling` (Anthropic rejects budget >= max_tokens).
+    """
+    if not is_reasoning_model(api_model):
+        return None
+    if explicit_tokens is not None:
+        return explicit_tokens if explicit_tokens < ceiling else 1024
+    if effort != "disabled":
+        t = THINKING_TOKENS[effort]
+        return t if t < ceiling else 1024
+    return None
+
+
 def _build_system(system_msg: str, system_prefix: Optional[str]):
     """Build the `system` parameter. With a prefix, returns content blocks
     with cache_control on the prefix block; without, returns the plain string.
@@ -151,7 +174,13 @@ class AnthropicProvider:
 
     def build_call_kwargs(self, *, api_model: str, requested: Mapping[str, Any]) -> dict:
         """Anthropic shape: max_tokens (capped at 64k), thinking dict for
-        extended-thinking models, top_p/top_k forbidden under thinking."""
+        extended-thinking models, top_p/top_k forbidden under thinking.
+
+        Thinking budget resolution:
+          - explicit `thinking_tokens` int wins (preferred, fine-grained)
+          - else falls back to THINKING_TOKENS[reasoning_effort] for back-compat
+          - else thinking is off
+        """
         effort = resolve_effort(api_model, requested.get("reasoning_effort", "disabled"))
         out: dict = {}
         if (v := requested.get("max_tokens")) is not None:
@@ -161,11 +190,13 @@ class AnthropicProvider:
         if temp is not None:
             out["temperature"] = temp
 
-        thinking_active = effort != "disabled" and is_reasoning_model(api_model)
-        if thinking_active:
-            t = THINKING_TOKENS[effort]
-            ceiling = out.get("max_tokens", ANTHROPIC_DEFAULT_MAX_TOKENS)
-            budget = t if t < ceiling else 1024
+        budget = _resolve_thinking_budget(
+            api_model=api_model,
+            effort=effort,
+            explicit_tokens=requested.get("thinking_tokens"),
+            ceiling=out.get("max_tokens", ANTHROPIC_DEFAULT_MAX_TOKENS),
+        )
+        if budget is not None:
             out["thinking"] = {"type": "enabled", "budget_tokens": budget}
         else:
             # top_p/top_k are forbidden when thinking is enabled.

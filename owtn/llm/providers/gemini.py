@@ -141,7 +141,13 @@ class GeminiProvider:
 
     def build_call_kwargs(self, *, api_model: str, requested: Mapping[str, Any]) -> dict:
         """Gemini shape: max_tokens (used as max_output_tokens at call time),
-        thinking_budget int (not a dict). top_p/top_k supported."""
+        thinking_budget int. top_p/top_k supported.
+
+        Thinking budget resolution:
+          - explicit `thinking_tokens` int wins (preferred, fine-grained)
+          - else falls back to THINKING_TOKENS[reasoning_effort]
+          - else 0 (or 128 for models that can't fully disable thinking)
+        """
         effort = resolve_effort(api_model, requested.get("reasoning_effort", "disabled"))
         out: dict = {}
         if (v := requested.get("max_tokens")) is not None:
@@ -153,7 +159,10 @@ class GeminiProvider:
 
         if is_reasoning_model(api_model):
             ceiling = out.get("max_tokens", 4096)
-            if effort != "disabled":
+            explicit = requested.get("thinking_tokens")
+            if explicit is not None:
+                out["thinking_budget"] = explicit if explicit < ceiling else 1024
+            elif effort != "disabled":
                 t = THINKING_TOKENS[effort]
                 out["thinking_budget"] = t if t < ceiling else 1024
             else:

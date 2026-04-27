@@ -55,6 +55,7 @@ def _build_shinka_configs(
         "temperatures": [m.temperature for m in gm],
         "max_tokens": 16384,
         "reasoning_efforts": [m.reasoning_effort for m in gm],
+        "thinking_tokens": [m.thinking_tokens for m in gm],
         "top_p": [m.top_p for m in gm],
         "top_k": [m.top_k for m in gm],
         "min_p": [m.min_p for m in gm],

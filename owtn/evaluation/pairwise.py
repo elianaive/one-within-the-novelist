@@ -80,6 +80,7 @@ def _build_judge_kwargs(judge: JudgePersona) -> tuple[str, dict]:
 
     requested: dict = {
         "reasoning_effort": judge.reasoning_effort,
+        "thinking_tokens": judge.thinking_tokens,
         "temperature": judge.temperature,
         "top_p": judge.top_p,
         "top_k": judge.top_k,
