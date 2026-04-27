@@ -85,9 +85,14 @@ def _build_judge_kwargs(judge: JudgePersona) -> tuple[str, dict]:
         "top_p": judge.top_p,
         "top_k": judge.top_k,
         "min_p": judge.min_p,
+        # All judges get the generous output budget. OpenAI/OpenRouter need
+        # it because tight provider defaults (e.g. Kimi via :nitro) truncate;
+        # Gemini needs it because the SDK default is 2048 which is too small
+        # for an 8-dim per-sub-criterion judge; DeepSeek gets it for symmetry.
+        # The provider's build_call_kwargs maps it to max_tokens vs
+        # max_output_tokens vs the Gemini config field as appropriate.
+        "max_tokens": _JUDGE_MAX_OUTPUT_TOKENS,
     }
-    if resolved.provider in ("openai", "openrouter", "azure_openai"):
-        requested["max_tokens"] = _JUDGE_MAX_OUTPUT_TOKENS
 
     kwargs = provider.build_call_kwargs(api_model=resolved.api_model_name, requested=requested)
     return model_name, kwargs

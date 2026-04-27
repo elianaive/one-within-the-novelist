@@ -107,10 +107,13 @@ class TestOpenRouterReasoningJudge:
 
 
 class TestNonReasoningModel:
-    def test_deepseek_chat_uses_judge_temperature(self):
-        """DeepSeek: no OpenAI caps; judge temperature flows through."""
+    def test_deepseek_chat_uses_judge_temperature_and_cap(self):
+        """DeepSeek non-reasoning: temperature + the generous output cap.
+        Output cap applies on every judge call (regression-fix for Gemini
+        truncation; also useful insurance against tight upstream defaults
+        on DeepSeek)."""
         _, kwargs = _build_judge_kwargs(_judge("deepseek-chat", temperature=0.4))
-        assert kwargs == {"temperature": 0.4}
+        assert kwargs == {"max_tokens": _JUDGE_MAX_OUTPUT_TOKENS, "temperature": 0.4}
 
     def test_non_reasoning_openrouter_gets_only_output_cap_and_temp(self):
         """Non-reasoning OpenRouter models still get max_output_tokens to
@@ -129,6 +132,13 @@ class TestNonReasoningModel:
             "temperature": 0.2,
         }
         assert "reasoning" not in kwargs
+
+    def test_gemini_judge_gets_output_cap(self):
+        """Gemini judges need an explicit cap — SDK default is 2048 which
+        truncates 8-dim Stage 2 judgments mid-string. Regression caught
+        by the Stage 2 demo run on 2026-04-27."""
+        _, kwargs = _build_judge_kwargs(_judge("gemini-3-flash-preview"))
+        assert kwargs.get("max_tokens") == _JUDGE_MAX_OUTPUT_TOKENS
 
 
 class TestSamplerFiltering:
