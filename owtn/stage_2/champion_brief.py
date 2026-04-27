@@ -34,9 +34,8 @@ class TreeBriefState:
 
     Fields:
         full_panel_critiques: critique records appended in arrival order.
-            Each is a dict matching the shape Stage 1's `MatchCritique` uses
-            (keys: self_label, opponent_label, self_was_champion, self_dag,
-            opponent_genome, outcome, dim_outcomes, judge_reasonings, timestamp).
+            Each is a `MatchCritique`-shaped dict (the Stage 2 builder fills
+            the optional `self_dag` field that Stage 1 leaves None).
         cached_count: count of critiques the cached brief was computed
             against. None = no cache yet.
         cached_brief: the LineageBrief Pydantic instance, cached.

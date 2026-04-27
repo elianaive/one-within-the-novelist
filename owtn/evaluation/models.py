@@ -196,6 +196,11 @@ class MatchCritique(BaseModel):
     # Full genome of the opponent concept — enables the summarizer to cite
     # specific elements ("you lost to a concept built around X").
     opponent_genome: dict
+    # Stage 2 only: the challenger's own DAG, included so the tree-level
+    # summarizer can cite the structural choice that just lost ("your
+    # cross-edge made indelibility narrow"). Stage 1 leaves this None
+    # because the lineage's self-genome is already implicit in the parent.
+    self_dag: dict | None = None
     # This concept's result. Match-level outcome: won / lost / tied (champion
     # retention on tie is enforced upstream; here we report raw dim totals).
     outcome: Literal["won", "lost", "tied"]

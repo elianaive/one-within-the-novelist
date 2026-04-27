@@ -89,11 +89,6 @@ class TestSelfCriticGating:
         with patch.object(query_mod, "_query_async_single", side_effect=fake) as m:
             yield m, calls
 
-    def _run(self, **kw):
-        return asyncio.get_event_loop().run_until_complete(
-            query_mod.query_async(**kw)
-        )
-
     def test_non_generation_role_no_cycle(self, fake_single):
         query_mod.register_self_critic_models({"model-a": "disabled"})
         llm_context.set({"role": "pairwise_judge"})

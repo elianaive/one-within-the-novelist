@@ -119,12 +119,12 @@ async def compute_stage_1_lineage_brief(
 #   formatter uses LINEAGE wording; ~10 lines of LLM-call boilerplate is
 #   duplicated below to keep Stage-2 wording consistent end-to-end)
 
-_STAGE_2_PROMPTS_DIR = Path(__file__).resolve().parent.parent / "prompts" / "stage_2"
 _STAGE_2_SEED_PLACEHOLDER = "Initial tree — no full-panel critiques accumulated yet."
 
 
 def _stage_2_load_system_prompt() -> str:
-    return (_STAGE_2_PROMPTS_DIR / "champion_brief.txt").read_text()
+    from owtn.prompts.stage_2.registry import load_champion_brief_system
+    return load_champion_brief_system()
 
 
 def _stage_2_format_dag_for_match(dag_data: dict) -> str:
@@ -354,6 +354,13 @@ def _stage_1_gather_lineage_briefs(db: Any) -> list[tuple[str, str, dict]]:
     Returns a list of `(program_id, premise_summary, brief_dict)` triples.
     Programs without a cached brief (e.g. seeds that have never been in a
     match) are skipped — they carry no population signal.
+
+    Concurrent-write safety: this runs on the main thread between
+    generations; eval workers may have called `set_lineage_brief_threadsafe`
+    on the same DB during the previous generation. SQLite is in WAL mode,
+    so the read here sees a consistent snapshot — staler reads (a worker's
+    in-flight write hasn't committed yet) just mean the next population
+    brief picks up that lineage one cycle later, which is fine.
     """
     db.cursor.execute(
         "SELECT id, code, private_metrics FROM programs WHERE correct = 1"
