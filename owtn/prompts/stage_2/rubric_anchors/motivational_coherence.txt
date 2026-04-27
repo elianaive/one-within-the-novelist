@@ -1,0 +1,19 @@
+## Motivational Coherence
+
+**Definition**: do the genome's motivational structures — `character_arcs` (whole-story trajectories) and `motivates` edges (local intention installations) — together ground character behavior in specific mental states? Do they cohere across beats without contradicting each other?
+
+**Sub-criteria**:
+
+- **Agent consistency (across arcs and edges)**: the same character is named the same way in `character_arcs[].agent`, `motivates[].agent`, and beat sketches. Personality and goals cohere.
+- **Scope discipline**: spanning trajectories live in `character_arcs` (≥3 non-adjacent touches); local installations live in `motivates` edges (near-adjacent src/dst). A long-span intention encoded as an edge with arbitrary endpoints — or a local installation that happens to be an arc — is a miscoded motivation.
+- **Arc-edge consistency**: when a `motivates` edge installs a local goal on an agent who also has a `character_arc`, the local goal should be compatible with the arc's lifetime goal. Contradictions flag miscoding.
+- **Goal specificity (arcs and edges)**: goals name specific intentions, not generic drives ("she wanted to escape" is weak; "she wanted to be seen as someone who had never compromised" is strong).
+- **Stakes groundedness**: when present, `stakes` names what is specifically risked by this character's pursuit of this goal.
+- **Arc presence fidelity**: the character named in an arc must actually surface in the beat sketches — not necessarily every beat, but at enough non-adjacent beats that the arc is visibly operative.
+- **Intentionality causation (edges)**: a `motivates` edge links a specific earlier event to a specific adjacent action sequence; the link is not "the character was generally motivated by X" but "event A installed goal G in character C, anchoring action B."
+
+**Score 5**: Every `character_arc` names a specific agent, a specific lifetime goal, and specific stakes; the agent surfaces in beat sketches at enough non-adjacent beats to be visibly operative across the story. Every `motivates` edge installs a local goal that is compatible with its agent's arc (if any), with a specific antecedent event. Different characters have different trajectories; when arcs conflict, the structural consequence is visible.
+
+**Score 3 (exemplar)**: Most arcs and edges have specific agents and goals. One arc's agent is named but only weakly present in sketches, or one motivates edge is vague. Arc-edge compatibility is mostly maintained with one minor slippage.
+
+**Score 1**: Arcs are absent or vague (generic agent, generic goal) where the concept calls for them. Motivates edges exist but with generic agents, vague goals, or endpoints that span the whole story (uncoded long-span arcs). Arc and local edge goals for the same agent contradict each other. The LLM filled in motivational fields without grounding them.

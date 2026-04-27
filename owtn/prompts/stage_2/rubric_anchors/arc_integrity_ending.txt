@@ -1,0 +1,16 @@
+## Arc Integrity & Ending Strength
+
+**Definition**: does the tension trace across the DAG form a satisfying arc? Is the ending — specifically the climax beat and the resolution that follows — strong enough to carry the story's weight?
+
+**Sub-criteria**:
+
+- **Climax definition**: the `role: climax` node is a clear peak in the DAG's tension/emotional trajectory. It is not merely "the last event"; it is the emotional center.
+- **Setup earning the climax**: the beats leading to the climax establish the stakes, characters, and tensions that make the climax feel earned.
+- **Resolution coherence**: the post-climax beats resolve the arc without dissipating the emotional effect. They leave the reader with a clear emotional impression (whatever the target effect is — dread, insight, ache, understanding).
+- **Peak-end discipline**: the ending carries emotional or thematic weight that the reader will remember; it is not a shrug.
+
+**Score 5**: The tension trace rises, peaks at the climax, and resolves into a definite emotional state. The climax feels inevitable given the setup and transformative given what follows. The ending is the strongest beat of the DAG.
+
+**Score 3 (exemplar)**: The DAG has a clear climax and resolution. The climax is earned but slightly conventional. The resolution is adequate but doesn't transform what came before — the ending is fine rather than strong.
+
+**Score 1**: No clear climax, or a climax that feels arbitrary given the setup. Resolution is absent, rushed, or dissipates the tension rather than resolving it. The ending is weak, generic, or anticlimactic. A reader would not remember this story's end.

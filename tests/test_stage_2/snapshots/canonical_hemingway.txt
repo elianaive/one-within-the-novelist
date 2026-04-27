@@ -1,0 +1,52 @@
+STORY STRUCTURE A
+=================
+
+Beats listed in causal order. Each beat shows what it causes or reveals,
+with load-bearing details in parentheses. Per-node motifs annotated under
+the beat header; whole-story arcs and constraints listed in their own
+sections at the end.
+
+[arrival] the American man and Jig sit at a station cafe in the Ebro valley; he orders two beers in Spanish; she looks at the hills across the valley and says they look like white elephants.
+  motifs: the hills in the distance [introduced]; the two tracks of the railway [introduced]
+  -> causes [proposal] the American raises the operation, framing it as simple and natural. Jig...
+      (realizes: an idle wait becomes the site of the conversation they have been not-having; the hills offer her a first figurative language while he insists on plain speech)
+  -> discloses to [proposal] the American raises the operation, framing it as simple and natural. Jig...
+      (reframes: the opening's two-beers register becomes the site of a decision about pregnancy; withheld: what the couple is arguing about — the reader joins the conversation already underway and decodes it in parallel with the couple's refusal to name it; disclosed_to: reader)
+
+[proposal] the American raises the operation, framing it as simple and natural. Jig deflects, asks about the drink with licorice, asks whether they will be happy afterward.
+  motifs: the beaded curtain [introduced]
+  -> causes [fracture] Jig asks the American to stop talking. He keeps talking. She says she will...
+      (realizes: his insistence on simplicity as an argument for the operation collapses her ability to respond in kind; the refusal to name the thing becomes unsustainable)
+  -> discloses to [fracture] Jig asks the American to stop talking. He keeps talking. She says she will...
+      (reframes: the operation as circumlocution becomes abortion as the reader gradually infers without ever seeing it named; withheld: the word itself; the inference is the reading experience, not a reveal the text hands over; disclosed_to: reader)
+
+[fracture, role=climax] Jig asks the American to stop talking. He keeps talking. She says she will scream. The beaded curtain moves in the breeze; the hills are still there.
+  motifs: the hills in the distance [echoed]; the beaded curtain [embodied]
+  -> causes [departure] the train is coming. the American carries the bags to the other side of the...
+      (realizes: the silence resumes on his terms (whether performatively or as continued rule); she has accepted the terms of being unable to say what she means)
+
+[departure] the train is coming. the American carries the bags to the other side of the station. Jig smiles at him. She says she feels fine; there is nothing wrong with her.
+  motifs: the two tracks of the railway [performed]
+
+STRUCTURAL TENSIONS (long-range and reframing edges)
+  [arrival] -> discloses to [proposal]
+      (reframes: the opening's two-beers register becomes the site of a decision about pregnancy; withheld: what the couple is arguing about — the reader joins the conversation already underway and decodes it in parallel with the couple's refusal to name it; disclosed_to: reader)
+  [proposal] -> discloses to [fracture]
+      (reframes: the operation as circumlocution becomes abortion as the reader gradually infers without ever seeing it named; withheld: the word itself; the inference is the reading experience, not a reveal the text hands over; disclosed_to: reader)
+
+CHARACTER ARCS (whole-story trajectories)
+  - agent: Jig
+    goal: to preserve some possibility of a future they have been together, while being asked to forfeit the thing that might anchor that future
+    stakes: the shape of her life, which she cannot articulate under his interrogation
+  - agent: the American
+    goal: to secure her consent without appearing to have secured it, so the choice remains nominally hers
+    stakes: the version of himself in which he is a reasonable man who did not coerce
+
+STORY CONSTRAINTS (diegetic rules holding across the story)
+  - prohibits: naming the pregnancy or the operation in direct terms
+    lifts at: (never lifts)
+
+MOTIF THREADS (inventory; per-node mode tags shown inline above)
+  - the hills in the distance
+  - the beaded curtain
+  - the two tracks of the railway

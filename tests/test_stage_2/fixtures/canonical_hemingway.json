@@ -1,0 +1,101 @@
+{
+  "concept_id": "canonical_hemingway",
+  "preset": "phoebe_ish",
+  "target_node_count": 4,
+  "motif_threads": [
+    "the hills in the distance",
+    "the beaded curtain",
+    "the two tracks of the railway"
+  ],
+  "concept_demands": [],
+  "character_arcs": [
+    {
+      "agent": "Jig",
+      "goal": "to preserve some possibility of a future they have been together, while being asked to forfeit the thing that might anchor that future",
+      "stakes": "the shape of her life, which she cannot articulate under his interrogation"
+    },
+    {
+      "agent": "the American",
+      "goal": "to secure her consent without appearing to have secured it, so the choice remains nominally hers",
+      "stakes": "the version of himself in which he is a reasonable man who did not coerce"
+    }
+  ],
+  "story_constraints": [
+    {
+      "prohibits": "naming the pregnancy or the operation in direct terms",
+      "lifts_at": null
+    }
+  ],
+  "nodes": [
+    {
+      "id": "arrival",
+      "sketch": "the American man and Jig sit at a station cafe in the Ebro valley; he orders two beers in Spanish; she looks at the hills across the valley and says they look like white elephants.",
+      "role": null,
+      "motifs": [
+        {"motif": "the hills in the distance", "mode": "introduced"},
+        {"motif": "the two tracks of the railway", "mode": "introduced"}
+      ]
+    },
+    {
+      "id": "proposal",
+      "sketch": "the American raises the operation, framing it as simple and natural. Jig deflects, asks about the drink with licorice, asks whether they will be happy afterward.",
+      "role": null,
+      "motifs": [
+        {"motif": "the beaded curtain", "mode": "introduced"}
+      ]
+    },
+    {
+      "id": "fracture",
+      "sketch": "Jig asks the American to stop talking. He keeps talking. She says she will scream. The beaded curtain moves in the breeze; the hills are still there.",
+      "role": ["climax"],
+      "motifs": [
+        {"motif": "the hills in the distance", "mode": "echoed"},
+        {"motif": "the beaded curtain", "mode": "embodied"}
+      ]
+    },
+    {
+      "id": "departure",
+      "sketch": "the train is coming. the American carries the bags to the other side of the station. Jig smiles at him. She says she feels fine; there is nothing wrong with her.",
+      "role": null,
+      "motifs": [
+        {"motif": "the two tracks of the railway", "mode": "performed"}
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "src": "arrival",
+      "dst": "proposal",
+      "type": "causal",
+      "realizes": "an idle wait becomes the site of the conversation they have been not-having; the hills offer her a first figurative language while he insists on plain speech"
+    },
+    {
+      "src": "proposal",
+      "dst": "fracture",
+      "type": "causal",
+      "realizes": "his insistence on simplicity as an argument for the operation collapses her ability to respond in kind; the refusal to name the thing becomes unsustainable"
+    },
+    {
+      "src": "fracture",
+      "dst": "departure",
+      "type": "causal",
+      "realizes": "the silence resumes on his terms (whether performatively or as continued rule); she has accepted the terms of being unable to say what she means"
+    },
+    {
+      "src": "arrival",
+      "dst": "proposal",
+      "type": "disclosure",
+      "reframes": "the opening's two-beers register becomes the site of a decision about pregnancy",
+      "withheld": "what the couple is arguing about — the reader joins the conversation already underway and decodes it in parallel with the couple's refusal to name it",
+      "disclosed_to": ["reader"]
+    },
+    {
+      "src": "proposal",
+      "dst": "fracture",
+      "type": "disclosure",
+      "reframes": "the operation as circumlocution becomes abortion as the reader gradually infers without ever seeing it named",
+      "withheld": "the word itself; the inference is the reading experience, not a reveal the text hands over",
+      "disclosed_to": ["reader"]
+    }
+  ]
+}
