@@ -1574,29 +1574,6 @@ wheels = [
 ]
 
 [[package]]
-name = "instructor"
-version = "1.14.5"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "aiohttp" },
-    { name = "diskcache" },
-    { name = "docstring-parser" },
-    { name = "jinja2" },
-    { name = "jiter" },
-    { name = "openai" },
-    { name = "pydantic" },
-    { name = "pydantic-core" },
-    { name = "requests" },
-    { name = "rich" },
-    { name = "tenacity" },
-    { name = "typer" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/0b/ef/986d059424db204ed57b29d8c07fda35de2a2c72dee8ea7994bc90a6f767/instructor-1.14.5.tar.gz", hash = "sha256:fcb6432867f2fe4a5986e8bf389dcc64ed2ad4039a12a2dff85464e51c2f171a", size = 69950754, upload-time = "2026-01-29T14:18:50.454Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/45/04/e442e1356c97b03a6d30d2b462f7c0bdfbf207e75f6833815fd1225a75b4/instructor-1.14.5-py3-none-any.whl", hash = "sha256:2a5a31222b008c0989be1cc001e33a237f49506e80ac5833f6d36d7690bae7b1", size = 177445, upload-time = "2026-01-29T14:18:53.641Z" },
-]
-
-[[package]]
 name = "jinja2"
 version = "3.1.6"
 source = { registry = "https://pypi.org/simple" }
@@ -3016,7 +2993,6 @@ dependencies = [
     { name = "backoff" },
     { name = "cachier" },
     { name = "google-genai" },
-    { name = "instructor" },
     { name = "jsonref" },
     { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
     { name = "numpy", version = "2.4.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
@@ -3060,7 +3036,6 @@ requires-dist = [
     { name = "backoff" },
     { name = "cachier" },
     { name = "google-genai", specifier = ">=1.13" },
-    { name = "instructor", specifier = ">=1.9" },
     { name = "jsonref", specifier = ">=1.1.0" },
     { name = "numpy" },
     { name = "openai", specifier = ">=1.75" },
@@ -4680,7 +4655,6 @@ dependencies = [
     { name = "google-genai" },
     { name = "httpx" },
     { name = "hydra-core" },
-    { name = "instructor" },
     { name = "markdown" },
     { name = "matplotlib" },
     { name = "moviepy" },
@@ -4714,7 +4688,6 @@ requires-dist = [
     { name = "google-genai" },
     { name = "httpx", specifier = ">=0.27" },
     { name = "hydra-core", specifier = "==1.3.2" },
-    { name = "instructor" },
     { name = "markdown" },
     { name = "matplotlib" },
     { name = "moviepy" },
