@@ -1,5 +1,6 @@
 from typing import List, Union, Optional
 import random
+from .providers.base import THINKING_TOKENS  # noqa: F401  (re-exported for models/config.py)
 from .providers.pricing import (
     is_reasoning_model,
     has_fixed_temperature,
@@ -9,14 +10,6 @@ from .providers.model_resolver import resolve_model_backend
 import logging
 
 logger = logging.getLogger(__name__)
-
-THINKING_TOKENS = {
-    "min": 1024,
-    "low": 2048,
-    "medium": 4096,
-    "high": 8192,
-    "max": 16384,
-}
 
 
 def sample_model_kwargs(
