@@ -315,6 +315,15 @@ is a set of complete or near-complete drafts.
 - **Voice adherence** (does the prose match the locked voice spec?)
 - **Show vs. tell** (is emotion demonstrated through action and detail, not
   stated?)
+- **Payload enactment (not gesture)** (for each Stage 2 edge incoming to this
+  scene's source node: did the prose *enact* the payload, or merely gesture at
+  it? A scene where a character says "they see everything at once, I guess"
+  gestures at `entails: Heptapods perceive all time at once`. A scene that
+  demonstrates that perception through the reader's own realization *enacts*
+  it. See `lab/references/cosop/summary.md` for the failure mode Wales named
+  "eliding." Goal-field propagation discipline — why this matters and how to
+  wrap payloads for prose generation — is in `docs/prompting-guide.md`
+  §"Goals Cannot Ride in Plaintext.")
 - **Sentence-level craft** (burstiness, lexical diversity, rhythm variation)
 - **State consistency** (does this scene contradict established state?)
 
@@ -343,6 +352,42 @@ Each round:
    revision brief (what to fix, in order of importance).
 3. **Targeted revision:** The story is revised to address the brief. Only the
    flagged issues are changed — unflagged passages are preserved.
+
+**Modular refinement passes (within each round):**
+
+The broad multi-critic → brief → revise loop above is a generalist pass.
+Specific LLM failures respond better to specialized single-purpose modules
+run as additional passes within the round. Each module is a one-shot or
+few-shot prompt targeting exactly one failure mode, with examples calibrating
+the model on what qualifies, and (where appropriate) a `DELETE` primer that
+allows the model to cut rather than always rewrite. Iterate each module until
+diminishing returns — in Wales's validation (*Adventures in AI Text
+Generation* pt 2, July 2023; archived at `lab/references/cosop/`), the purple-
+prose module converged reliably in 2–3 passes; the show-vs-tell module had a
+higher false-positive rate and needs more careful few-shot discipline.
+
+Required modules for the v1 Stage 5 (ranked by priority, based on observed
+Claude 4.x failure frequency):
+
+- **Purple-prose module.** Flag ornate metaphor, florid description, overwrought
+  imagery. Rewrite to retain meaning in simpler language. Opus in particular
+  has strong purple-prose defaults; this is the highest-leverage module.
+- **Exposed-subtext (show-vs-tell) module.** Flag passages that state an
+  emotion when they could show it. Rewrite into action / detail / implication,
+  or mark `DELETE` if the statement cannot be reframed and is not load-bearing.
+  Calibrate few-shot examples carefully — Wales found models mis-flag
+  appearance descriptions as "telling," which is a false positive.
+- **Elision module.** Per Stage 2 edge, check whether the prose *enacts* the
+  edge payload or merely gestures at it (see Stage 4 *Payload enactment*
+  criterion above). Low-scoring edges flag their scenes for revision with the
+  payload re-wrapped per `docs/prompting-guide.md` §"Goals Cannot Ride in
+  Plaintext."
+
+Additional modules (plot repetition, self-containment, hallucination, internal
+consistency) were high-priority failure modes in the 2023 novel-length setting
+Wales documented but are lower-severity on Claude 4.x at our story length.
+Build them only if empirical Stage 4 / Stage 5 output shows the failure
+persisting after the three required modules have run.
 
 **Craft audits (run once, after rounds complete):**
 
