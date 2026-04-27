@@ -3,7 +3,7 @@ import logging
 import openai
 
 from .pricing import calculate_cost, model_exists
-from .result import QueryResult
+from ..result import QueryResult
 
 logger = logging.getLogger(__name__)
 

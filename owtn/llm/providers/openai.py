@@ -4,7 +4,7 @@ import backoff
 import openai
 from pydantic import ValidationError
 from .pricing import calculate_cost, model_exists
-from .result import QueryResult
+from ..result import QueryResult
 import logging
 
 logger = logging.getLogger(__name__)

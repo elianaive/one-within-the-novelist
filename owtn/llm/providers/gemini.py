@@ -3,7 +3,7 @@ import logging
 from typing import Any, cast
 from google.genai import types
 from .pricing import calculate_cost
-from .result import QueryResult
+from ..result import QueryResult
 
 logger = logging.getLogger(__name__)
 

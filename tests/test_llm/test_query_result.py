@@ -1,6 +1,6 @@
 """Unit tests for QueryResult serialization and display."""
 
-from owtn.llm.providers.result import QueryResult
+from owtn.llm.result import QueryResult
 
 
 def _make_result(**overrides):
