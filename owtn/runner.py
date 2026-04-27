@@ -11,7 +11,6 @@ import json
 import logging
 import threading
 import uuid
-from collections import defaultdict
 from datetime import datetime
 from pathlib import Path
 from typing import Optional
@@ -153,7 +152,16 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
         # pre-update incumbent score, both compute `incumbent + ε`, and
         # both end up with the same score — breaking the succession chain.
         # See lab/issues/2026-04-19-parallel-eval-champion-race.md.
-        self._champion_locks: dict[int, threading.Lock] = defaultdict(threading.Lock)
+        #
+        # Pre-allocate locks for the static island count; dynamic islands
+        # (enable_dynamic_islands) lazy-create under a creation meta-lock
+        # via `_get_champion_lock`. Must not use defaultdict(Lock) — its
+        # __missing__ insertion is not safe under concurrent access.
+        self._champion_locks: dict[int, threading.Lock] = {
+            i: threading.Lock()
+            for i in range(self.stage_config.database.num_islands)
+        }
+        self._champion_locks_creation = threading.Lock()
 
         # Run-wide population brief. Recomputed end-of-gen from all cached
         # lineage briefs; injected into next gen's mutation prompts as
@@ -229,6 +237,19 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
                 "combined_score": champion.combined_score,
             }))
 
+    def _get_champion_lock(self, island_idx: int) -> threading.Lock:
+        """Return the per-island champion-update lock, creating it if the
+        island appeared at runtime via enable_dynamic_islands.
+
+        Double-checked under `_champion_locks_creation` so concurrent calls
+        for the same dynamic island can't construct competing Lock objects.
+        """
+        lock = self._champion_locks.get(island_idx)
+        if lock is not None:
+            return lock
+        with self._champion_locks_creation:
+            return self._champion_locks.setdefault(island_idx, threading.Lock())
+
     def _evaluate_with_pairwise(
         self, program_path: str, results_dir: str, config_path: str,
         parent_id: str | None = None, island_idx: int | None = None,
@@ -249,26 +270,30 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
         with the identical `incumbent + ε` value, and both append a
         defense critique to the same champion. See
         `lab/issues/2026-04-19-parallel-eval-champion-race.md`.
+
+        ``island_idx`` is required: ShinkaEvolve's scheduler always passes
+        it when calling this eval function. A None island_idx would mean
+        the per-island lock can't be acquired and the race-fix above is
+        defeated, so we fail loudly rather than silently skipping the lock.
         """
+        if island_idx is None:
+            raise RuntimeError(
+                "_evaluate_with_pairwise called without island_idx — would "
+                "skip the per-island champion lock. Check scheduler call site."
+            )
+
         import asyncio
-        from owtn.evaluation.stage_1 import evaluate
 
         # Propagate context vars to this worker thread.
         llm_log_dir.set(self._log_dir)
         llm_context.set({"role": "pairwise_judge"})
 
-        if island_idx is not None:
-            with self._champion_locks[island_idx]:
-                asyncio.run(self._evaluate_with_pairwise_async(
-                    program_path, results_dir, config_path, island_idx,
-                ))
-            return
-
         # Single asyncio.run() for all async work in this eval — avoids
         # httpx/aiohttp cleanup errors from loop creation/destruction.
-        asyncio.run(self._evaluate_with_pairwise_async(
-            program_path, results_dir, config_path, island_idx,
-        ))
+        with self._get_champion_lock(island_idx):
+            asyncio.run(self._evaluate_with_pairwise_async(
+                program_path, results_dir, config_path, island_idx,
+            ))
 
     async def _evaluate_with_pairwise_async(
         self, program_path: str, results_dir: str, config_path: str,
