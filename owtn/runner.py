@@ -211,7 +211,7 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
         # the critic-call reasoning_effort override; "disabled" (the default)
         # strips thinking kwargs so the critic isn't re-thinking the same
         # ground the generator already covered.
-        from owtn.llm.query import register_self_critic_models
+        from owtn.optimizer.self_critic import register_self_critic_models
         register_self_critic_models({
             m.name: m.self_critic_reasoning_effort
             for m in self.stage_config.llm.generation_models
