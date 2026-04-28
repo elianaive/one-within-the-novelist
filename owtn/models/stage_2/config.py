@@ -98,10 +98,20 @@ class Stage2Config(BaseModel):
     cheap_judge_model: str
     classifier_model: str | None = None  # for champion-brief summarizer + Tier 3
 
-    # Tiered judge
+    # Tiered judge (legacy pairwise-champion path)
     full_panel_on_promotion: bool = True
     full_panel_rejection_backprop: float = Field(default=0.5, ge=0.0, le=1.0)
     cheap_judge_agreement_alert: float = Field(default=0.70, ge=0.0, le=1.0)
+
+    # Scoring mode. "pairwise_champion" = cheap-judge tiered against a running
+    # champion (`docs/stage-2/mcts.md`). "scalar" = absolute scalar reward via
+    # `owtn.evaluation.scalar`, fixing cold-champion saturation by removing
+    # the reference point. Scalar mode reads composition names from the
+    # `scoring_*_composition` fields below.
+    scoring_mode: Literal["pairwise_champion", "scalar"] = "pairwise_champion"
+    scoring_rollout_composition: str = "rollout_reward"
+    scoring_handoff_composition: str = "handoff_rescore"
+    scoring_handoff_top_k: int = Field(default=5, ge=1)
 
     # Bounded MCTS rollout simulation per `mcts.md` §Simulation. When
     # enabled, each rollout walks up to `simulation_max_steps` one-step
