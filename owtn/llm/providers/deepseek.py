@@ -283,6 +283,152 @@ class DeepSeekProvider:
         )
 
 
+    @backoff.on_exception(
+        backoff.expo, _RETRY_EXCEPTIONS,
+        max_tries=MAX_TRIES, max_value=MAX_VALUE, max_time=MAX_TIME,
+        on_backoff=_backoff_handler,
+    )
+    async def query_async_with_tools(
+        self,
+        *,
+        model: str,
+        msg: str,
+        system_msg: str,
+        msg_history: list[dict],
+        system_prefix: Optional[str],
+        tools: list[dict],
+        dispatch: Any,  # async (name, params) -> str
+        max_iters: int = 10,
+        kwargs: dict,
+        client: Optional[openai.AsyncOpenAI] = None,
+    ) -> QueryResult:
+        """Tool-use loop on DeepSeek's chat-completions function-calling API.
+
+        Translates the neutral `{name, description, parameters}` schemas into
+        OpenAI's `{type: "function", function: {...}}` wrapper. On each turn,
+        if `message.tool_calls` is non-empty, dispatches each, appends a
+        `{role: "tool", tool_call_id, content}` message per call, re-asks
+        until the model returns text without tool_calls or `max_iters`.
+        """
+        client = client or self._async()
+        merged_system = _merge_prefix(system_msg, system_prefix, output_model=None)
+
+        history: list[dict] = list(msg_history) + [{"role": "user", "content": msg}]
+        messages: list[dict] = [{"role": "system", "content": merged_system}, *history]
+
+        call_kwargs = dict(kwargs)
+        call_kwargs["tools"] = [
+            {
+                "type": "function",
+                "function": {
+                    "name": t["name"],
+                    "description": t.get("description", ""),
+                    "parameters": t.get("parameters") or t.get("input_schema") or {"type": "object"},
+                },
+            }
+            for t in tools
+        ]
+
+        totals = {
+            "input_tokens": 0, "output_tokens": 0, "thinking_tokens": 0,
+            "input_cost": 0.0, "output_cost": 0.0, "cost": 0.0,
+            "cache_read_tokens": 0,
+        }
+        last_text = ""
+        last_thought = ""
+
+        for _ in range(max_iters):
+            response = await client.chat.completions.create(
+                model=model, messages=list(messages), n=1, stop=None, **call_kwargs,
+            )
+            costs = _get_costs(response, model)
+            for k in totals:
+                totals[k] += costs[k]
+
+            choice = response.choices[0].message
+            tool_calls = getattr(choice, "tool_calls", None) or []
+            text_content = choice.content or ""
+            reasoning = getattr(choice, "reasoning_content", "") or ""
+
+            if not tool_calls:
+                last_text = text_content
+                last_thought = reasoning
+                messages.append({"role": "assistant", "content": last_text})
+                break
+
+            # Replay assistant message including tool_calls so the next turn
+            # can see what was requested. For reasoning models (e.g.
+            # deepseek-v4-pro) the API requires `reasoning_content` to be
+            # passed back alongside tool_calls — without it DeepSeek 400s
+            # with "The reasoning_content in the thinking mode must be
+            # passed back to the API."
+            assistant_msg: dict = {
+                "role": "assistant",
+                "content": text_content or None,
+                "tool_calls": [
+                    {
+                        "id": tc.id,
+                        "type": "function",
+                        "function": {
+                            "name": tc.function.name,
+                            "arguments": tc.function.arguments,
+                        },
+                    }
+                    for tc in tool_calls
+                ],
+            }
+            if reasoning:
+                assistant_msg["reasoning_content"] = reasoning
+            messages.append(assistant_msg)
+
+            for tc in tool_calls:
+                try:
+                    params = json.loads(tc.function.arguments) if tc.function.arguments else {}
+                except json.JSONDecodeError as e:
+                    logger.warning(
+                        "DeepSeek tool %s emitted unparseable arguments: %s",
+                        tc.function.name, e,
+                    )
+                    params = {}
+                try:
+                    result_str = await dispatch(tc.function.name, params)
+                except Exception as e:
+                    logger.warning("tool %s dispatch failed: %s", tc.function.name, e)
+                    result_str = f"tool error: {e}"
+                messages.append({
+                    "role": "tool",
+                    "tool_call_id": tc.id,
+                    "content": result_str,
+                })
+        else:
+            logger.warning(
+                "tool-use loop hit max_iters=%d without final text response",
+                max_iters,
+            )
+            last_text = text_content
+            last_thought = getattr(choice, "reasoning_content", "") or ""
+
+        # `new_msg_history` mirrors OpenAI/DeepSeek's user/assistant/tool
+        # message shape; system message is excluded (tracked separately).
+        new_msg_history = messages[1:]
+        return QueryResult(
+            content=last_text,
+            msg=msg,
+            system_msg=system_msg,
+            new_msg_history=new_msg_history,
+            model_name=model,
+            kwargs=kwargs,
+            input_tokens=totals["input_tokens"],
+            output_tokens=totals["output_tokens"],
+            thinking_tokens=totals["thinking_tokens"],
+            cost=totals["cost"],
+            input_cost=totals["input_cost"],
+            output_cost=totals["output_cost"],
+            cache_read_tokens=totals["cache_read_tokens"],
+            thought=last_thought,
+        )
+
+
 def _merge_prefix(
     system_msg: str, system_prefix: Optional[str], output_model: Optional[Type[BaseModel]]
 ) -> str:
