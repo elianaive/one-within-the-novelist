@@ -134,9 +134,11 @@ restructure their codebase beyond rewiring the LLM import.
 ### Why We Extract It
 
 ShinkaEvolve's `shinka/llm/` package is solid multi-provider infrastructure:
-7 providers (Anthropic, OpenAI, Azure, Bedrock, DeepSeek, Gemini, OpenRouter),
-async-native, cost tracking, structured output via `instructor`, exponential
-backoff retries.
+8 providers (Anthropic, Bedrock, OpenAI, Azure, OpenRouter, DeepSeek, Gemini,
+local OpenAI-compatible), async-native, cost tracking, native structured
+output per provider (Anthropic forced tool use; OpenAI Responses API
+`text_format=`; DeepSeek `response_format=json_object` with our own schema
+prompt; Gemini `response_schema=`), exponential backoff retries.
 
 We extract it into `owtn/llm/` and make it the single LLM client for the whole
 project because:
@@ -271,7 +273,6 @@ dependencies = [
     "anthropic>=0.49",
     "openai>=1.75",
     "google-genai>=1.13",
-    "instructor>=1.9",
     "backoff",
     # Data / ML:
     "numpy",

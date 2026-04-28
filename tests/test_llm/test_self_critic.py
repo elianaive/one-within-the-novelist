@@ -15,8 +15,8 @@ from unittest.mock import AsyncMock, patch
 
 import pytest
 
-from owtn.llm import query as query_mod
 from owtn.llm.call_logger import llm_context
+from owtn.optimizer import self_critic as query_mod
 
 
 def _full_genome_output(label: str = "x") -> str:

@@ -55,6 +55,7 @@ def _build_shinka_configs(
         "temperatures": [m.temperature for m in gm],
         "max_tokens": 16384,
         "reasoning_efforts": [m.reasoning_effort for m in gm],
+        "thinking_tokens": [m.thinking_tokens for m in gm],
         "top_p": [m.top_p for m in gm],
         "top_k": [m.top_k for m in gm],
         "min_p": [m.min_p for m in gm],
@@ -211,7 +212,7 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
         # the critic-call reasoning_effort override; "disabled" (the default)
         # strips thinking kwargs so the critic isn't re-thinking the same
         # ground the generator already covered.
-        from owtn.llm.query import register_self_critic_models
+        from owtn.optimizer.self_critic import register_self_critic_models
         register_self_critic_models({
             m.name: m.self_critic_reasoning_effort
             for m in self.stage_config.llm.generation_models

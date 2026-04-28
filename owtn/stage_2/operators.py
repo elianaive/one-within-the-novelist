@@ -228,10 +228,11 @@ async def _extract_seed_fields(
     """One LLM call producing motifs + demands + (optional) target_bucket.
 
     When `output_model` is passed to `query_async`, the provider runs the
-    response through `instructor` and returns the *parsed Pydantic instance*
-    on `result.content` (not a JSON string). Schema-validation failures
-    raise inside the call rather than after; we collapse all such failures
-    into the broad except block below.
+    response through its native structured-output mechanism (Anthropic tool
+    use, OpenAI Responses API text_format, Gemini response_schema, or
+    DeepSeek json_object + recovery) and returns the *parsed Pydantic
+    instance* on `result.content`. Schema-validation failures raise inside
+    the call; we collapse all such failures into the broad except below.
 
     Returns a stub SeedExtractionResult on any failure (the caller proceeds
     with empty motifs/demands and the fallback target_node_count). Motifs
@@ -250,7 +251,7 @@ async def _extract_seed_fields(
             output_model=SeedExtractionResult,
             **llm_kwargs,
         )
-    except Exception as e:  # broad: provider error, instructor parse failure, schema mismatch
+    except Exception as e:  # broad: provider error, native parse failure, schema mismatch
         logger.warning("seed_root extraction failed for concept (%s): %s", type(e).__name__, e)
         return _empty_extraction()
 
@@ -296,7 +297,7 @@ async def propose_actions_via_llm(
     The production `expand_fn` for `MCTS`. Tests mock this; production wires
     it via the factory in `owtn.stage_2.operators.make_expand_factory`.
 
-    On any LLM-side failure (provider error, instructor parse failure,
+    On any LLM-side failure (provider error, native parse failure,
     schema mismatch), returns an empty list — MCTS treats empty as
     "no expansion possible" and marks the leaf fully_expanded. Same
     fallback discipline as `seed_root`'s motif extraction.

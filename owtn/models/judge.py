@@ -32,6 +32,10 @@ class JudgePersona(BaseModel):
     # reasoning mode can let the model pre-commit to gestalt verdicts before
     # filling the structural sub-criteria template, degrading rubric-alignment.
     reasoning_effort: Literal["disabled", "low", "medium", "high"] = "disabled"
+    # Explicit thinking-token budget for Anthropic / Gemini judges. When set,
+    # overrides the THINKING_TOKENS[reasoning_effort] mapping. Has no effect
+    # on OpenAI / DeepSeek judges (those APIs take effort as a string).
+    thinking_tokens: int | None = None
 
 
 def load_panel(judges_dir: str, panel_ids: list[str]) -> list[JudgePersona]:
