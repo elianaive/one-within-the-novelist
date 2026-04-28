@@ -27,6 +27,17 @@ results/
 # Seed embedding cache (Qwen3 vectors, derived from data/seed-bank.yaml)
 data/seed-bank-embeddings.jsonl
 
+# Voice-reference corpus prose + derived signal cache.
+# - The YAML metadata + README are committed (schema + provenance).
+# - The passage .txt files are NOT committed: a mix of PG public-domain
+#   excerpts, research-fair-use Reddit/HF dataset prose, and LLM-generated
+#   outputs with varying license posture. Reproducible via the lab/scripts
+#   extractors (see data/voice-references/README.md).
+# - The signal cache is derived from passages + YAML, SHA-256-keyed,
+#   rebuilds on demand via `uv run python -m owtn.voice.tools rebuild-cache`.
+data/voice-references/passages/
+data/voice-references-stylometric.cache.json
+
 # Databases (created during evolution runs)
 *.db
 *.db-wal

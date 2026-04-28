@@ -1,0 +1,6265 @@
+# Voice-Stylometric Reference Corpus
+#
+# Curated reference passages used as positioning anchors by the voice agents'
+# stylometry tool. Bucketed into three categories by polarity:
+#
+#   exemplars/  → push toward (literary canonical, antislop-chosen).
+#                 Lookup-tool-accessible (agents can read these as study).
+#   defaults/   → push away from (LLM-default samples, antislop-rejected
+#                 LLM pastiche, TinyStories LLM-simple). NOT lookup-accessible
+#                 — reading these would just teach the agent to imitate the
+#                 register it's trying to escape.
+#   baselines/  → neutral positioning anchors (Wikipedia expository,
+#                 WritingPrompts amateur, LitBench amateur). Lookup-accessible
+#                 — neither aspirational nor adversarial.
+#
+# Metadata only here. Prose lives in
+# `data/voice-references/passages/<category>/<id>.txt`.
+#
+# Schema:
+#   id:           kebab-case, globally unique
+#   tags:         free-form list. For LLM-default, includes `model:<tag>`
+#                 so the picker can build per-model centroids.
+#   source:       short attribution
+#   license:      public_domain | cc_by_sa | cdla_sharing_1_0 | research_fair_use |
+#                 owtn_pilot_generation | mit_eq_bench | mit
+#   url:          optional pointer to source
+#   text_file:    relative path: passages/<category>/<id>.txt
+#   category:     "exemplars" | "defaults" | "baselines" — explicit polarity tag
+
+references:
+- id: joyce-the-dead
+  tags:
+  - literary
+  - modernist
+  - free_indirect_discourse
+  - lyric
+  source: Joyce, *Dubliners* — 'The Dead' (1914)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/2814
+  text_file: passages/exemplars/joyce-the-dead.txt
+  category: exemplars
+- id: woolf-kew-gardens
+  tags:
+  - literary
+  - modernist
+  - descriptive
+  - perceptual
+  source: Woolf, 'Kew Gardens' (1919)
+  license: public_domain
+  text_file: passages/exemplars/woolf-kew-gardens.txt
+  category: exemplars
+- id: mansfield-garden-party
+  tags:
+  - literary
+  - modernist
+  - free_indirect_discourse
+  - social_register
+  source: Mansfield, 'The Garden Party' (1922)
+  license: public_domain
+  text_file: passages/exemplars/mansfield-garden-party.txt
+  category: exemplars
+- id: chekhov-lady-with-dog
+  tags:
+  - literary
+  - classical_realist
+  - restrained
+  - ironic
+  source: Chekhov, 'The Lady with the Dog' (1899, Constance Garnett trans.)
+  license: public_domain
+  text_file: passages/exemplars/chekhov-lady-with-dog.txt
+  category: exemplars
+- id: poe-tell-tale-heart
+  tags:
+  - literary
+  - gothic
+  - first_person
+  - manic_register
+  source: Poe, 'The Tell-Tale Heart' (1843)
+  license: public_domain
+  text_file: passages/exemplars/poe-tell-tale-heart.txt
+  category: exemplars
+- id: melville-moby-dick
+  tags:
+  - literary
+  - maximalist
+  - first_person
+  - digressive
+  source: Melville, *Moby-Dick* (1851)
+  license: public_domain
+  text_file: passages/exemplars/melville-moby-dick.txt
+  category: exemplars
+- id: crane-open-boat
+  tags:
+  - literary
+  - naturalist
+  - third_person
+  - descriptive
+  source: Crane, 'The Open Boat' (1898)
+  license: public_domain
+  text_file: passages/exemplars/crane-open-boat.txt
+  category: exemplars
+- id: pg19-conrad
+  tags:
+  - literary
+  - modernist
+  - descriptive
+  - atmospheric
+  source: Conrad, *The Mirror of the Sea* (1906) — PG19 sample
+  license: public_domain
+  url: https://huggingface.co/datasets/deepmind/pg19
+  text_file: passages/exemplars/pg19-conrad.txt
+  category: exemplars
+- id: pg19-hardy
+  tags:
+  - literary
+  - classical_realist
+  - omniscient
+  - pastoral
+  source: Hardy, *Far from the Madding Crowd* (1874) — PG19 sample
+  license: public_domain
+  url: https://huggingface.co/datasets/deepmind/pg19
+  text_file: passages/exemplars/pg19-hardy.txt
+  category: exemplars
+- id: pg19-twain
+  tags:
+  - literary
+  - classical_realist
+  - vernacular
+  - ironic
+  source: Twain, *The Tragedy of Pudd'nhead Wilson* (1894) — PG19 sample
+  license: public_domain
+  url: https://huggingface.co/datasets/deepmind/pg19
+  text_file: passages/exemplars/pg19-twain.txt
+  category: exemplars
+- id: pg19-london
+  tags:
+  - literary
+  - naturalist
+  - first_person
+  - declarative
+  source: London, *The Night-Born* (1913) — PG19 sample
+  license: public_domain
+  url: https://huggingface.co/datasets/deepmind/pg19
+  text_file: passages/exemplars/pg19-london.txt
+  category: exemplars
+- id: pg19-stevenson
+  tags:
+  - literary
+  - classical_realist
+  - third_person
+  - atmospheric
+  source: Stevenson, *The Mystery of the Boule Cabinet* (1911) — PG19 sample
+  license: public_domain
+  url: https://huggingface.co/datasets/deepmind/pg19
+  text_file: passages/exemplars/pg19-stevenson.txt
+  category: exemplars
+- id: pg19-wells
+  tags:
+  - literary
+  - classical_realist
+  - first_person
+  - scifi_ancestor
+  source: Wells, *The First Men in the Moon* (1901) — PG19 sample
+  license: public_domain
+  url: https://huggingface.co/datasets/deepmind/pg19
+  text_file: passages/exemplars/pg19-wells.txt
+  category: exemplars
+- id: wp-00
+  tags:
+  - human_amateur
+  - prose_fiction
+  - web_register
+  source: WritingPrompts (Reddit, FAIR dataset, 2018) — immortality prompt
+  license: research_fair_use
+  url: https://huggingface.co/datasets/euclaise/writingprompts
+  text_file: passages/baselines/wp-00.txt
+  category: baselines
+- id: wp-04
+  tags:
+  - human_amateur
+  - prose_fiction
+  - web_register
+  source: WritingPrompts (Reddit, FAIR dataset, 2018) — plane prompt
+  license: research_fair_use
+  url: https://huggingface.co/datasets/euclaise/writingprompts
+  text_file: passages/baselines/wp-04.txt
+  category: baselines
+- id: tinystories-00
+  tags:
+  - llm_simple
+  - synthetic
+  - childrens_register
+  source: TinyStories — GPT-3.5/4 children's level (Microsoft / HuggingFace)
+  license: cdla_sharing_1_0
+  url: https://huggingface.co/datasets/roneneldan/TinyStories
+  text_file: passages/defaults/tinystories-00.txt
+  category: defaults
+- id: tinystories-04
+  tags:
+  - llm_simple
+  - synthetic
+  - childrens_register
+  source: TinyStories — GPT-3.5/4 children's level (Microsoft / HuggingFace)
+  license: cdla_sharing_1_0
+  url: https://huggingface.co/datasets/roneneldan/TinyStories
+  text_file: passages/defaults/tinystories-04.txt
+  category: defaults
+- id: wiki-00
+  tags:
+  - expository
+  - encyclopedic
+  - neutral_register
+  source: Wikipedia (simple English) — 'April'
+  license: cc_by_sa
+  url: https://simple.wikipedia.org/wiki/April
+  text_file: passages/baselines/wiki-00.txt
+  category: baselines
+- id: wiki-02
+  tags:
+  - expository
+  - encyclopedic
+  - neutral_register
+  source: Wikipedia (simple English) — 'Art'
+  license: cc_by_sa
+  url: https://simple.wikipedia.org/wiki/Art
+  text_file: passages/baselines/wiki-02.txt
+  category: baselines
+- id: wiki-04
+  tags:
+  - expository
+  - encyclopedic
+  - neutral_register
+  source: Wikipedia (simple English) — 'Air'
+  license: cc_by_sa
+  url: https://simple.wikipedia.org/wiki/Air
+  text_file: passages/baselines/wiki-04.txt
+  category: baselines
+- id: sonnet-4-6-p2-lighthouse
+  tags:
+  - llm_default
+  - model:sonnet-4-6
+  - anthropic
+  - atmospheric_literary
+  source: Anthropic Claude Sonnet 4.6 — EQ-Bench v3 prompt 2 (Lighthouse Keeper)
+  license: mit_eq_bench
+  url: https://github.com/EQ-bench/creative-writing-bench
+  text_file: passages/defaults/sonnet-4-6-p2-lighthouse.txt
+  category: defaults
+- id: sonnet-4-6-p5-caribou
+  tags:
+  - llm_default
+  - model:sonnet-4-6
+  - anthropic
+  - literary_realism
+  source: Anthropic Claude Sonnet 4.6 — EQ-Bench v3 prompt 5 (Caribou Lodge)
+  license: mit_eq_bench
+  text_file: passages/defaults/sonnet-4-6-p5-caribou.txt
+  category: defaults
+- id: sonnet-4-6-p13-blood-debt
+  tags:
+  - llm_default
+  - model:sonnet-4-6
+  - anthropic
+  - action_third_person
+  source: Anthropic Claude Sonnet 4.6 — EQ-Bench v3 prompt 13 (Blood Debt)
+  license: mit_eq_bench
+  text_file: passages/defaults/sonnet-4-6-p13-blood-debt.txt
+  category: defaults
+- id: sonnet-4-6-p26-leguin-offworlder
+  tags:
+  - llm_default
+  - model:sonnet-4-6
+  - anthropic
+  - scifi
+  source: Anthropic Claude Sonnet 4.6 — EQ-Bench v3 prompt 26 (Le Guin Offworlder)
+  license: mit_eq_bench
+  text_file: passages/defaults/sonnet-4-6-p26-leguin-offworlder.txt
+  category: defaults
+- id: sonnet-4-6-p28-goosebumps
+  tags:
+  - llm_default
+  - model:sonnet-4-6
+  - anthropic
+  - ya_horror
+  source: Anthropic Claude Sonnet 4.6 — EQ-Bench v3 prompt 28 (Goosebumps Teen Horror)
+  license: mit_eq_bench
+  text_file: passages/defaults/sonnet-4-6-p28-goosebumps.txt
+  category: defaults
+- id: deepseek-v3-2-p2-lighthouse
+  tags:
+  - llm_default
+  - model:deepseek-v3-2
+  - deepseek
+  - atmospheric_literary
+  source: DeepSeek V3.2 — EQ-Bench v3 prompt 2 (Lighthouse Keeper)
+  license: mit_eq_bench
+  text_file: passages/defaults/deepseek-v3-2-p2-lighthouse.txt
+  category: defaults
+- id: deepseek-v3-2-p5-caribou
+  tags:
+  - llm_default
+  - model:deepseek-v3-2
+  - deepseek
+  - literary_realism
+  source: DeepSeek V3.2 — EQ-Bench v3 prompt 5 (Caribou Lodge)
+  license: mit_eq_bench
+  text_file: passages/defaults/deepseek-v3-2-p5-caribou.txt
+  category: defaults
+- id: deepseek-v3-2-p13-blood-debt
+  tags:
+  - llm_default
+  - model:deepseek-v3-2
+  - deepseek
+  - action_third_person
+  source: DeepSeek V3.2 — EQ-Bench v3 prompt 13 (Blood Debt)
+  license: mit_eq_bench
+  text_file: passages/defaults/deepseek-v3-2-p13-blood-debt.txt
+  category: defaults
+- id: deepseek-v3-2-p26-leguin-offworlder
+  tags:
+  - llm_default
+  - model:deepseek-v3-2
+  - deepseek
+  - scifi
+  source: DeepSeek V3.2 — EQ-Bench v3 prompt 26 (Le Guin Offworlder)
+  license: mit_eq_bench
+  text_file: passages/defaults/deepseek-v3-2-p26-leguin-offworlder.txt
+  category: defaults
+- id: deepseek-v3-2-p28-goosebumps
+  tags:
+  - llm_default
+  - model:deepseek-v3-2
+  - deepseek
+  - ya_horror
+  source: DeepSeek V3.2 — EQ-Bench v3 prompt 28 (Goosebumps Teen Horror)
+  license: mit_eq_bench
+  text_file: passages/defaults/deepseek-v3-2-p28-goosebumps.txt
+  category: defaults
+- id: gpt-5-4-p2-lighthouse
+  tags:
+  - llm_default
+  - model:gpt-5-4
+  - openai
+  - atmospheric_literary
+  source: OpenAI GPT-5.4 — EQ-Bench v3 prompt 2 (Lighthouse Keeper)
+  license: mit_eq_bench
+  text_file: passages/defaults/gpt-5-4-p2-lighthouse.txt
+  category: defaults
+- id: gpt-5-4-p5-caribou
+  tags:
+  - llm_default
+  - model:gpt-5-4
+  - openai
+  - literary_realism
+  source: OpenAI GPT-5.4 — EQ-Bench v3 prompt 5 (Caribou Lodge)
+  license: mit_eq_bench
+  text_file: passages/defaults/gpt-5-4-p5-caribou.txt
+  category: defaults
+- id: gpt-5-4-p13-blood-debt
+  tags:
+  - llm_default
+  - model:gpt-5-4
+  - openai
+  - action_third_person
+  source: OpenAI GPT-5.4 — EQ-Bench v3 prompt 13 (Blood Debt)
+  license: mit_eq_bench
+  text_file: passages/defaults/gpt-5-4-p13-blood-debt.txt
+  category: defaults
+- id: gpt-5-4-p26-leguin-offworlder
+  tags:
+  - llm_default
+  - model:gpt-5-4
+  - openai
+  - scifi
+  source: OpenAI GPT-5.4 — EQ-Bench v3 prompt 26 (Le Guin Offworlder)
+  license: mit_eq_bench
+  text_file: passages/defaults/gpt-5-4-p26-leguin-offworlder.txt
+  category: defaults
+- id: gpt-5-4-p28-goosebumps
+  tags:
+  - llm_default
+  - model:gpt-5-4
+  - openai
+  - ya_horror
+  source: OpenAI GPT-5.4 — EQ-Bench v3 prompt 28 (Goosebumps Teen Horror)
+  license: mit_eq_bench
+  text_file: passages/defaults/gpt-5-4-p28-goosebumps.txt
+  category: defaults
+- id: gemini-2-5-pro-p2-lighthouse
+  tags:
+  - llm_default
+  - model:gemini-2-5-pro
+  - google
+  - atmospheric_literary
+  source: Google Gemini 2.5-pro — EQ-Bench v3 prompt 2 (Lighthouse Keeper)
+  license: mit_eq_bench
+  text_file: passages/defaults/gemini-2-5-pro-p2-lighthouse.txt
+  category: defaults
+- id: gemini-2-5-pro-p5-caribou
+  tags:
+  - llm_default
+  - model:gemini-2-5-pro
+  - google
+  - literary_realism
+  source: Google Gemini 2.5-pro — EQ-Bench v3 prompt 5 (Caribou Lodge)
+  license: mit_eq_bench
+  text_file: passages/defaults/gemini-2-5-pro-p5-caribou.txt
+  category: defaults
+- id: gemini-2-5-pro-p13-blood-debt
+  tags:
+  - llm_default
+  - model:gemini-2-5-pro
+  - google
+  - action_third_person
+  source: Google Gemini 2.5-pro — EQ-Bench v3 prompt 13 (Blood Debt)
+  license: mit_eq_bench
+  text_file: passages/defaults/gemini-2-5-pro-p13-blood-debt.txt
+  category: defaults
+- id: gemini-2-5-pro-p26-leguin-offworlder
+  tags:
+  - llm_default
+  - model:gemini-2-5-pro
+  - google
+  - scifi
+  source: Google Gemini 2.5-pro — EQ-Bench v3 prompt 26 (Le Guin Offworlder)
+  license: mit_eq_bench
+  text_file: passages/defaults/gemini-2-5-pro-p26-leguin-offworlder.txt
+  category: defaults
+- id: gemini-2-5-pro-p28-goosebumps
+  tags:
+  - llm_default
+  - model:gemini-2-5-pro
+  - google
+  - ya_horror
+  source: Google Gemini 2.5-pro — EQ-Bench v3 prompt 28 (Goosebumps Teen Horror)
+  license: mit_eq_bench
+  text_file: passages/defaults/gemini-2-5-pro-p28-goosebumps.txt
+  category: defaults
+- id: llama-3-1-405b-p2-lighthouse
+  tags:
+  - llm_default
+  - model:llama-3-1-405b
+  - meta
+  - atmospheric_literary
+  source: Meta Llama 3.1-405b-instruct — EQ-Bench v3 prompt 2 (Lighthouse Keeper)
+  license: mit_eq_bench
+  text_file: passages/defaults/llama-3-1-405b-p2-lighthouse.txt
+  category: defaults
+- id: llama-3-1-405b-p5-caribou
+  tags:
+  - llm_default
+  - model:llama-3-1-405b
+  - meta
+  - literary_realism
+  source: Meta Llama 3.1-405b-instruct — EQ-Bench v3 prompt 5 (Caribou Lodge)
+  license: mit_eq_bench
+  text_file: passages/defaults/llama-3-1-405b-p5-caribou.txt
+  category: defaults
+- id: llama-3-1-405b-p13-blood-debt
+  tags:
+  - llm_default
+  - model:llama-3-1-405b
+  - meta
+  - action_third_person
+  source: Meta Llama 3.1-405b-instruct — EQ-Bench v3 prompt 13 (Blood Debt)
+  license: mit_eq_bench
+  text_file: passages/defaults/llama-3-1-405b-p13-blood-debt.txt
+  category: defaults
+- id: llama-3-1-405b-p26-leguin-offworlder
+  tags:
+  - llm_default
+  - model:llama-3-1-405b
+  - meta
+  - scifi
+  source: Meta Llama 3.1-405b-instruct — EQ-Bench v3 prompt 26 (Le Guin Offworlder)
+  license: mit_eq_bench
+  text_file: passages/defaults/llama-3-1-405b-p26-leguin-offworlder.txt
+  category: defaults
+- id: llama-3-1-405b-p28-goosebumps
+  tags:
+  - llm_default
+  - model:llama-3-1-405b
+  - meta
+  - ya_horror
+  source: Meta Llama 3.1-405b-instruct — EQ-Bench v3 prompt 28 (Goosebumps Teen Horror)
+  license: mit_eq_bench
+  text_file: passages/defaults/llama-3-1-405b-p28-goosebumps.txt
+  category: defaults
+- id: deepseek-v4-pro-p2-lighthouse
+  tags:
+  - llm_default
+  - model:deepseek-v4-pro
+  - deepseek
+  - atmospheric_literary
+  source: DeepSeek V4-pro — EQ-Bench v3 prompt 2 (Lighthouse Keeper), generated for OWTN reference corpus
+  license: owtn_pilot_generation
+  text_file: passages/defaults/deepseek-v4-pro-p2-lighthouse.txt
+  category: defaults
+- id: deepseek-v4-pro-p5-caribou
+  tags:
+  - llm_default
+  - model:deepseek-v4-pro
+  - deepseek
+  - literary_realism
+  source: DeepSeek V4-pro — EQ-Bench v3 prompt 5 (Caribou Lodge), generated for OWTN reference corpus
+  license: owtn_pilot_generation
+  text_file: passages/defaults/deepseek-v4-pro-p5-caribou.txt
+  category: defaults
+- id: deepseek-v4-pro-p13-blood-debt
+  tags:
+  - llm_default
+  - model:deepseek-v4-pro
+  - deepseek
+  - action_third_person
+  source: DeepSeek V4-pro — EQ-Bench v3 prompt 13 (Blood Debt), generated for OWTN reference corpus
+  license: owtn_pilot_generation
+  text_file: passages/defaults/deepseek-v4-pro-p13-blood-debt.txt
+  category: defaults
+- id: deepseek-v4-pro-p26-leguin-offworlder
+  tags:
+  - llm_default
+  - model:deepseek-v4-pro
+  - deepseek
+  - scifi
+  source: DeepSeek V4-pro — EQ-Bench v3 prompt 26 (Le Guin Offworlder), generated for OWTN reference corpus
+  license: owtn_pilot_generation
+  text_file: passages/defaults/deepseek-v4-pro-p26-leguin-offworlder.txt
+  category: defaults
+- id: deepseek-v4-pro-p28-goosebumps
+  tags:
+  - llm_default
+  - model:deepseek-v4-pro
+  - deepseek
+  - ya_horror
+  source: DeepSeek V4-pro — EQ-Bench v3 prompt 28 (Goosebumps Teen Horror), generated for OWTN reference corpus
+  license: owtn_pilot_generation
+  text_file: passages/defaults/deepseek-v4-pro-p28-goosebumps.txt
+  category: defaults
+- id: deepseek-pilot-realism-1
+  tags:
+  - llm_default
+  - model:deepseek-v4-pro
+  - deepseek
+  - realism
+  - short_form
+  source: DeepSeek V4-pro — TRIBE pilot 'daughter visiting dying father' prompt
+  license: owtn_pilot_generation
+  text_file: passages/defaults/deepseek-pilot-realism-1.txt
+  category: defaults
+- id: deepseek-pilot-gothic-1
+  tags:
+  - llm_default
+  - model:deepseek-v4-pro
+  - deepseek
+  - gothic
+  - short_form
+  source: DeepSeek V4-pro — TRIBE pilot 'old letter, gothic' prompt
+  license: owtn_pilot_generation
+  text_file: passages/defaults/deepseek-pilot-gothic-1.txt
+  category: defaults
+- id: deepseek-pilot-scifi-1
+  tags:
+  - llm_default
+  - model:deepseek-v4-pro
+  - deepseek
+  - scifi
+  - short_form
+  source: DeepSeek V4-pro — TRIBE pilot 'generation ship' prompt
+  license: owtn_pilot_generation
+  text_file: passages/defaults/deepseek-pilot-scifi-1.txt
+  category: defaults
+- id: deepseek-pilot-dialogue-1
+  tags:
+  - llm_default
+  - model:deepseek-v4-pro
+  - deepseek
+  - dialogue_driven
+  - short_form
+  source: DeepSeek V4-pro — TRIBE pilot 'all-dialogue literary' prompt
+  license: owtn_pilot_generation
+  text_file: passages/defaults/deepseek-pilot-dialogue-1.txt
+  category: defaults
+- id: lechmazur-claude-opus-4-6-s0
+  tags:
+  - llm_default
+  - model:claude-opus-4-6
+  - anthropic
+  - lechmazur
+  - constrained_prompt
+  source: Claude Opus 4.6 (Anthropic) — Lechmazur writing benchmark, story 0
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-claude-opus-4-6-s0.txt
+  category: defaults
+- id: lechmazur-claude-opus-4-6-s100
+  tags:
+  - llm_default
+  - model:claude-opus-4-6
+  - anthropic
+  - lechmazur
+  - constrained_prompt
+  source: Claude Opus 4.6 (Anthropic) — Lechmazur writing benchmark, story 100
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-claude-opus-4-6-s100.txt
+  category: defaults
+- id: lechmazur-claude-opus-4-6-s200
+  tags:
+  - llm_default
+  - model:claude-opus-4-6
+  - anthropic
+  - lechmazur
+  - constrained_prompt
+  source: Claude Opus 4.6 (Anthropic) — Lechmazur writing benchmark, story 200
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-claude-opus-4-6-s200.txt
+  category: defaults
+- id: lechmazur-claude-opus-4-5-s0
+  tags:
+  - llm_default
+  - model:claude-opus-4-5
+  - anthropic
+  - lechmazur
+  - constrained_prompt
+  source: Claude Opus 4.5 (Anthropic) — Lechmazur writing benchmark, story 0
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-claude-opus-4-5-s0.txt
+  category: defaults
+- id: lechmazur-claude-opus-4-5-s100
+  tags:
+  - llm_default
+  - model:claude-opus-4-5
+  - anthropic
+  - lechmazur
+  - constrained_prompt
+  source: Claude Opus 4.5 (Anthropic) — Lechmazur writing benchmark, story 100
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-claude-opus-4-5-s100.txt
+  category: defaults
+- id: lechmazur-claude-opus-4-5-s200
+  tags:
+  - llm_default
+  - model:claude-opus-4-5
+  - anthropic
+  - lechmazur
+  - constrained_prompt
+  source: Claude Opus 4.5 (Anthropic) — Lechmazur writing benchmark, story 200
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-claude-opus-4-5-s200.txt
+  category: defaults
+- id: lechmazur-claude-sonnet-4-5-s0
+  tags:
+  - llm_default
+  - model:claude-sonnet-4-5
+  - anthropic
+  - lechmazur
+  - constrained_prompt
+  source: Claude Sonnet 4.5 (Anthropic) — Lechmazur writing benchmark, story 0
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-claude-sonnet-4-5-s0.txt
+  category: defaults
+- id: lechmazur-claude-sonnet-4-5-s100
+  tags:
+  - llm_default
+  - model:claude-sonnet-4-5
+  - anthropic
+  - lechmazur
+  - constrained_prompt
+  source: Claude Sonnet 4.5 (Anthropic) — Lechmazur writing benchmark, story 100
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-claude-sonnet-4-5-s100.txt
+  category: defaults
+- id: lechmazur-claude-sonnet-4-5-s200
+  tags:
+  - llm_default
+  - model:claude-sonnet-4-5
+  - anthropic
+  - lechmazur
+  - constrained_prompt
+  source: Claude Sonnet 4.5 (Anthropic) — Lechmazur writing benchmark, story 200
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-claude-sonnet-4-5-s200.txt
+  category: defaults
+- id: lechmazur-gpt-5-pro-s0
+  tags:
+  - llm_default
+  - model:gpt-5-pro
+  - openai
+  - lechmazur
+  - constrained_prompt
+  source: GPT-5 Pro (OpenAI) — Lechmazur writing benchmark, story 0
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-gpt-5-pro-s0.txt
+  category: defaults
+- id: lechmazur-gpt-5-pro-s100
+  tags:
+  - llm_default
+  - model:gpt-5-pro
+  - openai
+  - lechmazur
+  - constrained_prompt
+  source: GPT-5 Pro (OpenAI) — Lechmazur writing benchmark, story 100
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-gpt-5-pro-s100.txt
+  category: defaults
+- id: lechmazur-gpt-5-pro-s200
+  tags:
+  - llm_default
+  - model:gpt-5-pro
+  - openai
+  - lechmazur
+  - constrained_prompt
+  source: GPT-5 Pro (OpenAI) — Lechmazur writing benchmark, story 200
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-gpt-5-pro-s200.txt
+  category: defaults
+- id: lechmazur-gpt-5-2-medium-s0
+  tags:
+  - llm_default
+  - model:gpt-5-2-medium
+  - openai
+  - lechmazur
+  - constrained_prompt
+  source: GPT-5.2 Medium (OpenAI) — Lechmazur writing benchmark, story 0
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-gpt-5-2-medium-s0.txt
+  category: defaults
+- id: lechmazur-gpt-5-2-medium-s100
+  tags:
+  - llm_default
+  - model:gpt-5-2-medium
+  - openai
+  - lechmazur
+  - constrained_prompt
+  source: GPT-5.2 Medium (OpenAI) — Lechmazur writing benchmark, story 100
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-gpt-5-2-medium-s100.txt
+  category: defaults
+- id: lechmazur-gpt-5-2-medium-s200
+  tags:
+  - llm_default
+  - model:gpt-5-2-medium
+  - openai
+  - lechmazur
+  - constrained_prompt
+  source: GPT-5.2 Medium (OpenAI) — Lechmazur writing benchmark, story 200
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-gpt-5-2-medium-s200.txt
+  category: defaults
+- id: lechmazur-gemini-3-pro-s0
+  tags:
+  - llm_default
+  - model:gemini-3-pro
+  - google
+  - lechmazur
+  - constrained_prompt
+  source: Gemini 3 Pro Preview (Google) — Lechmazur writing benchmark, story 0
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-gemini-3-pro-s0.txt
+  category: defaults
+- id: lechmazur-gemini-3-pro-s100
+  tags:
+  - llm_default
+  - model:gemini-3-pro
+  - google
+  - lechmazur
+  - constrained_prompt
+  source: Gemini 3 Pro Preview (Google) — Lechmazur writing benchmark, story 100
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-gemini-3-pro-s100.txt
+  category: defaults
+- id: lechmazur-gemini-3-pro-s200
+  tags:
+  - llm_default
+  - model:gemini-3-pro
+  - google
+  - lechmazur
+  - constrained_prompt
+  source: Gemini 3 Pro Preview (Google) — Lechmazur writing benchmark, story 200
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-gemini-3-pro-s200.txt
+  category: defaults
+- id: lechmazur-deepseek-v32-lechmazur-s0
+  tags:
+  - llm_default
+  - model:deepseek-v32-lechmazur
+  - deepseek
+  - lechmazur
+  - constrained_prompt
+  source: DeepSeek V3.2 (Lechmazur extraction) — Lechmazur writing benchmark, story 0
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-deepseek-v32-lechmazur-s0.txt
+  category: defaults
+- id: lechmazur-deepseek-v32-lechmazur-s100
+  tags:
+  - llm_default
+  - model:deepseek-v32-lechmazur
+  - deepseek
+  - lechmazur
+  - constrained_prompt
+  source: DeepSeek V3.2 (Lechmazur extraction) — Lechmazur writing benchmark, story 100
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-deepseek-v32-lechmazur-s100.txt
+  category: defaults
+- id: lechmazur-deepseek-v32-lechmazur-s200
+  tags:
+  - llm_default
+  - model:deepseek-v32-lechmazur
+  - deepseek
+  - lechmazur
+  - constrained_prompt
+  source: DeepSeek V3.2 (Lechmazur extraction) — Lechmazur writing benchmark, story 200
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-deepseek-v32-lechmazur-s200.txt
+  category: defaults
+- id: lechmazur-qwen3-max-s0
+  tags:
+  - llm_default
+  - model:qwen3-max
+  - alibaba
+  - lechmazur
+  - constrained_prompt
+  source: Qwen3 Max (Alibaba) — Lechmazur writing benchmark, story 0
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-qwen3-max-s0.txt
+  category: defaults
+- id: lechmazur-qwen3-max-s100
+  tags:
+  - llm_default
+  - model:qwen3-max
+  - alibaba
+  - lechmazur
+  - constrained_prompt
+  source: Qwen3 Max (Alibaba) — Lechmazur writing benchmark, story 100
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-qwen3-max-s100.txt
+  category: defaults
+- id: lechmazur-qwen3-max-s200
+  tags:
+  - llm_default
+  - model:qwen3-max
+  - alibaba
+  - lechmazur
+  - constrained_prompt
+  source: Qwen3 Max (Alibaba) — Lechmazur writing benchmark, story 200
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-qwen3-max-s200.txt
+  category: defaults
+- id: lechmazur-glm-4-6-s0
+  tags:
+  - llm_default
+  - model:glm-4-6
+  - zhipu
+  - lechmazur
+  - constrained_prompt
+  source: GLM-4.6 (Zhipu) — Lechmazur writing benchmark, story 0
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-glm-4-6-s0.txt
+  category: defaults
+- id: lechmazur-glm-4-6-s100
+  tags:
+  - llm_default
+  - model:glm-4-6
+  - zhipu
+  - lechmazur
+  - constrained_prompt
+  source: GLM-4.6 (Zhipu) — Lechmazur writing benchmark, story 100
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-glm-4-6-s100.txt
+  category: defaults
+- id: lechmazur-glm-4-6-s200
+  tags:
+  - llm_default
+  - model:glm-4-6
+  - zhipu
+  - lechmazur
+  - constrained_prompt
+  source: GLM-4.6 (Zhipu) — Lechmazur writing benchmark, story 200
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-glm-4-6-s200.txt
+  category: defaults
+- id: lechmazur-kimi-k2-thinking-s0
+  tags:
+  - llm_default
+  - model:kimi-k2-thinking
+  - moonshot
+  - lechmazur
+  - constrained_prompt
+  source: Kimi K2 Thinking (Moonshot) — Lechmazur writing benchmark, story 0
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-kimi-k2-thinking-s0.txt
+  category: defaults
+- id: lechmazur-kimi-k2-thinking-s100
+  tags:
+  - llm_default
+  - model:kimi-k2-thinking
+  - moonshot
+  - lechmazur
+  - constrained_prompt
+  source: Kimi K2 Thinking (Moonshot) — Lechmazur writing benchmark, story 100
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-kimi-k2-thinking-s100.txt
+  category: defaults
+- id: lechmazur-kimi-k2-thinking-s200
+  tags:
+  - llm_default
+  - model:kimi-k2-thinking
+  - moonshot
+  - lechmazur
+  - constrained_prompt
+  source: Kimi K2 Thinking (Moonshot) — Lechmazur writing benchmark, story 200
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-kimi-k2-thinking-s200.txt
+  category: defaults
+- id: lechmazur-grok-4-1-s0
+  tags:
+  - llm_default
+  - model:grok-4-1
+  - xai
+  - lechmazur
+  - constrained_prompt
+  source: Grok 4.1 Fast Reasoning (xAI) — Lechmazur writing benchmark, story 0
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-grok-4-1-s0.txt
+  category: defaults
+- id: lechmazur-grok-4-1-s100
+  tags:
+  - llm_default
+  - model:grok-4-1
+  - xai
+  - lechmazur
+  - constrained_prompt
+  source: Grok 4.1 Fast Reasoning (xAI) — Lechmazur writing benchmark, story 100
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-grok-4-1-s100.txt
+  category: defaults
+- id: lechmazur-grok-4-1-s200
+  tags:
+  - llm_default
+  - model:grok-4-1
+  - xai
+  - lechmazur
+  - constrained_prompt
+  source: Grok 4.1 Fast Reasoning (xAI) — Lechmazur writing benchmark, story 200
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-grok-4-1-s200.txt
+  category: defaults
+- id: lechmazur-mistral-large-2512-s0
+  tags:
+  - llm_default
+  - model:mistral-large-2512
+  - mistral
+  - lechmazur
+  - constrained_prompt
+  source: Mistral Large 2512 (Mistral) — Lechmazur writing benchmark, story 0
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-mistral-large-2512-s0.txt
+  category: defaults
+- id: lechmazur-mistral-large-2512-s100
+  tags:
+  - llm_default
+  - model:mistral-large-2512
+  - mistral
+  - lechmazur
+  - constrained_prompt
+  source: Mistral Large 2512 (Mistral) — Lechmazur writing benchmark, story 100
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-mistral-large-2512-s100.txt
+  category: defaults
+- id: lechmazur-mistral-large-2512-s200
+  tags:
+  - llm_default
+  - model:mistral-large-2512
+  - mistral
+  - lechmazur
+  - constrained_prompt
+  source: Mistral Large 2512 (Mistral) — Lechmazur writing benchmark, story 200
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-mistral-large-2512-s200.txt
+  category: defaults
+- id: lechmazur-llama4-maverick-s0
+  tags:
+  - llm_default
+  - model:llama4-maverick
+  - meta
+  - lechmazur
+  - constrained_prompt
+  source: Llama 4 Maverick (Meta) — Lechmazur writing benchmark, story 0
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-llama4-maverick-s0.txt
+  category: defaults
+- id: lechmazur-llama4-maverick-s100
+  tags:
+  - llm_default
+  - model:llama4-maverick
+  - meta
+  - lechmazur
+  - constrained_prompt
+  source: Llama 4 Maverick (Meta) — Lechmazur writing benchmark, story 100
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-llama4-maverick-s100.txt
+  category: defaults
+- id: lechmazur-llama4-maverick-s200
+  tags:
+  - llm_default
+  - model:llama4-maverick
+  - meta
+  - lechmazur
+  - constrained_prompt
+  source: Llama 4 Maverick (Meta) — Lechmazur writing benchmark, story 200
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-llama4-maverick-s200.txt
+  category: defaults
+- id: litbench-chosen-002
+  tags:
+  - human_amateur
+  - prose_fiction
+  - web_register
+  - upvote_winner
+  source: LitBench (SAA-Lab/LitBench-Train) — Reddit r/WritingPrompts upvote-ranked
+  license: research_fair_use
+  url: https://huggingface.co/datasets/SAA-Lab/LitBench-Train
+  text_file: passages/baselines/litbench-chosen-002.txt
+  category: baselines
+- id: litbench-chosen-013
+  tags:
+  - human_amateur
+  - prose_fiction
+  - web_register
+  - upvote_winner
+  source: LitBench (SAA-Lab/LitBench-Train) — Reddit r/WritingPrompts upvote-ranked
+  license: research_fair_use
+  url: https://huggingface.co/datasets/SAA-Lab/LitBench-Train
+  text_file: passages/baselines/litbench-chosen-013.txt
+  category: baselines
+- id: litbench-chosen-018
+  tags:
+  - human_amateur
+  - prose_fiction
+  - web_register
+  - upvote_winner
+  source: LitBench (SAA-Lab/LitBench-Train) — Reddit r/WritingPrompts upvote-ranked
+  license: research_fair_use
+  url: https://huggingface.co/datasets/SAA-Lab/LitBench-Train
+  text_file: passages/baselines/litbench-chosen-018.txt
+  category: baselines
+- id: litbench-chosen-019
+  tags:
+  - human_amateur
+  - prose_fiction
+  - web_register
+  - upvote_winner
+  source: LitBench (SAA-Lab/LitBench-Train) — Reddit r/WritingPrompts upvote-ranked
+  license: research_fair_use
+  url: https://huggingface.co/datasets/SAA-Lab/LitBench-Train
+  text_file: passages/baselines/litbench-chosen-019.txt
+  category: baselines
+- id: litbench-chosen-020
+  tags:
+  - human_amateur
+  - prose_fiction
+  - web_register
+  - upvote_winner
+  source: LitBench (SAA-Lab/LitBench-Train) — Reddit r/WritingPrompts upvote-ranked
+  license: research_fair_use
+  url: https://huggingface.co/datasets/SAA-Lab/LitBench-Train
+  text_file: passages/baselines/litbench-chosen-020.txt
+  category: baselines
+- id: litbench-chosen-024
+  tags:
+  - human_amateur
+  - prose_fiction
+  - web_register
+  - upvote_winner
+  source: LitBench (SAA-Lab/LitBench-Train) — Reddit r/WritingPrompts upvote-ranked
+  license: research_fair_use
+  url: https://huggingface.co/datasets/SAA-Lab/LitBench-Train
+  text_file: passages/baselines/litbench-chosen-024.txt
+  category: baselines
+- id: litbench-chosen-029
+  tags:
+  - human_amateur
+  - prose_fiction
+  - web_register
+  - upvote_winner
+  source: LitBench (SAA-Lab/LitBench-Train) — Reddit r/WritingPrompts upvote-ranked
+  license: research_fair_use
+  url: https://huggingface.co/datasets/SAA-Lab/LitBench-Train
+  text_file: passages/baselines/litbench-chosen-029.txt
+  category: baselines
+- id: litbench-chosen-030
+  tags:
+  - human_amateur
+  - prose_fiction
+  - web_register
+  - upvote_winner
+  source: LitBench (SAA-Lab/LitBench-Train) — Reddit r/WritingPrompts upvote-ranked
+  license: research_fair_use
+  url: https://huggingface.co/datasets/SAA-Lab/LitBench-Train
+  text_file: passages/baselines/litbench-chosen-030.txt
+  category: baselines
+- id: lars-qwen2-5-14b-00
+  tags:
+  - llm_default
+  - model:qwen2-5-14b
+  - open_source
+  - lars1234_benchmark
+  source: Qwen/Qwen2.5-14B-Instruct-AWQ — lars1234/story_writing_benchmark (MIT)
+  license: mit
+  url: https://huggingface.co/datasets/lars1234/story_writing_benchmark
+  text_file: passages/defaults/lars-qwen2-5-14b-00.txt
+  category: defaults
+- id: lars-qwen2-5-14b-01
+  tags:
+  - llm_default
+  - model:qwen2-5-14b
+  - open_source
+  - lars1234_benchmark
+  source: Qwen/Qwen2.5-14B-Instruct-AWQ — lars1234/story_writing_benchmark (MIT)
+  license: mit
+  url: https://huggingface.co/datasets/lars1234/story_writing_benchmark
+  text_file: passages/defaults/lars-qwen2-5-14b-01.txt
+  category: defaults
+- id: lars-aya-expanse-32b-00
+  tags:
+  - llm_default
+  - model:aya-expanse-32b
+  - open_source
+  - lars1234_benchmark
+  source: Orion-zhen/aya-expanse-32b-AWQ — lars1234/story_writing_benchmark (MIT)
+  license: mit
+  url: https://huggingface.co/datasets/lars1234/story_writing_benchmark
+  text_file: passages/defaults/lars-aya-expanse-32b-00.txt
+  category: defaults
+- id: lars-aya-expanse-32b-01
+  tags:
+  - llm_default
+  - model:aya-expanse-32b
+  - open_source
+  - lars1234_benchmark
+  source: Orion-zhen/aya-expanse-32b-AWQ — lars1234/story_writing_benchmark (MIT)
+  license: mit
+  url: https://huggingface.co/datasets/lars1234/story_writing_benchmark
+  text_file: passages/defaults/lars-aya-expanse-32b-01.txt
+  category: defaults
+- id: lars-gemma-2-9b-00
+  tags:
+  - llm_default
+  - model:gemma-2-9b
+  - open_source
+  - lars1234_benchmark
+  source: harborwater/Gemma-2-9B-It-SPPO-Iter3-AWQ — lars1234/story_writing_benchmark (MIT)
+  license: mit
+  url: https://huggingface.co/datasets/lars1234/story_writing_benchmark
+  text_file: passages/defaults/lars-gemma-2-9b-00.txt
+  category: defaults
+- id: lars-gemma-2-9b-01
+  tags:
+  - llm_default
+  - model:gemma-2-9b
+  - open_source
+  - lars1234_benchmark
+  source: harborwater/Gemma-2-9B-It-SPPO-Iter3-AWQ — lars1234/story_writing_benchmark (MIT)
+  license: mit
+  url: https://huggingface.co/datasets/lars1234/story_writing_benchmark
+  text_file: passages/defaults/lars-gemma-2-9b-01.txt
+  category: defaults
+- id: eqv3-deepseek-r1-eqv3-00
+  tags:
+  - llm_default
+  - model:deepseek-r1
+  - eqbench_v3
+  source: deepseek-ai/DeepSeek-R1-0528 — Disya/eq-bench-creative-writing-v3 (MIT)
+  license: mit
+  url: https://huggingface.co/datasets/Disya/eq-bench-creative-writing-v3
+  text_file: passages/defaults/eqv3-deepseek-r1-eqv3-00.txt
+  category: defaults
+- id: eqv3-deepseek-r1-eqv3-01
+  tags:
+  - llm_default
+  - model:deepseek-r1
+  - eqbench_v3
+  source: deepseek-ai/DeepSeek-R1-0528 — Disya/eq-bench-creative-writing-v3 (MIT)
+  license: mit
+  url: https://huggingface.co/datasets/Disya/eq-bench-creative-writing-v3
+  text_file: passages/defaults/eqv3-deepseek-r1-eqv3-01.txt
+  category: defaults
+- id: eqv3-deepseek-r1-eqv3-02
+  tags:
+  - llm_default
+  - model:deepseek-r1
+  - eqbench_v3
+  source: deepseek-ai/DeepSeek-R1-0528 — Disya/eq-bench-creative-writing-v3 (MIT)
+  license: mit
+  url: https://huggingface.co/datasets/Disya/eq-bench-creative-writing-v3
+  text_file: passages/defaults/eqv3-deepseek-r1-eqv3-02.txt
+  category: defaults
+- id: eqv3-kimi-k2-instruct-eqv3-00
+  tags:
+  - llm_default
+  - model:kimi-k2-instruct
+  - eqbench_v3
+  source: moonshotai/Kimi-K2-Instruct — Disya/eq-bench-creative-writing-v3 (MIT)
+  license: mit
+  url: https://huggingface.co/datasets/Disya/eq-bench-creative-writing-v3
+  text_file: passages/defaults/eqv3-kimi-k2-instruct-eqv3-00.txt
+  category: defaults
+- id: eqv3-kimi-k2-instruct-eqv3-01
+  tags:
+  - llm_default
+  - model:kimi-k2-instruct
+  - eqbench_v3
+  source: moonshotai/Kimi-K2-Instruct — Disya/eq-bench-creative-writing-v3 (MIT)
+  license: mit
+  url: https://huggingface.co/datasets/Disya/eq-bench-creative-writing-v3
+  text_file: passages/defaults/eqv3-kimi-k2-instruct-eqv3-01.txt
+  category: defaults
+- id: eqv3-kimi-k2-instruct-eqv3-02
+  tags:
+  - llm_default
+  - model:kimi-k2-instruct
+  - eqbench_v3
+  source: moonshotai/Kimi-K2-Instruct — Disya/eq-bench-creative-writing-v3 (MIT)
+  license: mit
+  url: https://huggingface.co/datasets/Disya/eq-bench-creative-writing-v3
+  text_file: passages/defaults/eqv3-kimi-k2-instruct-eqv3-02.txt
+  category: defaults
+- id: eqv3-claude-opus-4-eqv3-00
+  tags:
+  - llm_default
+  - model:claude-opus-4
+  - eqbench_v3
+  source: claude-opus-4 — Disya/eq-bench-creative-writing-v3 (MIT)
+  license: mit
+  url: https://huggingface.co/datasets/Disya/eq-bench-creative-writing-v3
+  text_file: passages/defaults/eqv3-claude-opus-4-eqv3-00.txt
+  category: defaults
+- id: eqv3-claude-opus-4-eqv3-01
+  tags:
+  - llm_default
+  - model:claude-opus-4
+  - eqbench_v3
+  source: claude-opus-4 — Disya/eq-bench-creative-writing-v3 (MIT)
+  license: mit
+  url: https://huggingface.co/datasets/Disya/eq-bench-creative-writing-v3
+  text_file: passages/defaults/eqv3-claude-opus-4-eqv3-01.txt
+  category: defaults
+- id: eqv3-claude-opus-4-eqv3-02
+  tags:
+  - llm_default
+  - model:claude-opus-4
+  - eqbench_v3
+  source: claude-opus-4 — Disya/eq-bench-creative-writing-v3 (MIT)
+  license: mit
+  url: https://huggingface.co/datasets/Disya/eq-bench-creative-writing-v3
+  text_file: passages/defaults/eqv3-claude-opus-4-eqv3-02.txt
+  category: defaults
+- id: eqv3-gpt-4-5-eqv3-00
+  tags:
+  - llm_default
+  - model:gpt-4-5
+  - eqbench_v3
+  source: gpt-4.5-preview — Disya/eq-bench-creative-writing-v3 (MIT)
+  license: mit
+  url: https://huggingface.co/datasets/Disya/eq-bench-creative-writing-v3
+  text_file: passages/defaults/eqv3-gpt-4-5-eqv3-00.txt
+  category: defaults
+- id: eqv3-gpt-4-5-eqv3-01
+  tags:
+  - llm_default
+  - model:gpt-4-5
+  - eqbench_v3
+  source: gpt-4.5-preview — Disya/eq-bench-creative-writing-v3 (MIT)
+  license: mit
+  url: https://huggingface.co/datasets/Disya/eq-bench-creative-writing-v3
+  text_file: passages/defaults/eqv3-gpt-4-5-eqv3-01.txt
+  category: defaults
+- id: eqv3-gpt-4-5-eqv3-02
+  tags:
+  - llm_default
+  - model:gpt-4-5
+  - eqbench_v3
+  source: gpt-4.5-preview — Disya/eq-bench-creative-writing-v3 (MIT)
+  license: mit
+  url: https://huggingface.co/datasets/Disya/eq-bench-creative-writing-v3
+  text_file: passages/defaults/eqv3-gpt-4-5-eqv3-02.txt
+  category: defaults
+- id: eqv3-o3-eqv3-00
+  tags:
+  - llm_default
+  - model:o3
+  - eqbench_v3
+  source: o3 — Disya/eq-bench-creative-writing-v3 (MIT)
+  license: mit
+  url: https://huggingface.co/datasets/Disya/eq-bench-creative-writing-v3
+  text_file: passages/defaults/eqv3-o3-eqv3-00.txt
+  category: defaults
+- id: eqv3-o3-eqv3-01
+  tags:
+  - llm_default
+  - model:o3
+  - eqbench_v3
+  source: o3 — Disya/eq-bench-creative-writing-v3 (MIT)
+  license: mit
+  url: https://huggingface.co/datasets/Disya/eq-bench-creative-writing-v3
+  text_file: passages/defaults/eqv3-o3-eqv3-01.txt
+  category: defaults
+- id: eqv3-o3-eqv3-02
+  tags:
+  - llm_default
+  - model:o3
+  - eqbench_v3
+  source: o3 — Disya/eq-bench-creative-writing-v3 (MIT)
+  license: mit
+  url: https://huggingface.co/datasets/Disya/eq-bench-creative-writing-v3
+  text_file: passages/defaults/eqv3-o3-eqv3-02.txt
+  category: defaults
+- id: gpt-4o-gryphe-000
+  tags:
+  - llm_default
+  - model:gpt-4o
+  - openai
+  - wp_prompt
+  source: Gryphe/ChatGPT-4o-Writing-Prompts — ChatGPT-4o on WritingPrompts seeds
+  license: research_fair_use
+  url: https://huggingface.co/datasets/Gryphe/ChatGPT-4o-Writing-Prompts
+  text_file: passages/defaults/gpt-4o-gryphe-000.txt
+  category: defaults
+- id: gpt-4o-gryphe-001
+  tags:
+  - llm_default
+  - model:gpt-4o
+  - openai
+  - wp_prompt
+  source: Gryphe/ChatGPT-4o-Writing-Prompts — ChatGPT-4o on WritingPrompts seeds
+  license: research_fair_use
+  url: https://huggingface.co/datasets/Gryphe/ChatGPT-4o-Writing-Prompts
+  text_file: passages/defaults/gpt-4o-gryphe-001.txt
+  category: defaults
+- id: gpt-4o-gryphe-002
+  tags:
+  - llm_default
+  - model:gpt-4o
+  - openai
+  - wp_prompt
+  source: Gryphe/ChatGPT-4o-Writing-Prompts — ChatGPT-4o on WritingPrompts seeds
+  license: research_fair_use
+  url: https://huggingface.co/datasets/Gryphe/ChatGPT-4o-Writing-Prompts
+  text_file: passages/defaults/gpt-4o-gryphe-002.txt
+  category: defaults
+- id: gpt-4o-gryphe-003
+  tags:
+  - llm_default
+  - model:gpt-4o
+  - openai
+  - wp_prompt
+  source: Gryphe/ChatGPT-4o-Writing-Prompts — ChatGPT-4o on WritingPrompts seeds
+  license: research_fair_use
+  url: https://huggingface.co/datasets/Gryphe/ChatGPT-4o-Writing-Prompts
+  text_file: passages/defaults/gpt-4o-gryphe-003.txt
+  category: defaults
+- id: gpt-4o-gryphe-004
+  tags:
+  - llm_default
+  - model:gpt-4o
+  - openai
+  - wp_prompt
+  source: Gryphe/ChatGPT-4o-Writing-Prompts — ChatGPT-4o on WritingPrompts seeds
+  license: research_fair_use
+  url: https://huggingface.co/datasets/Gryphe/ChatGPT-4o-Writing-Prompts
+  text_file: passages/defaults/gpt-4o-gryphe-004.txt
+  category: defaults
+- id: hape-fic-gpt-4o-hape-00
+  tags:
+  - llm_default
+  - model:gpt-4o
+  - fiction_continuation
+  source: gpt-4o-2024-08-06 — browndw/human-ai-parallel-corpus fiction continuation
+  license: mit
+  url: https://huggingface.co/datasets/browndw/human-ai-parallel-corpus
+  text_file: passages/defaults/hape-fic-gpt-4o-hape-00.txt
+  category: defaults
+- id: hape-fic-gpt-4o-hape-01
+  tags:
+  - llm_default
+  - model:gpt-4o
+  - fiction_continuation
+  source: gpt-4o-2024-08-06 — browndw/human-ai-parallel-corpus fiction continuation
+  license: mit
+  url: https://huggingface.co/datasets/browndw/human-ai-parallel-corpus
+  text_file: passages/defaults/hape-fic-gpt-4o-hape-01.txt
+  category: defaults
+- id: eqv2-claude-3-opus-00
+  tags:
+  - llm_default
+  - model:claude-3-opus
+  - anthropic
+  - eqbench_v2
+  source: Claude 3 Opus (Anthropic, 2024-02-29)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-claude-3-opus-00.txt
+  category: defaults
+- id: eqv2-claude-3-opus-01
+  tags:
+  - llm_default
+  - model:claude-3-opus
+  - anthropic
+  - eqbench_v2
+  source: Claude 3 Opus (Anthropic, 2024-02-29)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-claude-3-opus-01.txt
+  category: defaults
+- id: eqv2-claude-3-opus-02
+  tags:
+  - llm_default
+  - model:claude-3-opus
+  - anthropic
+  - eqbench_v2
+  source: Claude 3 Opus (Anthropic, 2024-02-29)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-claude-3-opus-02.txt
+  category: defaults
+- id: eqv2-claude-3-sonnet-00
+  tags:
+  - llm_default
+  - model:claude-3-sonnet
+  - anthropic
+  - eqbench_v2
+  source: Claude 3 Sonnet (Anthropic, 2024-02-29)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-claude-3-sonnet-00.txt
+  category: defaults
+- id: eqv2-claude-3-sonnet-01
+  tags:
+  - llm_default
+  - model:claude-3-sonnet
+  - anthropic
+  - eqbench_v2
+  source: Claude 3 Sonnet (Anthropic, 2024-02-29)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-claude-3-sonnet-01.txt
+  category: defaults
+- id: eqv2-claude-3-sonnet-02
+  tags:
+  - llm_default
+  - model:claude-3-sonnet
+  - anthropic
+  - eqbench_v2
+  source: Claude 3 Sonnet (Anthropic, 2024-02-29)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-claude-3-sonnet-02.txt
+  category: defaults
+- id: eqv2-claude-3-haiku-00
+  tags:
+  - llm_default
+  - model:claude-3-haiku
+  - anthropic
+  - eqbench_v2
+  source: Claude 3 Haiku (Anthropic, 2024-03-07)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-claude-3-haiku-00.txt
+  category: defaults
+- id: eqv2-claude-3-haiku-01
+  tags:
+  - llm_default
+  - model:claude-3-haiku
+  - anthropic
+  - eqbench_v2
+  source: Claude 3 Haiku (Anthropic, 2024-03-07)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-claude-3-haiku-01.txt
+  category: defaults
+- id: eqv2-claude-3-haiku-02
+  tags:
+  - llm_default
+  - model:claude-3-haiku
+  - anthropic
+  - eqbench_v2
+  source: Claude 3 Haiku (Anthropic, 2024-03-07)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-claude-3-haiku-02.txt
+  category: defaults
+- id: eqv2-gpt-3-5-turbo-00
+  tags:
+  - llm_default
+  - model:gpt-3-5-turbo
+  - openai
+  - eqbench_v2
+  source: GPT-3.5-turbo (OpenAI, 0301)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-gpt-3-5-turbo-00.txt
+  category: defaults
+- id: eqv2-gpt-3-5-turbo-01
+  tags:
+  - llm_default
+  - model:gpt-3-5-turbo
+  - openai
+  - eqbench_v2
+  source: GPT-3.5-turbo (OpenAI, 0301)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-gpt-3-5-turbo-01.txt
+  category: defaults
+- id: eqv2-gpt-3-5-turbo-02
+  tags:
+  - llm_default
+  - model:gpt-3-5-turbo
+  - openai
+  - eqbench_v2
+  source: GPT-3.5-turbo (OpenAI, 0301)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-gpt-3-5-turbo-02.txt
+  category: defaults
+- id: eqv2-gpt-4-0125-00
+  tags:
+  - llm_default
+  - model:gpt-4-0125
+  - openai
+  - eqbench_v2
+  source: GPT-4 0125-preview (OpenAI)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-gpt-4-0125-00.txt
+  category: defaults
+- id: eqv2-gpt-4-0125-01
+  tags:
+  - llm_default
+  - model:gpt-4-0125
+  - openai
+  - eqbench_v2
+  source: GPT-4 0125-preview (OpenAI)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-gpt-4-0125-01.txt
+  category: defaults
+- id: eqv2-gpt-4-0125-02
+  tags:
+  - llm_default
+  - model:gpt-4-0125
+  - openai
+  - eqbench_v2
+  source: GPT-4 0125-preview (OpenAI)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-gpt-4-0125-02.txt
+  category: defaults
+- id: eqv2-gemini-1-5-pro-00
+  tags:
+  - llm_default
+  - model:gemini-1-5-pro
+  - google
+  - eqbench_v2
+  source: Gemini 1.5 Pro (Google)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-gemini-1-5-pro-00.txt
+  category: defaults
+- id: eqv2-gemini-1-5-pro-01
+  tags:
+  - llm_default
+  - model:gemini-1-5-pro
+  - google
+  - eqbench_v2
+  source: Gemini 1.5 Pro (Google)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-gemini-1-5-pro-01.txt
+  category: defaults
+- id: eqv2-gemini-1-5-pro-02
+  tags:
+  - llm_default
+  - model:gemini-1-5-pro
+  - google
+  - eqbench_v2
+  source: Gemini 1.5 Pro (Google)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-gemini-1-5-pro-02.txt
+  category: defaults
+- id: eqv2-gemini-ultra-00
+  tags:
+  - llm_default
+  - model:gemini-ultra
+  - google
+  - eqbench_v2
+  source: Gemini Ultra (Google)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-gemini-ultra-00.txt
+  category: defaults
+- id: eqv2-gemini-ultra-01
+  tags:
+  - llm_default
+  - model:gemini-ultra
+  - google
+  - eqbench_v2
+  source: Gemini Ultra (Google)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-gemini-ultra-01.txt
+  category: defaults
+- id: eqv2-gemini-ultra-02
+  tags:
+  - llm_default
+  - model:gemini-ultra
+  - google
+  - eqbench_v2
+  source: Gemini Ultra (Google)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-gemini-ultra-02.txt
+  category: defaults
+- id: eqv2-llama-2-13b-chat-00
+  tags:
+  - llm_default
+  - model:llama-2-13b-chat
+  - meta
+  - eqbench_v2
+  source: Llama 2 13B Chat (Meta)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-llama-2-13b-chat-00.txt
+  category: defaults
+- id: eqv2-llama-2-13b-chat-01
+  tags:
+  - llm_default
+  - model:llama-2-13b-chat
+  - meta
+  - eqbench_v2
+  source: Llama 2 13B Chat (Meta)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-llama-2-13b-chat-01.txt
+  category: defaults
+- id: eqv2-llama-2-13b-chat-02
+  tags:
+  - llm_default
+  - model:llama-2-13b-chat
+  - meta
+  - eqbench_v2
+  source: Llama 2 13B Chat (Meta)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-llama-2-13b-chat-02.txt
+  category: defaults
+- id: eqv2-llama-3-70b-00
+  tags:
+  - llm_default
+  - model:llama-3-70b
+  - meta
+  - eqbench_v2
+  source: Llama 3 70B Instruct (Meta)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-llama-3-70b-00.txt
+  category: defaults
+- id: eqv2-llama-3-70b-01
+  tags:
+  - llm_default
+  - model:llama-3-70b
+  - meta
+  - eqbench_v2
+  source: Llama 3 70B Instruct (Meta)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-llama-3-70b-01.txt
+  category: defaults
+- id: eqv2-llama-3-70b-02
+  tags:
+  - llm_default
+  - model:llama-3-70b
+  - meta
+  - eqbench_v2
+  source: Llama 3 70B Instruct (Meta)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-llama-3-70b-02.txt
+  category: defaults
+- id: eqv2-qwen1-5-110b-00
+  tags:
+  - llm_default
+  - model:qwen1-5-110b
+  - alibaba
+  - eqbench_v2
+  source: Qwen 1.5 110B Chat (Alibaba)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-qwen1-5-110b-00.txt
+  category: defaults
+- id: eqv2-qwen1-5-110b-01
+  tags:
+  - llm_default
+  - model:qwen1-5-110b
+  - alibaba
+  - eqbench_v2
+  source: Qwen 1.5 110B Chat (Alibaba)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-qwen1-5-110b-01.txt
+  category: defaults
+- id: eqv2-qwen1-5-110b-02
+  tags:
+  - llm_default
+  - model:qwen1-5-110b
+  - alibaba
+  - eqbench_v2
+  source: Qwen 1.5 110B Chat (Alibaba)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-qwen1-5-110b-02.txt
+  category: defaults
+- id: eqv2-mistral-large-2402-00
+  tags:
+  - llm_default
+  - model:mistral-large-2402
+  - mistral
+  - eqbench_v2
+  source: Mistral Large 2402 (Mistral)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-mistral-large-2402-00.txt
+  category: defaults
+- id: eqv2-mistral-large-2402-01
+  tags:
+  - llm_default
+  - model:mistral-large-2402
+  - mistral
+  - eqbench_v2
+  source: Mistral Large 2402 (Mistral)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-mistral-large-2402-01.txt
+  category: defaults
+- id: eqv2-mistral-large-2402-02
+  tags:
+  - llm_default
+  - model:mistral-large-2402
+  - mistral
+  - eqbench_v2
+  source: Mistral Large 2402 (Mistral)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-mistral-large-2402-02.txt
+  category: defaults
+- id: antislop-chosen-000-lucy-maud-montgomery-rilla-of-ingleside
+  tags:
+  - literary
+  - pg_excerpt
+  - antislop_chosen
+  source: 'PG: Lucy_Maud_Montgomery -- Rilla_of_Ingleside — sam-paech antislop-DPO chosen (human PG passage)'
+  license: public_domain
+  url: https://huggingface.co/datasets/sam-paech/gutenbergs_1_2_3_antislop-dpo
+  text_file: passages/exemplars/antislop-chosen-000-lucy-maud-montgomery-rilla-of-ingleside.txt
+  category: exemplars
+- id: antislop-rejected-000-lucy-maud-montgomery-rilla-of-ingleside
+  tags:
+  - llm_default
+  - model:antislop-author-emulation
+  - author_emulation_attempt
+  source: 'LLM imitating: Lucy_Maud_Montgomery -- Rilla_of_Ingleside — sam-paech antislop-DPO rejected'
+  license: research_fair_use
+  url: https://huggingface.co/datasets/sam-paech/gutenbergs_1_2_3_antislop-dpo
+  text_file: passages/defaults/antislop-rejected-000-lucy-maud-montgomery-rilla-of-ingleside.txt
+  category: defaults
+- id: antislop-chosen-001-llm-aes-doc-storygen-v2
+  tags:
+  - literary
+  - pg_excerpt
+  - antislop_chosen
+  source: 'PG: llm-aes/doc-storygen-v2 — sam-paech antislop-DPO chosen (human PG passage)'
+  license: public_domain
+  url: https://huggingface.co/datasets/sam-paech/gutenbergs_1_2_3_antislop-dpo
+  text_file: passages/exemplars/antislop-chosen-001-llm-aes-doc-storygen-v2.txt
+  category: exemplars
+- id: antislop-rejected-001-llm-aes-doc-storygen-v2
+  tags:
+  - llm_default
+  - model:antislop-author-emulation
+  - author_emulation_attempt
+  source: 'LLM imitating: llm-aes/doc-storygen-v2 — sam-paech antislop-DPO rejected'
+  license: research_fair_use
+  url: https://huggingface.co/datasets/sam-paech/gutenbergs_1_2_3_antislop-dpo
+  text_file: passages/defaults/antislop-rejected-001-llm-aes-doc-storygen-v2.txt
+  category: defaults
+- id: antislop-chosen-002-llm-aes-doc-storygen-v2
+  tags:
+  - literary
+  - pg_excerpt
+  - antislop_chosen
+  source: 'PG: llm-aes/doc-storygen-v2 — sam-paech antislop-DPO chosen (human PG passage)'
+  license: public_domain
+  url: https://huggingface.co/datasets/sam-paech/gutenbergs_1_2_3_antislop-dpo
+  text_file: passages/exemplars/antislop-chosen-002-llm-aes-doc-storygen-v2.txt
+  category: exemplars
+- id: antislop-rejected-002-llm-aes-doc-storygen-v2
+  tags:
+  - llm_default
+  - model:antislop-author-emulation
+  - author_emulation_attempt
+  source: 'LLM imitating: llm-aes/doc-storygen-v2 — sam-paech antislop-DPO rejected'
+  license: research_fair_use
+  url: https://huggingface.co/datasets/sam-paech/gutenbergs_1_2_3_antislop-dpo
+  text_file: passages/defaults/antislop-rejected-002-llm-aes-doc-storygen-v2.txt
+  category: defaults
+- id: antislop-chosen-003-louisa-may-alcott-jack-and-jill
+  tags:
+  - literary
+  - pg_excerpt
+  - antislop_chosen
+  source: 'PG: Louisa_May_Alcott -- Jack_and_Jill — sam-paech antislop-DPO chosen (human PG passage)'
+  license: public_domain
+  url: https://huggingface.co/datasets/sam-paech/gutenbergs_1_2_3_antislop-dpo
+  text_file: passages/exemplars/antislop-chosen-003-louisa-may-alcott-jack-and-jill.txt
+  category: exemplars
+- id: antislop-rejected-003-louisa-may-alcott-jack-and-jill
+  tags:
+  - llm_default
+  - model:antislop-author-emulation
+  - author_emulation_attempt
+  source: 'LLM imitating: Louisa_May_Alcott -- Jack_and_Jill — sam-paech antislop-DPO rejected'
+  license: research_fair_use
+  url: https://huggingface.co/datasets/sam-paech/gutenbergs_1_2_3_antislop-dpo
+  text_file: passages/defaults/antislop-rejected-003-louisa-may-alcott-jack-and-jill.txt
+  category: defaults
+- id: antislop-chosen-004-gutenberg-anna-karenina
+  tags:
+  - literary
+  - pg_excerpt
+  - antislop_chosen
+  source: 'PG: gutenberg Anna Karenina — sam-paech antislop-DPO chosen (human PG passage)'
+  license: public_domain
+  url: https://huggingface.co/datasets/sam-paech/gutenbergs_1_2_3_antislop-dpo
+  text_file: passages/exemplars/antislop-chosen-004-gutenberg-anna-karenina.txt
+  category: exemplars
+- id: antislop-rejected-004-gutenberg-anna-karenina
+  tags:
+  - llm_default
+  - model:antislop-author-emulation
+  - author_emulation_attempt
+  source: 'LLM imitating: gutenberg Anna Karenina — sam-paech antislop-DPO rejected'
+  license: research_fair_use
+  url: https://huggingface.co/datasets/sam-paech/gutenbergs_1_2_3_antislop-dpo
+  text_file: passages/defaults/antislop-rejected-004-gutenberg-anna-karenina.txt
+  category: defaults
+- id: antislop-chosen-005-gutenberg-madame-bovary
+  tags:
+  - literary
+  - pg_excerpt
+  - antislop_chosen
+  source: 'PG: gutenberg Madame Bovary — sam-paech antislop-DPO chosen (human PG passage)'
+  license: public_domain
+  url: https://huggingface.co/datasets/sam-paech/gutenbergs_1_2_3_antislop-dpo
+  text_file: passages/exemplars/antislop-chosen-005-gutenberg-madame-bovary.txt
+  category: exemplars
+- id: antislop-rejected-005-gutenberg-madame-bovary
+  tags:
+  - llm_default
+  - model:antislop-author-emulation
+  - author_emulation_attempt
+  source: 'LLM imitating: gutenberg Madame Bovary — sam-paech antislop-DPO rejected'
+  license: research_fair_use
+  url: https://huggingface.co/datasets/sam-paech/gutenbergs_1_2_3_antislop-dpo
+  text_file: passages/defaults/antislop-rejected-005-gutenberg-madame-bovary.txt
+  category: defaults
+- id: antislop-chosen-006-gutenberg-uncle-tom-s-cabin
+  tags:
+  - literary
+  - pg_excerpt
+  - antislop_chosen
+  source: 'PG: gutenberg Uncle Tom’s Cabin — sam-paech antislop-DPO chosen (human PG passage)'
+  license: public_domain
+  url: https://huggingface.co/datasets/sam-paech/gutenbergs_1_2_3_antislop-dpo
+  text_file: passages/exemplars/antislop-chosen-006-gutenberg-uncle-tom-s-cabin.txt
+  category: exemplars
+- id: antislop-rejected-006-gutenberg-uncle-tom-s-cabin
+  tags:
+  - llm_default
+  - model:antislop-author-emulation
+  - author_emulation_attempt
+  source: 'LLM imitating: gutenberg Uncle Tom’s Cabin — sam-paech antislop-DPO rejected'
+  license: research_fair_use
+  url: https://huggingface.co/datasets/sam-paech/gutenbergs_1_2_3_antislop-dpo
+  text_file: passages/defaults/antislop-rejected-006-gutenberg-uncle-tom-s-cabin.txt
+  category: defaults
+- id: antislop-chosen-007-gutenberg-a-tale-of-two-cities
+  tags:
+  - literary
+  - pg_excerpt
+  - antislop_chosen
+  source: 'PG: gutenberg A Tale of Two Cities — sam-paech antislop-DPO chosen (human PG passage)'
+  license: public_domain
+  url: https://huggingface.co/datasets/sam-paech/gutenbergs_1_2_3_antislop-dpo
+  text_file: passages/exemplars/antislop-chosen-007-gutenberg-a-tale-of-two-cities.txt
+  category: exemplars
+- id: antislop-rejected-007-gutenberg-a-tale-of-two-cities
+  tags:
+  - llm_default
+  - model:antislop-author-emulation
+  - author_emulation_attempt
+  source: 'LLM imitating: gutenberg A Tale of Two Cities — sam-paech antislop-DPO rejected'
+  license: research_fair_use
+  url: https://huggingface.co/datasets/sam-paech/gutenbergs_1_2_3_antislop-dpo
+  text_file: passages/defaults/antislop-rejected-007-gutenberg-a-tale-of-two-cities.txt
+  category: defaults
+- id: anderson-winesburg-ohio-s0
+  tags:
+  - literary
+  - early_modernist
+  - short_fiction
+  - third_person
+  source: Anderson, *Winesburg, Ohio* (1919)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/416
+  text_file: passages/exemplars/anderson-winesburg-ohio-s0.txt
+  category: exemplars
+- id: anderson-winesburg-ohio-s1
+  tags:
+  - literary
+  - early_modernist
+  - short_fiction
+  - third_person
+  source: Anderson, *Winesburg, Ohio* (1919) (sample 1)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/416
+  text_file: passages/exemplars/anderson-winesburg-ohio-s1.txt
+  category: exemplars
+- id: wharton-ethan-frome-s0
+  tags:
+  - literary
+  - naturalist
+  - regional
+  - frame_narrative
+  source: Wharton, *Ethan Frome* (1911)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/4517
+  text_file: passages/exemplars/wharton-ethan-frome-s0.txt
+  category: exemplars
+- id: wharton-ethan-frome-s1
+  tags:
+  - literary
+  - naturalist
+  - regional
+  - frame_narrative
+  source: Wharton, *Ethan Frome* (1911) (sample 1)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/4517
+  text_file: passages/exemplars/wharton-ethan-frome-s1.txt
+  category: exemplars
+- id: cather-o-pioneers-s1
+  tags:
+  - literary
+  - regional
+  - early_modernist
+  - third_person
+  source: Cather, *O Pioneers!* (1913) (sample 1)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/24
+  text_file: passages/exemplars/cather-o-pioneers-s1.txt
+  category: exemplars
+- id: forster-howards-end-s0
+  tags:
+  - literary
+  - edwardian
+  - free_indirect_discourse
+  - social_register
+  source: Forster, *Howards End* (1910)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/2946
+  text_file: passages/exemplars/forster-howards-end-s0.txt
+  category: exemplars
+- id: forster-howards-end-s1
+  tags:
+  - literary
+  - edwardian
+  - free_indirect_discourse
+  - social_register
+  source: Forster, *Howards End* (1910) (sample 1)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/2946
+  text_file: passages/exemplars/forster-howards-end-s1.txt
+  category: exemplars
+- id: joyce-portrait-artist-s0
+  tags:
+  - literary
+  - high_modernist
+  - free_indirect_discourse
+  - stream_consciousness
+  source: Joyce, *A Portrait of the Artist as a Young Man* (1916)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/4217
+  text_file: passages/exemplars/joyce-portrait-artist-s0.txt
+  category: exemplars
+- id: lawrence-sons-and-lovers-s0
+  tags:
+  - literary
+  - high_modernist
+  - free_indirect_discourse
+  - intense
+  source: Lawrence, *Sons and Lovers* (1913)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/217
+  text_file: passages/exemplars/lawrence-sons-and-lovers-s0.txt
+  category: exemplars
+- id: lawrence-sons-and-lovers-s1
+  tags:
+  - literary
+  - high_modernist
+  - free_indirect_discourse
+  - intense
+  source: Lawrence, *Sons and Lovers* (1913) (sample 1)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/217
+  text_file: passages/exemplars/lawrence-sons-and-lovers-s1.txt
+  category: exemplars
+- id: ford-good-soldier-s0
+  tags:
+  - literary
+  - high_modernist
+  - unreliable_narrator
+  - first_person
+  source: Ford, *The Good Soldier* (1915)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/2775
+  text_file: passages/exemplars/ford-good-soldier-s0.txt
+  category: exemplars
+- id: ford-good-soldier-s1
+  tags:
+  - literary
+  - high_modernist
+  - unreliable_narrator
+  - first_person
+  source: Ford, *The Good Soldier* (1915) (sample 1)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/2775
+  text_file: passages/exemplars/ford-good-soldier-s1.txt
+  category: exemplars
+- id: wharton-age-of-innocence-s0
+  tags:
+  - literary
+  - edwardian
+  - society_novel
+  - irony
+  source: Wharton, *The Age of Innocence* (1920)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/541
+  text_file: passages/exemplars/wharton-age-of-innocence-s0.txt
+  category: exemplars
+- id: wharton-age-of-innocence-s1
+  tags:
+  - literary
+  - edwardian
+  - society_novel
+  - irony
+  source: Wharton, *The Age of Innocence* (1920) (sample 1)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/541
+  text_file: passages/exemplars/wharton-age-of-innocence-s1.txt
+  category: exemplars
+- id: james-daisy-miller-s0
+  tags:
+  - literary
+  - edwardian
+  - first_person
+  - social_register
+  source: James, *Daisy Miller* (1879)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/208
+  text_file: passages/exemplars/james-daisy-miller-s0.txt
+  category: exemplars
+- id: jewett-pointed-firs-s0
+  tags:
+  - literary
+  - regional
+  - first_person
+  - naturalist
+  source: Jewett, *The Country of the Pointed Firs* (1896)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/367
+  text_file: passages/exemplars/jewett-pointed-firs-s0.txt
+  category: exemplars
+- id: crane-maggie-s0
+  tags:
+  - literary
+  - naturalist
+  - third_person
+  - vernacular
+  source: 'Crane, *Maggie: A Girl of the Streets* (1893)'
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/447
+  text_file: passages/exemplars/crane-maggie-s0.txt
+  category: exemplars
+- id: crane-maggie-s1
+  tags:
+  - literary
+  - naturalist
+  - third_person
+  - vernacular
+  source: 'Crane, *Maggie: A Girl of the Streets* (1893) (sample 1)'
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/447
+  text_file: passages/exemplars/crane-maggie-s1.txt
+  category: exemplars
+- id: chopin-the-awakening-s0
+  tags:
+  - literary
+  - early_modernist
+  - free_indirect_discourse
+  - third_person
+  source: Chopin, *The Awakening* (1899)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/160
+  text_file: passages/exemplars/chopin-the-awakening-s0.txt
+  category: exemplars
+- id: wells-time-machine-s0
+  tags:
+  - literary
+  - scifi_ancestor
+  - first_person
+  - frame_narrative
+  source: Wells, *The Time Machine* (1895)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/35
+  text_file: passages/exemplars/wells-time-machine-s0.txt
+  category: exemplars
+- id: wells-time-machine-s1
+  tags:
+  - literary
+  - scifi_ancestor
+  - first_person
+  - frame_narrative
+  source: Wells, *The Time Machine* (1895) (sample 1)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/35
+  text_file: passages/exemplars/wells-time-machine-s1.txt
+  category: exemplars
+- id: london-call-of-the-wild-s0
+  tags:
+  - literary
+  - naturalist
+  - third_person
+  - animal_pov
+  source: London, *The Call of the Wild* (1903)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/215
+  text_file: passages/exemplars/london-call-of-the-wild-s0.txt
+  category: exemplars
+- id: voltaire-candide-s0
+  tags:
+  - literary
+  - satire
+  - third_person
+  - ironic
+  source: Voltaire, *Candide* (1759, English trans.)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/19942
+  text_file: passages/exemplars/voltaire-candide-s0.txt
+  category: exemplars
+- id: voltaire-candide-s1
+  tags:
+  - literary
+  - satire
+  - third_person
+  - ironic
+  source: Voltaire, *Candide* (1759, English trans.) (sample 1)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/19942
+  text_file: passages/exemplars/voltaire-candide-s1.txt
+  category: exemplars
+- id: james-ambassadors-s0
+  tags:
+  - literary
+  - maximalist
+  - edwardian
+  - third_person
+  - sustained_period
+  source: James, *The Ambassadors* (1903)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/432
+  text_file: passages/exemplars/james-ambassadors-s0.txt
+  category: exemplars
+- id: james-ambassadors-s1
+  tags:
+  - literary
+  - maximalist
+  - edwardian
+  - third_person
+  - sustained_period
+  source: James, *The Ambassadors* (1903) (sample 1)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/432
+  text_file: passages/exemplars/james-ambassadors-s1.txt
+  category: exemplars
+- id: james-turn-of-screw-s0
+  tags:
+  - literary
+  - edwardian
+  - first_person
+  - frame_narrative
+  - ambiguous
+  source: James, *The Turn of the Screw* (1898)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/209
+  text_file: passages/exemplars/james-turn-of-screw-s0.txt
+  category: exemplars
+- id: james-turn-of-screw-s1
+  tags:
+  - literary
+  - edwardian
+  - first_person
+  - frame_narrative
+  - ambiguous
+  source: James, *The Turn of the Screw* (1898) (sample 1)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/209
+  text_file: passages/exemplars/james-turn-of-screw-s1.txt
+  category: exemplars
+- id: forster-room-with-view-s0
+  tags:
+  - literary
+  - edwardian
+  - free_indirect_discourse
+  - social_register
+  - ironic
+  source: Forster, *A Room with a View* (1908)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/2641
+  text_file: passages/exemplars/forster-room-with-view-s0.txt
+  category: exemplars
+- id: forster-room-with-view-s1
+  tags:
+  - literary
+  - edwardian
+  - free_indirect_discourse
+  - social_register
+  - ironic
+  source: Forster, *A Room with a View* (1908) (sample 1)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/2641
+  text_file: passages/exemplars/forster-room-with-view-s1.txt
+  category: exemplars
+- id: dumas-monte-cristo-s0
+  tags:
+  - literary
+  - classical_realist
+  - adventure
+  - third_person
+  source: Dumas, *The Count of Monte Cristo* (1844, English trans.)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/1184
+  text_file: passages/exemplars/dumas-monte-cristo-s0.txt
+  category: exemplars
+- id: dumas-monte-cristo-s1
+  tags:
+  - literary
+  - classical_realist
+  - adventure
+  - third_person
+  source: Dumas, *The Count of Monte Cristo* (1844, English trans.) (sample 1)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/1184
+  text_file: passages/exemplars/dumas-monte-cristo-s1.txt
+  category: exemplars
+- id: carroll-alice-s0
+  tags:
+  - literary
+  - victorian
+  - whimsical
+  - third_person
+  source: Carroll, *Alice's Adventures in Wonderland* (1865)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/11
+  text_file: passages/exemplars/carroll-alice-s0.txt
+  category: exemplars
+- id: poe-works-vol1-s0
+  tags:
+  - literary
+  - gothic
+  - first_person
+  - antebellum
+  source: Poe, *Works* Vol. 1 (collected, 1840s)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/2147
+  text_file: passages/exemplars/poe-works-vol1-s0.txt
+  category: exemplars
+- id: tolstoy-anna-karenina-s0
+  tags:
+  - literary
+  - classical_realist
+  - omniscient
+  - domestic
+  source: Tolstoy, *Anna Karenina* (1877, Garnett trans.)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/1399
+  text_file: passages/exemplars/tolstoy-anna-karenina-s0.txt
+  category: exemplars
+- id: tolstoy-anna-karenina-s1
+  tags:
+  - literary
+  - classical_realist
+  - omniscient
+  - domestic
+  source: Tolstoy, *Anna Karenina* (1877, Garnett trans.) (sample 1)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/1399
+  text_file: passages/exemplars/tolstoy-anna-karenina-s1.txt
+  category: exemplars
+- id: eliot-middlemarch-s0
+  tags:
+  - literary
+  - classical_realist
+  - omniscient
+  - panoramic
+  source: Eliot, *Middlemarch* (1871-72)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/145
+  text_file: passages/exemplars/eliot-middlemarch-s0.txt
+  category: exemplars
+- id: austen-emma-s0
+  tags:
+  - literary
+  - regency
+  - free_indirect_discourse
+  - third_person
+  - social_register
+  source: Austen, *Emma* (1816)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/158
+  text_file: passages/exemplars/austen-emma-s0.txt
+  category: exemplars
+- id: austen-emma-s1
+  tags:
+  - literary
+  - regency
+  - free_indirect_discourse
+  - third_person
+  - social_register
+  source: Austen, *Emma* (1816) (sample 1)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/158
+  text_file: passages/exemplars/austen-emma-s1.txt
+  category: exemplars
+- id: austen-pride-prejudice-s0
+  tags:
+  - literary
+  - regency
+  - free_indirect_discourse
+  - third_person
+  - ironic
+  source: Austen, *Pride and Prejudice* (1813)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/1342
+  text_file: passages/exemplars/austen-pride-prejudice-s0.txt
+  category: exemplars
+- id: austen-northanger-abbey-s0
+  tags:
+  - literary
+  - regency
+  - free_indirect_discourse
+  - third_person
+  - metafictional
+  source: Austen, *Northanger Abbey* (1817)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/121
+  text_file: passages/exemplars/austen-northanger-abbey-s0.txt
+  category: exemplars
+- id: austen-northanger-abbey-s1
+  tags:
+  - literary
+  - regency
+  - free_indirect_discourse
+  - third_person
+  - metafictional
+  source: Austen, *Northanger Abbey* (1817) (sample 1)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/121
+  text_file: passages/exemplars/austen-northanger-abbey-s1.txt
+  category: exemplars
+- id: fitzgerald-great-gatsby-s0
+  tags:
+  - literary
+  - modernist
+  - first_person
+  - lyric
+  - jazz_age
+  source: Fitzgerald, *The Great Gatsby* (1925)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/64317
+  text_file: passages/exemplars/fitzgerald-great-gatsby-s0.txt
+  category: exemplars
+- id: fitzgerald-this-side-s0
+  tags:
+  - literary
+  - modernist
+  - third_person
+  - jazz_age
+  source: Fitzgerald, *This Side of Paradise* (1920)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/805
+  text_file: passages/exemplars/fitzgerald-this-side-s0.txt
+  category: exemplars
+- id: dostoevsky-crime-punishment-s0
+  tags:
+  - literary
+  - russian
+  - psychological
+  - third_person
+  - polyphonic
+  source: Dostoevsky, *Crime and Punishment* (1866, Garnett trans.)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/2554
+  text_file: passages/exemplars/dostoevsky-crime-punishment-s0.txt
+  category: exemplars
+- id: dostoevsky-crime-punishment-s1
+  tags:
+  - literary
+  - russian
+  - psychological
+  - third_person
+  - polyphonic
+  source: Dostoevsky, *Crime and Punishment* (1866, Garnett trans.) (sample 1)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/2554
+  text_file: passages/exemplars/dostoevsky-crime-punishment-s1.txt
+  category: exemplars
+- id: dostoevsky-brothers-karamazov-s0
+  tags:
+  - literary
+  - russian
+  - psychological
+  - third_person
+  - polyphonic
+  - philosophical
+  source: Dostoevsky, *The Brothers Karamazov* (1880, Garnett trans.)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/28054
+  text_file: passages/exemplars/dostoevsky-brothers-karamazov-s0.txt
+  category: exemplars
+- id: dostoevsky-brothers-karamazov-s1
+  tags:
+  - literary
+  - russian
+  - psychological
+  - third_person
+  - polyphonic
+  - philosophical
+  source: Dostoevsky, *The Brothers Karamazov* (1880, Garnett trans.) (sample 1)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/28054
+  text_file: passages/exemplars/dostoevsky-brothers-karamazov-s1.txt
+  category: exemplars
+- id: dostoevsky-notes-underground-s0
+  tags:
+  - literary
+  - russian
+  - first_person
+  - manic_register
+  - philosophical
+  source: Dostoevsky, *Notes from Underground* (1864)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/600
+  text_file: passages/exemplars/dostoevsky-notes-underground-s0.txt
+  category: exemplars
+- id: dostoevsky-notes-underground-s1
+  tags:
+  - literary
+  - russian
+  - first_person
+  - manic_register
+  - philosophical
+  source: Dostoevsky, *Notes from Underground* (1864) (sample 1)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/600
+  text_file: passages/exemplars/dostoevsky-notes-underground-s1.txt
+  category: exemplars
+- id: kafka-metamorphosis-s0
+  tags:
+  - literary
+  - modernist
+  - surrealist_parable
+  - third_person
+  - alienation
+  source: Kafka, *The Metamorphosis* (1915, English trans.)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/5200
+  text_file: passages/exemplars/kafka-metamorphosis-s0.txt
+  category: exemplars
+- id: kafka-the-trial-s0
+  tags:
+  - literary
+  - modernist
+  - surrealist_parable
+  - third_person
+  - bureaucratic
+  source: Kafka, *The Trial* (1925, English trans.)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/7849
+  text_file: passages/exemplars/kafka-the-trial-s0.txt
+  category: exemplars
+- id: proust-swanns-way-s0
+  tags:
+  - literary
+  - high_modernist
+  - free_indirect_discourse
+  - first_person
+  - sustained_period
+  - memory_register
+  source: Proust, *Swann's Way* (1913, Scott Moncrieff trans.)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/7178
+  text_file: passages/exemplars/proust-swanns-way-s0.txt
+  category: exemplars
+- id: hawthorne-scarlet-letter-s0
+  tags:
+  - literary
+  - gothic
+  - allegorical
+  - third_person
+  - antebellum
+  source: Hawthorne, *The Scarlet Letter* (1850)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/33
+  text_file: passages/exemplars/hawthorne-scarlet-letter-s0.txt
+  category: exemplars
+- id: hawthorne-scarlet-letter-s1
+  tags:
+  - literary
+  - gothic
+  - allegorical
+  - third_person
+  - antebellum
+  source: Hawthorne, *The Scarlet Letter* (1850) (sample 1)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/33
+  text_file: passages/exemplars/hawthorne-scarlet-letter-s1.txt
+  category: exemplars
+- id: hawthorne-seven-gables-s0
+  tags:
+  - literary
+  - gothic
+  - allegorical
+  - third_person
+  - antebellum
+  source: Hawthorne, *The House of the Seven Gables* (1851)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/77
+  text_file: passages/exemplars/hawthorne-seven-gables-s0.txt
+  category: exemplars
+- id: hawthorne-seven-gables-s1
+  tags:
+  - literary
+  - gothic
+  - allegorical
+  - third_person
+  - antebellum
+  source: Hawthorne, *The House of the Seven Gables* (1851) (sample 1)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/77
+  text_file: passages/exemplars/hawthorne-seven-gables-s1.txt
+  category: exemplars
+- id: hawthorne-twice-told-tales-s0
+  tags:
+  - literary
+  - gothic
+  - allegorical
+  - short_fiction
+  - antebellum
+  source: Hawthorne, *Twice-Told Tales* (1837)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/508
+  text_file: passages/exemplars/hawthorne-twice-told-tales-s0.txt
+  category: exemplars
+- id: hawthorne-twice-told-tales-s1
+  tags:
+  - literary
+  - gothic
+  - allegorical
+  - short_fiction
+  - antebellum
+  source: Hawthorne, *Twice-Told Tales* (1837) (sample 1)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/508
+  text_file: passages/exemplars/hawthorne-twice-told-tales-s1.txt
+  category: exemplars
+- id: dickens-bleak-house-s0
+  tags:
+  - literary
+  - victorian
+  - panoramic
+  - anaphora
+  - comic_realism
+  source: Dickens, *Bleak House* (1853)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/1023
+  text_file: passages/exemplars/dickens-bleak-house-s0.txt
+  category: exemplars
+- id: dickens-bleak-house-s1
+  tags:
+  - literary
+  - victorian
+  - panoramic
+  - anaphora
+  - comic_realism
+  source: Dickens, *Bleak House* (1853) (sample 1)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/1023
+  text_file: passages/exemplars/dickens-bleak-house-s1.txt
+  category: exemplars
+- id: dickens-great-expectations-s0
+  tags:
+  - literary
+  - victorian
+  - first_person
+  - bildungsroman
+  - comic_realism
+  source: Dickens, *Great Expectations* (1861)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/1400
+  text_file: passages/exemplars/dickens-great-expectations-s0.txt
+  category: exemplars
+- id: bronte-c-jane-eyre-s0
+  tags:
+  - literary
+  - victorian
+  - first_person
+  - gothic_romantic
+  - intense
+  source: C. Brontë, *Jane Eyre* (1847)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/1260
+  text_file: passages/exemplars/bronte-c-jane-eyre-s0.txt
+  category: exemplars
+- id: bronte-c-jane-eyre-s1
+  tags:
+  - literary
+  - victorian
+  - first_person
+  - gothic_romantic
+  - intense
+  source: C. Brontë, *Jane Eyre* (1847) (sample 1)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/1260
+  text_file: passages/exemplars/bronte-c-jane-eyre-s1.txt
+  category: exemplars
+- id: bronte-e-wuthering-heights-s0
+  tags:
+  - literary
+  - victorian
+  - frame_narrative
+  - first_person
+  - gothic_intense
+  source: E. Brontë, *Wuthering Heights* (1847)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/768
+  text_file: passages/exemplars/bronte-e-wuthering-heights-s0.txt
+  category: exemplars
+- id: bronte-e-wuthering-heights-s1
+  tags:
+  - literary
+  - victorian
+  - frame_narrative
+  - first_person
+  - gothic_intense
+  source: E. Brontë, *Wuthering Heights* (1847) (sample 1)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/768
+  text_file: passages/exemplars/bronte-e-wuthering-heights-s1.txt
+  category: exemplars
+- id: shelley-frankenstein-s0
+  tags:
+  - literary
+  - romantic
+  - epistolary
+  - first_person
+  - gothic_philosophical
+  source: Shelley, *Frankenstein* (1818)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/84
+  text_file: passages/exemplars/shelley-frankenstein-s0.txt
+  category: exemplars
+- id: maupassant-complete-stories-s0
+  tags:
+  - literary
+  - naturalist
+  - short_fiction
+  - french
+  - restrained
+  source: Maupassant, *Complete Original Short Stories* (collected, 1880-1893, English trans.)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/3090
+  text_file: passages/exemplars/maupassant-complete-stories-s0.txt
+  category: exemplars
+- id: maupassant-complete-stories-s1
+  tags:
+  - literary
+  - naturalist
+  - short_fiction
+  - french
+  - restrained
+  source: Maupassant, *Complete Original Short Stories* (collected, 1880-1893, English trans.) (sample 1)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/3090
+  text_file: passages/exemplars/maupassant-complete-stories-s1.txt
+  category: exemplars
+- id: maupassant-original-vol1-s0
+  tags:
+  - literary
+  - naturalist
+  - short_fiction
+  - french
+  - restrained
+  source: Maupassant, *Original Short Stories* Vol. 1 (1880-1893, English trans.)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/3077
+  text_file: passages/exemplars/maupassant-original-vol1-s0.txt
+  category: exemplars
+- id: maupassant-original-vol1-s1
+  tags:
+  - literary
+  - naturalist
+  - short_fiction
+  - french
+  - restrained
+  source: Maupassant, *Original Short Stories* Vol. 1 (1880-1893, English trans.) (sample 1)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/3077
+  text_file: passages/exemplars/maupassant-original-vol1-s1.txt
+  category: exemplars
+- id: hugo-les-miserables-s0
+  tags:
+  - literary
+  - romantic
+  - maximalist
+  - third_person
+  - panoramic
+  - lyric_political
+  source: Hugo, *Les Misérables* (1862, English trans.)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/135
+  text_file: passages/exemplars/hugo-les-miserables-s0.txt
+  category: exemplars
+- id: hugo-les-miserables-s1
+  tags:
+  - literary
+  - romantic
+  - maximalist
+  - third_person
+  - panoramic
+  - lyric_political
+  source: Hugo, *Les Misérables* (1862, English trans.) (sample 1)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/135
+  text_file: passages/exemplars/hugo-les-miserables-s1.txt
+  category: exemplars
+- id: tagore-home-and-world-s0
+  tags:
+  - literary
+  - south_asian
+  - modernist
+  - first_person
+  - political
+  source: Tagore, *The Home and the World* (1916, Surendranath Tagore trans.)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/7166
+  text_file: passages/exemplars/tagore-home-and-world-s0.txt
+  category: exemplars
+- id: tagore-home-and-world-s1
+  tags:
+  - literary
+  - south_asian
+  - modernist
+  - first_person
+  - political
+  source: Tagore, *The Home and the World* (1916, Surendranath Tagore trans.) (sample 1)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/7166
+  text_file: passages/exemplars/tagore-home-and-world-s1.txt
+  category: exemplars
+- id: tagore-stories-s0
+  tags:
+  - literary
+  - south_asian
+  - modernist
+  - short_fiction
+  - third_person
+  source: Tagore, *Stories from Tagore* (collected, English trans.)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/33525
+  text_file: passages/exemplars/tagore-stories-s0.txt
+  category: exemplars
+- id: tagore-stories-s1
+  tags:
+  - literary
+  - south_asian
+  - modernist
+  - short_fiction
+  - third_person
+  source: Tagore, *Stories from Tagore* (collected, English trans.) (sample 1)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/33525
+  text_file: passages/exemplars/tagore-stories-s1.txt
+  category: exemplars
+- id: akutagawa-tales-grotesque-s0
+  tags:
+  - literary
+  - japanese
+  - modernist
+  - short_fiction
+  - surrealist
+  source: Akutagawa, *Tales Grotesque and Curious* (1930, Glenn W. Shaw trans.)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/78105
+  text_file: passages/exemplars/akutagawa-tales-grotesque-s0.txt
+  category: exemplars
+- id: akutagawa-tales-grotesque-s1
+  tags:
+  - literary
+  - japanese
+  - modernist
+  - short_fiction
+  - surrealist
+  source: Akutagawa, *Tales Grotesque and Curious* (1930, Glenn W. Shaw trans.) (sample 1)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/78105
+  text_file: passages/exemplars/akutagawa-tales-grotesque-s1.txt
+  category: exemplars
+- id: soseki-botchan-s1
+  tags:
+  - literary
+  - japanese
+  - modernist
+  - first_person
+  - vernacular
+  source: Sōseki, *Botchan (Master Darling)* (1906, Yasotaro Mori trans.) (sample 1)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/8868
+  text_file: passages/exemplars/soseki-botchan-s1.txt
+  category: exemplars
+- id: doyle-adventures-sherlock-s0
+  tags:
+  - literary
+  - victorian
+  - detective
+  - first_person
+  - frame_narrative
+  source: Conan Doyle, *The Adventures of Sherlock Holmes* (1892)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/1661
+  text_file: passages/exemplars/doyle-adventures-sherlock-s0.txt
+  category: exemplars
+- id: doyle-adventures-sherlock-s1
+  tags:
+  - literary
+  - victorian
+  - detective
+  - first_person
+  - frame_narrative
+  source: Conan Doyle, *The Adventures of Sherlock Holmes* (1892) (sample 1)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/1661
+  text_file: passages/exemplars/doyle-adventures-sherlock-s1.txt
+  category: exemplars
+- id: doyle-hound-baskervilles-s0
+  tags:
+  - literary
+  - victorian
+  - detective
+  - first_person
+  - atmospheric_gothic
+  source: Conan Doyle, *The Hound of the Baskervilles* (1902)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/2852
+  text_file: passages/exemplars/doyle-hound-baskervilles-s0.txt
+  category: exemplars
+- id: doyle-memoirs-sherlock-s0
+  tags:
+  - literary
+  - victorian
+  - detective
+  - first_person
+  source: Conan Doyle, *The Memoirs of Sherlock Holmes* (1894)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/834
+  text_file: passages/exemplars/doyle-memoirs-sherlock-s0.txt
+  category: exemplars
+- id: doyle-study-scarlet-s0
+  tags:
+  - literary
+  - victorian
+  - detective
+  - first_person
+  - frame_narrative
+  source: Conan Doyle, *A Study in Scarlet* (1887)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/244
+  text_file: passages/exemplars/doyle-study-scarlet-s0.txt
+  category: exemplars
+- id: soseki-botchan-s0
+  tags:
+  - literary
+  - japanese
+  - modernist
+  - first_person
+  - vernacular
+  source: Sōseki, *Botchan* (1906, Yasotaro Mori trans.)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/8868
+  text_file: passages/exemplars/soseki-botchan-s0.txt
+  category: exemplars
+- id: soseki-kusamakura-s0
+  tags:
+  - literary
+  - japanese
+  - modernist
+  - first_person
+  - philosophical
+  source: Sōseki, *Kusamakura* (1906, Kazutomo Takahashi trans.)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/73131
+  text_file: passages/exemplars/soseki-kusamakura-s0.txt
+  category: exemplars
+- id: arabian-nights-lang-s0
+  tags:
+  - literary
+  - victorian
+  - frame_narrative
+  - ornate_translation
+  - third_person
+  source: '*The Arabian Nights Entertainments* (Lang ed., 1898)'
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/128
+  text_file: passages/exemplars/arabian-nights-lang-s0.txt
+  category: exemplars
+- id: lechmazur-claude-opus-4-6-s50
+  tags:
+  - llm_default
+  - model:claude-opus-4-6
+  - anthropic
+  - lechmazur
+  - constrained_prompt
+  source: Lechmazur writing benchmark, story 50 (claude-opus-4-6)
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-claude-opus-4-6-s50.txt
+  category: defaults
+- id: lechmazur-claude-opus-4-6-s150
+  tags:
+  - llm_default
+  - model:claude-opus-4-6
+  - anthropic
+  - lechmazur
+  - constrained_prompt
+  source: Lechmazur writing benchmark, story 150 (claude-opus-4-6)
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-claude-opus-4-6-s150.txt
+  category: defaults
+- id: lechmazur-claude-opus-4-5-s50
+  tags:
+  - llm_default
+  - model:claude-opus-4-5
+  - anthropic
+  - lechmazur
+  - constrained_prompt
+  source: Lechmazur writing benchmark, story 50 (claude-opus-4-5)
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-claude-opus-4-5-s50.txt
+  category: defaults
+- id: lechmazur-claude-opus-4-5-s150
+  tags:
+  - llm_default
+  - model:claude-opus-4-5
+  - anthropic
+  - lechmazur
+  - constrained_prompt
+  source: Lechmazur writing benchmark, story 150 (claude-opus-4-5)
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-claude-opus-4-5-s150.txt
+  category: defaults
+- id: lechmazur-claude-sonnet-4-5-s50
+  tags:
+  - llm_default
+  - model:claude-sonnet-4-5
+  - anthropic
+  - lechmazur
+  - constrained_prompt
+  source: Lechmazur writing benchmark, story 50 (claude-sonnet-4-5)
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-claude-sonnet-4-5-s50.txt
+  category: defaults
+- id: lechmazur-claude-sonnet-4-5-s150
+  tags:
+  - llm_default
+  - model:claude-sonnet-4-5
+  - anthropic
+  - lechmazur
+  - constrained_prompt
+  source: Lechmazur writing benchmark, story 150 (claude-sonnet-4-5)
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-claude-sonnet-4-5-s150.txt
+  category: defaults
+- id: lechmazur-gpt-5-pro-s50
+  tags:
+  - llm_default
+  - model:gpt-5-pro
+  - openai
+  - lechmazur
+  - constrained_prompt
+  source: Lechmazur writing benchmark, story 50 (gpt-5-pro)
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-gpt-5-pro-s50.txt
+  category: defaults
+- id: lechmazur-gpt-5-pro-s150
+  tags:
+  - llm_default
+  - model:gpt-5-pro
+  - openai
+  - lechmazur
+  - constrained_prompt
+  source: Lechmazur writing benchmark, story 150 (gpt-5-pro)
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-gpt-5-pro-s150.txt
+  category: defaults
+- id: lechmazur-gpt-5-2-medium-s50
+  tags:
+  - llm_default
+  - model:gpt-5-2-medium
+  - openai
+  - lechmazur
+  - constrained_prompt
+  source: Lechmazur writing benchmark, story 50 (gpt-5-2-medium)
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-gpt-5-2-medium-s50.txt
+  category: defaults
+- id: lechmazur-gpt-5-2-medium-s150
+  tags:
+  - llm_default
+  - model:gpt-5-2-medium
+  - openai
+  - lechmazur
+  - constrained_prompt
+  source: Lechmazur writing benchmark, story 150 (gpt-5-2-medium)
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-gpt-5-2-medium-s150.txt
+  category: defaults
+- id: lechmazur-gemini-3-pro-s50
+  tags:
+  - llm_default
+  - model:gemini-3-pro
+  - google
+  - lechmazur
+  - constrained_prompt
+  source: Lechmazur writing benchmark, story 50 (gemini-3-pro)
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-gemini-3-pro-s50.txt
+  category: defaults
+- id: lechmazur-gemini-3-pro-s150
+  tags:
+  - llm_default
+  - model:gemini-3-pro
+  - google
+  - lechmazur
+  - constrained_prompt
+  source: Lechmazur writing benchmark, story 150 (gemini-3-pro)
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-gemini-3-pro-s150.txt
+  category: defaults
+- id: lechmazur-deepseek-v32-lechmazur-s50
+  tags:
+  - llm_default
+  - model:deepseek-v32-lechmazur
+  - deepseek
+  - lechmazur
+  - constrained_prompt
+  source: Lechmazur writing benchmark, story 50 (deepseek-v32-lechmazur)
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-deepseek-v32-lechmazur-s50.txt
+  category: defaults
+- id: lechmazur-deepseek-v32-lechmazur-s150
+  tags:
+  - llm_default
+  - model:deepseek-v32-lechmazur
+  - deepseek
+  - lechmazur
+  - constrained_prompt
+  source: Lechmazur writing benchmark, story 150 (deepseek-v32-lechmazur)
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-deepseek-v32-lechmazur-s150.txt
+  category: defaults
+- id: lechmazur-qwen3-max-s50
+  tags:
+  - llm_default
+  - model:qwen3-max
+  - alibaba
+  - lechmazur
+  - constrained_prompt
+  source: Lechmazur writing benchmark, story 50 (qwen3-max)
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-qwen3-max-s50.txt
+  category: defaults
+- id: lechmazur-qwen3-max-s150
+  tags:
+  - llm_default
+  - model:qwen3-max
+  - alibaba
+  - lechmazur
+  - constrained_prompt
+  source: Lechmazur writing benchmark, story 150 (qwen3-max)
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-qwen3-max-s150.txt
+  category: defaults
+- id: lechmazur-glm-4-6-s50
+  tags:
+  - llm_default
+  - model:glm-4-6
+  - zhipu
+  - lechmazur
+  - constrained_prompt
+  source: Lechmazur writing benchmark, story 50 (glm-4-6)
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-glm-4-6-s50.txt
+  category: defaults
+- id: lechmazur-glm-4-6-s150
+  tags:
+  - llm_default
+  - model:glm-4-6
+  - zhipu
+  - lechmazur
+  - constrained_prompt
+  source: Lechmazur writing benchmark, story 150 (glm-4-6)
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-glm-4-6-s150.txt
+  category: defaults
+- id: lechmazur-kimi-k2-thinking-s50
+  tags:
+  - llm_default
+  - model:kimi-k2-thinking
+  - moonshot
+  - lechmazur
+  - constrained_prompt
+  source: Lechmazur writing benchmark, story 50 (kimi-k2-thinking)
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-kimi-k2-thinking-s50.txt
+  category: defaults
+- id: lechmazur-kimi-k2-thinking-s150
+  tags:
+  - llm_default
+  - model:kimi-k2-thinking
+  - moonshot
+  - lechmazur
+  - constrained_prompt
+  source: Lechmazur writing benchmark, story 150 (kimi-k2-thinking)
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-kimi-k2-thinking-s150.txt
+  category: defaults
+- id: lechmazur-grok-4-1-s50
+  tags:
+  - llm_default
+  - model:grok-4-1
+  - xai
+  - lechmazur
+  - constrained_prompt
+  source: Lechmazur writing benchmark, story 50 (grok-4-1)
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-grok-4-1-s50.txt
+  category: defaults
+- id: lechmazur-grok-4-1-s150
+  tags:
+  - llm_default
+  - model:grok-4-1
+  - xai
+  - lechmazur
+  - constrained_prompt
+  source: Lechmazur writing benchmark, story 150 (grok-4-1)
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-grok-4-1-s150.txt
+  category: defaults
+- id: lechmazur-mistral-large-2512-s50
+  tags:
+  - llm_default
+  - model:mistral-large-2512
+  - mistral
+  - lechmazur
+  - constrained_prompt
+  source: Lechmazur writing benchmark, story 50 (mistral-large-2512)
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-mistral-large-2512-s50.txt
+  category: defaults
+- id: lechmazur-mistral-large-2512-s150
+  tags:
+  - llm_default
+  - model:mistral-large-2512
+  - mistral
+  - lechmazur
+  - constrained_prompt
+  source: Lechmazur writing benchmark, story 150 (mistral-large-2512)
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-mistral-large-2512-s150.txt
+  category: defaults
+- id: lechmazur-llama4-maverick-s50
+  tags:
+  - llm_default
+  - model:llama4-maverick
+  - meta
+  - lechmazur
+  - constrained_prompt
+  source: Lechmazur writing benchmark, story 50 (llama4-maverick)
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-llama4-maverick-s50.txt
+  category: defaults
+- id: lechmazur-llama4-maverick-s150
+  tags:
+  - llm_default
+  - model:llama4-maverick
+  - meta
+  - lechmazur
+  - constrained_prompt
+  source: Lechmazur writing benchmark, story 150 (llama4-maverick)
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-llama4-maverick-s150.txt
+  category: defaults
+- id: lechmazur-claude-opus-4-1-s50
+  tags:
+  - llm_default
+  - model:claude-opus-4-1
+  - anthropic
+  - lechmazur
+  - constrained_prompt
+  source: Lechmazur writing benchmark, story 50 (claude-opus-4-1)
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-claude-opus-4-1-s50.txt
+  category: defaults
+- id: lechmazur-claude-opus-4-1-s150
+  tags:
+  - llm_default
+  - model:claude-opus-4-1
+  - anthropic
+  - lechmazur
+  - constrained_prompt
+  source: Lechmazur writing benchmark, story 150 (claude-opus-4-1)
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-claude-opus-4-1-s150.txt
+  category: defaults
+- id: lechmazur-claude-opus-4-5-16K-s50
+  tags:
+  - llm_default
+  - model:claude-opus-4-5-16K
+  - anthropic
+  - lechmazur
+  - constrained_prompt
+  source: Lechmazur writing benchmark, story 50 (claude-opus-4-5-16K)
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-claude-opus-4-5-16K-s50.txt
+  category: defaults
+- id: lechmazur-claude-opus-4-5-16K-s150
+  tags:
+  - llm_default
+  - model:claude-opus-4-5-16K
+  - anthropic
+  - lechmazur
+  - constrained_prompt
+  source: Lechmazur writing benchmark, story 150 (claude-opus-4-5-16K)
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-claude-opus-4-5-16K-s150.txt
+  category: defaults
+- id: lechmazur-claude-opus-4-6-16K-s50
+  tags:
+  - llm_default
+  - model:claude-opus-4-6-16K
+  - anthropic
+  - lechmazur
+  - constrained_prompt
+  source: Lechmazur writing benchmark, story 50 (claude-opus-4-6-16K)
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-claude-opus-4-6-16K-s50.txt
+  category: defaults
+- id: lechmazur-claude-opus-4-6-16K-s150
+  tags:
+  - llm_default
+  - model:claude-opus-4-6-16K
+  - anthropic
+  - lechmazur
+  - constrained_prompt
+  source: Lechmazur writing benchmark, story 150 (claude-opus-4-6-16K)
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-claude-opus-4-6-16K-s150.txt
+  category: defaults
+- id: lechmazur-claude-sonnet-4-5-16K-s50
+  tags:
+  - llm_default
+  - model:claude-sonnet-4-5-16K
+  - anthropic
+  - lechmazur
+  - constrained_prompt
+  source: Lechmazur writing benchmark, story 50 (claude-sonnet-4-5-16K)
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-claude-sonnet-4-5-16K-s50.txt
+  category: defaults
+- id: lechmazur-claude-sonnet-4-5-16K-s150
+  tags:
+  - llm_default
+  - model:claude-sonnet-4-5-16K
+  - anthropic
+  - lechmazur
+  - constrained_prompt
+  source: Lechmazur writing benchmark, story 150 (claude-sonnet-4-5-16K)
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-claude-sonnet-4-5-16K-s150.txt
+  category: defaults
+- id: lechmazur-command-a-s50
+  tags:
+  - llm_default
+  - model:command-a
+  - cohere
+  - lechmazur
+  - constrained_prompt
+  source: Lechmazur writing benchmark, story 50 (command-a)
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-command-a-s50.txt
+  category: defaults
+- id: lechmazur-command-a-s150
+  tags:
+  - llm_default
+  - model:command-a
+  - cohere
+  - lechmazur
+  - constrained_prompt
+  source: Lechmazur writing benchmark, story 150 (command-a)
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-command-a-s150.txt
+  category: defaults
+- id: lechmazur-ernie-4-5-300b-s50
+  tags:
+  - llm_default
+  - model:ernie-4-5-300b
+  - baidu
+  - lechmazur
+  - constrained_prompt
+  source: Lechmazur writing benchmark, story 50 (ernie-4-5-300b)
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-ernie-4-5-300b-s50.txt
+  category: defaults
+- id: lechmazur-ernie-4-5-300b-s150
+  tags:
+  - llm_default
+  - model:ernie-4-5-300b
+  - baidu
+  - lechmazur
+  - constrained_prompt
+  source: Lechmazur writing benchmark, story 150 (ernie-4-5-300b)
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-ernie-4-5-300b-s150.txt
+  category: defaults
+- id: lechmazur-gemini-2-5-pro-lechmazur-s50
+  tags:
+  - llm_default
+  - model:gemini-2-5-pro-lechmazur
+  - google
+  - lechmazur
+  - constrained_prompt
+  source: Lechmazur writing benchmark, story 50 (gemini-2-5-pro-lechmazur)
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-gemini-2-5-pro-lechmazur-s50.txt
+  category: defaults
+- id: lechmazur-gemini-2-5-pro-lechmazur-s150
+  tags:
+  - llm_default
+  - model:gemini-2-5-pro-lechmazur
+  - google
+  - lechmazur
+  - constrained_prompt
+  source: Lechmazur writing benchmark, story 150 (gemini-2-5-pro-lechmazur)
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-gemini-2-5-pro-lechmazur-s150.txt
+  category: defaults
+- id: lechmazur-glm-4-5-s50
+  tags:
+  - llm_default
+  - model:glm-4-5
+  - zhipu
+  - lechmazur
+  - constrained_prompt
+  source: Lechmazur writing benchmark, story 50 (glm-4-5)
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-glm-4-5-s50.txt
+  category: defaults
+- id: lechmazur-glm-4-5-s150
+  tags:
+  - llm_default
+  - model:glm-4-5
+  - zhipu
+  - lechmazur
+  - constrained_prompt
+  source: Lechmazur writing benchmark, story 150 (glm-4-5)
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-glm-4-5-s150.txt
+  category: defaults
+- id: lechmazur-gpt-5-medium-s50
+  tags:
+  - llm_default
+  - model:gpt-5-medium
+  - openai
+  - lechmazur
+  - constrained_prompt
+  source: Lechmazur writing benchmark, story 50 (gpt-5-medium)
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-gpt-5-medium-s50.txt
+  category: defaults
+- id: lechmazur-gpt-5-medium-s150
+  tags:
+  - llm_default
+  - model:gpt-5-medium
+  - openai
+  - lechmazur
+  - constrained_prompt
+  source: Lechmazur writing benchmark, story 150 (gpt-5-medium)
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-gpt-5-medium-s150.txt
+  category: defaults
+- id: lechmazur-gpt-5-1-medium-s50
+  tags:
+  - llm_default
+  - model:gpt-5-1-medium
+  - openai
+  - lechmazur
+  - constrained_prompt
+  source: Lechmazur writing benchmark, story 50 (gpt-5-1-medium)
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-gpt-5-1-medium-s50.txt
+  category: defaults
+- id: lechmazur-gpt-5-1-medium-s150
+  tags:
+  - llm_default
+  - model:gpt-5-1-medium
+  - openai
+  - lechmazur
+  - constrained_prompt
+  source: Lechmazur writing benchmark, story 150 (gpt-5-1-medium)
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-gpt-5-1-medium-s150.txt
+  category: defaults
+- id: lechmazur-gpt-oss-120b-s50
+  tags:
+  - llm_default
+  - model:gpt-oss-120b
+  - openai
+  - lechmazur
+  - constrained_prompt
+  source: Lechmazur writing benchmark, story 50 (gpt-oss-120b)
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-gpt-oss-120b-s50.txt
+  category: defaults
+- id: lechmazur-gpt-oss-120b-s150
+  tags:
+  - llm_default
+  - model:gpt-oss-120b
+  - openai
+  - lechmazur
+  - constrained_prompt
+  source: Lechmazur writing benchmark, story 150 (gpt-oss-120b)
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-gpt-oss-120b-s150.txt
+  category: defaults
+- id: lechmazur-kimi-k2-0905-s50
+  tags:
+  - llm_default
+  - model:kimi-k2-0905
+  - moonshot
+  - lechmazur
+  - constrained_prompt
+  source: Lechmazur writing benchmark, story 50 (kimi-k2-0905)
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-kimi-k2-0905-s50.txt
+  category: defaults
+- id: lechmazur-kimi-k2-0905-s150
+  tags:
+  - llm_default
+  - model:kimi-k2-0905
+  - moonshot
+  - lechmazur
+  - constrained_prompt
+  source: Lechmazur writing benchmark, story 150 (kimi-k2-0905)
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-kimi-k2-0905-s150.txt
+  category: defaults
+- id: lechmazur-kimi-k2-5-s50
+  tags:
+  - llm_default
+  - model:kimi-k2-5
+  - moonshot
+  - lechmazur
+  - constrained_prompt
+  source: Lechmazur writing benchmark, story 50 (kimi-k2-5)
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-kimi-k2-5-s50.txt
+  category: defaults
+- id: lechmazur-kimi-k2-5-s150
+  tags:
+  - llm_default
+  - model:kimi-k2-5
+  - moonshot
+  - lechmazur
+  - constrained_prompt
+  source: Lechmazur writing benchmark, story 150 (kimi-k2-5)
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-kimi-k2-5-s150.txt
+  category: defaults
+- id: lechmazur-minimax-m2-1-s50
+  tags:
+  - llm_default
+  - model:minimax-m2-1
+  - minimax
+  - lechmazur
+  - constrained_prompt
+  source: Lechmazur writing benchmark, story 50 (minimax-m2-1)
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-minimax-m2-1-s50.txt
+  category: defaults
+- id: lechmazur-minimax-m2-1-s150
+  tags:
+  - llm_default
+  - model:minimax-m2-1
+  - minimax
+  - lechmazur
+  - constrained_prompt
+  source: Lechmazur writing benchmark, story 150 (minimax-m2-1)
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-minimax-m2-1-s150.txt
+  category: defaults
+- id: lechmazur-mistral-medium-2508-s50
+  tags:
+  - llm_default
+  - model:mistral-medium-2508
+  - mistral
+  - lechmazur
+  - constrained_prompt
+  source: Lechmazur writing benchmark, story 50 (mistral-medium-2508)
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-mistral-medium-2508-s50.txt
+  category: defaults
+- id: lechmazur-mistral-medium-2508-s150
+  tags:
+  - llm_default
+  - model:mistral-medium-2508
+  - mistral
+  - lechmazur
+  - constrained_prompt
+  source: Lechmazur writing benchmark, story 150 (mistral-medium-2508)
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-mistral-medium-2508-s150.txt
+  category: defaults
+- id: lechmazur-qwen3-max-preview-s50
+  tags:
+  - llm_default
+  - model:qwen3-max-preview
+  - alibaba
+  - lechmazur
+  - constrained_prompt
+  source: Lechmazur writing benchmark, story 50 (qwen3-max-preview)
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-qwen3-max-preview-s50.txt
+  category: defaults
+- id: lechmazur-qwen3-max-preview-s150
+  tags:
+  - llm_default
+  - model:qwen3-max-preview
+  - alibaba
+  - lechmazur
+  - constrained_prompt
+  source: Lechmazur writing benchmark, story 150 (qwen3-max-preview)
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-qwen3-max-preview-s150.txt
+  category: defaults
+- id: crownelius-gemini-1-5-pro-00
+  tags:
+  - llm_default
+  - model:gemini-1-5-pro-crownelius
+  - google
+  - literary_prompted
+  source: Gemini 1.5 Pro — Crownelius/Creative-Writing-Gemini3Pro-2700x ('Diamond Quality' literary prompting)
+  license: research_fair_use
+  url: https://huggingface.co/datasets/crownelius/Creative-Writing-Gemini3Pro-2700x
+  text_file: passages/defaults/crownelius-gemini-1-5-pro-00.txt
+  category: defaults
+- id: crownelius-gemini-1-5-pro-01
+  tags:
+  - llm_default
+  - model:gemini-1-5-pro-crownelius
+  - google
+  - literary_prompted
+  source: Gemini 1.5 Pro — Crownelius/Creative-Writing-Gemini3Pro-2700x ('Diamond Quality' literary prompting)
+  license: research_fair_use
+  url: https://huggingface.co/datasets/crownelius/Creative-Writing-Gemini3Pro-2700x
+  text_file: passages/defaults/crownelius-gemini-1-5-pro-01.txt
+  category: defaults
+- id: crownelius-gemini-1-5-pro-02
+  tags:
+  - llm_default
+  - model:gemini-1-5-pro-crownelius
+  - google
+  - literary_prompted
+  source: Gemini 1.5 Pro — Crownelius/Creative-Writing-Gemini3Pro-2700x ('Diamond Quality' literary prompting)
+  license: research_fair_use
+  url: https://huggingface.co/datasets/crownelius/Creative-Writing-Gemini3Pro-2700x
+  text_file: passages/defaults/crownelius-gemini-1-5-pro-02.txt
+  category: defaults
+- id: crownelius-gemini-1-5-pro-03
+  tags:
+  - llm_default
+  - model:gemini-1-5-pro-crownelius
+  - google
+  - literary_prompted
+  source: Gemini 1.5 Pro — Crownelius/Creative-Writing-Gemini3Pro-2700x ('Diamond Quality' literary prompting)
+  license: research_fair_use
+  url: https://huggingface.co/datasets/crownelius/Creative-Writing-Gemini3Pro-2700x
+  text_file: passages/defaults/crownelius-gemini-1-5-pro-03.txt
+  category: defaults
+- id: crownelius-gemini-1-5-pro-04
+  tags:
+  - llm_default
+  - model:gemini-1-5-pro-crownelius
+  - google
+  - literary_prompted
+  source: Gemini 1.5 Pro — Crownelius/Creative-Writing-Gemini3Pro-2700x ('Diamond Quality' literary prompting)
+  license: research_fair_use
+  url: https://huggingface.co/datasets/crownelius/Creative-Writing-Gemini3Pro-2700x
+  text_file: passages/defaults/crownelius-gemini-1-5-pro-04.txt
+  category: defaults
+- id: n8programs-gpt-4-00
+  tags:
+  - llm_default
+  - model:gpt-4-n8programs
+  - openai
+  - creative_writing
+  source: GPT-4 — N8Programs/CreativeGPT (creative writing prompts)
+  license: research_fair_use
+  url: https://huggingface.co/datasets/N8Programs/CreativeGPT
+  text_file: passages/defaults/n8programs-gpt-4-00.txt
+  category: defaults
+- id: n8programs-gpt-4-01
+  tags:
+  - llm_default
+  - model:gpt-4-n8programs
+  - openai
+  - creative_writing
+  source: GPT-4 — N8Programs/CreativeGPT (creative writing prompts)
+  license: research_fair_use
+  url: https://huggingface.co/datasets/N8Programs/CreativeGPT
+  text_file: passages/defaults/n8programs-gpt-4-01.txt
+  category: defaults
+- id: n8programs-gpt-4-02
+  tags:
+  - llm_default
+  - model:gpt-4-n8programs
+  - openai
+  - creative_writing
+  source: GPT-4 — N8Programs/CreativeGPT (creative writing prompts)
+  license: research_fair_use
+  url: https://huggingface.co/datasets/N8Programs/CreativeGPT
+  text_file: passages/defaults/n8programs-gpt-4-02.txt
+  category: defaults
+- id: n8programs-gpt-4-03
+  tags:
+  - llm_default
+  - model:gpt-4-n8programs
+  - openai
+  - creative_writing
+  source: GPT-4 — N8Programs/CreativeGPT (creative writing prompts)
+  license: research_fair_use
+  url: https://huggingface.co/datasets/N8Programs/CreativeGPT
+  text_file: passages/defaults/n8programs-gpt-4-03.txt
+  category: defaults
+- id: n8programs-gpt-4-04
+  tags:
+  - llm_default
+  - model:gpt-4-n8programs
+  - openai
+  - creative_writing
+  source: GPT-4 — N8Programs/CreativeGPT (creative writing prompts)
+  license: research_fair_use
+  url: https://huggingface.co/datasets/N8Programs/CreativeGPT
+  text_file: passages/defaults/n8programs-gpt-4-04.txt
+  category: defaults
+- id: lars-command-r-2024-00
+  tags:
+  - llm_default
+  - model:command-r-2024
+  - cohere
+  - open_source
+  - lars1234_benchmark
+  source: AMead10/c4ai-command-r-08-2024-awq — lars1234/story_writing_benchmark (MIT)
+  license: mit
+  url: https://huggingface.co/datasets/lars1234/story_writing_benchmark
+  text_file: passages/defaults/lars-command-r-2024-00.txt
+  category: defaults
+- id: lars-command-r-2024-01
+  tags:
+  - llm_default
+  - model:command-r-2024
+  - cohere
+  - open_source
+  - lars1234_benchmark
+  source: AMead10/c4ai-command-r-08-2024-awq — lars1234/story_writing_benchmark (MIT)
+  license: mit
+  url: https://huggingface.co/datasets/lars1234/story_writing_benchmark
+  text_file: passages/defaults/lars-command-r-2024-01.txt
+  category: defaults
+- id: lars-mistral-nemo-12b-00
+  tags:
+  - llm_default
+  - model:mistral-nemo-12b
+  - mistral
+  - open_source
+  - lars1234_benchmark
+  source: casperhansen/mistral-nemo-instruct-2407-awq — lars1234/story_writing_benchmark (MIT)
+  license: mit
+  url: https://huggingface.co/datasets/lars1234/story_writing_benchmark
+  text_file: passages/defaults/lars-mistral-nemo-12b-00.txt
+  category: defaults
+- id: lars-mistral-nemo-12b-01
+  tags:
+  - llm_default
+  - model:mistral-nemo-12b
+  - mistral
+  - open_source
+  - lars1234_benchmark
+  source: casperhansen/mistral-nemo-instruct-2407-awq — lars1234/story_writing_benchmark (MIT)
+  license: mit
+  url: https://huggingface.co/datasets/lars1234/story_writing_benchmark
+  text_file: passages/defaults/lars-mistral-nemo-12b-01.txt
+  category: defaults
+- id: lars-supernova-medius-00
+  tags:
+  - llm_default
+  - model:supernova-medius
+  - community
+  - open_source
+  - lars1234_benchmark
+  source: AMead10/SuperNova-Medius-AWQ — lars1234/story_writing_benchmark (MIT)
+  license: mit
+  url: https://huggingface.co/datasets/lars1234/story_writing_benchmark
+  text_file: passages/defaults/lars-supernova-medius-00.txt
+  category: defaults
+- id: lars-supernova-medius-01
+  tags:
+  - llm_default
+  - model:supernova-medius
+  - community
+  - open_source
+  - lars1234_benchmark
+  source: AMead10/SuperNova-Medius-AWQ — lars1234/story_writing_benchmark (MIT)
+  license: mit
+  url: https://huggingface.co/datasets/lars1234/story_writing_benchmark
+  text_file: passages/defaults/lars-supernova-medius-01.txt
+  category: defaults
+- id: lars-hermes-3-llama-3-8b-00
+  tags:
+  - llm_default
+  - model:hermes-3-llama-3-8b
+  - nousresearch
+  - open_source
+  - lars1234_benchmark
+  source: solidrust/Hermes-3-Llama-3.1-8B-AWQ — lars1234/story_writing_benchmark (MIT)
+  license: mit
+  url: https://huggingface.co/datasets/lars1234/story_writing_benchmark
+  text_file: passages/defaults/lars-hermes-3-llama-3-8b-00.txt
+  category: defaults
+- id: lars-hermes-3-llama-3-8b-01
+  tags:
+  - llm_default
+  - model:hermes-3-llama-3-8b
+  - nousresearch
+  - open_source
+  - lars1234_benchmark
+  source: solidrust/Hermes-3-Llama-3.1-8B-AWQ — lars1234/story_writing_benchmark (MIT)
+  license: mit
+  url: https://huggingface.co/datasets/lars1234/story_writing_benchmark
+  text_file: passages/defaults/lars-hermes-3-llama-3-8b-01.txt
+  category: defaults
+- id: lars-gemma-2-9b-sppo-00
+  tags:
+  - llm_default
+  - model:gemma-2-9b-sppo
+  - community
+  - open_source
+  - lars1234_benchmark
+  source: harborwater/Gemma-2-9B-It-SPPO-Iter3-AWQ — lars1234/story_writing_benchmark (MIT)
+  license: mit
+  url: https://huggingface.co/datasets/lars1234/story_writing_benchmark
+  text_file: passages/defaults/lars-gemma-2-9b-sppo-00.txt
+  category: defaults
+- id: lars-gemma-2-9b-sppo-01
+  tags:
+  - llm_default
+  - model:gemma-2-9b-sppo
+  - community
+  - open_source
+  - lars1234_benchmark
+  source: harborwater/Gemma-2-9B-It-SPPO-Iter3-AWQ — lars1234/story_writing_benchmark (MIT)
+  license: mit
+  url: https://huggingface.co/datasets/lars1234/story_writing_benchmark
+  text_file: passages/defaults/lars-gemma-2-9b-sppo-01.txt
+  category: defaults
+- id: lars-mistral-small-24b-00
+  tags:
+  - llm_default
+  - model:mistral-small-24b
+  - mistral
+  - open_source
+  - lars1234_benchmark
+  source: stelterlab/Mistral-Small-24B-Instruct-2501-AWQ — lars1234/story_writing_benchmark (MIT)
+  license: mit
+  url: https://huggingface.co/datasets/lars1234/story_writing_benchmark
+  text_file: passages/defaults/lars-mistral-small-24b-00.txt
+  category: defaults
+- id: lars-mistral-small-24b-01
+  tags:
+  - llm_default
+  - model:mistral-small-24b
+  - mistral
+  - open_source
+  - lars1234_benchmark
+  source: stelterlab/Mistral-Small-24B-Instruct-2501-AWQ — lars1234/story_writing_benchmark (MIT)
+  license: mit
+  url: https://huggingface.co/datasets/lars1234/story_writing_benchmark
+  text_file: passages/defaults/lars-mistral-small-24b-01.txt
+  category: defaults
+- id: lars-llama-3-1-8b-00
+  tags:
+  - llm_default
+  - model:llama-3-1-8b
+  - meta
+  - open_source
+  - lars1234_benchmark
+  source: hugging-quants/Meta-Llama-3.1-8B-Instruct-AWQ-INT4 — lars1234/story_writing_benchmark (MIT)
+  license: mit
+  url: https://huggingface.co/datasets/lars1234/story_writing_benchmark
+  text_file: passages/defaults/lars-llama-3-1-8b-00.txt
+  category: defaults
+- id: lars-llama-3-1-8b-01
+  tags:
+  - llm_default
+  - model:llama-3-1-8b
+  - meta
+  - open_source
+  - lars1234_benchmark
+  source: hugging-quants/Meta-Llama-3.1-8B-Instruct-AWQ-INT4 — lars1234/story_writing_benchmark (MIT)
+  license: mit
+  url: https://huggingface.co/datasets/lars1234/story_writing_benchmark
+  text_file: passages/defaults/lars-llama-3-1-8b-01.txt
+  category: defaults
+- id: lars-aya-23-8b-00
+  tags:
+  - llm_default
+  - model:aya-23-8b
+  - cohere
+  - open_source
+  - lars1234_benchmark
+  source: alijawad07/aya-23-8B-AWQ-GEMM — lars1234/story_writing_benchmark (MIT)
+  license: mit
+  url: https://huggingface.co/datasets/lars1234/story_writing_benchmark
+  text_file: passages/defaults/lars-aya-23-8b-00.txt
+  category: defaults
+- id: lars-aya-23-8b-01
+  tags:
+  - llm_default
+  - model:aya-23-8b
+  - cohere
+  - open_source
+  - lars1234_benchmark
+  source: alijawad07/aya-23-8B-AWQ-GEMM — lars1234/story_writing_benchmark (MIT)
+  license: mit
+  url: https://huggingface.co/datasets/lars1234/story_writing_benchmark
+  text_file: passages/defaults/lars-aya-23-8b-01.txt
+  category: defaults
+- id: lars-arcee-blitz-00
+  tags:
+  - llm_default
+  - model:arcee-blitz
+  - community
+  - open_source
+  - lars1234_benchmark
+  source: arcee-ai/Arcee-Blitz-AWQ — lars1234/story_writing_benchmark (MIT)
+  license: mit
+  url: https://huggingface.co/datasets/lars1234/story_writing_benchmark
+  text_file: passages/defaults/lars-arcee-blitz-00.txt
+  category: defaults
+- id: lars-arcee-blitz-01
+  tags:
+  - llm_default
+  - model:arcee-blitz
+  - community
+  - open_source
+  - lars1234_benchmark
+  source: arcee-ai/Arcee-Blitz-AWQ — lars1234/story_writing_benchmark (MIT)
+  license: mit
+  url: https://huggingface.co/datasets/lars1234/story_writing_benchmark
+  text_file: passages/defaults/lars-arcee-blitz-01.txt
+  category: defaults
+- id: lars-phi-4-14b-00
+  tags:
+  - llm_default
+  - model:phi-4-14b
+  - microsoft
+  - open_source
+  - lars1234_benchmark
+  source: stelterlab/phi-4-AWQ — lars1234/story_writing_benchmark (MIT)
+  license: mit
+  url: https://huggingface.co/datasets/lars1234/story_writing_benchmark
+  text_file: passages/defaults/lars-phi-4-14b-00.txt
+  category: defaults
+- id: lars-phi-4-14b-01
+  tags:
+  - llm_default
+  - model:phi-4-14b
+  - microsoft
+  - open_source
+  - lars1234_benchmark
+  source: stelterlab/phi-4-AWQ — lars1234/story_writing_benchmark (MIT)
+  license: mit
+  url: https://huggingface.co/datasets/lars1234/story_writing_benchmark
+  text_file: passages/defaults/lars-phi-4-14b-01.txt
+  category: defaults
+- id: lars-gemma-2-ataraxy-9b-00
+  tags:
+  - llm_default
+  - model:gemma-2-ataraxy-9b
+  - community
+  - open_source
+  - lars1234_benchmark
+  source: solidrust/Gemma-2-Ataraxy-9B-AWQ — lars1234/story_writing_benchmark (MIT)
+  license: mit
+  url: https://huggingface.co/datasets/lars1234/story_writing_benchmark
+  text_file: passages/defaults/lars-gemma-2-ataraxy-9b-00.txt
+  category: defaults
+- id: lars-gemma-2-ataraxy-9b-01
+  tags:
+  - llm_default
+  - model:gemma-2-ataraxy-9b
+  - community
+  - open_source
+  - lars1234_benchmark
+  source: solidrust/Gemma-2-Ataraxy-9B-AWQ — lars1234/story_writing_benchmark (MIT)
+  license: mit
+  url: https://huggingface.co/datasets/lars1234/story_writing_benchmark
+  text_file: passages/defaults/lars-gemma-2-ataraxy-9b-01.txt
+  category: defaults
+- id: lars-aya-expanse-8b-00
+  tags:
+  - llm_default
+  - model:aya-expanse-8b
+  - cohere
+  - open_source
+  - lars1234_benchmark
+  source: Orion-zhen/aya-expanse-8b-AWQ — lars1234/story_writing_benchmark (MIT)
+  license: mit
+  url: https://huggingface.co/datasets/lars1234/story_writing_benchmark
+  text_file: passages/defaults/lars-aya-expanse-8b-00.txt
+  category: defaults
+- id: lars-aya-expanse-8b-01
+  tags:
+  - llm_default
+  - model:aya-expanse-8b
+  - cohere
+  - open_source
+  - lars1234_benchmark
+  source: Orion-zhen/aya-expanse-8b-AWQ — lars1234/story_writing_benchmark (MIT)
+  license: mit
+  url: https://huggingface.co/datasets/lars1234/story_writing_benchmark
+  text_file: passages/defaults/lars-aya-expanse-8b-01.txt
+  category: defaults
+- id: stoker-dracula-s0
+  tags:
+  - literary
+  - victorian
+  - gothic_horror
+  - epistolary
+  - frame_narrative
+  source: Stoker, *Dracula* (1897)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/345
+  text_file: passages/exemplars/stoker-dracula-s0.txt
+  category: exemplars
+- id: stoker-dracula-s1
+  tags:
+  - literary
+  - victorian
+  - gothic_horror
+  - epistolary
+  - frame_narrative
+  source: Stoker, *Dracula* (1897) (sample 1)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/345
+  text_file: passages/exemplars/stoker-dracula-s1.txt
+  category: exemplars
+- id: stevenson-jekyll-hyde-s0
+  tags:
+  - literary
+  - victorian
+  - gothic
+  - third_person
+  - frame_narrative
+  source: Stevenson, *Strange Case of Dr Jekyll and Mr Hyde* (1886)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/43
+  text_file: passages/exemplars/stevenson-jekyll-hyde-s0.txt
+  category: exemplars
+- id: lefanu-carmilla-s0
+  tags:
+  - literary
+  - victorian
+  - gothic
+  - first_person
+  - vampire_proto
+  source: Le Fanu, *Carmilla* (1872)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/10007
+  text_file: passages/exemplars/lefanu-carmilla-s0.txt
+  category: exemplars
+- id: lefanu-carmilla-s1
+  tags:
+  - literary
+  - victorian
+  - gothic
+  - first_person
+  - vampire_proto
+  source: Le Fanu, *Carmilla* (1872) (sample 1)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/10007
+  text_file: passages/exemplars/lefanu-carmilla-s1.txt
+  category: exemplars
+- id: lovecraft-cthulhu-s0
+  tags:
+  - literary
+  - early_modernist
+  - cosmic_horror
+  - first_person
+  - ornate
+  source: Lovecraft, *The Call of Cthulhu* (1928)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/68283
+  text_file: passages/exemplars/lovecraft-cthulhu-s0.txt
+  category: exemplars
+- id: mr-james-ghost-stories-s0
+  tags:
+  - literary
+  - victorian
+  - ghost_story
+  - third_person
+  - antiquarian
+  source: M.R. James, *Ghost Stories of an Antiquary* (1904)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/8486
+  text_file: passages/exemplars/mr-james-ghost-stories-s0.txt
+  category: exemplars
+- id: irving-sleepy-hollow-s0
+  tags:
+  - literary
+  - antebellum
+  - gothic
+  - third_person
+  - regional_american
+  source: Irving, *The Legend of Sleepy Hollow* (1820)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/41
+  text_file: passages/exemplars/irving-sleepy-hollow-s0.txt
+  category: exemplars
+- id: collins-moonstone-s0
+  tags:
+  - literary
+  - victorian
+  - sensation_novel
+  - first_person
+  - frame_narrative
+  source: Collins, *The Moonstone* (1868)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/155
+  text_file: passages/exemplars/collins-moonstone-s0.txt
+  category: exemplars
+- id: collins-moonstone-s1
+  tags:
+  - literary
+  - victorian
+  - sensation_novel
+  - first_person
+  - frame_narrative
+  source: Collins, *The Moonstone* (1868) (sample 1)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/155
+  text_file: passages/exemplars/collins-moonstone-s1.txt
+  category: exemplars
+- id: collins-woman-in-white-s0
+  tags:
+  - literary
+  - victorian
+  - sensation_novel
+  - first_person
+  - frame_narrative
+  source: Collins, *The Woman in White* (1859)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/583
+  text_file: passages/exemplars/collins-woman-in-white-s0.txt
+  category: exemplars
+- id: collins-woman-in-white-s1
+  tags:
+  - literary
+  - victorian
+  - sensation_novel
+  - first_person
+  - frame_narrative
+  source: Collins, *The Woman in White* (1859) (sample 1)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/583
+  text_file: passages/exemplars/collins-woman-in-white-s1.txt
+  category: exemplars
+- id: wharton-house-of-mirth-s0
+  tags:
+  - literary
+  - edwardian
+  - society_novel
+  - third_person
+  - ironic
+  source: Wharton, *The House of Mirth* (1905)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/284
+  text_file: passages/exemplars/wharton-house-of-mirth-s0.txt
+  category: exemplars
+- id: wharton-house-of-mirth-s1
+  tags:
+  - literary
+  - edwardian
+  - society_novel
+  - third_person
+  - ironic
+  source: Wharton, *The House of Mirth* (1905) (sample 1)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/284
+  text_file: passages/exemplars/wharton-house-of-mirth-s1.txt
+  category: exemplars
+- id: wharton-tales-men-ghosts-s0
+  tags:
+  - literary
+  - edwardian
+  - short_fiction
+  - supernatural
+  source: Wharton, *Tales of Men and Ghosts* (1910)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/4514
+  text_file: passages/exemplars/wharton-tales-men-ghosts-s0.txt
+  category: exemplars
+- id: wharton-tales-men-ghosts-s1
+  tags:
+  - literary
+  - edwardian
+  - short_fiction
+  - supernatural
+  source: Wharton, *Tales of Men and Ghosts* (1910) (sample 1)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/4514
+  text_file: passages/exemplars/wharton-tales-men-ghosts-s1.txt
+  category: exemplars
+- id: dreiser-sister-carrie-s0
+  tags:
+  - literary
+  - naturalist
+  - third_person
+  - american
+  - urban
+  source: Dreiser, *Sister Carrie* (1900)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/233
+  text_file: passages/exemplars/dreiser-sister-carrie-s0.txt
+  category: exemplars
+- id: cather-one-of-ours-s0
+  tags:
+  - literary
+  - early_modernist
+  - third_person
+  - american
+  - war_novel
+  source: Cather, *One of Ours* (1922)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/2369
+  text_file: passages/exemplars/cather-one-of-ours-s0.txt
+  category: exemplars
+- id: cather-one-of-ours-s1
+  tags:
+  - literary
+  - early_modernist
+  - third_person
+  - american
+  - war_novel
+  source: Cather, *One of Ours* (1922) (sample 1)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/2369
+  text_file: passages/exemplars/cather-one-of-ours-s1.txt
+  category: exemplars
+- id: hardy-tess-s0
+  tags:
+  - literary
+  - victorian
+  - naturalist
+  - third_person
+  - tragic
+  source: Hardy, *Tess of the d'Urbervilles* (1891)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/110
+  text_file: passages/exemplars/hardy-tess-s0.txt
+  category: exemplars
+- id: hardy-tess-s1
+  tags:
+  - literary
+  - victorian
+  - naturalist
+  - third_person
+  - tragic
+  source: Hardy, *Tess of the d'Urbervilles* (1891) (sample 1)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/110
+  text_file: passages/exemplars/hardy-tess-s1.txt
+  category: exemplars
+- id: trollope-phineas-finn-s0
+  tags:
+  - literary
+  - victorian
+  - third_person
+  - political_novel
+  source: Trollope, *Phineas Finn* (1869)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/18000
+  text_file: passages/exemplars/trollope-phineas-finn-s0.txt
+  category: exemplars
+- id: trollope-phineas-finn-s1
+  tags:
+  - literary
+  - victorian
+  - third_person
+  - political_novel
+  source: Trollope, *Phineas Finn* (1869) (sample 1)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/18000
+  text_file: passages/exemplars/trollope-phineas-finn-s1.txt
+  category: exemplars
+- id: stevenson-treasure-island-s0
+  tags:
+  - literary
+  - victorian
+  - adventure
+  - first_person
+  - youth_narrator
+  source: Stevenson, *Treasure Island* (1883)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/120
+  text_file: passages/exemplars/stevenson-treasure-island-s0.txt
+  category: exemplars
+- id: stevenson-treasure-island-s1
+  tags:
+  - literary
+  - victorian
+  - adventure
+  - first_person
+  - youth_narrator
+  source: Stevenson, *Treasure Island* (1883) (sample 1)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/120
+  text_file: passages/exemplars/stevenson-treasure-island-s1.txt
+  category: exemplars
+- id: burnett-secret-garden-s0
+  tags:
+  - literary
+  - edwardian
+  - childrens
+  - third_person
+  source: Burnett, *The Secret Garden* (1911)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/113
+  text_file: passages/exemplars/burnett-secret-garden-s0.txt
+  category: exemplars
+- id: verne-around-the-world-s0
+  tags:
+  - literary
+  - victorian
+  - adventure
+  - third_person
+  - scifi_ancestor
+  - french
+  source: Verne, *Around the World in Eighty Days* (1872, English trans.)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/103
+  text_file: passages/exemplars/verne-around-the-world-s0.txt
+  category: exemplars
+- id: verne-20k-leagues-s0
+  tags:
+  - literary
+  - victorian
+  - scifi_ancestor
+  - first_person
+  - french
+  source: Verne, *Twenty Thousand Leagues Under the Sea* (1869, English trans.)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/164
+  text_file: passages/exemplars/verne-20k-leagues-s0.txt
+  category: exemplars
+- id: verne-20k-leagues-s1
+  tags:
+  - literary
+  - victorian
+  - scifi_ancestor
+  - first_person
+  - french
+  source: Verne, *Twenty Thousand Leagues Under the Sea* (1869, English trans.) (sample 1)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/164
+  text_file: passages/exemplars/verne-20k-leagues-s1.txt
+  category: exemplars
+- id: dumas-three-musketeers-s0
+  tags:
+  - literary
+  - classical_realist
+  - adventure
+  - third_person
+  - french
+  source: Dumas, *The Three Musketeers* (1844, English trans.)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/1257
+  text_file: passages/exemplars/dumas-three-musketeers-s0.txt
+  category: exemplars
+- id: kipling-kim-s0
+  tags:
+  - literary
+  - edwardian
+  - third_person
+  - adventure
+  - imperial
+  source: Kipling, *Kim* (1901)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/2226
+  text_file: passages/exemplars/kipling-kim-s0.txt
+  category: exemplars
+- id: kipling-kim-s1
+  tags:
+  - literary
+  - edwardian
+  - third_person
+  - adventure
+  - imperial
+  source: Kipling, *Kim* (1901) (sample 1)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/2226
+  text_file: passages/exemplars/kipling-kim-s1.txt
+  category: exemplars
+- id: wells-war-of-worlds-s0
+  tags:
+  - literary
+  - scifi_ancestor
+  - first_person
+  - frame_narrative
+  source: Wells, *The War of the Worlds* (1898)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/36
+  text_file: passages/exemplars/wells-war-of-worlds-s0.txt
+  category: exemplars
+- id: wells-war-of-worlds-s1
+  tags:
+  - literary
+  - scifi_ancestor
+  - first_person
+  - frame_narrative
+  source: Wells, *The War of the Worlds* (1898) (sample 1)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/36
+  text_file: passages/exemplars/wells-war-of-worlds-s1.txt
+  category: exemplars
+- id: wells-invisible-man-s0
+  tags:
+  - literary
+  - scifi_ancestor
+  - third_person
+  - grotesque
+  source: Wells, *The Invisible Man* (1897)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/5230
+  text_file: passages/exemplars/wells-invisible-man-s0.txt
+  category: exemplars
+- id: wells-food-of-gods-s0
+  tags:
+  - literary
+  - scifi_ancestor
+  - third_person
+  - satirical
+  source: Wells, *The Food of the Gods* (1904)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/11696
+  text_file: passages/exemplars/wells-food-of-gods-s0.txt
+  category: exemplars
+- id: wells-food-of-gods-s1
+  tags:
+  - literary
+  - scifi_ancestor
+  - third_person
+  - satirical
+  source: Wells, *The Food of the Gods* (1904) (sample 1)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/11696
+  text_file: passages/exemplars/wells-food-of-gods-s1.txt
+  category: exemplars
+- id: saki-beasts-super-beasts-s0
+  tags:
+  - literary
+  - edwardian
+  - short_fiction
+  - comic
+  - ironic
+  source: Saki, *Beasts and Super-Beasts* (1914)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/269
+  text_file: passages/exemplars/saki-beasts-super-beasts-s0.txt
+  category: exemplars
+- id: saki-toys-of-peace-s0
+  tags:
+  - literary
+  - edwardian
+  - short_fiction
+  - comic
+  - ironic
+  source: Saki, *The Toys of Peace* (1919)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/1477
+  text_file: passages/exemplars/saki-toys-of-peace-s0.txt
+  category: exemplars
+- id: saki-reginald-s0
+  tags:
+  - literary
+  - edwardian
+  - short_fiction
+  - comic
+  - epigrammatic
+  source: Saki, *Reginald* (1904)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/2830
+  text_file: passages/exemplars/saki-reginald-s0.txt
+  category: exemplars
+- id: wodehouse-love-among-chickens-s0
+  tags:
+  - literary
+  - edwardian
+  - comic
+  - third_person
+  - british_humor
+  source: Wodehouse, *Love Among the Chickens* (1906)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/3829
+  text_file: passages/exemplars/wodehouse-love-among-chickens-s0.txt
+  category: exemplars
+- id: wodehouse-love-among-chickens-s1
+  tags:
+  - literary
+  - edwardian
+  - comic
+  - third_person
+  - british_humor
+  source: Wodehouse, *Love Among the Chickens* (1906) (sample 1)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/3829
+  text_file: passages/exemplars/wodehouse-love-among-chickens-s1.txt
+  category: exemplars
+- id: ohenry-four-million-s0
+  tags:
+  - literary
+  - edwardian
+  - short_fiction
+  - american
+  - twist_ending
+  source: O. Henry, *The Four Million* (1906)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/2776
+  text_file: passages/exemplars/ohenry-four-million-s0.txt
+  category: exemplars
+- id: twain-30000-bequest-s0
+  tags:
+  - literary
+  - edwardian
+  - short_fiction
+  - american
+  - satirical
+  source: Twain, *The $30,000 Bequest, and Other Stories* (1906)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/142
+  text_file: passages/exemplars/twain-30000-bequest-s0.txt
+  category: exemplars
+- id: twain-30000-bequest-s1
+  tags:
+  - literary
+  - edwardian
+  - short_fiction
+  - american
+  - satirical
+  source: Twain, *The $30,000 Bequest, and Other Stories* (1906) (sample 1)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/142
+  text_file: passages/exemplars/twain-30000-bequest-s1.txt
+  category: exemplars
+- id: dickens-golden-mary-s0
+  tags:
+  - literary
+  - victorian
+  - short_fiction
+  - frame_narrative
+  source: Dickens, *The Wreck of the Golden Mary* (1856)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/1465
+  text_file: passages/exemplars/dickens-golden-mary-s0.txt
+  category: exemplars
+- id: gogol-dead-souls-s0
+  tags:
+  - literary
+  - russian
+  - satire
+  - third_person
+  - comic
+  source: Gogol, *Dead Souls* (1842, English trans.)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/1081
+  text_file: passages/exemplars/gogol-dead-souls-s0.txt
+  category: exemplars
+- id: gogol-dead-souls-s1
+  tags:
+  - literary
+  - russian
+  - satire
+  - third_person
+  - comic
+  source: Gogol, *Dead Souls* (1842, English trans.) (sample 1)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/1081
+  text_file: passages/exemplars/gogol-dead-souls-s1.txt
+  category: exemplars
+- id: goncharov-oblomov-s0
+  tags:
+  - literary
+  - russian
+  - third_person
+  - psychological
+  - lethargy
+  source: Goncharov, *Oblomov* (1859, English trans.)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/54700
+  text_file: passages/exemplars/goncharov-oblomov-s0.txt
+  category: exemplars
+- id: goncharov-oblomov-s1
+  tags:
+  - literary
+  - russian
+  - third_person
+  - psychological
+  - lethargy
+  source: Goncharov, *Oblomov* (1859, English trans.) (sample 1)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/54700
+  text_file: passages/exemplars/goncharov-oblomov-s1.txt
+  category: exemplars
+- id: turgenev-fathers-children-s0
+  tags:
+  - literary
+  - russian
+  - third_person
+  - generational
+  source: Turgenev, *Fathers and Children* (1862, English trans.)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/30723
+  text_file: passages/exemplars/turgenev-fathers-children-s0.txt
+  category: exemplars
+- id: turgenev-fathers-children-s1
+  tags:
+  - literary
+  - russian
+  - third_person
+  - generational
+  source: Turgenev, *Fathers and Children* (1862, English trans.) (sample 1)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/30723
+  text_file: passages/exemplars/turgenev-fathers-children-s1.txt
+  category: exemplars
+- id: doyle-valley-of-fear-s0
+  tags:
+  - literary
+  - victorian
+  - detective
+  - third_person
+  - frame_narrative
+  source: Conan Doyle, *The Valley of Fear* (1915)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/3776
+  text_file: passages/exemplars/doyle-valley-of-fear-s0.txt
+  category: exemplars
+- id: doyle-valley-of-fear-s1
+  tags:
+  - literary
+  - victorian
+  - detective
+  - third_person
+  - frame_narrative
+  source: Conan Doyle, *The Valley of Fear* (1915) (sample 1)
+  license: public_domain
+  url: https://www.gutenberg.org/ebooks/3776
+  text_file: passages/exemplars/doyle-valley-of-fear-s1.txt
+  category: exemplars
+- id: lechmazur-claude-opus-4-1-s0
+  tags:
+  - llm_default
+  - model:claude-opus-4-1
+  - anthropic
+  - lechmazur
+  - constrained_prompt
+  source: Claude Opus 4.1 (Anthropic) — Lechmazur writing benchmark, story 0
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-claude-opus-4-1-s0.txt
+  category: defaults
+- id: lechmazur-claude-opus-4-1-s100
+  tags:
+  - llm_default
+  - model:claude-opus-4-1
+  - anthropic
+  - lechmazur
+  - constrained_prompt
+  source: Claude Opus 4.1 (Anthropic) — Lechmazur writing benchmark, story 100
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-claude-opus-4-1-s100.txt
+  category: defaults
+- id: lechmazur-claude-opus-4-1-s200
+  tags:
+  - llm_default
+  - model:claude-opus-4-1
+  - anthropic
+  - lechmazur
+  - constrained_prompt
+  source: Claude Opus 4.1 (Anthropic) — Lechmazur writing benchmark, story 200
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-claude-opus-4-1-s200.txt
+  category: defaults
+- id: lechmazur-claude-opus-4-5-16K-s0
+  tags:
+  - llm_default
+  - model:claude-opus-4-5-16K
+  - anthropic
+  - lechmazur
+  - constrained_prompt
+  source: Claude Opus 4.5 (Anthropic, 16K reasoning) — Lechmazur writing benchmark, story 0
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-claude-opus-4-5-16K-s0.txt
+  category: defaults
+- id: lechmazur-claude-opus-4-5-16K-s100
+  tags:
+  - llm_default
+  - model:claude-opus-4-5-16K
+  - anthropic
+  - lechmazur
+  - constrained_prompt
+  source: Claude Opus 4.5 (Anthropic, 16K reasoning) — Lechmazur writing benchmark, story 100
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-claude-opus-4-5-16K-s100.txt
+  category: defaults
+- id: lechmazur-claude-opus-4-5-16K-s200
+  tags:
+  - llm_default
+  - model:claude-opus-4-5-16K
+  - anthropic
+  - lechmazur
+  - constrained_prompt
+  source: Claude Opus 4.5 (Anthropic, 16K reasoning) — Lechmazur writing benchmark, story 200
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-claude-opus-4-5-16K-s200.txt
+  category: defaults
+- id: lechmazur-claude-opus-4-6-16K-s0
+  tags:
+  - llm_default
+  - model:claude-opus-4-6-16K
+  - anthropic
+  - lechmazur
+  - constrained_prompt
+  source: Claude Opus 4.6 (Anthropic, 16K reasoning) — Lechmazur writing benchmark, story 0
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-claude-opus-4-6-16K-s0.txt
+  category: defaults
+- id: lechmazur-claude-opus-4-6-16K-s100
+  tags:
+  - llm_default
+  - model:claude-opus-4-6-16K
+  - anthropic
+  - lechmazur
+  - constrained_prompt
+  source: Claude Opus 4.6 (Anthropic, 16K reasoning) — Lechmazur writing benchmark, story 100
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-claude-opus-4-6-16K-s100.txt
+  category: defaults
+- id: lechmazur-claude-opus-4-6-16K-s200
+  tags:
+  - llm_default
+  - model:claude-opus-4-6-16K
+  - anthropic
+  - lechmazur
+  - constrained_prompt
+  source: Claude Opus 4.6 (Anthropic, 16K reasoning) — Lechmazur writing benchmark, story 200
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-claude-opus-4-6-16K-s200.txt
+  category: defaults
+- id: lechmazur-claude-sonnet-4-5-16K-s0
+  tags:
+  - llm_default
+  - model:claude-sonnet-4-5-16K
+  - anthropic
+  - lechmazur
+  - constrained_prompt
+  source: Claude Sonnet 4.5 (Anthropic, 16K reasoning) — Lechmazur writing benchmark, story 0
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-claude-sonnet-4-5-16K-s0.txt
+  category: defaults
+- id: lechmazur-claude-sonnet-4-5-16K-s100
+  tags:
+  - llm_default
+  - model:claude-sonnet-4-5-16K
+  - anthropic
+  - lechmazur
+  - constrained_prompt
+  source: Claude Sonnet 4.5 (Anthropic, 16K reasoning) — Lechmazur writing benchmark, story 100
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-claude-sonnet-4-5-16K-s100.txt
+  category: defaults
+- id: lechmazur-claude-sonnet-4-5-16K-s200
+  tags:
+  - llm_default
+  - model:claude-sonnet-4-5-16K
+  - anthropic
+  - lechmazur
+  - constrained_prompt
+  source: Claude Sonnet 4.5 (Anthropic, 16K reasoning) — Lechmazur writing benchmark, story 200
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-claude-sonnet-4-5-16K-s200.txt
+  category: defaults
+- id: lechmazur-command-a-s0
+  tags:
+  - llm_default
+  - model:command-a
+  - cohere
+  - lechmazur
+  - constrained_prompt
+  source: Command A (Cohere) — Lechmazur writing benchmark, story 0
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-command-a-s0.txt
+  category: defaults
+- id: lechmazur-command-a-s100
+  tags:
+  - llm_default
+  - model:command-a
+  - cohere
+  - lechmazur
+  - constrained_prompt
+  source: Command A (Cohere) — Lechmazur writing benchmark, story 100
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-command-a-s100.txt
+  category: defaults
+- id: lechmazur-command-a-s200
+  tags:
+  - llm_default
+  - model:command-a
+  - cohere
+  - lechmazur
+  - constrained_prompt
+  source: Command A (Cohere) — Lechmazur writing benchmark, story 200
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-command-a-s200.txt
+  category: defaults
+- id: lechmazur-ernie-4-5-300b-s0
+  tags:
+  - llm_default
+  - model:ernie-4-5-300b
+  - baidu
+  - lechmazur
+  - constrained_prompt
+  source: Ernie 4.5 300B A47B (Baidu) — Lechmazur writing benchmark, story 0
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-ernie-4-5-300b-s0.txt
+  category: defaults
+- id: lechmazur-ernie-4-5-300b-s100
+  tags:
+  - llm_default
+  - model:ernie-4-5-300b
+  - baidu
+  - lechmazur
+  - constrained_prompt
+  source: Ernie 4.5 300B A47B (Baidu) — Lechmazur writing benchmark, story 100
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-ernie-4-5-300b-s100.txt
+  category: defaults
+- id: lechmazur-ernie-4-5-300b-s200
+  tags:
+  - llm_default
+  - model:ernie-4-5-300b
+  - baidu
+  - lechmazur
+  - constrained_prompt
+  source: Ernie 4.5 300B A47B (Baidu) — Lechmazur writing benchmark, story 200
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-ernie-4-5-300b-s200.txt
+  category: defaults
+- id: lechmazur-gemini-2-5-pro-lechmazur-s0
+  tags:
+  - llm_default
+  - model:gemini-2-5-pro-lechmazur
+  - google
+  - lechmazur
+  - constrained_prompt
+  source: Gemini 2.5 Pro (Google, Lechmazur extraction) — Lechmazur writing benchmark, story 0
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-gemini-2-5-pro-lechmazur-s0.txt
+  category: defaults
+- id: lechmazur-gemini-2-5-pro-lechmazur-s100
+  tags:
+  - llm_default
+  - model:gemini-2-5-pro-lechmazur
+  - google
+  - lechmazur
+  - constrained_prompt
+  source: Gemini 2.5 Pro (Google, Lechmazur extraction) — Lechmazur writing benchmark, story 100
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-gemini-2-5-pro-lechmazur-s100.txt
+  category: defaults
+- id: lechmazur-gemini-2-5-pro-lechmazur-s200
+  tags:
+  - llm_default
+  - model:gemini-2-5-pro-lechmazur
+  - google
+  - lechmazur
+  - constrained_prompt
+  source: Gemini 2.5 Pro (Google, Lechmazur extraction) — Lechmazur writing benchmark, story 200
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-gemini-2-5-pro-lechmazur-s200.txt
+  category: defaults
+- id: lechmazur-glm-4-5-s0
+  tags:
+  - llm_default
+  - model:glm-4-5
+  - zhipu
+  - lechmazur
+  - constrained_prompt
+  source: GLM-4.5 (Zhipu) — Lechmazur writing benchmark, story 0
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-glm-4-5-s0.txt
+  category: defaults
+- id: lechmazur-glm-4-5-s100
+  tags:
+  - llm_default
+  - model:glm-4-5
+  - zhipu
+  - lechmazur
+  - constrained_prompt
+  source: GLM-4.5 (Zhipu) — Lechmazur writing benchmark, story 100
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-glm-4-5-s100.txt
+  category: defaults
+- id: lechmazur-glm-4-5-s200
+  tags:
+  - llm_default
+  - model:glm-4-5
+  - zhipu
+  - lechmazur
+  - constrained_prompt
+  source: GLM-4.5 (Zhipu) — Lechmazur writing benchmark, story 200
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-glm-4-5-s200.txt
+  category: defaults
+- id: lechmazur-gpt-5-medium-s0
+  tags:
+  - llm_default
+  - model:gpt-5-medium
+  - openai
+  - lechmazur
+  - constrained_prompt
+  source: GPT-5 Medium (OpenAI) — Lechmazur writing benchmark, story 0
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-gpt-5-medium-s0.txt
+  category: defaults
+- id: lechmazur-gpt-5-medium-s100
+  tags:
+  - llm_default
+  - model:gpt-5-medium
+  - openai
+  - lechmazur
+  - constrained_prompt
+  source: GPT-5 Medium (OpenAI) — Lechmazur writing benchmark, story 100
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-gpt-5-medium-s100.txt
+  category: defaults
+- id: lechmazur-gpt-5-medium-s200
+  tags:
+  - llm_default
+  - model:gpt-5-medium
+  - openai
+  - lechmazur
+  - constrained_prompt
+  source: GPT-5 Medium (OpenAI) — Lechmazur writing benchmark, story 200
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-gpt-5-medium-s200.txt
+  category: defaults
+- id: lechmazur-gpt-5-1-medium-s0
+  tags:
+  - llm_default
+  - model:gpt-5-1-medium
+  - openai
+  - lechmazur
+  - constrained_prompt
+  source: GPT-5.1 Medium (OpenAI) — Lechmazur writing benchmark, story 0
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-gpt-5-1-medium-s0.txt
+  category: defaults
+- id: lechmazur-gpt-5-1-medium-s100
+  tags:
+  - llm_default
+  - model:gpt-5-1-medium
+  - openai
+  - lechmazur
+  - constrained_prompt
+  source: GPT-5.1 Medium (OpenAI) — Lechmazur writing benchmark, story 100
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-gpt-5-1-medium-s100.txt
+  category: defaults
+- id: lechmazur-gpt-5-1-medium-s200
+  tags:
+  - llm_default
+  - model:gpt-5-1-medium
+  - openai
+  - lechmazur
+  - constrained_prompt
+  source: GPT-5.1 Medium (OpenAI) — Lechmazur writing benchmark, story 200
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-gpt-5-1-medium-s200.txt
+  category: defaults
+- id: lechmazur-gpt-oss-120b-s0
+  tags:
+  - llm_default
+  - model:gpt-oss-120b
+  - openai
+  - lechmazur
+  - constrained_prompt
+  source: GPT-OSS 120B (OpenAI open-weight) — Lechmazur writing benchmark, story 0
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-gpt-oss-120b-s0.txt
+  category: defaults
+- id: lechmazur-gpt-oss-120b-s100
+  tags:
+  - llm_default
+  - model:gpt-oss-120b
+  - openai
+  - lechmazur
+  - constrained_prompt
+  source: GPT-OSS 120B (OpenAI open-weight) — Lechmazur writing benchmark, story 100
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-gpt-oss-120b-s100.txt
+  category: defaults
+- id: lechmazur-gpt-oss-120b-s200
+  tags:
+  - llm_default
+  - model:gpt-oss-120b
+  - openai
+  - lechmazur
+  - constrained_prompt
+  source: GPT-OSS 120B (OpenAI open-weight) — Lechmazur writing benchmark, story 200
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-gpt-oss-120b-s200.txt
+  category: defaults
+- id: lechmazur-kimi-k2-0905-s0
+  tags:
+  - llm_default
+  - model:kimi-k2-0905
+  - moonshot
+  - lechmazur
+  - constrained_prompt
+  source: Kimi K2 0905 (Moonshot) — Lechmazur writing benchmark, story 0
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-kimi-k2-0905-s0.txt
+  category: defaults
+- id: lechmazur-kimi-k2-0905-s100
+  tags:
+  - llm_default
+  - model:kimi-k2-0905
+  - moonshot
+  - lechmazur
+  - constrained_prompt
+  source: Kimi K2 0905 (Moonshot) — Lechmazur writing benchmark, story 100
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-kimi-k2-0905-s100.txt
+  category: defaults
+- id: lechmazur-kimi-k2-0905-s200
+  tags:
+  - llm_default
+  - model:kimi-k2-0905
+  - moonshot
+  - lechmazur
+  - constrained_prompt
+  source: Kimi K2 0905 (Moonshot) — Lechmazur writing benchmark, story 200
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-kimi-k2-0905-s200.txt
+  category: defaults
+- id: lechmazur-kimi-k2-5-s0
+  tags:
+  - llm_default
+  - model:kimi-k2-5
+  - moonshot
+  - lechmazur
+  - constrained_prompt
+  source: Kimi K2.5 (Moonshot) — Lechmazur writing benchmark, story 0
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-kimi-k2-5-s0.txt
+  category: defaults
+- id: lechmazur-kimi-k2-5-s100
+  tags:
+  - llm_default
+  - model:kimi-k2-5
+  - moonshot
+  - lechmazur
+  - constrained_prompt
+  source: Kimi K2.5 (Moonshot) — Lechmazur writing benchmark, story 100
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-kimi-k2-5-s100.txt
+  category: defaults
+- id: lechmazur-kimi-k2-5-s200
+  tags:
+  - llm_default
+  - model:kimi-k2-5
+  - moonshot
+  - lechmazur
+  - constrained_prompt
+  source: Kimi K2.5 (Moonshot) — Lechmazur writing benchmark, story 200
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-kimi-k2-5-s200.txt
+  category: defaults
+- id: lechmazur-minimax-m2-1-s0
+  tags:
+  - llm_default
+  - model:minimax-m2-1
+  - minimax
+  - lechmazur
+  - constrained_prompt
+  source: MiniMax M2.1 (MiniMax) — Lechmazur writing benchmark, story 0
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-minimax-m2-1-s0.txt
+  category: defaults
+- id: lechmazur-minimax-m2-1-s100
+  tags:
+  - llm_default
+  - model:minimax-m2-1
+  - minimax
+  - lechmazur
+  - constrained_prompt
+  source: MiniMax M2.1 (MiniMax) — Lechmazur writing benchmark, story 100
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-minimax-m2-1-s100.txt
+  category: defaults
+- id: lechmazur-minimax-m2-1-s200
+  tags:
+  - llm_default
+  - model:minimax-m2-1
+  - minimax
+  - lechmazur
+  - constrained_prompt
+  source: MiniMax M2.1 (MiniMax) — Lechmazur writing benchmark, story 200
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-minimax-m2-1-s200.txt
+  category: defaults
+- id: lechmazur-mistral-medium-2508-s0
+  tags:
+  - llm_default
+  - model:mistral-medium-2508
+  - mistral
+  - lechmazur
+  - constrained_prompt
+  source: Mistral Medium 2508 (Mistral) — Lechmazur writing benchmark, story 0
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-mistral-medium-2508-s0.txt
+  category: defaults
+- id: lechmazur-mistral-medium-2508-s100
+  tags:
+  - llm_default
+  - model:mistral-medium-2508
+  - mistral
+  - lechmazur
+  - constrained_prompt
+  source: Mistral Medium 2508 (Mistral) — Lechmazur writing benchmark, story 100
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-mistral-medium-2508-s100.txt
+  category: defaults
+- id: lechmazur-mistral-medium-2508-s200
+  tags:
+  - llm_default
+  - model:mistral-medium-2508
+  - mistral
+  - lechmazur
+  - constrained_prompt
+  source: Mistral Medium 2508 (Mistral) — Lechmazur writing benchmark, story 200
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-mistral-medium-2508-s200.txt
+  category: defaults
+- id: lechmazur-qwen3-max-preview-s0
+  tags:
+  - llm_default
+  - model:qwen3-max-preview
+  - alibaba
+  - lechmazur
+  - constrained_prompt
+  source: Qwen3 Max Preview (Alibaba) — Lechmazur writing benchmark, story 0
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-qwen3-max-preview-s0.txt
+  category: defaults
+- id: lechmazur-qwen3-max-preview-s100
+  tags:
+  - llm_default
+  - model:qwen3-max-preview
+  - alibaba
+  - lechmazur
+  - constrained_prompt
+  source: Qwen3 Max Preview (Alibaba) — Lechmazur writing benchmark, story 100
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-qwen3-max-preview-s100.txt
+  category: defaults
+- id: lechmazur-qwen3-max-preview-s200
+  tags:
+  - llm_default
+  - model:qwen3-max-preview
+  - alibaba
+  - lechmazur
+  - constrained_prompt
+  source: Qwen3 Max Preview (Alibaba) — Lechmazur writing benchmark, story 200
+  license: research_fair_use
+  url: https://github.com/lechmazur/writing
+  text_file: passages/defaults/lechmazur-qwen3-max-preview-s200.txt
+  category: defaults
+- id: eqv2-yi-34b-chat-00
+  tags:
+  - llm_default
+  - model:yi-34b-chat
+  - 01ai
+  - eqbench_v2
+  source: Yi 34B Chat (01.AI)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-yi-34b-chat-00.txt
+  category: defaults
+- id: eqv2-yi-34b-chat-01
+  tags:
+  - llm_default
+  - model:yi-34b-chat
+  - 01ai
+  - eqbench_v2
+  source: Yi 34B Chat (01.AI)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-yi-34b-chat-01.txt
+  category: defaults
+- id: eqv2-yi-34b-chat-02
+  tags:
+  - llm_default
+  - model:yi-34b-chat
+  - 01ai
+  - eqbench_v2
+  source: Yi 34B Chat (01.AI)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-yi-34b-chat-02.txt
+  category: defaults
+- id: eqv2-mixtral-8x7b-00
+  tags:
+  - llm_default
+  - model:mixtral-8x7b
+  - mistral
+  - eqbench_v2
+  source: Mixtral 8x7B Instruct (Mistral)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-mixtral-8x7b-00.txt
+  category: defaults
+- id: eqv2-mixtral-8x7b-01
+  tags:
+  - llm_default
+  - model:mixtral-8x7b
+  - mistral
+  - eqbench_v2
+  source: Mixtral 8x7B Instruct (Mistral)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-mixtral-8x7b-01.txt
+  category: defaults
+- id: eqv2-mixtral-8x7b-02
+  tags:
+  - llm_default
+  - model:mixtral-8x7b
+  - mistral
+  - eqbench_v2
+  source: Mixtral 8x7B Instruct (Mistral)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-mixtral-8x7b-02.txt
+  category: defaults
+- id: eqv2-goliath-120b-00
+  tags:
+  - llm_default
+  - model:goliath-120b
+  - community
+  - eqbench_v2
+  source: Goliath 120B (Alpin AI / Llama2 merge)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-goliath-120b-00.txt
+  category: defaults
+- id: eqv2-goliath-120b-01
+  tags:
+  - llm_default
+  - model:goliath-120b
+  - community
+  - eqbench_v2
+  source: Goliath 120B (Alpin AI / Llama2 merge)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-goliath-120b-01.txt
+  category: defaults
+- id: eqv2-goliath-120b-02
+  tags:
+  - llm_default
+  - model:goliath-120b
+  - community
+  - eqbench_v2
+  source: Goliath 120B (Alpin AI / Llama2 merge)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-goliath-120b-02.txt
+  category: defaults
+- id: eqv2-platypus2-70b-00
+  tags:
+  - llm_default
+  - model:platypus2-70b
+  - community
+  - eqbench_v2
+  source: Platypus2 70B (Garage bAInd)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-platypus2-70b-00.txt
+  category: defaults
+- id: eqv2-platypus2-70b-01
+  tags:
+  - llm_default
+  - model:platypus2-70b
+  - community
+  - eqbench_v2
+  source: Platypus2 70B (Garage bAInd)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-platypus2-70b-01.txt
+  category: defaults
+- id: eqv2-platypus2-70b-02
+  tags:
+  - llm_default
+  - model:platypus2-70b
+  - community
+  - eqbench_v2
+  source: Platypus2 70B (Garage bAInd)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-platypus2-70b-02.txt
+  category: defaults
+- id: eqv2-gemma-2b-it-00
+  tags:
+  - llm_default
+  - model:gemma-2b-it
+  - google
+  - eqbench_v2
+  source: Gemma 2B Instruction-tuned (Google)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-gemma-2b-it-00.txt
+  category: defaults
+- id: eqv2-gemma-2b-it-01
+  tags:
+  - llm_default
+  - model:gemma-2b-it
+  - google
+  - eqbench_v2
+  source: Gemma 2B Instruction-tuned (Google)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-gemma-2b-it-01.txt
+  category: defaults
+- id: eqv2-gemma-2b-it-02
+  tags:
+  - llm_default
+  - model:gemma-2b-it
+  - google
+  - eqbench_v2
+  source: Gemma 2B Instruction-tuned (Google)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-gemma-2b-it-02.txt
+  category: defaults
+- id: eqv2-gemma-7b-it-00
+  tags:
+  - llm_default
+  - model:gemma-7b-it
+  - google
+  - eqbench_v2
+  source: Gemma 7B Instruction-tuned (Google)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-gemma-7b-it-00.txt
+  category: defaults
+- id: eqv2-gemma-7b-it-01
+  tags:
+  - llm_default
+  - model:gemma-7b-it
+  - google
+  - eqbench_v2
+  source: Gemma 7B Instruction-tuned (Google)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-gemma-7b-it-01.txt
+  category: defaults
+- id: eqv2-gemma-7b-it-02
+  tags:
+  - llm_default
+  - model:gemma-7b-it
+  - google
+  - eqbench_v2
+  source: Gemma 7B Instruction-tuned (Google)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-gemma-7b-it-02.txt
+  category: defaults
+- id: eqv2-phi-3-mini-4k-00
+  tags:
+  - llm_default
+  - model:phi-3-mini-4k
+  - microsoft
+  - eqbench_v2
+  source: Phi-3 Mini 4K (Microsoft)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-phi-3-mini-4k-00.txt
+  category: defaults
+- id: eqv2-phi-3-mini-4k-01
+  tags:
+  - llm_default
+  - model:phi-3-mini-4k
+  - microsoft
+  - eqbench_v2
+  source: Phi-3 Mini 4K (Microsoft)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-phi-3-mini-4k-01.txt
+  category: defaults
+- id: eqv2-phi-3-mini-4k-02
+  tags:
+  - llm_default
+  - model:phi-3-mini-4k
+  - microsoft
+  - eqbench_v2
+  source: Phi-3 Mini 4K (Microsoft)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-phi-3-mini-4k-02.txt
+  category: defaults
+- id: eqv2-llama-2-7b-chat-00
+  tags:
+  - llm_default
+  - model:llama-2-7b-chat
+  - meta
+  - eqbench_v2
+  source: Llama 2 7B Chat (Meta)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-llama-2-7b-chat-00.txt
+  category: defaults
+- id: eqv2-llama-2-7b-chat-01
+  tags:
+  - llm_default
+  - model:llama-2-7b-chat
+  - meta
+  - eqbench_v2
+  source: Llama 2 7B Chat (Meta)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-llama-2-7b-chat-01.txt
+  category: defaults
+- id: eqv2-llama-2-7b-chat-02
+  tags:
+  - llm_default
+  - model:llama-2-7b-chat
+  - meta
+  - eqbench_v2
+  source: Llama 2 7B Chat (Meta)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-llama-2-7b-chat-02.txt
+  category: defaults
+- id: eqv2-llama-3-8b-00
+  tags:
+  - llm_default
+  - model:llama-3-8b
+  - meta
+  - eqbench_v2
+  source: Llama 3 8B Instruct (Meta)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-llama-3-8b-00.txt
+  category: defaults
+- id: eqv2-llama-3-8b-01
+  tags:
+  - llm_default
+  - model:llama-3-8b
+  - meta
+  - eqbench_v2
+  source: Llama 3 8B Instruct (Meta)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-llama-3-8b-01.txt
+  category: defaults
+- id: eqv2-llama-3-8b-02
+  tags:
+  - llm_default
+  - model:llama-3-8b
+  - meta
+  - eqbench_v2
+  source: Llama 3 8B Instruct (Meta)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-llama-3-8b-02.txt
+  category: defaults
+- id: eqv2-llama-3-120b-merge-00
+  tags:
+  - llm_default
+  - model:llama-3-120b-merge
+  - community
+  - eqbench_v2
+  source: Llama 3 120B (mlabonne community merge)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-llama-3-120b-merge-00.txt
+  category: defaults
+- id: eqv2-llama-3-120b-merge-01
+  tags:
+  - llm_default
+  - model:llama-3-120b-merge
+  - community
+  - eqbench_v2
+  source: Llama 3 120B (mlabonne community merge)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-llama-3-120b-merge-01.txt
+  category: defaults
+- id: eqv2-llama-3-120b-merge-02
+  tags:
+  - llm_default
+  - model:llama-3-120b-merge
+  - community
+  - eqbench_v2
+  source: Llama 3 120B (mlabonne community merge)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-llama-3-120b-merge-02.txt
+  category: defaults
+- id: eqv2-qwen1-5-4b-00
+  tags:
+  - llm_default
+  - model:qwen1-5-4b
+  - alibaba
+  - eqbench_v2
+  source: Qwen 1.5 4B Chat (Alibaba)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-qwen1-5-4b-00.txt
+  category: defaults
+- id: eqv2-qwen1-5-4b-01
+  tags:
+  - llm_default
+  - model:qwen1-5-4b
+  - alibaba
+  - eqbench_v2
+  source: Qwen 1.5 4B Chat (Alibaba)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-qwen1-5-4b-01.txt
+  category: defaults
+- id: eqv2-qwen1-5-4b-02
+  tags:
+  - llm_default
+  - model:qwen1-5-4b
+  - alibaba
+  - eqbench_v2
+  source: Qwen 1.5 4B Chat (Alibaba)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-qwen1-5-4b-02.txt
+  category: defaults
+- id: eqv2-qwen1-5-14b-00
+  tags:
+  - llm_default
+  - model:qwen1-5-14b
+  - alibaba
+  - eqbench_v2
+  source: Qwen 1.5 14B Chat (Alibaba)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-qwen1-5-14b-00.txt
+  category: defaults
+- id: eqv2-qwen1-5-14b-01
+  tags:
+  - llm_default
+  - model:qwen1-5-14b
+  - alibaba
+  - eqbench_v2
+  source: Qwen 1.5 14B Chat (Alibaba)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-qwen1-5-14b-01.txt
+  category: defaults
+- id: eqv2-qwen1-5-14b-02
+  tags:
+  - llm_default
+  - model:qwen1-5-14b
+  - alibaba
+  - eqbench_v2
+  source: Qwen 1.5 14B Chat (Alibaba)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-qwen1-5-14b-02.txt
+  category: defaults
+- id: eqv2-mistral-medium-00
+  tags:
+  - llm_default
+  - model:mistral-medium
+  - mistral
+  - eqbench_v2
+  source: Mistral Medium (Mistral)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-mistral-medium-00.txt
+  category: defaults
+- id: eqv2-mistral-medium-01
+  tags:
+  - llm_default
+  - model:mistral-medium
+  - mistral
+  - eqbench_v2
+  source: Mistral Medium (Mistral)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-mistral-medium-01.txt
+  category: defaults
+- id: eqv2-mistral-medium-02
+  tags:
+  - llm_default
+  - model:mistral-medium
+  - mistral
+  - eqbench_v2
+  source: Mistral Medium (Mistral)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-mistral-medium-02.txt
+  category: defaults
+- id: eqv2-mistral-small-00
+  tags:
+  - llm_default
+  - model:mistral-small
+  - mistral
+  - eqbench_v2
+  source: Mistral Small (Mistral)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-mistral-small-00.txt
+  category: defaults
+- id: eqv2-mistral-small-01
+  tags:
+  - llm_default
+  - model:mistral-small
+  - mistral
+  - eqbench_v2
+  source: Mistral Small (Mistral)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-mistral-small-01.txt
+  category: defaults
+- id: eqv2-mistral-small-02
+  tags:
+  - llm_default
+  - model:mistral-small
+  - mistral
+  - eqbench_v2
+  source: Mistral Small (Mistral)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-mistral-small-02.txt
+  category: defaults
+- id: eqv2-coxcomb-00
+  tags:
+  - llm_default
+  - model:coxcomb
+  - community
+  - eqbench_v2
+  source: Coxcomb (N8Programs)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-coxcomb-00.txt
+  category: defaults
+- id: eqv2-coxcomb-01
+  tags:
+  - llm_default
+  - model:coxcomb
+  - community
+  - eqbench_v2
+  source: Coxcomb (N8Programs)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-coxcomb-01.txt
+  category: defaults
+- id: eqv2-coxcomb-02
+  tags:
+  - llm_default
+  - model:coxcomb
+  - community
+  - eqbench_v2
+  source: Coxcomb (N8Programs)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-coxcomb-02.txt
+  category: defaults
+- id: eqv2-starling-lm-7b-00
+  tags:
+  - llm_default
+  - model:starling-lm-7b
+  - community
+  - eqbench_v2
+  source: Starling LM 7B Beta (Nexusflow)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-starling-lm-7b-00.txt
+  category: defaults
+- id: eqv2-starling-lm-7b-01
+  tags:
+  - llm_default
+  - model:starling-lm-7b
+  - community
+  - eqbench_v2
+  source: Starling LM 7B Beta (Nexusflow)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-starling-lm-7b-01.txt
+  category: defaults
+- id: eqv2-starling-lm-7b-02
+  tags:
+  - llm_default
+  - model:starling-lm-7b
+  - community
+  - eqbench_v2
+  source: Starling LM 7B Beta (Nexusflow)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-starling-lm-7b-02.txt
+  category: defaults
+- id: eqv2-westlake-7b-v2-00
+  tags:
+  - llm_default
+  - model:westlake-7b-v2
+  - community
+  - eqbench_v2
+  source: WestLake 7B v2 (senseable)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-westlake-7b-v2-00.txt
+  category: defaults
+- id: eqv2-westlake-7b-v2-01
+  tags:
+  - llm_default
+  - model:westlake-7b-v2
+  - community
+  - eqbench_v2
+  source: WestLake 7B v2 (senseable)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-westlake-7b-v2-01.txt
+  category: defaults
+- id: eqv2-westlake-7b-v2-02
+  tags:
+  - llm_default
+  - model:westlake-7b-v2
+  - community
+  - eqbench_v2
+  source: WestLake 7B v2 (senseable)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-westlake-7b-v2-02.txt
+  category: defaults
+- id: eqv2-midnight-miqu-70b-00
+  tags:
+  - llm_default
+  - model:midnight-miqu-70b
+  - community
+  - eqbench_v2
+  source: Midnight-Miqu 70B v1.5 (sophosympatheia)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-midnight-miqu-70b-00.txt
+  category: defaults
+- id: eqv2-midnight-miqu-70b-01
+  tags:
+  - llm_default
+  - model:midnight-miqu-70b
+  - community
+  - eqbench_v2
+  source: Midnight-Miqu 70B v1.5 (sophosympatheia)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-midnight-miqu-70b-01.txt
+  category: defaults
+- id: eqv2-midnight-miqu-70b-02
+  tags:
+  - llm_default
+  - model:midnight-miqu-70b
+  - community
+  - eqbench_v2
+  source: Midnight-Miqu 70B v1.5 (sophosympatheia)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-midnight-miqu-70b-02.txt
+  category: defaults
+- id: eqv2-openchat-3-5-00
+  tags:
+  - llm_default
+  - model:openchat-3-5
+  - community
+  - eqbench_v2
+  source: OpenChat 3.5 (openchat)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-openchat-3-5-00.txt
+  category: defaults
+- id: eqv2-openchat-3-5-01
+  tags:
+  - llm_default
+  - model:openchat-3-5
+  - community
+  - eqbench_v2
+  source: OpenChat 3.5 (openchat)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-openchat-3-5-01.txt
+  category: defaults
+- id: eqv2-openchat-3-5-02
+  tags:
+  - llm_default
+  - model:openchat-3-5
+  - community
+  - eqbench_v2
+  source: OpenChat 3.5 (openchat)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-openchat-3-5-02.txt
+  category: defaults
+- id: eqv2-neuralstar-alphawriter-00
+  tags:
+  - llm_default
+  - model:neuralstar-alphawriter
+  - community
+  - eqbench_v2
+  source: NeuralStar AlphaWriter 4x7B (OmnicromsBrain)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-neuralstar-alphawriter-00.txt
+  category: defaults
+- id: eqv2-neuralstar-alphawriter-01
+  tags:
+  - llm_default
+  - model:neuralstar-alphawriter
+  - community
+  - eqbench_v2
+  source: NeuralStar AlphaWriter 4x7B (OmnicromsBrain)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-neuralstar-alphawriter-01.txt
+  category: defaults
+- id: eqv2-neuralstar-alphawriter-02
+  tags:
+  - llm_default
+  - model:neuralstar-alphawriter
+  - community
+  - eqbench_v2
+  source: NeuralStar AlphaWriter 4x7B (OmnicromsBrain)
+  license: mit_eq_bench
+  url: https://huggingface.co/spaces/sam-paech/EQ-Bench-Leaderboard
+  text_file: passages/defaults/eqv2-neuralstar-alphawriter-02.txt
+  category: defaults
+- id: centroid-deepseek-v4-pro-06-frame-narrative-anecdote
+  tags:
+  - llm_default
+  - model:deepseek-v4-pro
+  - deepseek
+  - centroid_pool
+  - prompt:hc-anecdotal-frame
+  source: DeepSeek V4-pro — generated for deepseek-v4-pro centroid pool (hc-anecdotal-frame)
+  license: owtn_pilot_generation
+  text_file: passages/defaults/centroid-deepseek-v4-pro-06-frame-narrative-anecdote.txt
+  category: defaults
+- id: centroid-deepseek-v4-pro-00-gothic-1
+  tags:
+  - llm_default
+  - model:deepseek-v4-pro
+  - deepseek
+  - centroid_pool
+  - prompt:tribe-gothic-1
+  source: DeepSeek V4-pro — generated for deepseek-v4-pro centroid pool (tribe-gothic-1)
+  license: owtn_pilot_generation
+  text_file: passages/defaults/centroid-deepseek-v4-pro-00-gothic-1.txt
+  category: defaults
+- id: centroid-deepseek-v4-pro-07-scene-summary-alternation
+  tags:
+  - llm_default
+  - model:deepseek-v4-pro
+  - deepseek
+  - centroid_pool
+  - prompt:hc-scene-and-summary
+  source: DeepSeek V4-pro — generated for deepseek-v4-pro centroid pool (hc-scene-and-summary)
+  license: owtn_pilot_generation
+  text_file: passages/defaults/centroid-deepseek-v4-pro-07-scene-summary-alternation.txt
+  category: defaults
+- id: centroid-deepseek-v4-pro-02-epistolary-confession
+  tags:
+  - llm_default
+  - model:deepseek-v4-pro
+  - deepseek
+  - centroid_pool
+  - prompt:hc-letter-confession
+  source: DeepSeek V4-pro — generated for deepseek-v4-pro centroid pool (hc-letter-confession)
+  license: owtn_pilot_generation
+  text_file: passages/defaults/centroid-deepseek-v4-pro-02-epistolary-confession.txt
+  category: defaults
+- id: centroid-deepseek-v4-pro-05-teen-horror-goosebumps-style
+  tags:
+  - llm_default
+  - model:deepseek-v4-pro
+  - deepseek
+  - centroid_pool
+  - prompt:28
+  source: DeepSeek V4-pro — generated for deepseek-v4-pro centroid pool (28)
+  license: owtn_pilot_generation
+  text_file: passages/defaults/centroid-deepseek-v4-pro-05-teen-horror-goosebumps-style.txt
+  category: defaults
+- id: centroid-deepseek-v4-pro-11-realism-1
+  tags:
+  - llm_default
+  - model:deepseek-v4-pro
+  - deepseek
+  - centroid_pool
+  - prompt:tribe-realism-1
+  source: DeepSeek V4-pro — generated for deepseek-v4-pro centroid pool (tribe-realism-1)
+  license: owtn_pilot_generation
+  text_file: passages/defaults/centroid-deepseek-v4-pro-11-realism-1.txt
+  category: defaults
+- id: centroid-deepseek-v4-pro-08-metafiction-2
+  tags:
+  - llm_default
+  - model:deepseek-v4-pro
+  - deepseek
+  - centroid_pool
+  - prompt:tribe-metafiction-2
+  source: DeepSeek V4-pro — generated for deepseek-v4-pro centroid pool (tribe-metafiction-2)
+  license: owtn_pilot_generation
+  text_file: passages/defaults/centroid-deepseek-v4-pro-08-metafiction-2.txt
+  category: defaults
+- id: centroid-deepseek-v4-pro-04-rehearsing-rejection
+  tags:
+  - llm_default
+  - model:deepseek-v4-pro
+  - deepseek
+  - centroid_pool
+  - prompt:12
+  source: DeepSeek V4-pro — generated for deepseek-v4-pro centroid pool (12)
+  license: owtn_pilot_generation
+  text_file: passages/defaults/centroid-deepseek-v4-pro-04-rehearsing-rejection.txt
+  category: defaults
+- id: centroid-deepseek-v4-pro-03-young-adult-drama
+  tags:
+  - llm_default
+  - model:deepseek-v4-pro
+  - deepseek
+  - centroid_pool
+  - prompt:31
+  source: DeepSeek V4-pro — generated for deepseek-v4-pro centroid pool (31)
+  license: owtn_pilot_generation
+  text_file: passages/defaults/centroid-deepseek-v4-pro-03-young-adult-drama.txt
+  category: defaults
+- id: centroid-deepseek-v4-pro-10-carnival-of-dangerous-intentions
+  tags:
+  - llm_default
+  - model:deepseek-v4-pro
+  - deepseek
+  - centroid_pool
+  - prompt:6
+  source: DeepSeek V4-pro — generated for deepseek-v4-pro centroid pool (6)
+  license: owtn_pilot_generation
+  text_file: passages/defaults/centroid-deepseek-v4-pro-10-carnival-of-dangerous-intentions.txt
+  category: defaults
+- id: centroid-deepseek-v4-pro-09-gunpowder-rendezvous
+  tags:
+  - llm_default
+  - model:deepseek-v4-pro
+  - deepseek
+  - centroid_pool
+  - prompt:20
+  source: DeepSeek V4-pro — generated for deepseek-v4-pro centroid pool (20)
+  license: owtn_pilot_generation
+  text_file: passages/defaults/centroid-deepseek-v4-pro-09-gunpowder-rendezvous.txt
+  category: defaults
+- id: centroid-deepseek-v4-pro-13-epistolary-1
+  tags:
+  - llm_default
+  - model:deepseek-v4-pro
+  - deepseek
+  - centroid_pool
+  - prompt:tribe-epistolary-1
+  source: DeepSeek V4-pro — generated for deepseek-v4-pro centroid pool (tribe-epistolary-1)
+  license: owtn_pilot_generation
+  text_file: passages/defaults/centroid-deepseek-v4-pro-13-epistolary-1.txt
+  category: defaults
+- id: centroid-deepseek-v4-pro-01-cozy-sci-fi
+  tags:
+  - llm_default
+  - model:deepseek-v4-pro
+  - deepseek
+  - centroid_pool
+  - prompt:33
+  source: DeepSeek V4-pro — generated for deepseek-v4-pro centroid pool (33)
+  license: owtn_pilot_generation
+  text_file: passages/defaults/centroid-deepseek-v4-pro-01-cozy-sci-fi.txt
+  category: defaults
+- id: centroid-deepseek-v4-pro-15-third-person-physical-action
+  tags:
+  - llm_default
+  - model:deepseek-v4-pro
+  - deepseek
+  - centroid_pool
+  - prompt:hc-thirdperson-action
+  source: DeepSeek V4-pro — generated for deepseek-v4-pro centroid pool (hc-thirdperson-action)
+  license: owtn_pilot_generation
+  text_file: passages/defaults/centroid-deepseek-v4-pro-15-third-person-physical-action.txt
+  category: defaults
+- id: centroid-deepseek-v4-pro-18-omniscient-village-survey
+  tags:
+  - llm_default
+  - model:deepseek-v4-pro
+  - deepseek
+  - centroid_pool
+  - prompt:hc-omniscient-village
+  source: DeepSeek V4-pro — generated for deepseek-v4-pro centroid pool (hc-omniscient-village)
+  license: owtn_pilot_generation
+  text_file: passages/defaults/centroid-deepseek-v4-pro-18-omniscient-village-survey.txt
+  category: defaults
+- id: centroid-deepseek-v4-pro-12-hacker-mindset
+  tags:
+  - llm_default
+  - model:deepseek-v4-pro
+  - deepseek
+  - centroid_pool
+  - prompt:10
+  source: DeepSeek V4-pro — generated for deepseek-v4-pro centroid pool (10)
+  license: owtn_pilot_generation
+  text_file: passages/defaults/centroid-deepseek-v4-pro-12-hacker-mindset.txt
+  category: defaults
+- id: centroid-deepseek-v4-pro-16-sisyphus-gives-advice
+  tags:
+  - llm_default
+  - model:deepseek-v4-pro
+  - deepseek
+  - centroid_pool
+  - prompt:18
+  source: DeepSeek V4-pro — generated for deepseek-v4-pro centroid pool (18)
+  license: owtn_pilot_generation
+  text_file: passages/defaults/centroid-deepseek-v4-pro-16-sisyphus-gives-advice.txt
+  category: defaults
+- id: centroid-deepseek-v4-pro-14-write-an-scp-entry-about-a-series-of-ide
+  tags:
+  - llm_default
+  - model:deepseek-v4-pro
+  - deepseek
+  - centroid_pool
+  - prompt:24
+  source: DeepSeek V4-pro — generated for deepseek-v4-pro centroid pool (24)
+  license: owtn_pilot_generation
+  text_file: passages/defaults/centroid-deepseek-v4-pro-14-write-an-scp-entry-about-a-series-of-ide.txt
+  category: defaults
+- id: centroid-deepseek-v4-pro-17-court-of-the-dreaming-territorial-dream-
+  tags:
+  - llm_default
+  - model:deepseek-v4-pro
+  - deepseek
+  - centroid_pool
+  - prompt:17
+  source: DeepSeek V4-pro — generated for deepseek-v4-pro centroid pool (17)
+  license: owtn_pilot_generation
+  text_file: passages/defaults/centroid-deepseek-v4-pro-17-court-of-the-dreaming-territorial-dream-.txt
+  category: defaults
+- id: centroid-deepseek-v4-pro-21-classic-sci-fi-author-style-asimov
+  tags:
+  - llm_default
+  - model:deepseek-v4-pro
+  - deepseek
+  - centroid_pool
+  - prompt:25
+  source: DeepSeek V4-pro — generated for deepseek-v4-pro centroid pool (25)
+  license: owtn_pilot_generation
+  text_file: passages/defaults/centroid-deepseek-v4-pro-21-classic-sci-fi-author-style-asimov.txt
+  category: defaults
+- id: centroid-deepseek-v4-pro-24-scifi-2
+  tags:
+  - llm_default
+  - model:deepseek-v4-pro
+  - deepseek
+  - centroid_pool
+  - prompt:tribe-scifi-2
+  source: DeepSeek V4-pro — generated for deepseek-v4-pro centroid pool (tribe-scifi-2)
+  license: owtn_pilot_generation
+  text_file: passages/defaults/centroid-deepseek-v4-pro-24-scifi-2.txt
+  category: defaults
+- id: centroid-deepseek-v4-pro-27-dialogue-1
+  tags:
+  - llm_default
+  - model:deepseek-v4-pro
+  - deepseek
+  - centroid_pool
+  - prompt:tribe-dialogue-1
+  source: DeepSeek V4-pro — generated for deepseek-v4-pro centroid pool (tribe-dialogue-1)
+  license: owtn_pilot_generation
+  text_file: passages/defaults/centroid-deepseek-v4-pro-27-dialogue-1.txt
+  category: defaults
+- id: centroid-deepseek-v4-pro-19-folk-horror-tiseta
+  tags:
+  - llm_default
+  - model:deepseek-v4-pro
+  - deepseek
+  - centroid_pool
+  - prompt:30
+  source: DeepSeek V4-pro — generated for deepseek-v4-pro centroid pool (30)
+  license: owtn_pilot_generation
+  text_file: passages/defaults/centroid-deepseek-v4-pro-19-folk-horror-tiseta.txt
+  category: defaults
+- id: centroid-deepseek-v4-pro-20-classic-sci-fi-offworlder-author-style-l
+  tags:
+  - llm_default
+  - model:deepseek-v4-pro
+  - deepseek
+  - centroid_pool
+  - prompt:26
+  source: DeepSeek V4-pro — generated for deepseek-v4-pro centroid pool (26)
+  license: owtn_pilot_generation
+  text_file: passages/defaults/centroid-deepseek-v4-pro-20-classic-sci-fi-offworlder-author-style-l.txt
+  category: defaults
+- id: centroid-deepseek-v4-pro-25-contemporary-romance-drama-stolen-moment
+  tags:
+  - llm_default
+  - model:deepseek-v4-pro
+  - deepseek
+  - centroid_pool
+  - prompt:8
+  source: DeepSeek V4-pro — generated for deepseek-v4-pro centroid pool (8)
+  license: owtn_pilot_generation
+  text_file: passages/defaults/centroid-deepseek-v4-pro-25-contemporary-romance-drama-stolen-moment.txt
+  category: defaults
+- id: centroid-deepseek-v4-pro-23-therapeutic-boundaries
+  tags:
+  - llm_default
+  - model:deepseek-v4-pro
+  - deepseek
+  - centroid_pool
+  - prompt:15
+  source: DeepSeek V4-pro — generated for deepseek-v4-pro centroid pool (15)
+  license: owtn_pilot_generation
+  text_file: passages/defaults/centroid-deepseek-v4-pro-23-therapeutic-boundaries.txt
+  category: defaults
+- id: centroid-deepseek-v4-pro-26-biopunk-polymerase-chain-reaction
+  tags:
+  - llm_default
+  - model:deepseek-v4-pro
+  - deepseek
+  - centroid_pool
+  - prompt:29
+  source: DeepSeek V4-pro — generated for deepseek-v4-pro centroid pool (29)
+  license: owtn_pilot_generation
+  text_file: passages/defaults/centroid-deepseek-v4-pro-26-biopunk-polymerase-chain-reaction.txt
+  category: defaults
+- id: centroid-deepseek-v4-pro-29-pure-dialogue-elevator
+  tags:
+  - llm_default
+  - model:deepseek-v4-pro
+  - deepseek
+  - centroid_pool
+  - prompt:hc-dialogue-only
+  source: DeepSeek V4-pro — generated for deepseek-v4-pro centroid pool (hc-dialogue-only)
+  license: owtn_pilot_generation
+  text_file: passages/defaults/centroid-deepseek-v4-pro-29-pure-dialogue-elevator.txt
+  category: defaults
+- id: centroid-deepseek-v4-pro-28-lost-found-in-osaka
+  tags:
+  - llm_default
+  - model:deepseek-v4-pro
+  - deepseek
+  - centroid_pool
+  - prompt:7
+  source: DeepSeek V4-pro — generated for deepseek-v4-pro centroid pool (7)
+  license: owtn_pilot_generation
+  text_file: passages/defaults/centroid-deepseek-v4-pro-28-lost-found-in-osaka.txt
+  category: defaults
