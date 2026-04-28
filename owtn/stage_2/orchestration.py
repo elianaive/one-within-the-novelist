@@ -101,7 +101,13 @@ async def run_concept(
     ]
     entries = await asyncio.gather(*preset_tasks)
 
-    if len(entries) >= 2:
+    if config.scoring_mode == "scalar":
+        from owtn.stage_2.scalar_handoff import rescore_entries_scalar
+        ranked = await rescore_entries_scalar(
+            list(entries),
+            composition_name=config.scoring_handoff_composition,
+        )
+    elif len(entries) >= 2:
         ranked = await run_within_concept_tournament(
             entries,
             concept=winner.genome,

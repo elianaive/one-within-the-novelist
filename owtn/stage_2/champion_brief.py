@@ -44,6 +44,7 @@ class TreeBriefState:
             every read.
     """
     full_panel_critiques: list[dict] = field(default_factory=list)
+    rollout_reasonings: list[str] = field(default_factory=list)
     cached_count: int | None = None
     cached_brief: LineageBrief | None = None
     cached_render: str | None = None
@@ -57,6 +58,17 @@ def record_full_panel_critique(state: TreeBriefState, critique: dict) -> None:
     `get_or_compute_brief` call subject to the re-summarize cadence.
     """
     state.full_panel_critiques.append(critique)
+
+
+def record_rollout_reasoning(state: TreeBriefState, reasoning: str) -> None:
+    """Append one rollout's judge reasoning to the tree's brief feed.
+
+    Used by scalar-mode rollouts (no full-panel events fire). The reasoning
+    string is the scalar judge's per-dim walkthrough — pattern over many
+    rollouts produces a tree-level signal of what's working or not.
+    The summarizer consumes this same field shape as full-panel critiques.
+    """
+    state.rollout_reasonings.append(reasoning)
 
 
 async def get_or_compute_brief(
