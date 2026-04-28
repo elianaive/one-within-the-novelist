@@ -26,7 +26,16 @@ stage_2:
   classifier_model: deepseek-v4-flash
   simulation_model: deepseek-v4-flash
 
-  # Tiered judge wiring
+  # Scoring mode. "scalar" routes rollout reward and handoff selection
+  # through `owtn.evaluation.scalar` (composition factories from
+  # `configs/scalar/scorer_compositions.yaml`). "pairwise_champion" uses
+  # the cheap-judge / full-panel verification path against a running champion.
+  scoring_mode: scalar
+  scoring_rollout_composition: rollout_reward
+  scoring_handoff_composition: handoff_rescore
+  scoring_handoff_top_k: 5
+
+  # Tiered judge wiring (used only when scoring_mode == pairwise_champion)
   full_panel_on_promotion: true
   full_panel_rejection_backprop: 0.5
   cheap_judge_agreement_alert: 0.70

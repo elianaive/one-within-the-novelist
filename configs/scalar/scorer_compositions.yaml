@@ -1,0 +1,35 @@
+# Scorer compositions — pick one by name via build_scorer_from_config().
+# Each composition fully specifies a Scorer; switching call sites is a config
+# edit, not a code change. Defaults: single-judge atomic for high-volume
+# rollout reward; persona-ensemble atomic for low-volume handoff selection
+# where panel disagreement adds confidence.
+
+# ---------- Stage 2 — MCTS rollout reward (high volume, cheap) ----------
+rollout_reward:
+  rubric: dag
+  judge_model: deepseek-v4-flash
+  mode: atomic
+  reasoning_disabled: true
+  provider_family: deepseek
+
+# ---------- Stage 2 — end-of-phase top-K handoff re-score ----------
+handoff_rescore:
+  rubric: dag
+  judge_model: deepseek-v4-flash
+  mode: atomic
+  reasoning_disabled: true
+  provider_family: deepseek
+  persona_panel: [alexander-wales, gwern, jamie-wahls, roon]
+  aggregation: mean
+
+# ---------- Stage 1 challenger / archive scoring (deferred tier d/c) ----------
+# Pilot didn't directly validate these — re-pilot with stage-1 anchors before
+# enabling. Leaving the stub here so the call site exists when we move on (c)/(d).
+stage1_challenger:
+  rubric: concept
+  judge_model: deepseek-v4-flash
+  mode: atomic
+  reasoning_disabled: true
+  provider_family: deepseek
+  persona_panel: [alexander-wales, gwern, jamie-wahls, roon]
+  aggregation: mean
