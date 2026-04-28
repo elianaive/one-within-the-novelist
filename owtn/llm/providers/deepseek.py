@@ -34,6 +34,11 @@ MAX_VALUE = 20
 MAX_TIME = 600
 PARSE_RETRIES = 3
 
+# DeepSeek's max_tokens covers reasoning + visible output (unlike OpenAI's
+# max_output_tokens which is visible-only). 32K covers high-effort reasoning
+# (~16K) plus a substantial structured response.
+_REASONING_BUDGET_FLOOR = 32768
+
 _RETRY_EXCEPTIONS = (
     openai.APIConnectionError,
     openai.APIStatusError,
@@ -139,8 +144,9 @@ class DeepSeekProvider:
         return self._async_client
 
     def build_call_kwargs(self, *, api_model: str, requested: Mapping[str, Any]) -> dict:
-        """DeepSeek shape: max_tokens (yes, the OpenAI legacy chat name),
-        thinking toggle via extra_body, top_p/top_k supported."""
+        """DeepSeek shape: max_tokens (legacy chat-completions name) covers
+        reasoning + output, so reasoning models get a generous floor.
+        Thinking toggle via extra_body. top_p/top_k supported."""
         effort = resolve_effort(api_model, requested.get("reasoning_effort", "disabled"))
         out: dict = {}
         if (v := requested.get("max_tokens")) is not None:
@@ -156,6 +162,7 @@ class DeepSeekProvider:
             else:
                 out["extra_body"] = {"thinking": {"type": "enabled"}}
                 out["reasoning_effort"] = effort
+                out["max_tokens"] = max(out.get("max_tokens") or 0, _REASONING_BUDGET_FLOOR)
 
         if (v := requested.get("top_p")) is not None:
             out["top_p"] = v

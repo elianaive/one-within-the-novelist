@@ -526,3 +526,46 @@ class TestExplicitThinkingTokens:
             requested={"reasoning_effort": "disabled", "max_tokens": 16384},
         )
         assert "thinking" not in out
+
+
+class TestDeepSeekReasoningHeadroom:
+    """DeepSeek's max_tokens covers reasoning + visible output. Reasoning
+    models with active effort need a generous floor or the visible output
+    is starved (live Stage 2 demo on 2026-04-27 truncated 8-dim judgments
+    at column ~6300 because reasoning ate most of a 12K cap)."""
+
+    def test_reasoning_active_floors_max_tokens(self):
+        from owtn.llm.providers.deepseek import DeepSeekProvider, _REASONING_BUDGET_FLOOR
+
+        out = DeepSeekProvider().build_call_kwargs(
+            api_model="deepseek-v4-pro",
+            requested={"reasoning_effort": "medium", "max_tokens": 12288},
+        )
+        assert out["max_tokens"] == _REASONING_BUDGET_FLOOR
+
+    def test_reasoning_disabled_keeps_requested_max_tokens(self):
+        from owtn.llm.providers.deepseek import DeepSeekProvider
+
+        out = DeepSeekProvider().build_call_kwargs(
+            api_model="deepseek-v4-pro",
+            requested={"reasoning_effort": "disabled", "max_tokens": 12288},
+        )
+        assert out["max_tokens"] == 12288
+
+    def test_explicit_above_floor_passes_through(self):
+        from owtn.llm.providers.deepseek import DeepSeekProvider
+
+        out = DeepSeekProvider().build_call_kwargs(
+            api_model="deepseek-v4-pro",
+            requested={"reasoning_effort": "high", "max_tokens": 65536},
+        )
+        assert out["max_tokens"] == 65536
+
+    def test_non_reasoning_model_no_floor(self):
+        from owtn.llm.providers.deepseek import DeepSeekProvider
+
+        out = DeepSeekProvider().build_call_kwargs(
+            api_model="deepseek-chat",
+            requested={"reasoning_effort": "medium", "max_tokens": 4096},
+        )
+        assert out["max_tokens"] == 4096
