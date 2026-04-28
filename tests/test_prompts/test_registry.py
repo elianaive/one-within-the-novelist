@@ -147,8 +147,20 @@ class TestInjectSeed:
 
     def test_exclusion_works(self, seed_bank):
         all_ids = {s.id for s in seed_bank.get_by_type("real_world")}
-        result = inject_seed("real_world_seed", seed_bank, exclude_ids=all_ids)
+        result = inject_seed("real_world_seed", seed_bank, used_seed_ids=all_ids)
         assert result == ""
+
+    def test_used_seed_ids_mutated(self, seed_bank):
+        """inject_seed adds the picked seed to the caller's used_seed_ids
+        set so subsequent calls won't repeat it."""
+        used: set[str] = set()
+        text = inject_seed("real_world_seed", seed_bank, used_seed_ids=used)
+        assert text != ""
+        assert len(used) == 1
+        # Second call with same set; ID we just picked is now excluded.
+        text2 = inject_seed("real_world_seed", seed_bank, used_seed_ids=used)
+        assert text2 != ""
+        assert len(used) == 2
 
     @pytest.mark.parametrize("operator,expected_types", [
         ("thought_experiment", {"thought_experiment", "axiom", "dilemma"}),
