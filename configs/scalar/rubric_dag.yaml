@@ -1,0 +1,55 @@
+# Stage-2 typed-edge DAG rubric — 8 dims, 0-20 scale.
+# Evaluates the structure as a plan, not the prose it might produce.
+# Weights match the Stage-2 pairwise weighting: concept_fidelity_thematic,
+# post_dictability, arc_integrity_ending get higher weight;
+# structural_coherence acts as a floor.
+#
+# Scale anchors decompose absent / generic / competent / distinguished /
+# exemplary explicitly to fight LLM leniency-band saturation that simpler
+# 0-20 anchors produce.
+
+scale_anchors: >
+  0 = absent or wrong; 5 = present but generic, no specificity;
+  10 = competent execution, no surprises; 15 = clearly distinguished,
+  would notice in reading; 20 = exemplary, raises the bar.
+
+dims:
+  - name: beat_quality
+    weight: 1.0
+    description: >
+      Are beat sketches specific and evocative? Do they plant material Stage-4 prose can build on? (a) SPECIFICITY: sketches are concrete ("she asks whether the elephants looked like clouds") not generic ("she confronts him"). (b) EVOCATIVE WEIGHT: sketches imply mood/stakes/voice — would Stage 4 know what to escalate? (c) ANCHOR / INDELIBILITY POSITION: is there a candidate indelible moment positioned at the climax or reveal beat that Stage 4 can deliver? Evaluate at PLAN level (1-2 sentence sketches), not as polished prose.
+
+  - name: structural_coherence
+    weight: 0.5
+    description: >
+      Does every beat earn its place? Is DAG scope appropriate for target prose length? (a) EVERY-BEAT-EARNS: removing any node visibly degrades meaning. (b) COMPRESSION FIT: node count matches target (3-5 for 1K words, 5-8 for 3K, 7-12 for 5K, 10-18 for 10K). (c) NO REDUNDANCY: no two beats accomplish the same structural job. (d) LEGITIMATE SPARSITY: Hemingway-mode sparse-edge DAGs valid when story_constraints carry structural weight; weigh constraints + arcs alongside edge density.
+
+  - name: edge_logic
+    weight: 1.0
+    description: >
+      Does each edge have the right type for the relationship it names, and does its payload hold? (a) MECHANISM SPECIFICITY: `realizes` field names a specific mechanism ("his childhood fear of the dark, re-triggered by the blackout, pushed him past caution") not a generic one ("he was angry, so he acted"). (b) TEMPORAL-CAUSAL DISTINCTION: merely-sequential beats are not labeled causal. (c) IMPLICATION DISCIPLINE: implication = strict in-world logical entailment, not authorial thematic rhyme. (d) MODE FIT: the edge-type distribution matches the relationships actually present (a disclosure-heavy concept should carry disclosure edges, not all-causal).
+
+  - name: motivational_coherence
+    weight: 1.0
+    description: >
+      Do character_arcs (whole-story trajectories) and motivates edges (local intention installs) ground behavior in specific mental states without contradicting each other? (a) AGENT CONSISTENCY: the same character is named the same way in arcs, edges, and beat sketches; personality and goals cohere. (b) SCOPE DISCIPLINE: spanning trajectories live in character_arcs (≥3 non-adjacent touches); local installations live in motivates edges (near-adjacent src/dst). A long-span intention encoded as an edge with arbitrary endpoints is miscoded.
+
+  - name: tension_information_arch
+    weight: 1.25
+    description: >
+      Does the DAG manage suspense and information gaps to produce narrative momentum? (a) INFORMATION-GAP PLACEMENT: disclosure edges create readable gaps (the reader knows something is hidden without knowing what). (b) SUSPENSE CURVE: tension builds opening-to-climax; the climax is peak entropy; resolution reduces entropy in a specific way. (c) WITHHOLD/DISCLOSE TIMING: disclosures arrive when the reframe has weight, not before setup or after stakes have evaporated.
+
+  - name: post_dictability
+    weight: 1.5
+    description: >
+      Do the DAG's surprises feel inevitable in retrospect? (a) RETROSPECTIVE COHERENCE: after a disclosure reveals withheld information, the reader can trace it backwards through the beats that hinted at it. (b) EARNED-NOT-FORCED: surprising turns are grounded in earlier structural material, not imposed by LLM default ("suddenly, everything changed"). (c) PIVOTS HOLD: kishotenketsu-style ten (reframes) and Aristotelian recognition/reversal pairs are supported by the prior beat material.
+
+  - name: arc_integrity_ending
+    weight: 1.5
+    description: >
+      Does the tension trace across the DAG form a satisfying arc with a strong climax + resolution? (a) CLIMAX DEFINITION: the role:climax node is a clear peak in tension/emotion, not merely the last event. (b) SETUP EARNS THE CLIMAX: beats leading to climax establish stakes/characters/tensions making it feel earned. (c) RESOLUTION FORM: does the resolution acknowledge what happened without resolving away the productive tension? Bittersweet irresolution > redemption tidy.
+
+  - name: concept_fidelity_thematic
+    weight: 1.5
+    description: >
+      Do the structure + beats together deliver the concept's target emotional effect? Do beats embody the thematic tension rather than merely state it? (a) STRUCTURAL CARRYING: the anchor beat sits at the structural peak; setup beats plant material the effect requires. (b) NO DILUTION: no beats contradict or weaken the concept's target. (c) EMBODIMENT NOT STATEMENT: beats enact the theme via incident rather than character monologue. Stay structural — don't imagine prose.

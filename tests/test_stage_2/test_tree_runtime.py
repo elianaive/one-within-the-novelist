@@ -23,7 +23,12 @@ from owtn.evaluation.stage_2 import CheapJudgeOutcome, RolloutEvaluation
 from owtn.models.judge import JudgePersona
 from owtn.models.stage_1.concept_genome import ConceptGenome
 from owtn.models.stage_2.dag import DAG
-from owtn.stage_2.tree_runtime import TreeRuntimeState, _make_rollout_fn
+from owtn.evaluation.scalar.types import ScoreCard
+from owtn.stage_2.tree_runtime import (
+    TreeRuntimeState,
+    _make_rollout_fn,
+    _make_rollout_fn_scalar,
+)
 from tests.conftest import HILLS_GENOME
 
 
@@ -326,3 +331,57 @@ class TestRolloutWithSimulation:
             asyncio.run(rollout(challenger))
 
         assert captured["simulator"] is None
+
+
+class TestRolloutClosureScalar:
+    """Scalar-mode rollout closure: no champion, no full panel.
+
+    The closure delegates to a Scorer; whatever ScoreCard.aggregate the
+    scorer returns IS the backprop reward. Reasoning is recorded into the
+    tree's brief feed for cadence-based summarization.
+    """
+
+    def test_returns_aggregate_as_reward(self) -> None:
+        seed = _seed_dag()
+        challenger = seed.model_copy(update={"preset": "ch"})
+        state = TreeRuntimeState(running_champion=seed)
+
+        class FakeScorer:
+            rubric = None  # not exercised by the closure
+
+            async def score(self, artifact):
+                return ScoreCard(
+                    dim_scores={"x": 12.0},
+                    aggregate=0.625,
+                    n_calls=1,
+                    judge_label="fake",
+                    raw_responses=["because reasons"],
+                )
+
+        rollout = _make_rollout_fn_scalar(scorer=FakeScorer(), state=state.brief_state)
+        reward = asyncio.run(rollout(challenger))
+
+        assert reward == pytest.approx(0.625)
+        # No champion mutation
+        assert state.running_champion is seed
+        # Reasoning fed to the brief queue
+        assert state.brief_state.rollout_reasonings == ["because reasons"]
+        # No full-panel critiques recorded
+        assert state.brief_state.full_panel_critiques == []
+
+    def test_no_reasoning_skips_brief_recording(self) -> None:
+        seed = _seed_dag()
+        state = TreeRuntimeState(running_champion=seed)
+
+        class SilentScorer:
+            rubric = None
+
+            async def score(self, artifact):
+                return ScoreCard(
+                    dim_scores={}, aggregate=0.0, n_calls=0,
+                    judge_label="silent", raw_responses=[],
+                )
+
+        rollout = _make_rollout_fn_scalar(scorer=SilentScorer(), state=state.brief_state)
+        asyncio.run(rollout(seed))
+        assert state.brief_state.rollout_reasonings == []

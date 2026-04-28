@@ -1,0 +1,61 @@
+# Stage-1 concept genome rubric — 9 dims, 0-20 scale
+# Mirrors owtn/prompts/stage_1/rubric_anchors.txt sub-criteria, restated as
+# single descriptive paragraphs suited to both single-call and atomic scoring.
+# Weights match owtn pairwise.dim_weights from production configs.
+#
+# Scale anchors use the "bipolar" form (validated on Stage-2; carried over for
+# consistency). The decomposition into absent vs generic vs competent
+# vs distinguished vs exemplary fights the LLM-leniency band saturation that
+# baseline 0-20 anchors produce.
+
+scale_anchors: >
+  0 = absent or wrong; 5 = present but generic, no specificity;
+  10 = competent execution, no surprises; 15 = clearly distinguished,
+  would notice in reading; 20 = exemplary, raises the bar.
+
+dims:
+  - name: novelty
+    weight: 1.75
+    description: >
+      Does this concept see something that hasn't been seen this way before?
+      Walk three sub-criteria. (a) DOMAIN CROSSING: does the premise combine domains/registers/contexts not conventionally paired? Name the crossing if so. (b) CONVERGENCE DISTANCE: does it avoid AI-default patterns (reconciliation arc, grief meditation, AI consciousness, sanitized conflict, time loop, magical-realism-as-metaphor, moral clarity, small-town secret), and if it maps to one, does it subvert the pattern? (c) GENERATIVE SURPRISE: would five different writers tackling the premise produce noticeably different stories or converge on the same plot?
+
+  - name: grip
+    weight: 1.75
+    description: >
+      Does the concept contain the engine to pull a reader in and not let go? (a) THE THING YOU CAN'T LOOK AWAY FROM: does the premise seize attention, ideally via concretization (the abstract made visible and undeniable; cf. The Metamorphosis's body, The Lottery's stones, The Yellow Wallpaper's pattern)? (b) EMOTIONAL STAKES: is something specific at risk that a reader could care about, named not generic? (c) SENSORY SEED: read the anchor scene; is it a visible scene (the black box, the stones, the blind man's hand on the pen) or a gesture at one?
+
+  - name: tension_architecture
+    weight: 1.0
+    description: >
+      Does the concept create inherent pull-forward force? (a) SUSPENSE: uncertain outcome for someone the reader might invest in. (b) INFORMATION ARCHITECTURE: what is withheld? Distinguish resolvable gaps (eventually answered) from permanent gaps (structurally refused, like Bartleby's why or Hills Like White Elephants's what). (c) WEIGH-BACKWARD: does the anchor scene apply retroactive pressure, via reveal, pivot, or surprising-yet-inevitable climax?
+
+  - name: emotional_depth
+    weight: 1.0
+    description: >
+      Does this concept have the capacity for genuine, complex feeling? (a) RECOGNITION: does the target effect name a feeling readers will know but never seen articulated this way (the shock of identification)? (b) EMOTIONAL COMPLEXITY: does the concept support contradictory or layered feelings (revulsion AND seduction; clarity AND complicity)? (c) EMOTIONAL SOURCE: character, situation, concept, voice, or structural constraint — is the source load-bearing? (d) IMPLICATION: does reading mirror something within the story (Lolita's prose, Omelas's continuing to read)?
+
+  - name: thematic_resonance
+    weight: 1.0
+    description: >
+      Does this connect to something universal that resists easy answers? (a) QUESTION VS MESSAGE: a genuine question with both sides weighted, or a delivered position? (b) EMBEDDEDNESS: is the thematic concern inseparable from the premise (The Lottery IS inherited violence; Metamorphosis IS literal alienation), or could you swap themes without changing the story (a detective premise that could equally be about justice, loneliness, or nothing)?
+
+  - name: concept_coherence
+    weight: 0.5
+    description: >
+      Do the genome's elements work as a system? (a) LOAD-BEARING ELEMENTS: for each major element (premise, character seeds, constraints, style hint), would removing it make the concept generic or broken? How many are load-bearing vs decorative? (b) SURFACE/DEPTH ARCHITECTURE: where elements push against each other, does the friction generate energy or confusion? The highest form is structural irony (pastoral surface, horror depth). Coherence is a floor — broken or fine, no middle ground that selection should weight heavily.
+
+  - name: generative_fertility
+    weight: 1.25
+    description: >
+      Does this concept suggest multiple possible stories, or only one obvious execution? (a) EXECUTION DIVERSITY: can you sketch ≥3 meaningfully different stories from this premise (different in structure, tone, or emphasis, not just surface)? (b) GENERATIVE PRINCIPLE VS SITUATION: does the concept contain an engine (Library of Babel; Flowers for Algernon's diary-as-intelligence-meter) or just a setup (a woman returns to her hometown — describes but doesn't generate)?
+
+  - name: scope_calibration
+    weight: 0.5
+    description: >
+      Can this produce a satisfying story in ~1000-8000 words? (a) NATURAL SIZE: does the concept feel proportioned to its target length, or does it want to be a novella / flash piece / novel? (b) CONSTRAINT AS COMPRESSION: does the concept's specific constraint (a single setting, a single document, a single voice) act as a compressor, making the small size feel necessary rather than limiting? Scope is a floor — wrong-sized concepts fail; right-sized doesn't necessarily lift.
+
+  - name: indelibility
+    weight: 2.0
+    description: >
+      Would this concept stick in a reader's mind? (a) INDELIBLE IMAGE: is there a single image, line, or beat the reader would carry days later? (b) IRREDUCIBLE REMAINDER: what survives compression to a one-sentence summary, and what's necessarily lost? If the summary preserves everything, indelibility is low (cf. Wolfe's Suzanne Delage standard for negative-space indelibility). (c) SILHOUETTE / LENS: does the concept produce a lens through which a mechanism is newly legible?

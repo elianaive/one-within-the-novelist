@@ -28,6 +28,8 @@ import logging
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 
+from owtn.evaluation.scalar import Scorer, build_scorer_from_config
+from owtn.evaluation.scalar.renderers import render_stage2_partial
 from owtn.evaluation.stage_2 import (
     CompareInputs,
     RolloutEvaluation,
@@ -46,6 +48,7 @@ from owtn.stage_2.champion_brief import (
     TreeBriefState,
     get_or_compute_brief,
     record_full_panel_critique,
+    record_rollout_reasoning,
 )
 from owtn.stage_2.mcts import MCTSConfig, RolloutFn
 from owtn.stage_2.operators import make_expand_factory
@@ -128,6 +131,28 @@ def _make_rollout_fn(
     return rollout
 
 
+def _make_rollout_fn_scalar(
+    *,
+    scorer: Scorer,
+    state: TreeBriefState,
+) -> RolloutFn:
+    """Build the scalar-mode MCTS rollout closure.
+
+    Each rollout: score the partial DAG absolutely via `scorer.score()`. The
+    scorer's aggregate IS the backprop reward — no champion comparison, no
+    promotion gate. Rollout reasoning is recorded into the tree's brief state
+    for cadence-based summarization (full-panel critiques don't fire in
+    scalar mode because there's no full panel).
+    """
+    async def rollout(challenger: DAG) -> float:
+        card = await scorer.score(challenger)
+        if card.raw_responses:
+            record_rollout_reasoning(state, card.raw_responses[0])
+        return card.aggregate
+
+    return rollout
+
+
 def _build_critique_record(
     *,
     challenger: DAG,
@@ -206,7 +231,8 @@ async def run_one_preset_tree(
         # `evaluate_rollout` recording critiques + the runner triggering
         # re-summarize. For this Phase 9 wiring, the brief stays stale
         # within a phase — Phase 7+ rechallenge fires after promotions
-        # to re-summarize on demand.
+        # to re-summarize on demand. In scalar mode the brief sources from
+        # rollout reasoning instead of full-panel critiques.
         return state.brief_state.cached_render or "(brief not yet available)"
 
     expand_factory = make_expand_factory(
@@ -253,15 +279,22 @@ async def run_one_preset_tree(
             s_max=config.simulation_max_steps,
             min_partial_size=config.simulation_min_partial_size,
         )
-    rollout_fn = _make_rollout_fn(
-        concept=concept,
-        cheap_judge=cheap_judge,
-        full_panel=full_panel,
-        rejection_backprop=config.full_panel_rejection_backprop,
-        classifier_model=classifier_model,
-        state=state,
-        simulator=simulator,
-    )
+    if config.scoring_mode == "scalar":
+        scorer = build_scorer_from_config(
+            config.scoring_rollout_composition,
+            render_stage2_partial,
+        )
+        rollout_fn = _make_rollout_fn_scalar(scorer=scorer, state=state.brief_state)
+    else:
+        rollout_fn = _make_rollout_fn(
+            concept=concept,
+            cheap_judge=cheap_judge,
+            full_panel=full_panel,
+            rejection_backprop=config.full_panel_rejection_backprop,
+            classifier_model=classifier_model,
+            state=state,
+            simulator=simulator,
+        )
     mcts_config = MCTSConfig(
         c=config.exploration_constant,
         gamma=config.discount_gamma,
