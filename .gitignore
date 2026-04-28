@@ -24,6 +24,9 @@ results/
 .pytest_cache/
 .ruff_cache/
 
+# Seed embedding cache (Qwen3 vectors, derived from data/seed-bank.yaml)
+data/seed-bank-embeddings.jsonl
+
 # Databases (created during evolution runs)
 *.db
 *.db-wal

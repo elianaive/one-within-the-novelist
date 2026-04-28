@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Literal
 
 import yaml
 from pydantic import BaseModel, model_validator
@@ -121,6 +122,10 @@ class HandoffConfig(BaseModel):
 class PathsConfig(BaseModel):
     seed_bank: str
     convergence_patterns: str
+    # Where the seed-embedding cache lives. Sibling of the seed bank by default
+    # so an updated seed bank keeps its embeddings nearby. Computed lazily on
+    # first farthest-first selection; recomputed when a seed's content changes.
+    seed_embeddings_cache: str = "data/seed-bank-embeddings.jsonl"
 
 
 class StageConfig(BaseModel):
@@ -134,6 +139,12 @@ class StageConfig(BaseModel):
     evaluation: EvaluationConfig
     handoff: HandoffConfig
     paths: PathsConfig
+
+    # Seed sampling. "uniform" preserves prior behavior. "farthest_first" runs
+    # the k-center heuristic on Qwen3-Embedding-0.6B vectors so each pick is
+    # maximally unlike the run's already-used seeds. See
+    # `lab/issues/2026-04-28-seed-embedding-diversity.md`.
+    seed_sampling_strategy: Literal["uniform", "farthest_first"] = "uniform"
 
     @classmethod
     def from_yaml(cls, path: str) -> StageConfig:
