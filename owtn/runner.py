@@ -150,6 +150,18 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
         self.seed_bank = SeedBank.load(self.stage_config.paths.seed_bank)
         self.registry = load_registry()
 
+        # Per-run set of seed ids that have been injected. Mutated by
+        # `inject_seed` via `build_operator_prompt(used_seed_ids=...)`. Under
+        # `seed_sampling_strategy="farthest_first"` this is also the reference
+        # set for distance scoring. Under "uniform" it just acts as the
+        # exclude list (don't reuse a seed within a run).
+        self.used_seed_ids: set[str] = set()
+        if self.stage_config.seed_sampling_strategy == "farthest_first":
+            from owtn.models.stage_1.seed_embeddings import load_or_compute
+            cache_path = Path(self.stage_config.paths.seed_embeddings_cache)
+            embeddings = load_or_compute(self.seed_bank.seeds, cache_path)
+            self.seed_bank.attach_embeddings(embeddings)
+
         # Per-island lock guarding the post-pairwise champion-file
         # read+update phase. Pairwise comparisons run in parallel (the slow
         # LLM calls overlap), but the brief "did I dethrone?" handoff must
@@ -199,6 +211,10 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
         )
         self.prompt_sampler.tonal_inherit_rate = self.stage_config.evolution.tonal_inherit_rate
         self.prompt_sampler.tonal_crossover_new_rate = self.stage_config.evolution.tonal_crossover_new_rate
+        # Mutation path uses the same shared used-seed-set as the cold-start
+        # path so seeds aren't re-picked across genesis and mutation calls.
+        self.prompt_sampler.seed_sampling_strategy = self.stage_config.seed_sampling_strategy
+        self.prompt_sampler.used_seed_ids = self.used_seed_ids
 
         # Set eval_function now that self.db is available (from super().__init__).
         # The eval function reads champion from a file (not DB) to avoid
@@ -878,6 +894,8 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
             registry=self.registry,
             is_initial=True,
             seed_bank=self.seed_bank,
+            used_seed_ids=self.used_seed_ids,
+            sampling_strategy=self.stage_config.seed_sampling_strategy,
             prompt=self.stage_config.prompt,
             tonal_steering=tonal_text,
         )

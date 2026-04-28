@@ -143,18 +143,30 @@ def load_registry() -> dict[str, OperatorDef]:
 def inject_seed(
     operator: str,
     seed_bank: SeedBank,
-    exclude_ids: set[str] | None = None,
+    used_seed_ids: set[str] | None = None,
+    sampling_strategy: str = "uniform",
 ) -> str:
     """Select and format a seed for injection into an operator prompt.
+
+    `used_seed_ids` is an optional caller-owned set: it's both the set of
+    seed ids to skip (already used) and — under farthest-first — the
+    reference set for distance scoring. If supplied, this function adds the
+    picked seed's id to it (mutates the caller's set so they can pass it to
+    the next call).
 
     Returns formatted seed text, or empty string if no matching seed exists.
     """
     seed_types = OPERATOR_SEED_TYPES.get(operator, [])
     if not seed_types:
         return ""
-    seed = seed_bank.select(seed_types, exclude_ids=exclude_ids)
+    if sampling_strategy == "farthest_first":
+        seed = seed_bank.select_farthest_first(seed_types, used_seed_ids or set())
+    else:
+        seed = seed_bank.select(seed_types, exclude_ids=used_seed_ids)
     if seed is None:
         return ""
+    if used_seed_ids is not None:
+        used_seed_ids.add(seed.id)
     content = seed.content if isinstance(seed.content, str) else "\n".join(seed.content)
     return f"\nSpolia from elsewhere — architectural scrap offered for inspiration, not as template. The work you are making decides what fits. Contemplate what it can provide.\n\n{content}"
 
@@ -242,7 +254,8 @@ def build_operator_prompt(
     feedback: str = "",
     episodic_context: str = "",
     seed_bank: SeedBank | None = None,
-    exclude_seed_ids: set[str] | None = None,
+    used_seed_ids: set[str] | None = None,
+    sampling_strategy: str = "uniform",
     prompt: str = "",
     tonal_steering: str = "",
     is_initial: bool = False,
@@ -259,7 +272,11 @@ def build_operator_prompt(
     op = registry[operator]
     seed_text = ""
     if seed_bank is not None:
-        seed_text = inject_seed(operator, seed_bank, exclude_ids=exclude_seed_ids)
+        seed_text = inject_seed(
+            operator, seed_bank,
+            used_seed_ids=used_seed_ids,
+            sampling_strategy=sampling_strategy,
+        )
 
     # System message order (see docs/prompting-guide.md):
     #   1. Operator persona — sets distributional neighborhood

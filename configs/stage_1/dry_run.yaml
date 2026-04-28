@@ -14,6 +14,9 @@ stage: 1
 # for unsteered exploration.
 prompt: ""
 
+# Try farthest-first seed sampling. See lab/issues/2026-04-28-seed-embedding-diversity.md.
+seed_sampling_strategy: "farthest_first"
+
 evolution:
   num_generations: 2
   language: "json"
