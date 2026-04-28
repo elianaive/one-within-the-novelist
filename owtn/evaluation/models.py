@@ -22,8 +22,10 @@ DIMENSION_NAMES = [
 class JudgeScores(BaseModel):
     """Structured output from a single judge evaluation.
 
-    Field order matters: instructor fills `reasoning` first, forcing CoT
-    before score assignment. Score field names match rubric_anchors.txt.
+    Field order matters: native structured output (Anthropic tool use,
+    OpenAI Responses API, Gemini response_schema) fills `reasoning` first,
+    forcing CoT before score assignment. Score field names match
+    rubric_anchors.txt.
     """
 
     reasoning: str = Field(

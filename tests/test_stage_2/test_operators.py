@@ -30,9 +30,10 @@ class _FakeQueryResult:
     """Minimal stand-in for QueryResult.
 
     When `output_model` is passed to `query_async`, the provider runs the
-    response through instructor and `result.content` is the *parsed Pydantic
-    instance* — NOT a JSON string. Mocks here mirror that: pass a
-    `SeedExtractionResult` instance as `content`, not a JSON string.
+    response through its native structured-output mechanism and
+    `result.content` is the *parsed Pydantic instance* — NOT a JSON string.
+    Mocks here mirror that: pass a `SeedExtractionResult` instance as
+    `content`, not a JSON string.
     """
     content: object  # SeedExtractionResult when output_model is set
     input_tokens: int = 0
@@ -168,12 +169,12 @@ class TestSeedRootFailureFallbacks:
     demand extraction degrades to empty lists on failure rather than blocking
     the concept. The DAG still produces.
 
-    With `output_model` set, instructor raises *inside* `query_async` on JSON
-    parse failures or schema mismatches; both manifest as exceptions, which
-    the operator's broad except clause catches. There's no separate
-    post-call parsing step to test (cf. an earlier draft that did defensive
-    re-parsing — removed once it was clear the provider returns a parsed
-    instance directly).
+    With `output_model` set, providers' native structured output (Anthropic
+    tool use, OpenAI Responses, Gemini response_schema, DeepSeek json_object
+    + recovery) raises *inside* `query_async` on JSON parse failures or
+    schema mismatches; both manifest as exceptions, which the operator's
+    broad except clause catches. There's no separate post-call parsing step
+    to test.
     """
 
     def test_llm_exception_yields_empty_extracted_fields(
@@ -196,16 +197,17 @@ class TestSeedRootFailureFallbacks:
         assert len(dag.nodes) == 1
         assert dag.nodes[0].id == "anchor"
 
-    def test_instructor_parse_failure_yields_empty_fields(
+    def test_native_parse_failure_yields_empty_fields(
         self, hills_concept: ConceptGenome,
     ) -> None:
-        """Instructor's parse-failure path manifests as an exception raised
-        from query_async — same code path as a provider outage."""
+        """A native-structured-output parse failure manifests as an
+        exception raised from query_async — same code path as a provider
+        outage."""
         from pydantic import ValidationError
 
         async def schema_failing_query(**kwargs):
-            # Simulate instructor surfacing a schema mismatch as a ValidationError
-            # propagated out of the query call.
+            # Simulate the provider surfacing a schema mismatch as a
+            # ValidationError propagated out of the query call.
             raise ValidationError.from_exception_data("SeedExtractionResult", [])
 
         with patch("owtn.stage_2.operators.query_async", side_effect=schema_failing_query):

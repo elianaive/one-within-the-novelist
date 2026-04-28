@@ -17,6 +17,7 @@ def _judge(
     top_k: int | None = None,
     min_p: float | None = None,
     reasoning_effort: str = "disabled",
+    thinking_tokens: int | None = None,
 ) -> JudgePersona:
     return JudgePersona(
         id="test",
@@ -33,6 +34,7 @@ def _judge(
         top_k=top_k,
         min_p=min_p,
         reasoning_effort=reasoning_effort,
+        thinking_tokens=thinking_tokens,
     )
 
 
@@ -105,10 +107,13 @@ class TestOpenRouterReasoningJudge:
 
 
 class TestNonReasoningModel:
-    def test_deepseek_chat_uses_judge_temperature(self):
-        """DeepSeek: no OpenAI caps; judge temperature flows through."""
+    def test_deepseek_chat_uses_judge_temperature_and_cap(self):
+        """DeepSeek non-reasoning: temperature + the generous output cap.
+        Output cap applies on every judge call (regression-fix for Gemini
+        truncation; also useful insurance against tight upstream defaults
+        on DeepSeek)."""
         _, kwargs = _build_judge_kwargs(_judge("deepseek-chat", temperature=0.4))
-        assert kwargs == {"temperature": 0.4}
+        assert kwargs == {"max_tokens": _JUDGE_MAX_OUTPUT_TOKENS, "temperature": 0.4}
 
     def test_non_reasoning_openrouter_gets_only_output_cap_and_temp(self):
         """Non-reasoning OpenRouter models still get max_output_tokens to
@@ -127,6 +132,13 @@ class TestNonReasoningModel:
             "temperature": 0.2,
         }
         assert "reasoning" not in kwargs
+
+    def test_gemini_judge_gets_output_cap(self):
+        """Gemini judges need an explicit cap — SDK default is 2048 which
+        truncates 8-dim Stage 2 judgments mid-string. Regression caught
+        by the Stage 2 demo run on 2026-04-27."""
+        _, kwargs = _build_judge_kwargs(_judge("gemini-3-flash-preview"))
+        assert kwargs.get("max_tokens") == _JUDGE_MAX_OUTPUT_TOKENS
 
 
 class TestSamplerFiltering:
@@ -166,3 +178,35 @@ class TestSignatureReturnsModelName:
         model, kwargs = _build_judge_kwargs(_judge("gpt-4.1"))
         assert model == "gpt-4.1"
         assert isinstance(kwargs, dict)
+
+
+class TestJudgeExplicitThinkingTokens:
+    """thinking_tokens on a JudgePersona overrides the
+    THINKING_TOKENS[reasoning_effort] mapping for Anthropic / Gemini judges."""
+
+    def test_anthropic_judge_uses_explicit_thinking_tokens(self):
+        _, kwargs = _build_judge_kwargs(
+            _judge(
+                "claude-sonnet-4-6",
+                reasoning_effort="low",
+                thinking_tokens=6000,
+            )
+        )
+        assert kwargs["thinking"]["budget_tokens"] == 6000
+
+    def test_anthropic_judge_falls_back_to_effort(self):
+        from owtn.llm.providers.base import THINKING_TOKENS
+
+        _, kwargs = _build_judge_kwargs(
+            _judge("claude-sonnet-4-6", reasoning_effort="medium")
+        )
+        assert kwargs["thinking"]["budget_tokens"] == THINKING_TOKENS["medium"]
+
+    def test_openai_judge_ignores_thinking_tokens(self):
+        """OpenAI judges take effort as a string; thinking_tokens has no
+        effect on the wire shape (no thinking_budget anywhere)."""
+        _, kwargs = _build_judge_kwargs(
+            _judge("gpt-5.4-mini", thinking_tokens=9999)
+        )
+        assert "thinking_budget" not in kwargs
+        assert "thinking_tokens" not in kwargs
