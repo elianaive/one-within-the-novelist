@@ -3,6 +3,8 @@
 Usage:
     uv run python -m owtn.tools analyze --passage P.txt --caller-model M
     uv run python -m owtn.tools lookup --target austen --n 2
+    uv run python -m owtn.tools slop --passage P.txt
+    uv run python -m owtn.tools style --passage P.txt
     uv run python -m owtn.tools rebuild-cache
 """
 
@@ -13,7 +15,9 @@ import json
 from pathlib import Path
 
 from .lookup_exemplar import lookup_exemplar
+from .slop_score import slop_score
 from .stylometry import rebuild_cache, stylometry
+from .writing_style import writing_style
 
 
 def main() -> None:
@@ -36,6 +40,16 @@ def main() -> None:
                           help="How many passages to return (default 2)")
     p_lookup.add_argument("--max-words", type=int, default=400,
                           help="Truncate each passage to N words for compact display")
+
+    p_slop = sub.add_parser("slop", help="Run the slop-score tool on a passage")
+    p_slop.add_argument("--passage", required=True, help="Path to passage text file")
+    p_slop.add_argument("--compare-to", nargs="+", default=None,
+                        help="One or more reference passage files to compare against")
+
+    p_style = sub.add_parser("style", help="Run the writing-style tool on a passage")
+    p_style.add_argument("--passage", required=True, help="Path to passage text file")
+    p_style.add_argument("--compare-to", nargs="+", default=None,
+                        help="One or more reference passage files to compare against")
 
     sub.add_parser("rebuild-cache", help="Rebuild the stylometric signal cache")
 
@@ -61,6 +75,22 @@ def main() -> None:
     if args.cmd == "lookup":
         result = lookup_exemplar(args.target, n=args.n, max_words=args.max_words)
         print(json.dumps(result, indent=2))
+        return
+
+    if args.cmd == "slop":
+        passage = Path(args.passage).read_text(encoding="utf-8")
+        compare_to = ([Path(p).read_text(encoding="utf-8") for p in args.compare_to]
+                      if args.compare_to else None)
+        report = slop_score(passage, compare_to=compare_to)
+        print(json.dumps(report.to_dict(), indent=2))
+        return
+
+    if args.cmd == "style":
+        passage = Path(args.passage).read_text(encoding="utf-8")
+        compare_to = ([Path(p).read_text(encoding="utf-8") for p in args.compare_to]
+                      if args.compare_to else None)
+        report = writing_style(passage, compare_to=compare_to)
+        print(json.dumps(report.to_dict(), indent=2))
         return
 
 
