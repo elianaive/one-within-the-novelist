@@ -322,6 +322,138 @@ class AnthropicProvider:
         )
 
 
+    @backoff.on_exception(
+        backoff.expo, _RETRY_EXCEPTIONS,
+        max_tries=MAX_TRIES, max_value=MAX_VALUE, max_time=MAX_TIME,
+        on_backoff=_backoff_handler,
+    )
+    async def query_async_with_tools(
+        self,
+        *,
+        model: str,
+        msg: str,
+        system_msg: str,
+        msg_history: list[dict],
+        system_prefix: Optional[str],
+        tools: list[dict],
+        dispatch: Any,  # async (name, params) -> str
+        max_iters: int = 10,
+        kwargs: dict,
+        client: Optional[anthropic.AsyncAnthropic] = None,
+    ) -> QueryResult:
+        """Tool-use loop. Sends tool schemas; on tool_use blocks, runs the
+        dispatcher for each, appends tool_result blocks, re-calls until the
+        model responds without tool_use or `max_iters` is hit.
+
+        Returns a QueryResult whose `content` is the final assistant text,
+        whose token/cost fields sum across all loop iterations, and whose
+        `new_msg_history` is the full multi-turn transcript including all
+        tool_use/tool_result rounds.
+        """
+        client = client or self._async()
+        call_kwargs = dict(kwargs)
+        call_kwargs.setdefault("max_tokens", ANTHROPIC_DEFAULT_MAX_TOKENS)
+        # Translate neutral {name, description, parameters} → Anthropic's
+        # {name, description, input_schema}. Allows the orchestrator to stay
+        # provider-agnostic.
+        call_kwargs["tools"] = [
+            {
+                "name": t["name"],
+                "description": t.get("description", ""),
+                "input_schema": t.get("input_schema") or t.get("parameters") or {"type": "object"},
+            }
+            for t in tools
+        ]
+
+        history: list[dict] = list(msg_history) + [
+            {"role": "user", "content": [{"type": "text", "text": msg}]}
+        ]
+
+        totals = {
+            "input_tokens": 0, "output_tokens": 0, "thinking_tokens": 0,
+            "input_cost": 0.0, "output_cost": 0.0, "cost": 0.0,
+            "cache_read_tokens": 0, "cache_creation_tokens": 0,
+        }
+        last_text = ""
+        last_thought = ""
+
+        for _ in range(max_iters):
+            response = await client.messages.create(
+                model=model,
+                system=_build_system(system_msg, system_prefix),
+                messages=list(history),
+                **call_kwargs,
+            )
+            costs = get_anthropic_costs(response, model)
+            for k in totals:
+                totals[k] += costs[k]
+
+            assistant_blocks = [
+                _block_to_dict(b) for b in response.content
+            ]
+            history.append({"role": "assistant", "content": assistant_blocks})
+
+            tool_uses = [b for b in response.content if b.type == "tool_use"]
+            if not tool_uses:
+                last_text, last_thought = _extract_text(response)
+                break
+
+            tool_results = []
+            for use in tool_uses:
+                try:
+                    result_str = await dispatch(use.name, dict(use.input))
+                except Exception as e:
+                    logger.warning("tool %s dispatch failed: %s", use.name, e)
+                    result_str = f"tool error: {e}"
+                tool_results.append({
+                    "type": "tool_result",
+                    "tool_use_id": use.id,
+                    "content": result_str,
+                })
+            history.append({"role": "user", "content": tool_results})
+        else:
+            logger.warning(
+                "tool-use loop hit max_iters=%d without final text response",
+                max_iters,
+            )
+            last_text, last_thought = _extract_text(response)
+
+        return QueryResult(
+            content=last_text,
+            msg=msg,
+            system_msg=system_msg,
+            new_msg_history=history,
+            model_name=model,
+            kwargs=kwargs,
+            input_tokens=totals["input_tokens"],
+            output_tokens=totals["output_tokens"],
+            thinking_tokens=totals["thinking_tokens"],
+            cost=totals["cost"],
+            input_cost=totals["input_cost"],
+            output_cost=totals["output_cost"],
+            cache_read_tokens=totals["cache_read_tokens"],
+            cache_creation_tokens=totals["cache_creation_tokens"],
+            thought=last_thought,
+        )
+
+
+def _block_to_dict(block: Any) -> dict:
+    """Serialize an Anthropic content block back to its API-shape dict so
+    it can be replayed in the next call's message history."""
+    if block.type == "text":
+        return {"type": "text", "text": block.text}
+    if block.type == "thinking":
+        return {"type": "thinking", "thinking": block.thinking, "signature": getattr(block, "signature", "")}
+    if block.type == "tool_use":
+        return {
+            "type": "tool_use",
+            "id": block.id,
+            "name": block.name,
+            "input": dict(block.input),
+        }
+    return {"type": block.type}
+
+
 class BedrockProvider(AnthropicProvider):
     """Bedrock-hosted Claude. Same call shape, different SDK client."""
 
