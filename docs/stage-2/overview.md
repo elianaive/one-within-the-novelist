@@ -409,7 +409,7 @@ Stage 2 runs on a different engine than Stage 1, produces a different genome, an
 - **LLM client infrastructure** (`owtn/llm/`): bandit ensemble, caching, pricing, prompt-caching machinery
 - **Judge personas** (`configs/judges/*.yaml`): same 4 contest judges (Gwern, Roon, Alexander Wales, Jamie Wahls) — the Un-Slop Prize panel active in Stage 1; their aesthetics are submission-focused, not stage-specific. Translation concerns per judge are in `judges.md` §Persona-Adaptation Concerns Specific to Stage 2.
 - **Pairwise protocol** (`owtn/evaluation/pairwise.py`): 4 judges × 2 orderings × per-criterion voting is the same mechanism
-- **Swiss tournament** (`owtn/evaluation/tournament.py`): reused for within-concept tournaments in Stage 2
+- **Swiss tournament** (`owtn/stage_1/tournament.py`): reused for within-concept tournaments in Stage 2
 - **Compost heap**: structural fragments from Stage 2 (interesting beat sketches, productive edge patterns, failed graphs with a spark) feed the same `compost` SQLite table that Stage 1 writes to
 
 ### What does not carry over

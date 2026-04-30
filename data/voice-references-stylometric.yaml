@@ -2539,6 +2539,7 @@ references:
   - surrealist_parable
   - third_person
   - bureaucratic
+  - legal_register
   source: Kafka, *The Trial* (1925, English trans.)
   license: public_domain
   url: https://www.gutenberg.org/ebooks/7849
@@ -2636,6 +2637,7 @@ references:
   - panoramic
   - anaphora
   - comic_realism
+  - legal_register
   source: Dickens, *Bleak House* (1853)
   license: public_domain
   url: https://www.gutenberg.org/ebooks/1023
@@ -2648,6 +2650,7 @@ references:
   - panoramic
   - anaphora
   - comic_realism
+  - legal_register
   source: Dickens, *Bleak House* (1853) (sample 1)
   license: public_domain
   url: https://www.gutenberg.org/ebooks/1023
@@ -6263,3 +6266,3575 @@ references:
   license: owtn_pilot_generation
   text_file: passages/defaults/centroid-deepseek-v4-pro-28-lost-found-in-osaka.txt
   category: defaults
+
+
+# ═══ Round-6 expansion — corpus author-gap fill (2026-04-28) ═══
+# Per lab/issues/2026-04-28-corpus-author-gaps.md Phase 1 (automated).
+# Sources: PG-round-6 breadth (Sterne/Defoe/Edgeworth/Wilde/Gaskell/
+# Joyce-Ulysses-multi/Lawrence-Women-in-Love+Lost-Girl/Tagore-Sadhana
+# /Hemingway-In-Our-Time-PG/Mann-Death-in-Venice+Royal-Highness),
+# Standard Ebooks (Faulkner Sound and Fury + As I Lay Dying;
+# Hemingway Farewell to Arms — all entered US PD Jan 2025/2026),
+# SCP Foundation CC-BY-SA (procedural-bureaucratic register for
+# Stage 3 position #10), and any fair-use manual excerpts staged in
+# lab/fair-use-staging/ (Phase 2; user-paced curation).
+
+- id: sterne-tristram-shandy-s0
+  tags: [literary, proto_experimental, digressive, metafictional, first_person]
+  source: "Sterne, *The Life and Opinions of Tristram Shandy, Gentleman* (1759-67)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/1079"
+  text_file: passages/exemplars/sterne-tristram-shandy-s0.txt
+  category: exemplars
+
+- id: sterne-tristram-shandy-s1
+  tags: [literary, proto_experimental, digressive, metafictional, first_person]
+  source: "Sterne, *The Life and Opinions of Tristram Shandy, Gentleman* (1759-67) (sample 1)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/1079"
+  text_file: passages/exemplars/sterne-tristram-shandy-s1.txt
+  category: exemplars
+
+- id: defoe-robinson-crusoe-s0
+  tags: [literary, early_novel, first_person, adventure]
+  source: "Defoe, *Robinson Crusoe* (1719)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/521"
+  text_file: passages/exemplars/defoe-robinson-crusoe-s0.txt
+  category: exemplars
+
+- id: defoe-robinson-crusoe-s1
+  tags: [literary, early_novel, first_person, adventure]
+  source: "Defoe, *Robinson Crusoe* (1719) (sample 1)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/521"
+  text_file: passages/exemplars/defoe-robinson-crusoe-s1.txt
+  category: exemplars
+
+- id: defoe-moll-flanders-s0
+  tags: [literary, early_novel, first_person, picaresque]
+  source: "Defoe, *Moll Flanders* (1722)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/370"
+  text_file: passages/exemplars/defoe-moll-flanders-s0.txt
+  category: exemplars
+
+- id: defoe-moll-flanders-s1
+  tags: [literary, early_novel, first_person, picaresque]
+  source: "Defoe, *Moll Flanders* (1722) (sample 1)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/370"
+  text_file: passages/exemplars/defoe-moll-flanders-s1.txt
+  category: exemplars
+
+- id: edgeworth-castle-rackrent-s0
+  tags: [literary, pre_austen, comic_realism, first_person, irish]
+  source: "Edgeworth, *Castle Rackrent* (1800)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/1424"
+  text_file: passages/exemplars/edgeworth-castle-rackrent-s0.txt
+  category: exemplars
+
+- id: wilde-dorian-gray-s0
+  tags: [literary, victorian, aestheticism, third_person, epigrammatic]
+  source: "Wilde, *The Picture of Dorian Gray* (1890)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/174"
+  text_file: passages/exemplars/wilde-dorian-gray-s0.txt
+  category: exemplars
+
+- id: wilde-dorian-gray-s1
+  tags: [literary, victorian, aestheticism, third_person, epigrammatic]
+  source: "Wilde, *The Picture of Dorian Gray* (1890) (sample 1)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/174"
+  text_file: passages/exemplars/wilde-dorian-gray-s1.txt
+  category: exemplars
+
+- id: wilde-de-profundis-s0
+  tags: [literary, victorian, lyric_essay, personal_essay, epistolary, first_person]
+  source: "Wilde, *De Profundis* (1905, written 1897)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/921"
+  text_file: passages/exemplars/wilde-de-profundis-s0.txt
+  category: exemplars
+
+- id: gaskell-cranford-s0
+  tags: [literary, victorian, social_register, comic_realism, first_person]
+  source: "Gaskell, *Cranford* (1853)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/394"
+  text_file: passages/exemplars/gaskell-cranford-s0.txt
+  category: exemplars
+
+- id: gaskell-cranford-s1
+  tags: [literary, victorian, social_register, comic_realism, first_person]
+  source: "Gaskell, *Cranford* (1853) (sample 1)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/394"
+  text_file: passages/exemplars/gaskell-cranford-s1.txt
+  category: exemplars
+
+- id: gaskell-north-south-s0
+  tags: [literary, victorian, third_person, industrial_realism]
+  source: "Gaskell, *North and South* (1855)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/4276"
+  text_file: passages/exemplars/gaskell-north-south-s0.txt
+  category: exemplars
+
+- id: gaskell-north-south-s1
+  tags: [literary, victorian, third_person, industrial_realism]
+  source: "Gaskell, *North and South* (1855) (sample 1)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/4276"
+  text_file: passages/exemplars/gaskell-north-south-s1.txt
+  category: exemplars
+
+- id: joyce-ulysses-s0
+  tags: [literary, high_modernist, stream_consciousness, free_indirect_discourse, experimental]
+  source: "Joyce, *Ulysses* (1922)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/4300"
+  text_file: passages/exemplars/joyce-ulysses-s0.txt
+  category: exemplars
+
+- id: joyce-ulysses-s1
+  tags: [literary, high_modernist, stream_consciousness, free_indirect_discourse, experimental]
+  source: "Joyce, *Ulysses* (1922) (sample 1)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/4300"
+  text_file: passages/exemplars/joyce-ulysses-s1.txt
+  category: exemplars
+
+- id: joyce-ulysses-s2
+  tags: [literary, high_modernist, stream_consciousness, free_indirect_discourse, experimental]
+  source: "Joyce, *Ulysses* (1922) (sample 2)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/4300"
+  text_file: passages/exemplars/joyce-ulysses-s2.txt
+  category: exemplars
+
+- id: lawrence-women-in-love-s0
+  tags: [literary, high_modernist, third_person, intense, lyric]
+  source: "Lawrence, *Women in Love* (1920)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/4240"
+  text_file: passages/exemplars/lawrence-women-in-love-s0.txt
+  category: exemplars
+
+- id: lawrence-women-in-love-s1
+  tags: [literary, high_modernist, third_person, intense, lyric]
+  source: "Lawrence, *Women in Love* (1920) (sample 1)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/4240"
+  text_file: passages/exemplars/lawrence-women-in-love-s1.txt
+  category: exemplars
+
+- id: lawrence-lost-girl-s0
+  tags: [literary, high_modernist, third_person, intense]
+  source: "Lawrence, *The Lost Girl* (1920)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/23727"
+  text_file: passages/exemplars/lawrence-lost-girl-s0.txt
+  category: exemplars
+
+- id: tagore-sadhana-s0
+  tags: [literary, south_asian, essay, philosophical, first_person]
+  source: "Tagore, *Sadhana: The Realisation of Life* (1913)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/6842"
+  text_file: passages/exemplars/tagore-sadhana-s0.txt
+  category: exemplars
+
+- id: hemingway-in-our-time-pg-s0
+  tags: [literary, high_modernist, minimalist_anchor, first_person, iceberg_register]
+  source: "Hemingway, *In Our Time* (1924, Three Mountains Press / Pound ed.)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/61085"
+  text_file: passages/exemplars/hemingway-in-our-time-pg-s0.txt
+  category: exemplars
+
+- id: hemingway-in-our-time-pg-s1
+  tags: [literary, high_modernist, minimalist_anchor, first_person, iceberg_register]
+  source: "Hemingway, *In Our Time* (1924, Three Mountains Press / Pound ed.) (sample 1)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/61085"
+  text_file: passages/exemplars/hemingway-in-our-time-pg-s1.txt
+  category: exemplars
+
+- id: mann-death-in-venice-s0
+  tags: [literary, high_modernist, third_person, intellectual, essayistic, german_translation]
+  source: "Mann, *Death in Venice* (1912, Burke trans. 1925)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/66073"
+  text_file: passages/exemplars/mann-death-in-venice-s0.txt
+  category: exemplars
+
+- id: mann-royal-highness-s0
+  tags: [literary, high_modernist, third_person, intellectual, german_translation, ironic]
+  source: "Mann, *Royal Highness* (1909, Curtis trans.)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/36028"
+  text_file: passages/exemplars/mann-royal-highness-s0.txt
+  category: exemplars
+
+- id: mann-royal-highness-s1
+  tags: [literary, high_modernist, third_person, intellectual, german_translation, ironic]
+  source: "Mann, *Royal Highness* (1909, Curtis trans.) (sample 1)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/36028"
+  text_file: passages/exemplars/mann-royal-highness-s1.txt
+  category: exemplars
+
+- id: faulkner-sound-and-fury-s0
+  tags: [literary, high_modernist, stream_consciousness, first_person, polyphonic, southern_gothic]
+  source: "Faulkner, *The Sound and the Fury* (1929)"
+  license: public_domain
+  url: "https://standardebooks.org/ebooks/william-faulkner/the-sound-and-the-fury"
+  text_file: passages/exemplars/faulkner-sound-and-fury-s0.txt
+  category: exemplars
+
+- id: faulkner-sound-and-fury-s1
+  tags: [literary, high_modernist, stream_consciousness, first_person, polyphonic, southern_gothic]
+  source: "Faulkner, *The Sound and the Fury* (1929) (sample 1)"
+  license: public_domain
+  url: "https://standardebooks.org/ebooks/william-faulkner/the-sound-and-the-fury"
+  text_file: passages/exemplars/faulkner-sound-and-fury-s1.txt
+  category: exemplars
+
+- id: faulkner-as-i-lay-dying-s0
+  tags: [literary, high_modernist, stream_consciousness, first_person, polyphonic, southern_gothic]
+  source: "Faulkner, *As I Lay Dying* (1930)"
+  license: public_domain
+  url: "https://standardebooks.org/ebooks/william-faulkner/as-i-lay-dying"
+  text_file: passages/exemplars/faulkner-as-i-lay-dying-s0.txt
+  category: exemplars
+
+- id: faulkner-as-i-lay-dying-s1
+  tags: [literary, high_modernist, stream_consciousness, first_person, polyphonic, southern_gothic]
+  source: "Faulkner, *As I Lay Dying* (1930) (sample 1)"
+  license: public_domain
+  url: "https://standardebooks.org/ebooks/william-faulkner/as-i-lay-dying"
+  text_file: passages/exemplars/faulkner-as-i-lay-dying-s1.txt
+  category: exemplars
+
+- id: hemingway-farewell-to-arms-s0
+  tags: [literary, high_modernist, minimalist_anchor, first_person, iceberg_register, war_novel]
+  source: "Hemingway, *A Farewell to Arms* (1929)"
+  license: public_domain
+  url: "https://standardebooks.org/ebooks/ernest-hemingway/a-farewell-to-arms"
+  text_file: passages/exemplars/hemingway-farewell-to-arms-s0.txt
+  category: exemplars
+
+- id: hemingway-farewell-to-arms-s1
+  tags: [literary, high_modernist, minimalist_anchor, first_person, iceberg_register, war_novel]
+  source: "Hemingway, *A Farewell to Arms* (1929) (sample 1)"
+  license: public_domain
+  url: "https://standardebooks.org/ebooks/ernest-hemingway/a-farewell-to-arms"
+  text_file: passages/exemplars/hemingway-farewell-to-arms-s1.txt
+  category: exemplars
+
+- id: scp-173
+  tags: [procedural_bureaucratic, institutional_voice, containment_doc]
+  source: "SCP-173 by Moto42 (original concept by 'Cidf')"
+  license: cc_by_sa_3_0
+  url: "https://scp-wiki.wikidot.com/scp-173"
+  text_file: passages/exemplars/scp-173.txt
+  category: exemplars
+
+- id: scp-049
+  tags: [procedural_bureaucratic, institutional_voice, containment_doc]
+  source: "SCP-049 by Gabriel Jade & djkaktus"
+  license: cc_by_sa_3_0
+  url: "https://scp-wiki.wikidot.com/scp-049"
+  text_file: passages/exemplars/scp-049.txt
+  category: exemplars
+
+- id: scp-682
+  tags: [procedural_bureaucratic, institutional_voice, containment_doc]
+  source: "SCP-682 by Dr. Gears"
+  license: cc_by_sa_3_0
+  url: "https://scp-wiki.wikidot.com/scp-682"
+  text_file: passages/exemplars/scp-682.txt
+  category: exemplars
+
+- id: scp-2317
+  tags: [procedural_bureaucratic, institutional_voice, containment_doc, narrative_drift]
+  source: "SCP-2317 by djkaktus"
+  license: cc_by_sa_3_0
+  url: "https://scp-wiki.wikidot.com/scp-2317"
+  text_file: passages/exemplars/scp-2317.txt
+  category: exemplars
+
+- id: scp-3008
+  tags: [procedural_bureaucratic, institutional_voice, containment_doc]
+  source: "SCP-3008 by Mortos"
+  license: cc_by_sa_3_0
+  url: "https://scp-wiki.wikidot.com/scp-3008"
+  text_file: passages/exemplars/scp-3008.txt
+  category: exemplars
+
+- id: scp-914
+  tags: [procedural_bureaucratic, institutional_voice, containment_doc]
+  source: "SCP-914 by Dr. Gears"
+  license: cc_by_sa_3_0
+  url: "https://scp-wiki.wikidot.com/scp-914"
+  text_file: passages/exemplars/scp-914.txt
+  category: exemplars
+
+- id: scp-1730
+  tags: [procedural_bureaucratic, institutional_voice, containment_doc]
+  source: "SCP-1730 by djkaktus"
+  license: cc_by_sa_3_0
+  url: "https://scp-wiki.wikidot.com/scp-1730"
+  text_file: passages/exemplars/scp-1730.txt
+  category: exemplars
+
+- id: scp-2718
+  tags: [procedural_bureaucratic, institutional_voice, containment_doc, infohazard]
+  source: "SCP-2718 by TwistedGears"
+  license: cc_by_sa_3_0
+  url: "https://scp-wiki.wikidot.com/scp-2718"
+  text_file: passages/exemplars/scp-2718.txt
+  category: exemplars
+
+
+# ═══ Round-7 expansion — broader breadth (2026-04-28) ═══
+# Per lab/issues/2026-04-28-corpus-author-gaps.md Phase 1 continuing.
+# Includes round-6 + round-7 sources mixed together; the round-7 wave
+# adds: PG round-6 breadth (12 authors covering proto-experimental,
+# early novel, pre-Austen, late Victorian, etc.); Standard Ebooks
+# round-1 (Faulkner Sound and Fury + As I Lay Dying; Hemingway
+# Farewell to Arms — US PD Jan 2025/2026); SCP Foundation CC-BY-SA
+# round-1 (procedural-bureaucratic register, Stage 3 position #10);
+# PG round-7 broader (Burney, Pre-1925 Woolf trilogy, Conrad ×5,
+# Hardy ×3, Twain ×3, Sinclair Lewis, Trollope, Wilde, Crane Red
+# Badge, Galsworthy Forsyte, Tarkington, Pater, Carlyle, Hearn,
+# Murasaki Genji-Waley, Flaubert Madame Bovary, Douglass + Jacobs
+# slave narratives, Emerson, Gissing, Meredith); Standard Ebooks
+# round-2 (Woolf Mrs Dalloway + Lighthouse + Orlando — post-1925 PD;
+# Hemingway Sun Also Rises; Faulkner Soldier's Pay); SCP round-2
+# (proposal form, narrative-drift, transcript form, tale-adjacent).
+# Plus any fair-use manual excerpts in lab/fair-use-staging/.
+
+- id: burney-evelina-s0
+  tags: [literary, pre_austen, epistolary, first_person, sentimental]
+  source: "Burney, *Evelina* (1778)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/6053"
+  text_file: passages/exemplars/burney-evelina-s0.txt
+  category: exemplars
+
+- id: burney-evelina-s1
+  tags: [literary, pre_austen, epistolary, first_person, sentimental]
+  source: "Burney, *Evelina* (1778) (sample 1)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/6053"
+  text_file: passages/exemplars/burney-evelina-s1.txt
+  category: exemplars
+
+- id: woolf-voyage-out-s0
+  tags: [literary, high_modernist, third_person, free_indirect_discourse, sea_voyage]
+  source: "Woolf, *The Voyage Out* (1915)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/144"
+  text_file: passages/exemplars/woolf-voyage-out-s0.txt
+  category: exemplars
+
+- id: woolf-voyage-out-s1
+  tags: [literary, high_modernist, third_person, free_indirect_discourse, sea_voyage]
+  source: "Woolf, *The Voyage Out* (1915) (sample 1)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/144"
+  text_file: passages/exemplars/woolf-voyage-out-s1.txt
+  category: exemplars
+
+- id: woolf-night-and-day-s0
+  tags: [literary, high_modernist, third_person, free_indirect_discourse, social_register]
+  source: "Woolf, *Night and Day* (1919)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/1245"
+  text_file: passages/exemplars/woolf-night-and-day-s0.txt
+  category: exemplars
+
+- id: woolf-night-and-day-s1
+  tags: [literary, high_modernist, third_person, free_indirect_discourse, social_register]
+  source: "Woolf, *Night and Day* (1919) (sample 1)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/1245"
+  text_file: passages/exemplars/woolf-night-and-day-s1.txt
+  category: exemplars
+
+- id: woolf-jacobs-room-s0
+  tags: [literary, high_modernist, third_person, fragmentary, elegiac]
+  source: "Woolf, *Jacob's Room* (1922)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/5670"
+  text_file: passages/exemplars/woolf-jacobs-room-s0.txt
+  category: exemplars
+
+- id: woolf-jacobs-room-s1
+  tags: [literary, high_modernist, third_person, fragmentary, elegiac]
+  source: "Woolf, *Jacob's Room* (1922) (sample 1)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/5670"
+  text_file: passages/exemplars/woolf-jacobs-room-s1.txt
+  category: exemplars
+
+- id: conrad-heart-of-darkness-s0
+  tags: [literary, high_modernist, first_person, frame_narrative, colonial]
+  source: "Conrad, *Heart of Darkness* (1899)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/219"
+  text_file: passages/exemplars/conrad-heart-of-darkness-s0.txt
+  category: exemplars
+
+- id: conrad-heart-of-darkness-s1
+  tags: [literary, high_modernist, first_person, frame_narrative, colonial]
+  source: "Conrad, *Heart of Darkness* (1899) (sample 1)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/219"
+  text_file: passages/exemplars/conrad-heart-of-darkness-s1.txt
+  category: exemplars
+
+- id: conrad-lord-jim-s0
+  tags: [literary, high_modernist, first_person, frame_narrative, ethical]
+  source: "Conrad, *Lord Jim* (1900)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/5658"
+  text_file: passages/exemplars/conrad-lord-jim-s0.txt
+  category: exemplars
+
+- id: conrad-lord-jim-s1
+  tags: [literary, high_modernist, first_person, frame_narrative, ethical]
+  source: "Conrad, *Lord Jim* (1900) (sample 1)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/5658"
+  text_file: passages/exemplars/conrad-lord-jim-s1.txt
+  category: exemplars
+
+- id: conrad-nostromo-s0
+  tags: [literary, high_modernist, third_person, panoramic, political]
+  source: "Conrad, *Nostromo* (1904)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/2021"
+  text_file: passages/exemplars/conrad-nostromo-s0.txt
+  category: exemplars
+
+- id: conrad-nostromo-s1
+  tags: [literary, high_modernist, third_person, panoramic, political]
+  source: "Conrad, *Nostromo* (1904) (sample 1)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/2021"
+  text_file: passages/exemplars/conrad-nostromo-s1.txt
+  category: exemplars
+
+- id: conrad-secret-agent-s0
+  tags: [literary, high_modernist, third_person, ironic, political]
+  source: "Conrad, *The Secret Agent* (1907)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/974"
+  text_file: passages/exemplars/conrad-secret-agent-s0.txt
+  category: exemplars
+
+- id: conrad-secret-agent-s1
+  tags: [literary, high_modernist, third_person, ironic, political]
+  source: "Conrad, *The Secret Agent* (1907) (sample 1)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/974"
+  text_file: passages/exemplars/conrad-secret-agent-s1.txt
+  category: exemplars
+
+- id: conrad-mirror-of-sea-s0
+  tags: [literary, edwardian, essayistic, first_person, lyric]
+  source: "Conrad, *The Mirror of the Sea* (1906)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/1058"
+  text_file: passages/exemplars/conrad-mirror-of-sea-s0.txt
+  category: exemplars
+
+- id: hardy-jude-the-obscure-s0
+  tags: [literary, victorian, naturalist, third_person, tragic]
+  source: "Hardy, *Jude the Obscure* (1895)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/153"
+  text_file: passages/exemplars/hardy-jude-the-obscure-s0.txt
+  category: exemplars
+
+- id: hardy-jude-the-obscure-s1
+  tags: [literary, victorian, naturalist, third_person, tragic]
+  source: "Hardy, *Jude the Obscure* (1895) (sample 1)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/153"
+  text_file: passages/exemplars/hardy-jude-the-obscure-s1.txt
+  category: exemplars
+
+- id: hardy-mayor-casterbridge-s0
+  tags: [literary, victorian, naturalist, third_person, tragic]
+  source: "Hardy, *The Mayor of Casterbridge* (1886)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/143"
+  text_file: passages/exemplars/hardy-mayor-casterbridge-s0.txt
+  category: exemplars
+
+- id: hardy-mayor-casterbridge-s1
+  tags: [literary, victorian, naturalist, third_person, tragic]
+  source: "Hardy, *The Mayor of Casterbridge* (1886) (sample 1)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/143"
+  text_file: passages/exemplars/hardy-mayor-casterbridge-s1.txt
+  category: exemplars
+
+- id: hardy-far-from-madding-s0
+  tags: [literary, victorian, pastoral, third_person, regional]
+  source: "Hardy, *Far from the Madding Crowd* (1874)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/27"
+  text_file: passages/exemplars/hardy-far-from-madding-s0.txt
+  category: exemplars
+
+- id: twain-huckleberry-finn-s0
+  tags: [literary, vernacular, first_person, comic, youth_narrator, americana]
+  source: "Twain, *Adventures of Huckleberry Finn* (1884)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/76"
+  text_file: passages/exemplars/twain-huckleberry-finn-s0.txt
+  category: exemplars
+
+- id: twain-huckleberry-finn-s1
+  tags: [literary, vernacular, first_person, comic, youth_narrator, americana]
+  source: "Twain, *Adventures of Huckleberry Finn* (1884) (sample 1)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/76"
+  text_file: passages/exemplars/twain-huckleberry-finn-s1.txt
+  category: exemplars
+
+- id: twain-connecticut-yankee-s0
+  tags: [literary, satire, first_person, frame_narrative, americana]
+  source: "Twain, *A Connecticut Yankee in King Arthur's Court* (1889)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/86"
+  text_file: passages/exemplars/twain-connecticut-yankee-s0.txt
+  category: exemplars
+
+- id: twain-mysterious-stranger-s0
+  tags: [literary, philosophical, first_person, metafictional]
+  source: "Twain, *The Mysterious Stranger* (1916)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/3186"
+  text_file: passages/exemplars/twain-mysterious-stranger-s0.txt
+  category: exemplars
+
+- id: lewis-main-street-s0
+  tags: [literary, naturalist, third_person, satirical, midwest]
+  source: "Lewis, *Main Street* (1920)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/543"
+  text_file: passages/exemplars/lewis-main-street-s0.txt
+  category: exemplars
+
+- id: lewis-main-street-s1
+  tags: [literary, naturalist, third_person, satirical, midwest]
+  source: "Lewis, *Main Street* (1920) (sample 1)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/543"
+  text_file: passages/exemplars/lewis-main-street-s1.txt
+  category: exemplars
+
+- id: lewis-babbitt-s0
+  tags: [literary, naturalist, third_person, satirical, urban_american]
+  source: "Lewis, *Babbitt* (1922)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/1156"
+  text_file: passages/exemplars/lewis-babbitt-s0.txt
+  category: exemplars
+
+- id: lewis-babbitt-s1
+  tags: [literary, naturalist, third_person, satirical, urban_american]
+  source: "Lewis, *Babbitt* (1922) (sample 1)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/1156"
+  text_file: passages/exemplars/lewis-babbitt-s1.txt
+  category: exemplars
+
+- id: trollope-barchester-towers-s0
+  tags: [literary, victorian, third_person, comic_realism, ecclesiastical]
+  source: "Trollope, *Barchester Towers* (1857)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/3409"
+  text_file: passages/exemplars/trollope-barchester-towers-s0.txt
+  category: exemplars
+
+- id: trollope-way-we-live-now-s0
+  tags: [literary, victorian, third_person, satirical, social_register]
+  source: "Trollope, *The Way We Live Now* (1875)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/5231"
+  text_file: passages/exemplars/trollope-way-we-live-now-s0.txt
+  category: exemplars
+
+- id: wilde-lord-arthur-s0
+  tags: [literary, victorian, comic_short_fiction, ironic, epigrammatic]
+  source: "Wilde, *Lord Arthur Savile's Crime; The Portrait of Mr. W.H., and Other Stories* (1891)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/773"
+  text_file: passages/exemplars/wilde-lord-arthur-s0.txt
+  category: exemplars
+
+- id: wilde-intentions-s0
+  tags: [literary, victorian, essayistic, aestheticism, epigrammatic]
+  source: "Wilde, *Intentions* (1891)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/887"
+  text_file: passages/exemplars/wilde-intentions-s0.txt
+  category: exemplars
+
+- id: crane-red-badge-courage-s0
+  tags: [literary, naturalist, third_person, war_novel, impressionist]
+  source: "Crane, *The Red Badge of Courage* (1895)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/73"
+  text_file: passages/exemplars/crane-red-badge-courage-s0.txt
+  category: exemplars
+
+- id: crane-red-badge-courage-s1
+  tags: [literary, naturalist, third_person, war_novel, impressionist]
+  source: "Crane, *The Red Badge of Courage* (1895) (sample 1)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/73"
+  text_file: passages/exemplars/crane-red-badge-courage-s1.txt
+  category: exemplars
+
+- id: galsworthy-forsyte-saga-s0
+  tags: [literary, edwardian, society_novel, third_person, saga]
+  source: "Galsworthy, *The Forsyte Saga* (1922)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/4397"
+  text_file: passages/exemplars/galsworthy-forsyte-saga-s0.txt
+  category: exemplars
+
+- id: galsworthy-forsyte-saga-s1
+  tags: [literary, edwardian, society_novel, third_person, saga]
+  source: "Galsworthy, *The Forsyte Saga* (1922) (sample 1)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/4397"
+  text_file: passages/exemplars/galsworthy-forsyte-saga-s1.txt
+  category: exemplars
+
+- id: tarkington-magnificent-ambersons-s0
+  tags: [literary, early_modernist, third_person, americana, social_decline]
+  source: "Tarkington, *The Magnificent Ambersons* (1918)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/8867"
+  text_file: passages/exemplars/tarkington-magnificent-ambersons-s0.txt
+  category: exemplars
+
+- id: tarkington-magnificent-ambersons-s1
+  tags: [literary, early_modernist, third_person, americana, social_decline]
+  source: "Tarkington, *The Magnificent Ambersons* (1918) (sample 1)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/8867"
+  text_file: passages/exemplars/tarkington-magnificent-ambersons-s1.txt
+  category: exemplars
+
+- id: pater-marius-epicurean-s0
+  tags: [literary, victorian, aestheticism, philosophical, third_person, ornate]
+  source: "Pater, *Marius the Epicurean* (1885)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/4057"
+  text_file: passages/exemplars/pater-marius-epicurean-s0.txt
+  category: exemplars
+
+- id: carlyle-sartor-resartus-s0
+  tags: [literary, victorian, essayistic, first_person, metafictional, satirical]
+  source: "Carlyle, *Sartor Resartus* (1836)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/1051"
+  text_file: passages/exemplars/carlyle-sartor-resartus-s0.txt
+  category: exemplars
+
+- id: hearn-ghostly-japan-s0
+  tags: [literary, supernatural, essayistic, first_person, ethnographic]
+  source: "Hearn, *In Ghostly Japan* (1899)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/8128"
+  text_file: passages/exemplars/hearn-ghostly-japan-s0.txt
+  category: exemplars
+
+- id: murasaki-genji-waley-s0
+  tags: [literary, japanese_classical, third_person, court, ornate_translation]
+  source: "Murasaki, *The Tale of Genji* (Waley trans., 1925-33)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/66057"
+  text_file: passages/exemplars/murasaki-genji-waley-s0.txt
+  category: exemplars
+
+- id: murasaki-genji-waley-s1
+  tags: [literary, japanese_classical, third_person, court, ornate_translation]
+  source: "Murasaki, *The Tale of Genji* (Waley trans., 1925-33) (sample 1)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/66057"
+  text_file: passages/exemplars/murasaki-genji-waley-s1.txt
+  category: exemplars
+
+- id: murasaki-sacred-tree-waley-s0
+  tags: [literary, japanese_classical, third_person, court, ornate_translation]
+  source: "Murasaki, *The Sacred Tree* (Waley trans., Heinemann, 1926)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/67111"
+  text_file: passages/exemplars/murasaki-sacred-tree-waley-s0.txt
+  category: exemplars
+
+- id: flaubert-madame-bovary-s0
+  tags: [literary, classical_realist, third_person, free_indirect_discourse, french_translation]
+  source: "Flaubert, *Madame Bovary* (Eleanor Marx-Aveling trans., 1886)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/2413"
+  text_file: passages/exemplars/flaubert-madame-bovary-s0.txt
+  category: exemplars
+
+- id: flaubert-madame-bovary-s1
+  tags: [literary, classical_realist, third_person, free_indirect_discourse, french_translation]
+  source: "Flaubert, *Madame Bovary* (Eleanor Marx-Aveling trans., 1886) (sample 1)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/2413"
+  text_file: passages/exemplars/flaubert-madame-bovary-s1.txt
+  category: exemplars
+
+- id: douglass-narrative-s0
+  tags: [literary, slave_narrative, first_person, americana, abolitionist]
+  source: "Douglass, *Narrative of the Life of Frederick Douglass* (1845)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/23"
+  text_file: passages/exemplars/douglass-narrative-s0.txt
+  category: exemplars
+
+- id: jacobs-incidents-s0
+  tags: [literary, slave_narrative, first_person, americana, abolitionist]
+  source: "Jacobs, *Incidents in the Life of a Slave Girl* (1861)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/11030"
+  text_file: passages/exemplars/jacobs-incidents-s0.txt
+  category: exemplars
+
+- id: emerson-essays-s0
+  tags: [literary, essayistic, first_person, americana, transcendentalist]
+  source: "Emerson, *Essays* (collected, 1841/1844)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/16643"
+  text_file: passages/exemplars/emerson-essays-s0.txt
+  category: exemplars
+
+- id: emerson-essays-s1
+  tags: [literary, essayistic, first_person, americana, transcendentalist]
+  source: "Emerson, *Essays* (collected, 1841/1844) (sample 1)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/16643"
+  text_file: passages/exemplars/emerson-essays-s1.txt
+  category: exemplars
+
+- id: gissing-new-grub-street-s0
+  tags: [literary, victorian, naturalist, third_person, literary_milieu]
+  source: "Gissing, *New Grub Street* (1891)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/1709"
+  text_file: passages/exemplars/gissing-new-grub-street-s0.txt
+  category: exemplars
+
+- id: meredith-diana-crossways-s0
+  tags: [literary, victorian, psychological, third_person, ironic]
+  source: "Meredith, *Diana of the Crossways* (1885)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/4470"
+  text_file: passages/exemplars/meredith-diana-crossways-s0.txt
+  category: exemplars
+
+- id: woolf-mrs-dalloway-s0
+  tags: [literary, high_modernist, stream_consciousness, free_indirect_discourse, third_person, interior_monologue]
+  source: "Woolf, *Mrs Dalloway* (1925)"
+  license: public_domain
+  url: "https://standardebooks.org/ebooks/virginia-woolf/mrs-dalloway"
+  text_file: passages/exemplars/woolf-mrs-dalloway-s0.txt
+  category: exemplars
+
+- id: woolf-mrs-dalloway-s1
+  tags: [literary, high_modernist, stream_consciousness, free_indirect_discourse, third_person, interior_monologue]
+  source: "Woolf, *Mrs Dalloway* (1925) (sample 1)"
+  license: public_domain
+  url: "https://standardebooks.org/ebooks/virginia-woolf/mrs-dalloway"
+  text_file: passages/exemplars/woolf-mrs-dalloway-s1.txt
+  category: exemplars
+
+- id: woolf-mrs-dalloway-s2
+  tags: [literary, high_modernist, stream_consciousness, free_indirect_discourse, third_person, interior_monologue]
+  source: "Woolf, *Mrs Dalloway* (1925) (sample 2)"
+  license: public_domain
+  url: "https://standardebooks.org/ebooks/virginia-woolf/mrs-dalloway"
+  text_file: passages/exemplars/woolf-mrs-dalloway-s2.txt
+  category: exemplars
+
+- id: woolf-to-the-lighthouse-s0
+  tags: [literary, high_modernist, stream_consciousness, free_indirect_discourse, third_person, lyric]
+  source: "Woolf, *To the Lighthouse* (1927)"
+  license: public_domain
+  url: "https://standardebooks.org/ebooks/virginia-woolf/to-the-lighthouse"
+  text_file: passages/exemplars/woolf-to-the-lighthouse-s0.txt
+  category: exemplars
+
+- id: woolf-to-the-lighthouse-s1
+  tags: [literary, high_modernist, stream_consciousness, free_indirect_discourse, third_person, lyric]
+  source: "Woolf, *To the Lighthouse* (1927) (sample 1)"
+  license: public_domain
+  url: "https://standardebooks.org/ebooks/virginia-woolf/to-the-lighthouse"
+  text_file: passages/exemplars/woolf-to-the-lighthouse-s1.txt
+  category: exemplars
+
+- id: woolf-to-the-lighthouse-s2
+  tags: [literary, high_modernist, stream_consciousness, free_indirect_discourse, third_person, lyric]
+  source: "Woolf, *To the Lighthouse* (1927) (sample 2)"
+  license: public_domain
+  url: "https://standardebooks.org/ebooks/virginia-woolf/to-the-lighthouse"
+  text_file: passages/exemplars/woolf-to-the-lighthouse-s2.txt
+  category: exemplars
+
+- id: woolf-to-the-lighthouse-s3
+  tags: [literary, high_modernist, stream_consciousness, free_indirect_discourse, third_person, lyric]
+  source: "Woolf, *To the Lighthouse* (1927) (sample 3)"
+  license: public_domain
+  url: "https://standardebooks.org/ebooks/virginia-woolf/to-the-lighthouse"
+  text_file: passages/exemplars/woolf-to-the-lighthouse-s3.txt
+  category: exemplars
+
+- id: woolf-orlando-s0
+  tags: [literary, high_modernist, third_person, metafictional, biographical_satire, gender_transformation]
+  source: "Woolf, *Orlando: A Biography* (1928)"
+  license: public_domain
+  url: "https://standardebooks.org/ebooks/virginia-woolf/orlando"
+  text_file: passages/exemplars/woolf-orlando-s0.txt
+  category: exemplars
+
+- id: woolf-orlando-s1
+  tags: [literary, high_modernist, third_person, metafictional, biographical_satire, gender_transformation]
+  source: "Woolf, *Orlando: A Biography* (1928) (sample 1)"
+  license: public_domain
+  url: "https://standardebooks.org/ebooks/virginia-woolf/orlando"
+  text_file: passages/exemplars/woolf-orlando-s1.txt
+  category: exemplars
+
+- id: woolf-orlando-s2
+  tags: [literary, high_modernist, third_person, metafictional, biographical_satire, gender_transformation]
+  source: "Woolf, *Orlando: A Biography* (1928) (sample 2)"
+  license: public_domain
+  url: "https://standardebooks.org/ebooks/virginia-woolf/orlando"
+  text_file: passages/exemplars/woolf-orlando-s2.txt
+  category: exemplars
+
+- id: hemingway-sun-also-rises-s0
+  tags: [literary, high_modernist, minimalist_anchor, first_person, iceberg_register, lost_generation]
+  source: "Hemingway, *The Sun Also Rises* (1926)"
+  license: public_domain
+  url: "https://standardebooks.org/ebooks/ernest-hemingway/the-sun-also-rises"
+  text_file: passages/exemplars/hemingway-sun-also-rises-s0.txt
+  category: exemplars
+
+- id: hemingway-sun-also-rises-s1
+  tags: [literary, high_modernist, minimalist_anchor, first_person, iceberg_register, lost_generation]
+  source: "Hemingway, *The Sun Also Rises* (1926) (sample 1)"
+  license: public_domain
+  url: "https://standardebooks.org/ebooks/ernest-hemingway/the-sun-also-rises"
+  text_file: passages/exemplars/hemingway-sun-also-rises-s1.txt
+  category: exemplars
+
+- id: hemingway-sun-also-rises-s2
+  tags: [literary, high_modernist, minimalist_anchor, first_person, iceberg_register, lost_generation]
+  source: "Hemingway, *The Sun Also Rises* (1926) (sample 2)"
+  license: public_domain
+  url: "https://standardebooks.org/ebooks/ernest-hemingway/the-sun-also-rises"
+  text_file: passages/exemplars/hemingway-sun-also-rises-s2.txt
+  category: exemplars
+
+- id: faulkner-soldiers-pay-s0
+  tags: [literary, high_modernist, third_person, polyphonic, post_war, southern]
+  source: "Faulkner, *Soldiers' Pay* (1926)"
+  license: public_domain
+  url: "https://standardebooks.org/ebooks/william-faulkner/soldiers-pay"
+  text_file: passages/exemplars/faulkner-soldiers-pay-s0.txt
+  category: exemplars
+
+- id: faulkner-soldiers-pay-s1
+  tags: [literary, high_modernist, third_person, polyphonic, post_war, southern]
+  source: "Faulkner, *Soldiers' Pay* (1926) (sample 1)"
+  license: public_domain
+  url: "https://standardebooks.org/ebooks/william-faulkner/soldiers-pay"
+  text_file: passages/exemplars/faulkner-soldiers-pay-s1.txt
+  category: exemplars
+
+- id: faulkner-soldiers-pay-s2
+  tags: [literary, high_modernist, third_person, polyphonic, post_war, southern]
+  source: "Faulkner, *Soldiers' Pay* (1926) (sample 2)"
+  license: public_domain
+  url: "https://standardebooks.org/ebooks/william-faulkner/soldiers-pay"
+  text_file: passages/exemplars/faulkner-soldiers-pay-s2.txt
+  category: exemplars
+
+- id: scp-001-clef-proposal
+  tags: [procedural_bureaucratic, institutional_voice, containment_doc, proposal_form, biblical_register]
+  source: "SCP-001 — Dr. Clef (proposal: 'The Gate Guardian')"
+  license: cc_by_sa_3_0
+  url: "https://scp-wiki.wikidot.com/dr-clef-s-proposal"
+  text_file: passages/exemplars/scp-001-clef-proposal.txt
+  category: exemplars
+
+- id: scp-001-ball-proposal
+  tags: [procedural_bureaucratic, institutional_voice, containment_doc, proposal_form]
+  source: "SCP-001 — Jonathan Ball (proposal)"
+  license: cc_by_sa_3_0
+  url: "https://scp-wiki.wikidot.com/jonathan-ball-s-proposal"
+  text_file: passages/exemplars/scp-001-ball-proposal.txt
+  category: exemplars
+
+- id: scp-001-djkaktus-proposal
+  tags: [procedural_bureaucratic, institutional_voice, containment_doc, proposal_form, narrative_drift]
+  source: "SCP-001 — djkaktus (proposal)"
+  license: cc_by_sa_3_0
+  url: "https://scp-wiki.wikidot.com/djkaktus-s-proposal"
+  text_file: passages/exemplars/scp-001-djkaktus-proposal.txt
+  category: exemplars
+
+- id: scp-093
+  tags: [procedural_bureaucratic, institutional_voice, containment_doc, narrative_drift, dream_sequence]
+  source: "SCP-093 by Pixie & Dr Gears"
+  license: cc_by_sa_3_0
+  url: "https://scp-wiki.wikidot.com/scp-093"
+  text_file: passages/exemplars/scp-093.txt
+  category: exemplars
+
+- id: scp-2000
+  tags: [procedural_bureaucratic, institutional_voice, containment_doc, addendum_heavy, long_form]
+  source: "SCP-2000 by HammerMaiden"
+  license: cc_by_sa_3_0
+  url: "https://scp-wiki.wikidot.com/scp-2000"
+  text_file: passages/exemplars/scp-2000.txt
+  category: exemplars
+
+- id: scp-1981
+  tags: [procedural_bureaucratic, institutional_voice, containment_doc, transcript_form]
+  source: "SCP-1981 by Anborough"
+  license: cc_by_sa_3_0
+  url: "https://scp-wiki.wikidot.com/scp-1981"
+  text_file: passages/exemplars/scp-1981.txt
+  category: exemplars
+
+- id: scp-1762
+  tags: [procedural_bureaucratic, institutional_voice, tale_adjacent, lyric]
+  source: "SCP-1762 by djkaktus"
+  license: cc_by_sa_3_0
+  url: "https://scp-wiki.wikidot.com/scp-1762"
+  text_file: passages/exemplars/scp-1762.txt
+  category: exemplars
+
+- id: scp-2935
+  tags: [procedural_bureaucratic, institutional_voice, containment_doc, apocalyptic, narrative_drift]
+  source: "SCP-2935 by djkaktus"
+  license: cc_by_sa_3_0
+  url: "https://scp-wiki.wikidot.com/scp-2935"
+  text_file: passages/exemplars/scp-2935.txt
+  category: exemplars
+
+- id: scp-5000
+  tags: [procedural_bureaucratic, institutional_voice, containment_doc, narrative_drift, lyric]
+  source: "SCP-5000 by Tanhony"
+  license: cc_by_sa_3_0
+  url: "https://scp-wiki.wikidot.com/scp-5000"
+  text_file: passages/exemplars/scp-5000.txt
+  category: exemplars
+
+
+# ═══ Round-8 expansion — deeper + PG-AU (2026-04-28) ═══
+# Per lab/issues/2026-04-28-corpus-author-gaps.md Phase 1 + E1/E3.
+# Includes round-6/7/8 sources mixed:
+# - PG round-6 (12 authors: Sterne/Defoe/Edgeworth/Wilde/Gaskell/
+#   Joyce-Ulysses/Lawrence/Tagore/Hemingway-In-Our-Time/Mann)
+# - Standard Ebooks round-1 (Faulkner Sound and Fury + As I Lay
+#   Dying; Hemingway Farewell to Arms — US PD 2025/2026)
+# - SCP CC-BY-SA round-1 (Stage 3 position #10 procedural register)
+# - PG round-7 (Burney; pre-1925 Woolf; Conrad/Hardy/Twain expansion;
+#   Sinclair Lewis; Trollope; Wilde; Crane Red Badge; Galsworthy;
+#   Tarkington; Pater; Carlyle; Hearn; Murasaki Genji-Waley;
+#   Flaubert Madame Bovary; Douglass+Jacobs; Emerson; Gissing;
+#   Meredith)
+# - Standard Ebooks round-2 (Woolf trilogy Mrs Dalloway + Lighthouse
+#   + Orlando; Hemingway Sun Also Rises; Faulkner Soldier's Pay)
+# - SCP round-2 (proposal form, narrative-drift, transcript-form)
+# - PG round-8 E1 (Tolstoy War and Peace, Dickens trio, Eliot
+#   expansion, Hawthorne, Sterne Sentimental Journey, Defoe
+#   Plague Year, De Quincey, Coleridge, Lamb, Hazlitt, Andreyev,
+#   Tolstoy Resurrection, Mansfield Bliss + Garden Party; plus
+#   multi-sample expansion — s2/s3/s4 for Joyce Ulysses/Proust/
+#   Dostoevsky×2/Tolstoy AK/Eliot Middlemarch/Hugo/Cervantes/
+#   Dickens BH+GE/Hardy Tess/Wharton AoI/Mann RH)
+# - PG-AU round (E3): Fitzgerald Tender Is Night + Pat Hobby;
+#   Orwell complete (Down and Out / Burmese Days / Clergyman's
+#   Daughter / Aspidistra / Shooting an Elephant / Wigan Pier /
+#   Homage to Catalonia / Coming Up for Air / Animal Farm /
+#   Politics and English / 1984); late Lawrence (Lady Chatterley /
+#   Plumed Serpent / Mornings in Mexico / Etruscan Places /
+#   Woman Who Rode Away). License pg_au_pd_research_use —
+#   PD-Australia / project research-fair-use posture.
+# Plus any fair-use manual excerpts in lab/fair-use-staging/.
+
+- id: tolstoy-war-and-peace-s0
+  tags: [literary, classical_realist, russian, russian_translation, panoramic, third_person, war_novel]
+  source: "Tolstoy, *War and Peace* (1869, Maude trans.)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/2600"
+  text_file: passages/exemplars/tolstoy-war-and-peace-s0.txt
+  category: exemplars
+
+- id: tolstoy-war-and-peace-s1
+  tags: [literary, classical_realist, russian, russian_translation, panoramic, third_person, war_novel]
+  source: "Tolstoy, *War and Peace* (1869, Maude trans.) (sample s1)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/2600"
+  text_file: passages/exemplars/tolstoy-war-and-peace-s1.txt
+  category: exemplars
+
+- id: tolstoy-war-and-peace-s2
+  tags: [literary, classical_realist, russian, russian_translation, panoramic, third_person, war_novel]
+  source: "Tolstoy, *War and Peace* (1869, Maude trans.) (sample s2)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/2600"
+  text_file: passages/exemplars/tolstoy-war-and-peace-s2.txt
+  category: exemplars
+
+- id: tolstoy-war-and-peace-s3
+  tags: [literary, classical_realist, russian, russian_translation, panoramic, third_person, war_novel]
+  source: "Tolstoy, *War and Peace* (1869, Maude trans.) (sample s3)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/2600"
+  text_file: passages/exemplars/tolstoy-war-and-peace-s3.txt
+  category: exemplars
+
+- id: tolstoy-resurrection-s0
+  tags: [literary, russian, russian_translation, third_person, moral_didactic]
+  source: "Tolstoy, *Resurrection* (1899, Maude trans.)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/1938"
+  text_file: passages/exemplars/tolstoy-resurrection-s0.txt
+  category: exemplars
+
+- id: tolstoy-resurrection-s1
+  tags: [literary, russian, russian_translation, third_person, moral_didactic]
+  source: "Tolstoy, *Resurrection* (1899, Maude trans.) (sample s1)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/1938"
+  text_file: passages/exemplars/tolstoy-resurrection-s1.txt
+  category: exemplars
+
+- id: dickens-david-copperfield-s0
+  tags: [literary, victorian, first_person, bildungsroman, comic_realism]
+  source: "Dickens, *David Copperfield* (1850)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/766"
+  text_file: passages/exemplars/dickens-david-copperfield-s0.txt
+  category: exemplars
+
+- id: dickens-david-copperfield-s1
+  tags: [literary, victorian, first_person, bildungsroman, comic_realism]
+  source: "Dickens, *David Copperfield* (1850) (sample s1)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/766"
+  text_file: passages/exemplars/dickens-david-copperfield-s1.txt
+  category: exemplars
+
+- id: dickens-david-copperfield-s2
+  tags: [literary, victorian, first_person, bildungsroman, comic_realism]
+  source: "Dickens, *David Copperfield* (1850) (sample s2)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/766"
+  text_file: passages/exemplars/dickens-david-copperfield-s2.txt
+  category: exemplars
+
+- id: dickens-tale-of-two-cities-s0
+  tags: [literary, victorian, third_person, historical, anaphora]
+  source: "Dickens, *A Tale of Two Cities* (1859)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/98"
+  text_file: passages/exemplars/dickens-tale-of-two-cities-s0.txt
+  category: exemplars
+
+- id: dickens-tale-of-two-cities-s1
+  tags: [literary, victorian, third_person, historical, anaphora]
+  source: "Dickens, *A Tale of Two Cities* (1859) (sample s1)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/98"
+  text_file: passages/exemplars/dickens-tale-of-two-cities-s1.txt
+  category: exemplars
+
+- id: dickens-oliver-twist-s0
+  tags: [literary, victorian, third_person, social_critique, comic_realism]
+  source: "Dickens, *Oliver Twist* (1838)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/730"
+  text_file: passages/exemplars/dickens-oliver-twist-s0.txt
+  category: exemplars
+
+- id: dickens-oliver-twist-s1
+  tags: [literary, victorian, third_person, social_critique, comic_realism]
+  source: "Dickens, *Oliver Twist* (1838) (sample s1)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/730"
+  text_file: passages/exemplars/dickens-oliver-twist-s1.txt
+  category: exemplars
+
+- id: eliot-silas-marner-s0
+  tags: [literary, victorian, classical_realist, third_person, rural_english]
+  source: "Eliot, *Silas Marner* (1861)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/550"
+  text_file: passages/exemplars/eliot-silas-marner-s0.txt
+  category: exemplars
+
+- id: eliot-adam-bede-s0
+  tags: [literary, victorian, classical_realist, third_person, pastoral, free_indirect_discourse]
+  source: "Eliot, *Adam Bede* (1859)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/507"
+  text_file: passages/exemplars/eliot-adam-bede-s0.txt
+  category: exemplars
+
+- id: eliot-adam-bede-s1
+  tags: [literary, victorian, classical_realist, third_person, pastoral, free_indirect_discourse]
+  source: "Eliot, *Adam Bede* (1859) (sample s1)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/507"
+  text_file: passages/exemplars/eliot-adam-bede-s1.txt
+  category: exemplars
+
+- id: eliot-mill-on-the-floss-s0
+  tags: [literary, victorian, classical_realist, third_person, free_indirect_discourse, psychological]
+  source: "Eliot, *The Mill on the Floss* (1860)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/6688"
+  text_file: passages/exemplars/eliot-mill-on-the-floss-s0.txt
+  category: exemplars
+
+- id: eliot-mill-on-the-floss-s1
+  tags: [literary, victorian, classical_realist, third_person, free_indirect_discourse, psychological]
+  source: "Eliot, *The Mill on the Floss* (1860) (sample s1)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/6688"
+  text_file: passages/exemplars/eliot-mill-on-the-floss-s1.txt
+  category: exemplars
+
+- id: hawthorne-blithedale-romance-s0
+  tags: [literary, antebellum, first_person, frame_narrative, utopian_satire]
+  source: "Hawthorne, *The Blithedale Romance* (1852)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/2081"
+  text_file: passages/exemplars/hawthorne-blithedale-romance-s0.txt
+  category: exemplars
+
+- id: hawthorne-blithedale-romance-s1
+  tags: [literary, antebellum, first_person, frame_narrative, utopian_satire]
+  source: "Hawthorne, *The Blithedale Romance* (1852) (sample s1)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/2081"
+  text_file: passages/exemplars/hawthorne-blithedale-romance-s1.txt
+  category: exemplars
+
+- id: hawthorne-marble-faun-s0
+  tags: [literary, antebellum, third_person, italianate, psychological]
+  source: "Hawthorne, *The Marble Faun* (1860, Vol. 1)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/2181"
+  text_file: passages/exemplars/hawthorne-marble-faun-s0.txt
+  category: exemplars
+
+- id: sterne-sentimental-journey-s0
+  tags: [literary, proto_experimental, first_person, digressive, sentimental]
+  source: "Sterne, *A Sentimental Journey Through France and Italy* (1768)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/804"
+  text_file: passages/exemplars/sterne-sentimental-journey-s0.txt
+  category: exemplars
+
+- id: sterne-sentimental-journey-s1
+  tags: [literary, proto_experimental, first_person, digressive, sentimental]
+  source: "Sterne, *A Sentimental Journey Through France and Italy* (1768) (sample s1)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/804"
+  text_file: passages/exemplars/sterne-sentimental-journey-s1.txt
+  category: exemplars
+
+- id: defoe-plague-year-s0
+  tags: [literary, early_novel, first_person, documentary_fictional]
+  source: "Defoe, *A Journal of the Plague Year* (1722)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/376"
+  text_file: passages/exemplars/defoe-plague-year-s0.txt
+  category: exemplars
+
+- id: defoe-plague-year-s1
+  tags: [literary, early_novel, first_person, documentary_fictional]
+  source: "Defoe, *A Journal of the Plague Year* (1722) (sample s1)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/376"
+  text_file: passages/exemplars/defoe-plague-year-s1.txt
+  category: exemplars
+
+- id: de-quincey-opium-eater-s0
+  tags: [literary, romantic, essayistic, first_person, ornate, memoir]
+  source: "De Quincey, *Confessions of an English Opium-Eater* (1821)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/2040"
+  text_file: passages/exemplars/de-quincey-opium-eater-s0.txt
+  category: exemplars
+
+- id: de-quincey-opium-eater-s1
+  tags: [literary, romantic, essayistic, first_person, ornate, memoir]
+  source: "De Quincey, *Confessions of an English Opium-Eater* (1821) (sample s1)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/2040"
+  text_file: passages/exemplars/de-quincey-opium-eater-s1.txt
+  category: exemplars
+
+- id: coleridge-biographia-s0
+  tags: [literary, romantic, essayistic, philosophical, first_person, intellectual]
+  source: "Coleridge, *Biographia Literaria* (1817)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/6081"
+  text_file: passages/exemplars/coleridge-biographia-s0.txt
+  category: exemplars
+
+- id: lamb-works-vol2-s0
+  tags: [literary, romantic, essayistic, first_person, personal_essay, lyric]
+  source: "Lamb, *The Works of Charles and Mary Lamb*, Vol. 2 (collected, 1903)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/10343"
+  text_file: passages/exemplars/lamb-works-vol2-s0.txt
+  category: exemplars
+
+- id: lamb-works-vol2-s1
+  tags: [literary, romantic, essayistic, first_person, personal_essay, lyric]
+  source: "Lamb, *The Works of Charles and Mary Lamb*, Vol. 2 (collected, 1903) (sample s1)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/10343"
+  text_file: passages/exemplars/lamb-works-vol2-s1.txt
+  category: exemplars
+
+- id: hazlitt-table-talk-s0
+  tags: [literary, romantic, essayistic, first_person, discursive]
+  source: "Hazlitt, *Table Talk: Essays on Men and Manners* (1821)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/3020"
+  text_file: passages/exemplars/hazlitt-table-talk-s0.txt
+  category: exemplars
+
+- id: hazlitt-table-talk-s1
+  tags: [literary, romantic, essayistic, first_person, discursive]
+  source: "Hazlitt, *Table Talk: Essays on Men and Manners* (1821) (sample s1)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/3020"
+  text_file: passages/exemplars/hazlitt-table-talk-s1.txt
+  category: exemplars
+
+- id: andreyev-seven-hanged-s0
+  tags: [literary, russian, russian_translation, third_person, philosophical, psychological]
+  source: "Andreyev, *The Seven Who Were Hanged* (1908, Bernstein trans.)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/6722"
+  text_file: passages/exemplars/andreyev-seven-hanged-s0.txt
+  category: exemplars
+
+- id: mansfield-bliss-stories-s0
+  tags: [literary, high_modernist, short_fiction, free_indirect_discourse, compressed]
+  source: "Mansfield, *Bliss, and Other Stories* (1920)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/44385"
+  text_file: passages/exemplars/mansfield-bliss-stories-s0.txt
+  category: exemplars
+
+- id: mansfield-bliss-stories-s1
+  tags: [literary, high_modernist, short_fiction, free_indirect_discourse, compressed]
+  source: "Mansfield, *Bliss, and Other Stories* (1920) (sample s1)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/44385"
+  text_file: passages/exemplars/mansfield-bliss-stories-s1.txt
+  category: exemplars
+
+- id: mansfield-garden-party-vol-s0
+  tags: [literary, high_modernist, short_fiction, free_indirect_discourse, social_register]
+  source: "Mansfield, *The Garden Party, and Other Stories* (1922)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/1429"
+  text_file: passages/exemplars/mansfield-garden-party-vol-s0.txt
+  category: exemplars
+
+- id: mansfield-garden-party-vol-s1
+  tags: [literary, high_modernist, short_fiction, free_indirect_discourse, social_register]
+  source: "Mansfield, *The Garden Party, and Other Stories* (1922) (sample s1)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/1429"
+  text_file: passages/exemplars/mansfield-garden-party-vol-s1.txt
+  category: exemplars
+
+- id: joyce-ulysses-s3
+  tags: [literary, high_modernist, stream_consciousness, free_indirect_discourse, experimental]
+  source: "Joyce, *Ulysses* (1922) (sample s3)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/4300"
+  text_file: passages/exemplars/joyce-ulysses-s3.txt
+  category: exemplars
+
+- id: joyce-ulysses-s4
+  tags: [literary, high_modernist, stream_consciousness, free_indirect_discourse, experimental]
+  source: "Joyce, *Ulysses* (1922) (sample s4)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/4300"
+  text_file: passages/exemplars/joyce-ulysses-s4.txt
+  category: exemplars
+
+- id: proust-swanns-way-s1
+  tags: [literary, high_modernist, free_indirect_discourse, first_person, sustained_period, memory_register]
+  source: "Proust, *Swann's Way* (1913, Scott Moncrieff trans.) (sample s1)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/7178"
+  text_file: passages/exemplars/proust-swanns-way-s1.txt
+  category: exemplars
+
+- id: proust-swanns-way-s2
+  tags: [literary, high_modernist, free_indirect_discourse, first_person, sustained_period, memory_register]
+  source: "Proust, *Swann's Way* (1913, Scott Moncrieff trans.) (sample s2)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/7178"
+  text_file: passages/exemplars/proust-swanns-way-s2.txt
+  category: exemplars
+
+- id: dostoevsky-crime-punishment-s2
+  tags: [literary, russian, psychological, third_person, polyphonic]
+  source: "Dostoevsky, *Crime and Punishment* (1866, Garnett trans.) (sample s2)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/2554"
+  text_file: passages/exemplars/dostoevsky-crime-punishment-s2.txt
+  category: exemplars
+
+- id: dostoevsky-brothers-karamazov-s2
+  tags: [literary, russian, psychological, third_person, polyphonic, philosophical]
+  source: "Dostoevsky, *The Brothers Karamazov* (1880, Garnett trans.) (sample s2)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/28054"
+  text_file: passages/exemplars/dostoevsky-brothers-karamazov-s2.txt
+  category: exemplars
+
+- id: dostoevsky-brothers-karamazov-s3
+  tags: [literary, russian, psychological, third_person, polyphonic, philosophical]
+  source: "Dostoevsky, *The Brothers Karamazov* (1880, Garnett trans.) (sample s3)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/28054"
+  text_file: passages/exemplars/dostoevsky-brothers-karamazov-s3.txt
+  category: exemplars
+
+- id: tolstoy-anna-karenina-s2
+  tags: [literary, classical_realist, omniscient, domestic, russian_translation]
+  source: "Tolstoy, *Anna Karenina* (1877, Garnett trans.) (sample s2)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/1399"
+  text_file: passages/exemplars/tolstoy-anna-karenina-s2.txt
+  category: exemplars
+
+- id: tolstoy-anna-karenina-s3
+  tags: [literary, classical_realist, omniscient, domestic, russian_translation]
+  source: "Tolstoy, *Anna Karenina* (1877, Garnett trans.) (sample s3)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/1399"
+  text_file: passages/exemplars/tolstoy-anna-karenina-s3.txt
+  category: exemplars
+
+- id: eliot-middlemarch-s1
+  tags: [literary, classical_realist, omniscient, panoramic, free_indirect_discourse]
+  source: "Eliot, *Middlemarch* (1871-72) (sample s1)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/145"
+  text_file: passages/exemplars/eliot-middlemarch-s1.txt
+  category: exemplars
+
+- id: eliot-middlemarch-s2
+  tags: [literary, classical_realist, omniscient, panoramic, free_indirect_discourse]
+  source: "Eliot, *Middlemarch* (1871-72) (sample s2)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/145"
+  text_file: passages/exemplars/eliot-middlemarch-s2.txt
+  category: exemplars
+
+- id: hugo-les-miserables-s2
+  tags: [literary, romantic, maximalist, third_person, panoramic, lyric_political, french_translation]
+  source: "Hugo, *Les Misérables* (1862, English trans.) (sample s2)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/135"
+  text_file: passages/exemplars/hugo-les-miserables-s2.txt
+  category: exemplars
+
+- id: hugo-les-miserables-s3
+  tags: [literary, romantic, maximalist, third_person, panoramic, lyric_political, french_translation]
+  source: "Hugo, *Les Misérables* (1862, English trans.) (sample s3)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/135"
+  text_file: passages/exemplars/hugo-les-miserables-s3.txt
+  category: exemplars
+
+- id: cervantes-don-quixote-s1
+  tags: [literary, classical_realist, satire, metafiction, spanish_translation]
+  source: "Cervantes, *Don Quixote* (1605, Ormsby trans.) (sample s1)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/996"
+  text_file: passages/exemplars/cervantes-don-quixote-s1.txt
+  category: exemplars
+
+- id: cervantes-don-quixote-s2
+  tags: [literary, classical_realist, satire, metafiction, spanish_translation]
+  source: "Cervantes, *Don Quixote* (1605, Ormsby trans.) (sample s2)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/996"
+  text_file: passages/exemplars/cervantes-don-quixote-s2.txt
+  category: exemplars
+
+- id: dickens-bleak-house-s2
+  tags: [literary, victorian, panoramic, anaphora, comic_realism, legal_register]
+  source: "Dickens, *Bleak House* (1853) (sample s2)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/1023"
+  text_file: passages/exemplars/dickens-bleak-house-s2.txt
+  category: exemplars
+
+- id: dickens-bleak-house-s3
+  tags: [literary, victorian, panoramic, anaphora, comic_realism, legal_register]
+  source: "Dickens, *Bleak House* (1853) (sample s3)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/1023"
+  text_file: passages/exemplars/dickens-bleak-house-s3.txt
+  category: exemplars
+
+- id: dickens-great-expectations-s1
+  tags: [literary, victorian, first_person, bildungsroman, comic_realism]
+  source: "Dickens, *Great Expectations* (1861) (sample s1)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/1400"
+  text_file: passages/exemplars/dickens-great-expectations-s1.txt
+  category: exemplars
+
+- id: dickens-great-expectations-s2
+  tags: [literary, victorian, first_person, bildungsroman, comic_realism]
+  source: "Dickens, *Great Expectations* (1861) (sample s2)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/1400"
+  text_file: passages/exemplars/dickens-great-expectations-s2.txt
+  category: exemplars
+
+- id: hardy-tess-s2
+  tags: [literary, victorian, naturalist, third_person, tragic]
+  source: "Hardy, *Tess of the d'Urbervilles* (1891) (sample s2)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/110"
+  text_file: passages/exemplars/hardy-tess-s2.txt
+  category: exemplars
+
+- id: wharton-age-of-innocence-s2
+  tags: [literary, edwardian, society_novel, irony, third_person]
+  source: "Wharton, *The Age of Innocence* (1920) (sample s2)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/541"
+  text_file: passages/exemplars/wharton-age-of-innocence-s2.txt
+  category: exemplars
+
+- id: mann-royal-highness-s2
+  tags: [literary, high_modernist, third_person, intellectual, german_translation, ironic]
+  source: "Mann, *Royal Highness* (1909, Curtis trans.) (sample s2)"
+  license: public_domain
+  url: "https://www.gutenberg.org/ebooks/36028"
+  text_file: passages/exemplars/mann-royal-highness-s2.txt
+  category: exemplars
+
+- id: fitzgerald-tender-is-night-s0
+  tags: [literary, modernist, third_person, lyric, lost_generation]
+  source: "Fitzgerald, *Tender Is the Night* (1934)"
+  license: pg_au_pd_research_use
+  url: "https://gutenberg.net.au/ebooks03/0301261.txt"
+  text_file: passages/exemplars/fitzgerald-tender-is-night-s0.txt
+  category: exemplars
+
+- id: fitzgerald-tender-is-night-s1
+  tags: [literary, modernist, third_person, lyric, lost_generation]
+  source: "Fitzgerald, *Tender Is the Night* (1934) (sample 1)"
+  license: pg_au_pd_research_use
+  url: "https://gutenberg.net.au/ebooks03/0301261.txt"
+  text_file: passages/exemplars/fitzgerald-tender-is-night-s1.txt
+  category: exemplars
+
+- id: fitzgerald-pat-hobby-s0
+  tags: [literary, modernist, short_fiction, satirical, hollywood]
+  source: "Fitzgerald, *The Complete Pat Hobby Stories* (1940-41)"
+  license: pg_au_pd_research_use
+  url: "https://gutenberg.net.au/ebooks04/0400821.txt"
+  text_file: passages/exemplars/fitzgerald-pat-hobby-s0.txt
+  category: exemplars
+
+- id: orwell-down-and-out-s0
+  tags: [literary, documentary, first_person, memoir, naturalist]
+  source: "Orwell, *Down and Out in Paris and London* (1933)"
+  license: pg_au_pd_research_use
+  url: "https://gutenberg.net.au/ebooks01/0100171.txt"
+  text_file: passages/exemplars/orwell-down-and-out-s0.txt
+  category: exemplars
+
+- id: orwell-down-and-out-s1
+  tags: [literary, documentary, first_person, memoir, naturalist]
+  source: "Orwell, *Down and Out in Paris and London* (1933) (sample 1)"
+  license: pg_au_pd_research_use
+  url: "https://gutenberg.net.au/ebooks01/0100171.txt"
+  text_file: passages/exemplars/orwell-down-and-out-s1.txt
+  category: exemplars
+
+- id: orwell-burmese-days-s0
+  tags: [literary, third_person, colonial, satirical]
+  source: "Orwell, *Burmese Days* (1934)"
+  license: pg_au_pd_research_use
+  url: "https://gutenberg.net.au/ebooks02/0200051.txt"
+  text_file: passages/exemplars/orwell-burmese-days-s0.txt
+  category: exemplars
+
+- id: orwell-clergymans-daughter-s0
+  tags: [literary, third_person, psychological]
+  source: "Orwell, *A Clergyman's Daughter* (1935)"
+  license: pg_au_pd_research_use
+  url: "https://gutenberg.net.au/ebooks02/0200011.txt"
+  text_file: passages/exemplars/orwell-clergymans-daughter-s0.txt
+  category: exemplars
+
+- id: orwell-aspidistra-flying-s0
+  tags: [literary, third_person, satirical, british_realism]
+  source: "Orwell, *Keep the Aspidistra Flying* (1936)"
+  license: pg_au_pd_research_use
+  url: "https://gutenberg.net.au/ebooks02/0200021.txt"
+  text_file: passages/exemplars/orwell-aspidistra-flying-s0.txt
+  category: exemplars
+
+- id: orwell-shooting-elephant-s0
+  tags: [literary, essayistic, first_person, documentary, colonial]
+  source: "Orwell, 'Shooting an Elephant' (essay, 1936)"
+  license: pg_au_pd_research_use
+  url: "https://gutenberg.net.au/ebooks02/0200141.txt"
+  text_file: passages/exemplars/orwell-shooting-elephant-s0.txt
+  category: exemplars
+
+- id: orwell-wigan-pier-s0
+  tags: [literary, documentary, first_person, essayistic, political]
+  source: "Orwell, *The Road to Wigan Pier* (1937)"
+  license: pg_au_pd_research_use
+  url: "https://gutenberg.net.au/ebooks02/0200391.txt"
+  text_file: passages/exemplars/orwell-wigan-pier-s0.txt
+  category: exemplars
+
+- id: orwell-wigan-pier-s1
+  tags: [literary, documentary, first_person, essayistic, political]
+  source: "Orwell, *The Road to Wigan Pier* (1937) (sample 1)"
+  license: pg_au_pd_research_use
+  url: "https://gutenberg.net.au/ebooks02/0200391.txt"
+  text_file: passages/exemplars/orwell-wigan-pier-s1.txt
+  category: exemplars
+
+- id: orwell-homage-catalonia-s0
+  tags: [literary, documentary, first_person, war_memoir]
+  source: "Orwell, *Homage to Catalonia* (1938)"
+  license: pg_au_pd_research_use
+  url: "https://gutenberg.net.au/ebooks02/0201111.txt"
+  text_file: passages/exemplars/orwell-homage-catalonia-s0.txt
+  category: exemplars
+
+- id: orwell-homage-catalonia-s1
+  tags: [literary, documentary, first_person, war_memoir]
+  source: "Orwell, *Homage to Catalonia* (1938) (sample 1)"
+  license: pg_au_pd_research_use
+  url: "https://gutenberg.net.au/ebooks02/0201111.txt"
+  text_file: passages/exemplars/orwell-homage-catalonia-s1.txt
+  category: exemplars
+
+- id: orwell-coming-up-for-air-s0
+  tags: [literary, first_person, satirical, british_realism]
+  source: "Orwell, *Coming Up for Air* (1939)"
+  license: pg_au_pd_research_use
+  url: "https://gutenberg.net.au/ebooks02/0200031.txt"
+  text_file: passages/exemplars/orwell-coming-up-for-air-s0.txt
+  category: exemplars
+
+- id: orwell-animal-farm-s0
+  tags: [literary, third_person, allegorical, satirical, fable]
+  source: "Orwell, *Animal Farm* (1945)"
+  license: pg_au_pd_research_use
+  url: "https://gutenberg.net.au/ebooks01/0100011.txt"
+  text_file: passages/exemplars/orwell-animal-farm-s0.txt
+  category: exemplars
+
+- id: orwell-animal-farm-s1
+  tags: [literary, third_person, allegorical, satirical, fable]
+  source: "Orwell, *Animal Farm* (1945) (sample 1)"
+  license: pg_au_pd_research_use
+  url: "https://gutenberg.net.au/ebooks01/0100011.txt"
+  text_file: passages/exemplars/orwell-animal-farm-s1.txt
+  category: exemplars
+
+- id: orwell-politics-english-s0
+  tags: [literary, essayistic, first_person, polemical]
+  source: "Orwell, 'Politics and the English Language' (essay, 1946)"
+  license: pg_au_pd_research_use
+  url: "https://gutenberg.net.au/ebooks02/0200151.txt"
+  text_file: passages/exemplars/orwell-politics-english-s0.txt
+  category: exemplars
+
+- id: orwell-1984-s0
+  tags: [literary, third_person, dystopian, political_horror]
+  source: "Orwell, *Nineteen Eighty-Four* (1949)"
+  license: pg_au_pd_research_use
+  url: "https://gutenberg.net.au/ebooks01/0100021.txt"
+  text_file: passages/exemplars/orwell-1984-s0.txt
+  category: exemplars
+
+- id: orwell-1984-s1
+  tags: [literary, third_person, dystopian, political_horror]
+  source: "Orwell, *Nineteen Eighty-Four* (1949) (sample 1)"
+  license: pg_au_pd_research_use
+  url: "https://gutenberg.net.au/ebooks01/0100021.txt"
+  text_file: passages/exemplars/orwell-1984-s1.txt
+  category: exemplars
+
+- id: lawrence-lady-chatterleys-s0
+  tags: [literary, high_modernist, third_person, intense, transgressive]
+  source: "Lawrence, *Lady Chatterley's Lover* (1928)"
+  license: pg_au_pd_research_use
+  url: "https://gutenberg.net.au/ebooks01/0100181.txt"
+  text_file: passages/exemplars/lawrence-lady-chatterleys-s0.txt
+  category: exemplars
+
+- id: lawrence-lady-chatterleys-s1
+  tags: [literary, high_modernist, third_person, intense, transgressive]
+  source: "Lawrence, *Lady Chatterley's Lover* (1928) (sample 1)"
+  license: pg_au_pd_research_use
+  url: "https://gutenberg.net.au/ebooks01/0100181.txt"
+  text_file: passages/exemplars/lawrence-lady-chatterleys-s1.txt
+  category: exemplars
+
+- id: lawrence-plumed-serpent-s0
+  tags: [literary, high_modernist, third_person, mystical, mexican]
+  source: "Lawrence, *The Plumed Serpent* (1926)"
+  license: pg_au_pd_research_use
+  url: "https://gutenberg.net.au/ebooks03/0300021.txt"
+  text_file: passages/exemplars/lawrence-plumed-serpent-s0.txt
+  category: exemplars
+
+- id: lawrence-mornings-mexico-s0
+  tags: [literary, essayistic, first_person, travel_writing, ethnographic]
+  source: "Lawrence, *Mornings in Mexico* (1927)"
+  license: pg_au_pd_research_use
+  url: "https://gutenberg.net.au/ebooks09/0900391.txt"
+  text_file: passages/exemplars/lawrence-mornings-mexico-s0.txt
+  category: exemplars
+
+- id: lawrence-etruscan-places-s0
+  tags: [literary, essayistic, first_person, travel_writing]
+  source: "Lawrence, *Etruscan Places* (1932)"
+  license: pg_au_pd_research_use
+  url: "https://gutenberg.net.au/ebooks09/0900381.txt"
+  text_file: passages/exemplars/lawrence-etruscan-places-s0.txt
+  category: exemplars
+
+- id: lawrence-woman-rode-away-s0
+  tags: [literary, high_modernist, short_fiction, third_person]
+  source: "Lawrence, *The Woman Who Rode Away and Other Stories* (1928)"
+  license: pg_au_pd_research_use
+  url: "https://gutenberg.net.au/ebooks04/0400301.txt"
+  text_file: passages/exemplars/lawrence-woman-rode-away-s0.txt
+  category: exemplars
+
+
+# ═══ Round-8 expansion — deeper + PG-AU (2026-04-28) ═══
+# Per lab/issues/2026-04-28-corpus-author-gaps.md Phase 1 + E1/E3.
+# Includes round-6/7/8 sources mixed:
+# - PG round-6 (12 authors: Sterne/Defoe/Edgeworth/Wilde/Gaskell/
+#   Joyce-Ulysses/Lawrence/Tagore/Hemingway-In-Our-Time/Mann)
+# - Standard Ebooks round-1 (Faulkner Sound and Fury + As I Lay
+#   Dying; Hemingway Farewell to Arms — US PD 2025/2026)
+# - SCP CC-BY-SA round-1 (Stage 3 position #10 procedural register)
+# - PG round-7 (Burney; pre-1925 Woolf; Conrad/Hardy/Twain expansion;
+#   Sinclair Lewis; Trollope; Wilde; Crane Red Badge; Galsworthy;
+#   Tarkington; Pater; Carlyle; Hearn; Murasaki Genji-Waley;
+#   Flaubert Madame Bovary; Douglass+Jacobs; Emerson; Gissing;
+#   Meredith)
+# - Standard Ebooks round-2 (Woolf trilogy Mrs Dalloway + Lighthouse
+#   + Orlando; Hemingway Sun Also Rises; Faulkner Soldier's Pay)
+# - SCP round-2 (proposal form, narrative-drift, transcript-form)
+# - PG round-8 E1 (Tolstoy War and Peace, Dickens trio, Eliot
+#   expansion, Hawthorne, Sterne Sentimental Journey, Defoe
+#   Plague Year, De Quincey, Coleridge, Lamb, Hazlitt, Andreyev,
+#   Tolstoy Resurrection, Mansfield Bliss + Garden Party; plus
+#   multi-sample expansion — s2/s3/s4 for Joyce Ulysses/Proust/
+#   Dostoevsky×2/Tolstoy AK/Eliot Middlemarch/Hugo/Cervantes/
+#   Dickens BH+GE/Hardy Tess/Wharton AoI/Mann RH)
+# - PG-AU round (E3): Fitzgerald Tender Is Night + Pat Hobby;
+#   Orwell complete (Down and Out / Burmese Days / Clergyman's
+#   Daughter / Aspidistra / Shooting an Elephant / Wigan Pier /
+#   Homage to Catalonia / Coming Up for Air / Animal Farm /
+#   Politics and English / 1984); late Lawrence (Lady Chatterley /
+#   Plumed Serpent / Mornings in Mexico / Etruscan Places /
+#   Woman Who Rode Away). License pg_au_pd_research_use —
+#   PD-Australia / project research-fair-use posture.
+# - F2 SE round 3 (less-canonical): late James (Wings of the Dove,
+#   Golden Bowl, Portrait of a Lady, Washington Square); late
+#   Conrad (Victory, Chance, Under Western Eyes, Shadow Line,
+#   Arrow of Gold); Wharton Summer; Chesterton (Man Who Was
+#   Thursday, Napoleon of Notting Hill); Ford Some Do Not
+#   (Parade's End I); Sayers Lord Peter Wimsey (Whose Body,
+#   Clouds of Witness).
+# - F3 PG-AU round 2: May Sinclair (Mary Olivier, Harriett Frean,
+#   Collected Stories — pioneer of stream-of-consciousness);
+#   H.H. Richardson (Australia Felix, Maurice Guest, Getting of
+#   Wisdom — Australian modernist); Mansfield additional (German
+#   Pension, Something Childish); Lawrence late expansion
+#   (Kangaroo, Rainbow, Collected Stories, Man Who Died, Virgin
+#   and Gypsy, Fox, Ladybird).
+# Plus any fair-use manual excerpts in lab/fair-use-staging/.
+
+- id: james-wings-of-the-dove-se-s0
+  tags: [literary, maximalist, edwardian, third_person, sustained_period, free_indirect_discourse]
+  source: "James, *The Wings of the Dove* (1902)"
+  license: public_domain
+  url: "https://standardebooks.org/ebooks/henry-james/the-wings-of-the-dove"
+  text_file: passages/exemplars/james-wings-of-the-dove-se-s0.txt
+  category: exemplars
+
+- id: james-wings-of-the-dove-se-s1
+  tags: [literary, maximalist, edwardian, third_person, sustained_period, free_indirect_discourse]
+  source: "James, *The Wings of the Dove* (1902) (sample 1)"
+  license: public_domain
+  url: "https://standardebooks.org/ebooks/henry-james/the-wings-of-the-dove"
+  text_file: passages/exemplars/james-wings-of-the-dove-se-s1.txt
+  category: exemplars
+
+- id: james-wings-of-the-dove-se-s2
+  tags: [literary, maximalist, edwardian, third_person, sustained_period, free_indirect_discourse]
+  source: "James, *The Wings of the Dove* (1902) (sample 2)"
+  license: public_domain
+  url: "https://standardebooks.org/ebooks/henry-james/the-wings-of-the-dove"
+  text_file: passages/exemplars/james-wings-of-the-dove-se-s2.txt
+  category: exemplars
+
+- id: james-golden-bowl-s0
+  tags: [literary, maximalist, edwardian, third_person, sustained_period, consciousness_rendering]
+  source: "James, *The Golden Bowl* (1904)"
+  license: public_domain
+  url: "https://standardebooks.org/ebooks/henry-james/the-golden-bowl"
+  text_file: passages/exemplars/james-golden-bowl-s0.txt
+  category: exemplars
+
+- id: james-golden-bowl-s1
+  tags: [literary, maximalist, edwardian, third_person, sustained_period, consciousness_rendering]
+  source: "James, *The Golden Bowl* (1904) (sample 1)"
+  license: public_domain
+  url: "https://standardebooks.org/ebooks/henry-james/the-golden-bowl"
+  text_file: passages/exemplars/james-golden-bowl-s1.txt
+  category: exemplars
+
+- id: james-golden-bowl-s2
+  tags: [literary, maximalist, edwardian, third_person, sustained_period, consciousness_rendering]
+  source: "James, *The Golden Bowl* (1904) (sample 2)"
+  license: public_domain
+  url: "https://standardebooks.org/ebooks/henry-james/the-golden-bowl"
+  text_file: passages/exemplars/james-golden-bowl-s2.txt
+  category: exemplars
+
+- id: james-portrait-of-a-lady-s0
+  tags: [literary, edwardian, third_person, free_indirect_discourse, psychological, consciousness_rendering]
+  source: "James, *The Portrait of a Lady* (1881)"
+  license: public_domain
+  url: "https://standardebooks.org/ebooks/henry-james/the-portrait-of-a-lady"
+  text_file: passages/exemplars/james-portrait-of-a-lady-s0.txt
+  category: exemplars
+
+- id: james-portrait-of-a-lady-s1
+  tags: [literary, edwardian, third_person, free_indirect_discourse, psychological, consciousness_rendering]
+  source: "James, *The Portrait of a Lady* (1881) (sample 1)"
+  license: public_domain
+  url: "https://standardebooks.org/ebooks/henry-james/the-portrait-of-a-lady"
+  text_file: passages/exemplars/james-portrait-of-a-lady-s1.txt
+  category: exemplars
+
+- id: james-portrait-of-a-lady-s2
+  tags: [literary, edwardian, third_person, free_indirect_discourse, psychological, consciousness_rendering]
+  source: "James, *The Portrait of a Lady* (1881) (sample 2)"
+  license: public_domain
+  url: "https://standardebooks.org/ebooks/henry-james/the-portrait-of-a-lady"
+  text_file: passages/exemplars/james-portrait-of-a-lady-s2.txt
+  category: exemplars
+
+- id: james-washington-square-s0
+  tags: [literary, edwardian, third_person, ironic, social_register]
+  source: "James, *Washington Square* (1880)"
+  license: public_domain
+  url: "https://standardebooks.org/ebooks/henry-james/washington-square"
+  text_file: passages/exemplars/james-washington-square-s0.txt
+  category: exemplars
+
+- id: james-washington-square-s1
+  tags: [literary, edwardian, third_person, ironic, social_register]
+  source: "James, *Washington Square* (1880) (sample 1)"
+  license: public_domain
+  url: "https://standardebooks.org/ebooks/henry-james/washington-square"
+  text_file: passages/exemplars/james-washington-square-s1.txt
+  category: exemplars
+
+- id: conrad-victory-s0
+  tags: [literary, high_modernist, third_person, frame_narrative, tropical]
+  source: "Conrad, *Victory* (1915)"
+  license: public_domain
+  url: "https://standardebooks.org/ebooks/joseph-conrad/victory"
+  text_file: passages/exemplars/conrad-victory-s0.txt
+  category: exemplars
+
+- id: conrad-victory-s1
+  tags: [literary, high_modernist, third_person, frame_narrative, tropical]
+  source: "Conrad, *Victory* (1915) (sample 1)"
+  license: public_domain
+  url: "https://standardebooks.org/ebooks/joseph-conrad/victory"
+  text_file: passages/exemplars/conrad-victory-s1.txt
+  category: exemplars
+
+- id: conrad-victory-s2
+  tags: [literary, high_modernist, third_person, frame_narrative, tropical]
+  source: "Conrad, *Victory* (1915) (sample 2)"
+  license: public_domain
+  url: "https://standardebooks.org/ebooks/joseph-conrad/victory"
+  text_file: passages/exemplars/conrad-victory-s2.txt
+  category: exemplars
+
+- id: conrad-chance-s0
+  tags: [literary, high_modernist, frame_narrative, first_person, free_indirect_discourse]
+  source: "Conrad, *Chance* (1913)"
+  license: public_domain
+  url: "https://standardebooks.org/ebooks/joseph-conrad/chance"
+  text_file: passages/exemplars/conrad-chance-s0.txt
+  category: exemplars
+
+- id: conrad-chance-s1
+  tags: [literary, high_modernist, frame_narrative, first_person, free_indirect_discourse]
+  source: "Conrad, *Chance* (1913) (sample 1)"
+  license: public_domain
+  url: "https://standardebooks.org/ebooks/joseph-conrad/chance"
+  text_file: passages/exemplars/conrad-chance-s1.txt
+  category: exemplars
+
+- id: conrad-under-western-eyes-s0
+  tags: [literary, high_modernist, first_person, russian_subject, political]
+  source: "Conrad, *Under Western Eyes* (1911)"
+  license: public_domain
+  url: "https://standardebooks.org/ebooks/joseph-conrad/under-western-eyes"
+  text_file: passages/exemplars/conrad-under-western-eyes-s0.txt
+  category: exemplars
+
+- id: conrad-under-western-eyes-s1
+  tags: [literary, high_modernist, first_person, russian_subject, political]
+  source: "Conrad, *Under Western Eyes* (1911) (sample 1)"
+  license: public_domain
+  url: "https://standardebooks.org/ebooks/joseph-conrad/under-western-eyes"
+  text_file: passages/exemplars/conrad-under-western-eyes-s1.txt
+  category: exemplars
+
+- id: conrad-under-western-eyes-s2
+  tags: [literary, high_modernist, first_person, russian_subject, political]
+  source: "Conrad, *Under Western Eyes* (1911) (sample 2)"
+  license: public_domain
+  url: "https://standardebooks.org/ebooks/joseph-conrad/under-western-eyes"
+  text_file: passages/exemplars/conrad-under-western-eyes-s2.txt
+  category: exemplars
+
+- id: conrad-shadow-line-s0
+  tags: [literary, high_modernist, first_person, sea_voyage, psychological]
+  source: "Conrad, *The Shadow-Line* (1916)"
+  license: public_domain
+  url: "https://standardebooks.org/ebooks/joseph-conrad/the-shadow-line"
+  text_file: passages/exemplars/conrad-shadow-line-s0.txt
+  category: exemplars
+
+- id: conrad-shadow-line-s1
+  tags: [literary, high_modernist, first_person, sea_voyage, psychological]
+  source: "Conrad, *The Shadow-Line* (1916) (sample 1)"
+  license: public_domain
+  url: "https://standardebooks.org/ebooks/joseph-conrad/the-shadow-line"
+  text_file: passages/exemplars/conrad-shadow-line-s1.txt
+  category: exemplars
+
+- id: conrad-arrow-of-gold-s0
+  tags: [literary, high_modernist, first_person, frame_narrative]
+  source: "Conrad, *The Arrow of Gold* (1919)"
+  license: public_domain
+  url: "https://standardebooks.org/ebooks/joseph-conrad/the-arrow-of-gold"
+  text_file: passages/exemplars/conrad-arrow-of-gold-s0.txt
+  category: exemplars
+
+- id: conrad-arrow-of-gold-s1
+  tags: [literary, high_modernist, first_person, frame_narrative]
+  source: "Conrad, *The Arrow of Gold* (1919) (sample 1)"
+  license: public_domain
+  url: "https://standardebooks.org/ebooks/joseph-conrad/the-arrow-of-gold"
+  text_file: passages/exemplars/conrad-arrow-of-gold-s1.txt
+  category: exemplars
+
+- id: conrad-arrow-of-gold-s2
+  tags: [literary, high_modernist, first_person, frame_narrative]
+  source: "Conrad, *The Arrow of Gold* (1919) (sample 2)"
+  license: public_domain
+  url: "https://standardebooks.org/ebooks/joseph-conrad/the-arrow-of-gold"
+  text_file: passages/exemplars/conrad-arrow-of-gold-s2.txt
+  category: exemplars
+
+- id: wharton-summer-s0
+  tags: [literary, edwardian, third_person, rural, free_indirect_discourse]
+  source: "Wharton, *Summer* (1917)"
+  license: public_domain
+  url: "https://standardebooks.org/ebooks/edith-wharton/summer"
+  text_file: passages/exemplars/wharton-summer-s0.txt
+  category: exemplars
+
+- id: wharton-summer-s1
+  tags: [literary, edwardian, third_person, rural, free_indirect_discourse]
+  source: "Wharton, *Summer* (1917) (sample 1)"
+  license: public_domain
+  url: "https://standardebooks.org/ebooks/edith-wharton/summer"
+  text_file: passages/exemplars/wharton-summer-s1.txt
+  category: exemplars
+
+- id: chesterton-thursday-s0
+  tags: [literary, edwardian, comic_philosophical, allegorical, third_person]
+  source: "Chesterton, *The Man Who Was Thursday: A Nightmare* (1908)"
+  license: public_domain
+  url: "https://standardebooks.org/ebooks/g-k-chesterton/the-man-who-was-thursday"
+  text_file: passages/exemplars/chesterton-thursday-s0.txt
+  category: exemplars
+
+- id: chesterton-thursday-s1
+  tags: [literary, edwardian, comic_philosophical, allegorical, third_person]
+  source: "Chesterton, *The Man Who Was Thursday: A Nightmare* (1908) (sample 1)"
+  license: public_domain
+  url: "https://standardebooks.org/ebooks/g-k-chesterton/the-man-who-was-thursday"
+  text_file: passages/exemplars/chesterton-thursday-s1.txt
+  category: exemplars
+
+- id: chesterton-thursday-s2
+  tags: [literary, edwardian, comic_philosophical, allegorical, third_person]
+  source: "Chesterton, *The Man Who Was Thursday: A Nightmare* (1908) (sample 2)"
+  license: public_domain
+  url: "https://standardebooks.org/ebooks/g-k-chesterton/the-man-who-was-thursday"
+  text_file: passages/exemplars/chesterton-thursday-s2.txt
+  category: exemplars
+
+- id: chesterton-napoleon-notting-hill-s0
+  tags: [literary, edwardian, comic_philosophical, satirical, third_person]
+  source: "Chesterton, *The Napoleon of Notting Hill* (1904)"
+  license: public_domain
+  url: "https://standardebooks.org/ebooks/g-k-chesterton/the-napoleon-of-notting-hill"
+  text_file: passages/exemplars/chesterton-napoleon-notting-hill-s0.txt
+  category: exemplars
+
+- id: chesterton-napoleon-notting-hill-s1
+  tags: [literary, edwardian, comic_philosophical, satirical, third_person]
+  source: "Chesterton, *The Napoleon of Notting Hill* (1904) (sample 1)"
+  license: public_domain
+  url: "https://standardebooks.org/ebooks/g-k-chesterton/the-napoleon-of-notting-hill"
+  text_file: passages/exemplars/chesterton-napoleon-notting-hill-s1.txt
+  category: exemplars
+
+- id: ford-some-do-not-s0
+  tags: [literary, high_modernist, third_person, free_indirect_discourse, war_novel]
+  source: "Ford, *Some Do Not...* (Parade's End, Book 1, 1924)"
+  license: public_domain
+  url: "https://standardebooks.org/ebooks/ford-madox-ford/some-do-not"
+  text_file: passages/exemplars/ford-some-do-not-s0.txt
+  category: exemplars
+
+- id: ford-some-do-not-s1
+  tags: [literary, high_modernist, third_person, free_indirect_discourse, war_novel]
+  source: "Ford, *Some Do Not...* (Parade's End, Book 1, 1924) (sample 1)"
+  license: public_domain
+  url: "https://standardebooks.org/ebooks/ford-madox-ford/some-do-not"
+  text_file: passages/exemplars/ford-some-do-not-s1.txt
+  category: exemplars
+
+- id: sayers-whose-body-s0
+  tags: [literary, detective, third_person, interwar, comic_register]
+  source: "Sayers, *Whose Body?* (1923)"
+  license: public_domain
+  url: "https://standardebooks.org/ebooks/dorothy-l-sayers/whose-body"
+  text_file: passages/exemplars/sayers-whose-body-s0.txt
+  category: exemplars
+
+- id: sayers-whose-body-s1
+  tags: [literary, detective, third_person, interwar, comic_register]
+  source: "Sayers, *Whose Body?* (1923) (sample 1)"
+  license: public_domain
+  url: "https://standardebooks.org/ebooks/dorothy-l-sayers/whose-body"
+  text_file: passages/exemplars/sayers-whose-body-s1.txt
+  category: exemplars
+
+- id: sayers-clouds-of-witness-s0
+  tags: [literary, detective, third_person, interwar]
+  source: "Sayers, *Clouds of Witness* (1926)"
+  license: public_domain
+  url: "https://standardebooks.org/ebooks/dorothy-l-sayers/clouds-of-witness"
+  text_file: passages/exemplars/sayers-clouds-of-witness-s0.txt
+  category: exemplars
+
+- id: sayers-clouds-of-witness-s1
+  tags: [literary, detective, third_person, interwar]
+  source: "Sayers, *Clouds of Witness* (1926) (sample 1)"
+  license: public_domain
+  url: "https://standardebooks.org/ebooks/dorothy-l-sayers/clouds-of-witness"
+  text_file: passages/exemplars/sayers-clouds-of-witness-s1.txt
+  category: exemplars
+
+- id: sinclair-mary-olivier-s0
+  tags: [literary, high_modernist, third_person, stream_consciousness, free_indirect_discourse, psychological]
+  source: "May Sinclair, *Mary Olivier: A Life* (1919)"
+  license: pg_au_pd_research_use
+  url: "https://gutenberg.net.au/ebooks/fr100186.txt"
+  text_file: passages/exemplars/sinclair-mary-olivier-s0.txt
+  category: exemplars
+
+- id: sinclair-mary-olivier-s1
+  tags: [literary, high_modernist, third_person, stream_consciousness, free_indirect_discourse, psychological]
+  source: "May Sinclair, *Mary Olivier: A Life* (1919) (sample 1)"
+  license: pg_au_pd_research_use
+  url: "https://gutenberg.net.au/ebooks/fr100186.txt"
+  text_file: passages/exemplars/sinclair-mary-olivier-s1.txt
+  category: exemplars
+
+- id: sinclair-harriett-frean-s0
+  tags: [literary, high_modernist, third_person, stream_consciousness, psychological]
+  source: "May Sinclair, *The Life and Death of Harriett Frean* (1922)"
+  license: pg_au_pd_research_use
+  url: "https://gutenberg.net.au/ebooks/fr100185.txt"
+  text_file: passages/exemplars/sinclair-harriett-frean-s0.txt
+  category: exemplars
+
+- id: sinclair-collected-stories-s0
+  tags: [literary, high_modernist, short_fiction, stream_consciousness]
+  source: "May Sinclair, *Collected Stories*"
+  license: pg_au_pd_research_use
+  url: "https://gutenberg.net.au/ebooks06/0606491.txt"
+  text_file: passages/exemplars/sinclair-collected-stories-s0.txt
+  category: exemplars
+
+- id: hh-richardson-australia-felix-s0
+  tags: [literary, australian_modernist, third_person, panoramic, colonial]
+  source: "H.H. Richardson, *Australia Felix* (1917, first vol of *The Fortunes of Richard Mahony*)"
+  license: pg_au_pd_research_use
+  url: "https://gutenberg.net.au/ebooks01/0100051.txt"
+  text_file: passages/exemplars/hh-richardson-australia-felix-s0.txt
+  category: exemplars
+
+- id: hh-richardson-australia-felix-s1
+  tags: [literary, australian_modernist, third_person, panoramic, colonial]
+  source: "H.H. Richardson, *Australia Felix* (1917, first vol of *The Fortunes of Richard Mahony*) (sample 1)"
+  license: pg_au_pd_research_use
+  url: "https://gutenberg.net.au/ebooks01/0100051.txt"
+  text_file: passages/exemplars/hh-richardson-australia-felix-s1.txt
+  category: exemplars
+
+- id: hh-richardson-getting-wisdom-s0
+  tags: [literary, australian_modernist, third_person, bildungsroman, schoolgirl]
+  source: "H.H. Richardson, *The Getting of Wisdom* (1910)"
+  license: pg_au_pd_research_use
+  url: "https://gutenberg.net.au/ebooks/e00086.txt"
+  text_file: passages/exemplars/hh-richardson-getting-wisdom-s0.txt
+  category: exemplars
+
+- id: hh-richardson-maurice-guest-s0
+  tags: [literary, australian_modernist, third_person, bohemian, leipzig]
+  source: "H.H. Richardson, *Maurice Guest* (1908)"
+  license: pg_au_pd_research_use
+  url: "https://gutenberg.net.au/ebooks/e00089.txt"
+  text_file: passages/exemplars/hh-richardson-maurice-guest-s0.txt
+  category: exemplars
+
+- id: mansfield-german-pension-s0
+  tags: [literary, high_modernist, short_fiction, first_person, ironic]
+  source: "Mansfield, *In a German Pension* (1911)"
+  license: pg_au_pd_research_use
+  url: "https://gutenberg.net.au/ebooks08/0800241.txt"
+  text_file: passages/exemplars/mansfield-german-pension-s0.txt
+  category: exemplars
+
+- id: mansfield-something-childish-s0
+  tags: [literary, high_modernist, short_fiction, free_indirect_discourse]
+  source: "Mansfield, *Something Childish, and Other Stories* (posthumous, 1924)"
+  license: pg_au_pd_research_use
+  url: "https://gutenberg.net.au/ebooks08/0800221.txt"
+  text_file: passages/exemplars/mansfield-something-childish-s0.txt
+  category: exemplars
+
+- id: lawrence-kangaroo-s0
+  tags: [literary, high_modernist, third_person, australian_setting, political]
+  source: "Lawrence, *Kangaroo* (1923)"
+  license: pg_au_pd_research_use
+  url: "https://gutenberg.net.au/ebooks02/0200631.txt"
+  text_file: passages/exemplars/lawrence-kangaroo-s0.txt
+  category: exemplars
+
+- id: lawrence-kangaroo-s1
+  tags: [literary, high_modernist, third_person, australian_setting, political]
+  source: "Lawrence, *Kangaroo* (1923) (sample 1)"
+  license: pg_au_pd_research_use
+  url: "https://gutenberg.net.au/ebooks02/0200631.txt"
+  text_file: passages/exemplars/lawrence-kangaroo-s1.txt
+  category: exemplars
+
+- id: lawrence-rainbow-s0
+  tags: [literary, high_modernist, third_person, intense, lyric, generational]
+  source: "Lawrence, *The Rainbow* (1915, PG-AU 1926 ed.)"
+  license: pg_au_pd_research_use
+  url: "https://gutenberg.net.au/ebooks01/0100341.txt"
+  text_file: passages/exemplars/lawrence-rainbow-s0.txt
+  category: exemplars
+
+- id: lawrence-rainbow-s1
+  tags: [literary, high_modernist, third_person, intense, lyric, generational]
+  source: "Lawrence, *The Rainbow* (1915, PG-AU 1926 ed.) (sample 1)"
+  license: pg_au_pd_research_use
+  url: "https://gutenberg.net.au/ebooks01/0100341.txt"
+  text_file: passages/exemplars/lawrence-rainbow-s1.txt
+  category: exemplars
+
+- id: lawrence-collected-stories-s0
+  tags: [literary, high_modernist, short_fiction, intense]
+  source: "Lawrence, *Collected Short Stories*"
+  license: pg_au_pd_research_use
+  url: "https://gutenberg.net.au/ebooks04/0400311.txt"
+  text_file: passages/exemplars/lawrence-collected-stories-s0.txt
+  category: exemplars
+
+- id: lawrence-collected-stories-s1
+  tags: [literary, high_modernist, short_fiction, intense]
+  source: "Lawrence, *Collected Short Stories* (sample 1)"
+  license: pg_au_pd_research_use
+  url: "https://gutenberg.net.au/ebooks04/0400311.txt"
+  text_file: passages/exemplars/lawrence-collected-stories-s1.txt
+  category: exemplars
+
+- id: lawrence-man-who-died-s0
+  tags: [literary, high_modernist, third_person, mythic, novella]
+  source: "Lawrence, *The Man Who Died* (1929)"
+  license: pg_au_pd_research_use
+  url: "https://gutenberg.net.au/ebooks07/0700631.txt"
+  text_file: passages/exemplars/lawrence-man-who-died-s0.txt
+  category: exemplars
+
+- id: lawrence-virgin-and-gypsy-s0
+  tags: [literary, high_modernist, third_person, intense, novella]
+  source: "Lawrence, *The Virgin and the Gypsy* (1930)"
+  license: pg_au_pd_research_use
+  url: "https://gutenberg.net.au/ebooks03/0301101.txt"
+  text_file: passages/exemplars/lawrence-virgin-and-gypsy-s0.txt
+  category: exemplars
+
+- id: lawrence-fox-s0
+  tags: [literary, high_modernist, third_person, intense, novella]
+  source: "Lawrence, *The Fox* (1923)"
+  license: pg_au_pd_research_use
+  url: "https://gutenberg.net.au/ebooks02/0200801.txt"
+  text_file: passages/exemplars/lawrence-fox-s0.txt
+  category: exemplars
+
+- id: lawrence-ladybird-s0
+  tags: [literary, high_modernist, third_person, intense, novella]
+  source: "Lawrence, *The Ladybird* (1923)"
+  license: pg_au_pd_research_use
+  url: "https://gutenberg.net.au/ebooks02/0200821.txt"
+  text_file: passages/exemplars/lawrence-ladybird-s0.txt
+  category: exemplars
+
+
+# ═══ Round-8 expansion — deeper + PG-AU (2026-04-28) ═══
+# Per lab/issues/2026-04-28-corpus-author-gaps.md Phase 1 + E1/E3.
+# Includes round-6/7/8 sources mixed:
+# - PG round-6 (12 authors: Sterne/Defoe/Edgeworth/Wilde/Gaskell/
+#   Joyce-Ulysses/Lawrence/Tagore/Hemingway-In-Our-Time/Mann)
+# - Standard Ebooks round-1 (Faulkner Sound and Fury + As I Lay
+#   Dying; Hemingway Farewell to Arms — US PD 2025/2026)
+# - SCP CC-BY-SA round-1 (Stage 3 position #10 procedural register)
+# - PG round-7 (Burney; pre-1925 Woolf; Conrad/Hardy/Twain expansion;
+#   Sinclair Lewis; Trollope; Wilde; Crane Red Badge; Galsworthy;
+#   Tarkington; Pater; Carlyle; Hearn; Murasaki Genji-Waley;
+#   Flaubert Madame Bovary; Douglass+Jacobs; Emerson; Gissing;
+#   Meredith)
+# - Standard Ebooks round-2 (Woolf trilogy Mrs Dalloway + Lighthouse
+#   + Orlando; Hemingway Sun Also Rises; Faulkner Soldier's Pay)
+# - SCP round-2 (proposal form, narrative-drift, transcript-form)
+# - PG round-8 E1 (Tolstoy War and Peace, Dickens trio, Eliot
+#   expansion, Hawthorne, Sterne Sentimental Journey, Defoe
+#   Plague Year, De Quincey, Coleridge, Lamb, Hazlitt, Andreyev,
+#   Tolstoy Resurrection, Mansfield Bliss + Garden Party; plus
+#   multi-sample expansion — s2/s3/s4 for Joyce Ulysses/Proust/
+#   Dostoevsky×2/Tolstoy AK/Eliot Middlemarch/Hugo/Cervantes/
+#   Dickens BH+GE/Hardy Tess/Wharton AoI/Mann RH)
+# - PG-AU round (E3): Fitzgerald Tender Is Night + Pat Hobby;
+#   Orwell complete (Down and Out / Burmese Days / Clergyman's
+#   Daughter / Aspidistra / Shooting an Elephant / Wigan Pier /
+#   Homage to Catalonia / Coming Up for Air / Animal Farm /
+#   Politics and English / 1984); late Lawrence (Lady Chatterley /
+#   Plumed Serpent / Mornings in Mexico / Etruscan Places /
+#   Woman Who Rode Away). License pg_au_pd_research_use —
+#   PD-Australia / project research-fair-use posture.
+# - F2 SE round 3 (less-canonical): late James (Wings of the Dove,
+#   Golden Bowl, Portrait of a Lady, Washington Square); late
+#   Conrad (Victory, Chance, Under Western Eyes, Shadow Line,
+#   Arrow of Gold); Wharton Summer; Chesterton (Man Who Was
+#   Thursday, Napoleon of Notting Hill); Ford Some Do Not
+#   (Parade's End I); Sayers Lord Peter Wimsey (Whose Body,
+#   Clouds of Witness).
+# - F3 PG-AU round 2: May Sinclair (Mary Olivier, Harriett Frean,
+#   Collected Stories — pioneer of stream-of-consciousness);
+#   H.H. Richardson (Australia Felix, Maurice Guest, Getting of
+#   Wisdom — Australian modernist); Mansfield additional (German
+#   Pension, Something Childish); Lawrence late expansion
+#   (Kangaroo, Rainbow, Collected Stories, Man Who Died, Virgin
+#   and Gypsy, Fox, Ladybird).
+# Plus any fair-use manual excerpts in lab/fair-use-staging/.
+
+- id: cusk-outline-s0
+  tags: [literary, flat_affect, third_party_mediated, first_person, framing_voice]
+  source: "Cusk, *Outline* (FSG, 2014)"
+  license: research_fair_use
+  text_file: passages/exemplars/cusk-outline-s0.txt
+  category: exemplars
+
+- id: cusk-outline-s1
+  tags: [literary, flat_affect, third_party_mediated, first_person, framing_voice]
+  source: "Cusk, *Outline* (FSG, 2014)"
+  license: research_fair_use
+  text_file: passages/exemplars/cusk-outline-s1.txt
+  category: exemplars
+
+- id: davis-lydia-almost-no-memory-s0
+  tags: [literary, ultra_short, philosophical_compression, first_person, short_fiction]
+  source: "Lydia Davis, *Almost No Memory* — auto-stubbed from EPUB metadata; please refine"
+  license: research_fair_use
+  text_file: passages/exemplars/davis-lydia-almost-no-memory-s0.txt
+  category: exemplars
+
+- id: davis-lydia-almost-no-memory-s1
+  tags: [literary, ultra_short, philosophical_compression, first_person, short_fiction]
+  source: "Lydia Davis, *Almost No Memory* — auto-stubbed from EPUB metadata; please refine"
+  license: research_fair_use
+  text_file: passages/exemplars/davis-lydia-almost-no-memory-s1.txt
+  category: exemplars
+
+- id: davis-lydia-cant-and-wont-s0
+  tags: [literary, ultra_short, philosophical_compression, first_person, short_fiction]
+  source: "Davis Lydia, *Can't and Won't: Stories* — auto-stubbed from EPUB metadata; please refine"
+  license: research_fair_use
+  text_file: passages/exemplars/davis-lydia-cant-and-wont-s0.txt
+  category: exemplars
+
+- id: davis-lydia-cant-and-wont-s1
+  tags: [literary, ultra_short, philosophical_compression, first_person, short_fiction]
+  source: "Davis Lydia, *Can't and Won't: Stories* — auto-stubbed from EPUB metadata; please refine"
+  license: research_fair_use
+  text_file: passages/exemplars/davis-lydia-cant-and-wont-s1.txt
+  category: exemplars
+
+- id: davis-lydia-collected-stories-of-lydia-davis-s0
+  tags: [literary, ultra_short, philosophical_compression, first_person, short_fiction]
+  source: "Davis Lydia, *The Collected Stories of Lydia Davis* — auto-stubbed from EPUB metadata; please refine"
+  license: research_fair_use
+  text_file: passages/exemplars/davis-lydia-collected-stories-of-lydia-davis-s0.txt
+  category: exemplars
+
+- id: davis-lydia-collected-stories-of-lydia-davis-s1
+  tags: [literary, ultra_short, philosophical_compression, first_person, short_fiction]
+  source: "Davis Lydia, *The Collected Stories of Lydia Davis* — auto-stubbed from EPUB metadata; please refine"
+  license: research_fair_use
+  text_file: passages/exemplars/davis-lydia-collected-stories-of-lydia-davis-s1.txt
+  category: exemplars
+
+- id: paley-little-disturbances-of-man-s0
+  tags: [literary, oral_register, vernacular, first_person, nyc_jewish]
+  source: "Paley, Grace, *The little disturbances of man* — auto-stubbed from EPUB metadata; please refine"
+  license: research_fair_use
+  text_file: passages/exemplars/paley-little-disturbances-of-man-s0.txt
+  category: exemplars
+
+- id: paley-little-disturbances-of-man-s1
+  tags: [literary, oral_register, vernacular, first_person, nyc_jewish]
+  source: "Paley, Grace, *The little disturbances of man* — auto-stubbed from EPUB metadata; please refine"
+  license: research_fair_use
+  text_file: passages/exemplars/paley-little-disturbances-of-man-s1.txt
+  category: exemplars
+
+- id: saunders-pastoralia-s0
+  tags: [literary, oral_register, satirical, third_person, short_fiction]
+  source: "Saunders, *Pastoralia* (Riverhead, 2000)"
+  license: research_fair_use
+  text_file: passages/exemplars/saunders-pastoralia-s0.txt
+  category: exemplars
+
+- id: saunders-pastoralia-s1
+  tags: [literary, oral_register, satirical, third_person, short_fiction]
+  source: "Saunders, *Pastoralia* (Riverhead, 2000)"
+  license: research_fair_use
+  text_file: passages/exemplars/saunders-pastoralia-s1.txt
+  category: exemplars
+
+- id: tao-lin-shoplifting-from-american-apparel-s0
+  tags: [literary, flat_affect, alt_lit, third_person]
+  source: "Tao Lin, *Shoplifting From American Apparel* — auto-stubbed from EPUB metadata; please refine"
+  license: research_fair_use
+  text_file: passages/exemplars/tao-lin-shoplifting-from-american-apparel-s0.txt
+  category: exemplars
+
+- id: tao-lin-shoplifting-from-american-apparel-s1
+  tags: [literary, flat_affect, alt_lit, third_person]
+  source: "Tao Lin, *Shoplifting From American Apparel* — auto-stubbed from EPUB metadata; please refine"
+  license: research_fair_use
+  text_file: passages/exemplars/tao-lin-shoplifting-from-american-apparel-s1.txt
+  category: exemplars
+
+
+# ═══ Round-8 expansion — deeper + PG-AU (2026-04-28) ═══
+# Per lab/issues/2026-04-28-corpus-author-gaps.md Phase 1 + E1/E3.
+# Includes round-6/7/8 sources mixed:
+# - PG round-6 (12 authors: Sterne/Defoe/Edgeworth/Wilde/Gaskell/
+#   Joyce-Ulysses/Lawrence/Tagore/Hemingway-In-Our-Time/Mann)
+# - Standard Ebooks round-1 (Faulkner Sound and Fury + As I Lay
+#   Dying; Hemingway Farewell to Arms — US PD 2025/2026)
+# - SCP CC-BY-SA round-1 (Stage 3 position #10 procedural register)
+# - PG round-7 (Burney; pre-1925 Woolf; Conrad/Hardy/Twain expansion;
+#   Sinclair Lewis; Trollope; Wilde; Crane Red Badge; Galsworthy;
+#   Tarkington; Pater; Carlyle; Hearn; Murasaki Genji-Waley;
+#   Flaubert Madame Bovary; Douglass+Jacobs; Emerson; Gissing;
+#   Meredith)
+# - Standard Ebooks round-2 (Woolf trilogy Mrs Dalloway + Lighthouse
+#   + Orlando; Hemingway Sun Also Rises; Faulkner Soldier's Pay)
+# - SCP round-2 (proposal form, narrative-drift, transcript-form)
+# - PG round-8 E1 (Tolstoy War and Peace, Dickens trio, Eliot
+#   expansion, Hawthorne, Sterne Sentimental Journey, Defoe
+#   Plague Year, De Quincey, Coleridge, Lamb, Hazlitt, Andreyev,
+#   Tolstoy Resurrection, Mansfield Bliss + Garden Party; plus
+#   multi-sample expansion — s2/s3/s4 for Joyce Ulysses/Proust/
+#   Dostoevsky×2/Tolstoy AK/Eliot Middlemarch/Hugo/Cervantes/
+#   Dickens BH+GE/Hardy Tess/Wharton AoI/Mann RH)
+# - PG-AU round (E3): Fitzgerald Tender Is Night + Pat Hobby;
+#   Orwell complete (Down and Out / Burmese Days / Clergyman's
+#   Daughter / Aspidistra / Shooting an Elephant / Wigan Pier /
+#   Homage to Catalonia / Coming Up for Air / Animal Farm /
+#   Politics and English / 1984); late Lawrence (Lady Chatterley /
+#   Plumed Serpent / Mornings in Mexico / Etruscan Places /
+#   Woman Who Rode Away). License pg_au_pd_research_use —
+#   PD-Australia / project research-fair-use posture.
+# - F2 SE round 3 (less-canonical): late James (Wings of the Dove,
+#   Golden Bowl, Portrait of a Lady, Washington Square); late
+#   Conrad (Victory, Chance, Under Western Eyes, Shadow Line,
+#   Arrow of Gold); Wharton Summer; Chesterton (Man Who Was
+#   Thursday, Napoleon of Notting Hill); Ford Some Do Not
+#   (Parade's End I); Sayers Lord Peter Wimsey (Whose Body,
+#   Clouds of Witness).
+# - F3 PG-AU round 2: May Sinclair (Mary Olivier, Harriett Frean,
+#   Collected Stories — pioneer of stream-of-consciousness);
+#   H.H. Richardson (Australia Felix, Maurice Guest, Getting of
+#   Wisdom — Australian modernist); Mansfield additional (German
+#   Pension, Something Childish); Lawrence late expansion
+#   (Kangaroo, Rainbow, Collected Stories, Man Who Died, Virgin
+#   and Gypsy, Fox, Ladybird).
+# Plus any fair-use manual excerpts in lab/fair-use-staging/.
+
+- id: davis-lydia-break-it-down-s0
+  tags: [literary, ultra_short, philosophical_compression, first_person, short_fiction]
+  source: "Davis, 'Break It Down' in *Break It Down* (FSG, 1986) — collected in *The Collected Stories* (FSG, 2009)"
+  license: research_fair_use
+  text_file: passages/exemplars/davis-lydia-break-it-down-s0.txt
+  category: exemplars
+
+- id: davis-lydia-the-cows-s0
+  tags: [literary, ultra_short, philosophical_compression, first_person, short_fiction]
+  source: "Davis, 'The Cows' in *Can't and Won't* (FSG, 2014)"
+  license: research_fair_use
+  text_file: passages/exemplars/davis-lydia-the-cows-s0.txt
+  category: exemplars
+
+- id: davis-lydia-the-house-plans-s0
+  tags: [literary, ultra_short, philosophical_compression, first_person, short_fiction]
+  source: "Davis, 'The House Plans' in *Almost No Memory* (FSG, 1997) — collected in *The Collected Stories* (FSG, 2009)"
+  license: research_fair_use
+  text_file: passages/exemplars/davis-lydia-the-house-plans-s0.txt
+  category: exemplars
+
+- id: davis-lydia-the-mice-s0
+  tags: [literary, ultra_short, philosophical_compression, first_person, short_fiction, very_short_fiction]
+  source: "Davis, 'The Mice' in *Almost No Memory* (FSG, 1997) — collected in *The Collected Stories of Lydia Davis* (FSG, 2009)"
+  license: research_fair_use
+  text_file: passages/exemplars/davis-lydia-the-mice-s0.txt
+  category: exemplars
+
+
+# ═══ Round-8 expansion — deeper + PG-AU (2026-04-28) ═══
+# Per lab/issues/2026-04-28-corpus-author-gaps.md Phase 1 + E1/E3.
+# Includes round-6/7/8 sources mixed:
+# - PG round-6 (12 authors: Sterne/Defoe/Edgeworth/Wilde/Gaskell/
+#   Joyce-Ulysses/Lawrence/Tagore/Hemingway-In-Our-Time/Mann)
+# - Standard Ebooks round-1 (Faulkner Sound and Fury + As I Lay
+#   Dying; Hemingway Farewell to Arms — US PD 2025/2026)
+# - SCP CC-BY-SA round-1 (Stage 3 position #10 procedural register)
+# - PG round-7 (Burney; pre-1925 Woolf; Conrad/Hardy/Twain expansion;
+#   Sinclair Lewis; Trollope; Wilde; Crane Red Badge; Galsworthy;
+#   Tarkington; Pater; Carlyle; Hearn; Murasaki Genji-Waley;
+#   Flaubert Madame Bovary; Douglass+Jacobs; Emerson; Gissing;
+#   Meredith)
+# - Standard Ebooks round-2 (Woolf trilogy Mrs Dalloway + Lighthouse
+#   + Orlando; Hemingway Sun Also Rises; Faulkner Soldier's Pay)
+# - SCP round-2 (proposal form, narrative-drift, transcript-form)
+# - PG round-8 E1 (Tolstoy War and Peace, Dickens trio, Eliot
+#   expansion, Hawthorne, Sterne Sentimental Journey, Defoe
+#   Plague Year, De Quincey, Coleridge, Lamb, Hazlitt, Andreyev,
+#   Tolstoy Resurrection, Mansfield Bliss + Garden Party; plus
+#   multi-sample expansion — s2/s3/s4 for Joyce Ulysses/Proust/
+#   Dostoevsky×2/Tolstoy AK/Eliot Middlemarch/Hugo/Cervantes/
+#   Dickens BH+GE/Hardy Tess/Wharton AoI/Mann RH)
+# - PG-AU round (E3): Fitzgerald Tender Is Night + Pat Hobby;
+#   Orwell complete (Down and Out / Burmese Days / Clergyman's
+#   Daughter / Aspidistra / Shooting an Elephant / Wigan Pier /
+#   Homage to Catalonia / Coming Up for Air / Animal Farm /
+#   Politics and English / 1984); late Lawrence (Lady Chatterley /
+#   Plumed Serpent / Mornings in Mexico / Etruscan Places /
+#   Woman Who Rode Away). License pg_au_pd_research_use —
+#   PD-Australia / project research-fair-use posture.
+# - F2 SE round 3 (less-canonical): late James (Wings of the Dove,
+#   Golden Bowl, Portrait of a Lady, Washington Square); late
+#   Conrad (Victory, Chance, Under Western Eyes, Shadow Line,
+#   Arrow of Gold); Wharton Summer; Chesterton (Man Who Was
+#   Thursday, Napoleon of Notting Hill); Ford Some Do Not
+#   (Parade's End I); Sayers Lord Peter Wimsey (Whose Body,
+#   Clouds of Witness).
+# - F3 PG-AU round 2: May Sinclair (Mary Olivier, Harriett Frean,
+#   Collected Stories — pioneer of stream-of-consciousness);
+#   H.H. Richardson (Australia Felix, Maurice Guest, Getting of
+#   Wisdom — Australian modernist); Mansfield additional (German
+#   Pension, Something Childish); Lawrence late expansion
+#   (Kangaroo, Rainbow, Collected Stories, Man Who Died, Virgin
+#   and Gypsy, Fox, Ladybird).
+# Plus any fair-use manual excerpts in lab/fair-use-staging/.
+
+- id: borges-collected-fictions-of-jorge-luis-borges-s0
+  tags: [literary, metafictional, compressed, philosophical, spanish_translation, short_fiction]
+  source: "Jorge Luis Borges, *Collected Fictions of Jorge Luis Borges* — auto-stubbed from EPUB metadata; please refine"
+  license: research_fair_use
+  text_file: passages/exemplars/borges-collected-fictions-of-jorge-luis-borges-s0.txt
+  category: exemplars
+
+- id: borges-collected-fictions-of-jorge-luis-borges-s1
+  tags: [literary, metafictional, compressed, philosophical, spanish_translation, short_fiction]
+  source: "Jorge Luis Borges, *Collected Fictions of Jorge Luis Borges* — auto-stubbed from EPUB metadata; please refine"
+  license: research_fair_use
+  text_file: passages/exemplars/borges-collected-fictions-of-jorge-luis-borges-s1.txt
+  category: exemplars
+
+- id: hannah-airships-s0
+  tags: [literary, oral_register, maximalist_vernacular, first_person, southern, mississippi_vernacular]
+  source: "Hannah, *Airships* (Knopf, 1978)"
+  license: research_fair_use
+  text_file: passages/exemplars/hannah-airships-s0.txt
+  category: exemplars
+
+- id: hannah-airships-s1
+  tags: [literary, oral_register, maximalist_vernacular, first_person, southern, mississippi_vernacular]
+  source: "Hannah, *Airships* (Knopf, 1978)"
+  license: research_fair_use
+  text_file: passages/exemplars/hannah-airships-s1.txt
+  category: exemplars
+
+- id: jones-thom-pugilist-at-rest-stories-s0
+  tags: [literary, oral_register, first_person, short_fiction]
+  source: "Thom Jones, *Pugilist At Rest Stories* — auto-stubbed from EPUB metadata; please refine"
+  license: research_fair_use
+  text_file: passages/exemplars/jones-thom-pugilist-at-rest-stories-s0.txt
+  category: exemplars
+
+- id: jones-thom-pugilist-at-rest-stories-s1
+  tags: [literary, oral_register, first_person, short_fiction]
+  source: "Thom Jones, *Pugilist At Rest Stories* — auto-stubbed from EPUB metadata; please refine"
+  license: research_fair_use
+  text_file: passages/exemplars/jones-thom-pugilist-at-rest-stories-s1.txt
+  category: exemplars
+
+- id: moshfegh-eileen-s0
+  tags: [literary, flat_affect, first_person, dissociated, unreliable_narrator]
+  source: "Moshfegh, *Eileen* (Penguin Press, 2015)"
+  license: research_fair_use
+  text_file: passages/exemplars/moshfegh-eileen-s0.txt
+  category: exemplars
+
+- id: moshfegh-eileen-s1
+  tags: [literary, flat_affect, first_person, dissociated, unreliable_narrator]
+  source: "Moshfegh, *Eileen* (Penguin Press, 2015)"
+  license: research_fair_use
+  text_file: passages/exemplars/moshfegh-eileen-s1.txt
+  category: exemplars
+
+- id: paley-enormous-changes-at-the-last-minute-stories-s0
+  tags: [literary, oral_register, vernacular, first_person, nyc_jewish]
+  source: "Paley, Grace, *Enormous changes at the last minute; stories* — auto-stubbed from EPUB metadata; please refine"
+  license: research_fair_use
+  text_file: passages/exemplars/paley-enormous-changes-at-the-last-minute-stories-s0.txt
+  category: exemplars
+
+- id: paley-enormous-changes-at-the-last-minute-stories-s1
+  tags: [literary, oral_register, vernacular, first_person, nyc_jewish]
+  source: "Paley, Grace, *Enormous changes at the last minute; stories* — auto-stubbed from EPUB metadata; please refine"
+  license: research_fair_use
+  text_file: passages/exemplars/paley-enormous-changes-at-the-last-minute-stories-s1.txt
+  category: exemplars
+
+- id: saunders-civilwarland-in-bad-decline-s0
+  tags: [literary, oral_register, satirical, third_person, short_fiction]
+  source: "George Saunders, *CivilWarLand in Bad Decline: Stories and a Novella* — auto-stubbed from EPUB metadata; please refine"
+  license: research_fair_use
+  text_file: passages/exemplars/saunders-civilwarland-in-bad-decline-s0.txt
+  category: exemplars
+
+- id: saunders-civilwarland-in-bad-decline-s1
+  tags: [literary, oral_register, satirical, third_person, short_fiction]
+  source: "George Saunders, *CivilWarLand in Bad Decline: Stories and a Novella* — auto-stubbed from EPUB metadata; please refine"
+  license: research_fair_use
+  text_file: passages/exemplars/saunders-civilwarland-in-bad-decline-s1.txt
+  category: exemplars
+
+- id: tao-lin-taipei-s0
+  tags: [literary, flat_affect, alt_lit, third_person, dissociated]
+  source: "Lin, *Taipei* (Vintage Contemporaries, 2013)"
+  license: research_fair_use
+  text_file: passages/exemplars/tao-lin-taipei-s0.txt
+  category: exemplars
+
+- id: tao-lin-taipei-s1
+  tags: [literary, flat_affect, alt_lit, third_person, dissociated]
+  source: "Lin, *Taipei* (Vintage Contemporaries, 2013)"
+  license: research_fair_use
+  text_file: passages/exemplars/tao-lin-taipei-s1.txt
+  category: exemplars
+
+
+# ═══ Round-8 expansion — deeper + PG-AU (2026-04-28) ═══
+# Per lab/issues/2026-04-28-corpus-author-gaps.md Phase 1 + E1/E3.
+# Includes round-6/7/8 sources mixed:
+# - PG round-6 (12 authors: Sterne/Defoe/Edgeworth/Wilde/Gaskell/
+#   Joyce-Ulysses/Lawrence/Tagore/Hemingway-In-Our-Time/Mann)
+# - Standard Ebooks round-1 (Faulkner Sound and Fury + As I Lay
+#   Dying; Hemingway Farewell to Arms — US PD 2025/2026)
+# - SCP CC-BY-SA round-1 (Stage 3 position #10 procedural register)
+# - PG round-7 (Burney; pre-1925 Woolf; Conrad/Hardy/Twain expansion;
+#   Sinclair Lewis; Trollope; Wilde; Crane Red Badge; Galsworthy;
+#   Tarkington; Pater; Carlyle; Hearn; Murasaki Genji-Waley;
+#   Flaubert Madame Bovary; Douglass+Jacobs; Emerson; Gissing;
+#   Meredith)
+# - Standard Ebooks round-2 (Woolf trilogy Mrs Dalloway + Lighthouse
+#   + Orlando; Hemingway Sun Also Rises; Faulkner Soldier's Pay)
+# - SCP round-2 (proposal form, narrative-drift, transcript-form)
+# - PG round-8 E1 (Tolstoy War and Peace, Dickens trio, Eliot
+#   expansion, Hawthorne, Sterne Sentimental Journey, Defoe
+#   Plague Year, De Quincey, Coleridge, Lamb, Hazlitt, Andreyev,
+#   Tolstoy Resurrection, Mansfield Bliss + Garden Party; plus
+#   multi-sample expansion — s2/s3/s4 for Joyce Ulysses/Proust/
+#   Dostoevsky×2/Tolstoy AK/Eliot Middlemarch/Hugo/Cervantes/
+#   Dickens BH+GE/Hardy Tess/Wharton AoI/Mann RH)
+# - PG-AU round (E3): Fitzgerald Tender Is Night + Pat Hobby;
+#   Orwell complete (Down and Out / Burmese Days / Clergyman's
+#   Daughter / Aspidistra / Shooting an Elephant / Wigan Pier /
+#   Homage to Catalonia / Coming Up for Air / Animal Farm /
+#   Politics and English / 1984); late Lawrence (Lady Chatterley /
+#   Plumed Serpent / Mornings in Mexico / Etruscan Places /
+#   Woman Who Rode Away). License pg_au_pd_research_use —
+#   PD-Australia / project research-fair-use posture.
+# - F2 SE round 3 (less-canonical): late James (Wings of the Dove,
+#   Golden Bowl, Portrait of a Lady, Washington Square); late
+#   Conrad (Victory, Chance, Under Western Eyes, Shadow Line,
+#   Arrow of Gold); Wharton Summer; Chesterton (Man Who Was
+#   Thursday, Napoleon of Notting Hill); Ford Some Do Not
+#   (Parade's End I); Sayers Lord Peter Wimsey (Whose Body,
+#   Clouds of Witness).
+# - F3 PG-AU round 2: May Sinclair (Mary Olivier, Harriett Frean,
+#   Collected Stories — pioneer of stream-of-consciousness);
+#   H.H. Richardson (Australia Felix, Maurice Guest, Getting of
+#   Wisdom — Australian modernist); Mansfield additional (German
+#   Pension, Something Childish); Lawrence late expansion
+#   (Kangaroo, Rainbow, Collected Stories, Man Who Died, Virgin
+#   and Gypsy, Fox, Ladybird).
+# Plus any fair-use manual excerpts in lab/fair-use-staging/.
+
+- id: hurston-their-eyes-were-watching-god-s0
+  tags: [literary, oral_register, vernacular, african_american, third_person]
+  source: "Zora Neale Hurston, *Their Eyes Were Watching God* — auto-stubbed from EPUB metadata; please refine"
+  license: research_fair_use
+  text_file: passages/exemplars/hurston-their-eyes-were-watching-god-s0.txt
+  category: exemplars
+
+- id: hurston-their-eyes-were-watching-god-s1
+  tags: [literary, oral_register, vernacular, african_american, third_person]
+  source: "Zora Neale Hurston, *Their Eyes Were Watching God* — auto-stubbed from EPUB metadata; please refine"
+  license: research_fair_use
+  text_file: passages/exemplars/hurston-their-eyes-were-watching-god-s1.txt
+  category: exemplars
+
+- id: johnson-denis-jesus-son-s0
+  tags: [literary, oral_register, vernacular, first_person, short_fiction, addiction_voice, elliptical]
+  source: "Johnson, *Jesus' Son* (FSG, 1992)"
+  license: research_fair_use
+  text_file: passages/exemplars/johnson-denis-jesus-son-s0.txt
+  category: exemplars
+
+- id: johnson-denis-jesus-son-s1
+  tags: [literary, oral_register, vernacular, first_person, short_fiction, addiction_voice, elliptical]
+  source: "Johnson, *Jesus' Son* (FSG, 1992)"
+  license: research_fair_use
+  text_file: passages/exemplars/johnson-denis-jesus-son-s1.txt
+  category: exemplars
+
+- id: moshfegh-my-year-of-rest-and-relaxation-s0
+  tags: [literary, flat_affect, first_person, dissociated]
+  source: "Ottessa Moshfegh, *My Year of Rest and Relaxation* — auto-stubbed from EPUB metadata; please refine"
+  license: research_fair_use
+  text_file: passages/exemplars/moshfegh-my-year-of-rest-and-relaxation-s0.txt
+  category: exemplars
+
+- id: moshfegh-my-year-of-rest-and-relaxation-s1
+  tags: [literary, flat_affect, first_person, dissociated]
+  source: "Ottessa Moshfegh, *My Year of Rest and Relaxation* — auto-stubbed from EPUB metadata; please refine"
+  license: research_fair_use
+  text_file: passages/exemplars/moshfegh-my-year-of-rest-and-relaxation-s1.txt
+  category: exemplars
+
+- id: rooney-normal-people-s0
+  tags: [literary, flat_affect, declarative, third_person]
+  source: "Sally Rooney, *Normal People - Sally Rooney* — auto-stubbed from EPUB metadata; please refine"
+  license: research_fair_use
+  text_file: passages/exemplars/rooney-normal-people-s0.txt
+  category: exemplars
+
+
+# ═══ Round-8 expansion — deeper + PG-AU (2026-04-28) ═══
+# Per lab/issues/2026-04-28-corpus-author-gaps.md Phase 1 + E1/E3.
+# Includes round-6/7/8 sources mixed:
+# - PG round-6 (12 authors: Sterne/Defoe/Edgeworth/Wilde/Gaskell/
+#   Joyce-Ulysses/Lawrence/Tagore/Hemingway-In-Our-Time/Mann)
+# - Standard Ebooks round-1 (Faulkner Sound and Fury + As I Lay
+#   Dying; Hemingway Farewell to Arms — US PD 2025/2026)
+# - SCP CC-BY-SA round-1 (Stage 3 position #10 procedural register)
+# - PG round-7 (Burney; pre-1925 Woolf; Conrad/Hardy/Twain expansion;
+#   Sinclair Lewis; Trollope; Wilde; Crane Red Badge; Galsworthy;
+#   Tarkington; Pater; Carlyle; Hearn; Murasaki Genji-Waley;
+#   Flaubert Madame Bovary; Douglass+Jacobs; Emerson; Gissing;
+#   Meredith)
+# - Standard Ebooks round-2 (Woolf trilogy Mrs Dalloway + Lighthouse
+#   + Orlando; Hemingway Sun Also Rises; Faulkner Soldier's Pay)
+# - SCP round-2 (proposal form, narrative-drift, transcript-form)
+# - PG round-8 E1 (Tolstoy War and Peace, Dickens trio, Eliot
+#   expansion, Hawthorne, Sterne Sentimental Journey, Defoe
+#   Plague Year, De Quincey, Coleridge, Lamb, Hazlitt, Andreyev,
+#   Tolstoy Resurrection, Mansfield Bliss + Garden Party; plus
+#   multi-sample expansion — s2/s3/s4 for Joyce Ulysses/Proust/
+#   Dostoevsky×2/Tolstoy AK/Eliot Middlemarch/Hugo/Cervantes/
+#   Dickens BH+GE/Hardy Tess/Wharton AoI/Mann RH)
+# - PG-AU round (E3): Fitzgerald Tender Is Night + Pat Hobby;
+#   Orwell complete (Down and Out / Burmese Days / Clergyman's
+#   Daughter / Aspidistra / Shooting an Elephant / Wigan Pier /
+#   Homage to Catalonia / Coming Up for Air / Animal Farm /
+#   Politics and English / 1984); late Lawrence (Lady Chatterley /
+#   Plumed Serpent / Mornings in Mexico / Etruscan Places /
+#   Woman Who Rode Away). License pg_au_pd_research_use —
+#   PD-Australia / project research-fair-use posture.
+# - F2 SE round 3 (less-canonical): late James (Wings of the Dove,
+#   Golden Bowl, Portrait of a Lady, Washington Square); late
+#   Conrad (Victory, Chance, Under Western Eyes, Shadow Line,
+#   Arrow of Gold); Wharton Summer; Chesterton (Man Who Was
+#   Thursday, Napoleon of Notting Hill); Ford Some Do Not
+#   (Parade's End I); Sayers Lord Peter Wimsey (Whose Body,
+#   Clouds of Witness).
+# - F3 PG-AU round 2: May Sinclair (Mary Olivier, Harriett Frean,
+#   Collected Stories — pioneer of stream-of-consciousness);
+#   H.H. Richardson (Australia Felix, Maurice Guest, Getting of
+#   Wisdom — Australian modernist); Mansfield additional (German
+#   Pension, Something Childish); Lawrence late expansion
+#   (Kangaroo, Rainbow, Collected Stories, Man Who Died, Virgin
+#   and Gypsy, Fox, Ladybird).
+# Plus any fair-use manual excerpts in lab/fair-use-staging/.
+
+- id: bolano-savage-detectives-a-novel-s0
+  tags: [literary, picaresque, fragmentary, first_person, spanish_translation]
+  source: "Bolaño, Roberto, *The Savage Detectives · A Novel* — auto-stubbed from EPUB metadata; please refine"
+  license: research_fair_use
+  text_file: passages/exemplars/bolano-savage-detectives-a-novel-s0.txt
+  category: exemplars
+
+- id: bolano-savage-detectives-a-novel-s1
+  tags: [literary, picaresque, fragmentary, first_person, spanish_translation]
+  source: "Bolaño, Roberto, *The Savage Detectives · A Novel* — auto-stubbed from EPUB metadata; please refine"
+  license: research_fair_use
+  text_file: passages/exemplars/bolano-savage-detectives-a-novel-s1.txt
+  category: exemplars
+
+- id: calvino-if-on-a-winters-night-a-traveller-s0
+  tags: [literary, second_person, direct_address, metafictional, italian_translation]
+  source: "Italo Calvino, *If On a Winter's Night a Traveller* — auto-stubbed from EPUB metadata; please refine"
+  license: research_fair_use
+  text_file: passages/exemplars/calvino-if-on-a-winters-night-a-traveller-s0.txt
+  category: exemplars
+
+- id: calvino-if-on-a-winters-night-a-traveller-s1
+  tags: [literary, second_person, direct_address, metafictional, italian_translation]
+  source: "Italo Calvino, *If On a Winter's Night a Traveller* — auto-stubbed from EPUB metadata; please refine"
+  license: research_fair_use
+  text_file: passages/exemplars/calvino-if-on-a-winters-night-a-traveller-s1.txt
+  category: exemplars
+
+- id: calvino-invisible-cities-transl-william-weaver-s0
+  tags: [literary, second_person, direct_address, metafictional, italian_translation]
+  source: "Italo Calvino, *Invisible Cities (transl. William Weaver)* — auto-stubbed from EPUB metadata; please refine"
+  license: research_fair_use
+  text_file: passages/exemplars/calvino-invisible-cities-transl-william-weaver-s0.txt
+  category: exemplars
+
+- id: calvino-invisible-cities-transl-william-weaver-s1
+  tags: [literary, second_person, direct_address, metafictional, italian_translation]
+  source: "Italo Calvino, *Invisible Cities (transl. William Weaver)* — auto-stubbed from EPUB metadata; please refine"
+  license: research_fair_use
+  text_file: passages/exemplars/calvino-invisible-cities-transl-william-weaver-s1.txt
+  category: exemplars
+
+- id: carson-anne-beauty-of-the-husband-s0
+  tags: [literary, lyric, fragmentary, verse_prose_hybrid, scholarly_register]
+  source: "Carson, *The Beauty of the Husband: A Fictional Essay in 29 Tangos* (Knopf, 2001)"
+  license: research_fair_use
+  text_file: passages/exemplars/carson-anne-beauty-of-the-husband-s0.txt
+  category: exemplars
+
+- id: carter-bloody-chamber-and-other-stories-s0
+  tags: [literary, carnivalesque, maximalist_baroque, third_person, register_collision]
+  source: "Angela Carter, *The Bloody Chamber and Other Stories* — auto-stubbed from EPUB metadata; please refine"
+  license: research_fair_use
+  text_file: passages/exemplars/carter-bloody-chamber-and-other-stories-s0.txt
+  category: exemplars
+
+- id: carter-bloody-chamber-and-other-stories-s1
+  tags: [literary, carnivalesque, maximalist_baroque, third_person, register_collision]
+  source: "Angela Carter, *The Bloody Chamber and Other Stories* — auto-stubbed from EPUB metadata; please refine"
+  license: research_fair_use
+  text_file: passages/exemplars/carter-bloody-chamber-and-other-stories-s1.txt
+  category: exemplars
+
+- id: carter-nights-at-the-circus-s0
+  tags: [literary, carnivalesque, maximalist_baroque, third_person, register_collision]
+  source: "Angela Carter, *Nights at the Circus* — auto-stubbed from EPUB metadata; please refine"
+  license: research_fair_use
+  text_file: passages/exemplars/carter-nights-at-the-circus-s0.txt
+  category: exemplars
+
+- id: carter-nights-at-the-circus-s1
+  tags: [literary, carnivalesque, maximalist_baroque, third_person, register_collision]
+  source: "Angela Carter, *Nights at the Circus* — auto-stubbed from EPUB metadata; please refine"
+  license: research_fair_use
+  text_file: passages/exemplars/carter-nights-at-the-circus-s1.txt
+  category: exemplars
+
+- id: carver-cathedral-s0
+  tags: [literary, minimalist_anchor, post_hemingway_minimalism, third_person, short_fiction, title_story]
+  source: "Carver, *Cathedral* (Knopf, 1983)"
+  license: research_fair_use
+  text_file: passages/exemplars/carver-cathedral-s0.txt
+  category: exemplars
+
+- id: carver-cathedral-s1
+  tags: [literary, minimalist_anchor, post_hemingway_minimalism, third_person, short_fiction, title_story]
+  source: "Carver, *Cathedral* (Knopf, 1983)"
+  license: research_fair_use
+  text_file: passages/exemplars/carver-cathedral-s1.txt
+  category: exemplars
+
+- id: carver-what-we-talk-about-when-we-talk-about-love-s0
+  tags: [literary, minimalist_anchor, post_hemingway_minimalism, third_person, short_fiction]
+  source: "Raymond Carver, *What We Talk About When We Talk About Love* — auto-stubbed from EPUB metadata; please refine"
+  license: research_fair_use
+  text_file: passages/exemplars/carver-what-we-talk-about-when-we-talk-about-love-s0.txt
+  category: exemplars
+
+- id: carver-what-we-talk-about-when-we-talk-about-love-s1
+  tags: [literary, minimalist_anchor, post_hemingway_minimalism, third_person, short_fiction]
+  source: "Raymond Carver, *What We Talk About When We Talk About Love* — auto-stubbed from EPUB metadata; please refine"
+  license: research_fair_use
+  text_file: passages/exemplars/carver-what-we-talk-about-when-we-talk-about-love-s1.txt
+  category: exemplars
+
+- id: chandler-big-sleep-s0
+  tags: [literary, noir, first_person, midcentury_american, hardboiled]
+  source: "Chandler, *The Big Sleep* (1939) — in *The Big Sleep / Farewell, My Lovely / The High Window* (Everyman's Library)"
+  license: research_fair_use
+  text_file: passages/exemplars/chandler-big-sleep-s0.txt
+  category: exemplars
+
+- id: chandler-big-sleep-s1
+  tags: [literary, noir, first_person, midcentury_american, hardboiled]
+  source: "Chandler, *The Big Sleep* (1939) — in *The Big Sleep / Farewell, My Lovely / The High Window* (Everyman's Library)"
+  license: research_fair_use
+  text_file: passages/exemplars/chandler-big-sleep-s1.txt
+  category: exemplars
+
+- id: dfw-brief-interviews-with-hideous-men-s0
+  tags: [literary, maximalist, footnoted, intellectual_compulsive, first_person]
+  source: "David Foster Wallace, *Brief Interviews With Hideous Men* — auto-stubbed from EPUB metadata; please refine"
+  license: research_fair_use
+  text_file: passages/exemplars/dfw-brief-interviews-with-hideous-men-s0.txt
+  category: exemplars
+
+- id: dfw-brief-interviews-with-hideous-men-s1
+  tags: [literary, maximalist, footnoted, intellectual_compulsive, first_person]
+  source: "David Foster Wallace, *Brief Interviews With Hideous Men* — auto-stubbed from EPUB metadata; please refine"
+  license: research_fair_use
+  text_file: passages/exemplars/dfw-brief-interviews-with-hideous-men-s1.txt
+  category: exemplars
+
+- id: du-maurier-jamaica-inn-s0
+  tags: [literary, gothic, third_person, atmospheric, psychological]
+  source: "du Maurier, *Jamaica Inn* (1936)"
+  license: research_fair_use
+  text_file: passages/exemplars/du-maurier-jamaica-inn-s0.txt
+  category: exemplars
+
+- id: du-maurier-jamaica-inn-s1
+  tags: [literary, gothic, third_person, atmospheric, psychological]
+  source: "du Maurier, *Jamaica Inn* (1936)"
+  license: research_fair_use
+  text_file: passages/exemplars/du-maurier-jamaica-inn-s1.txt
+  category: exemplars
+
+- id: du-maurier-rebecca-s0
+  tags: [literary, gothic, third_person, atmospheric, psychological]
+  source: "du Maurier, *Rebecca* (1938)"
+  license: research_fair_use
+  text_file: passages/exemplars/du-maurier-rebecca-s0.txt
+  category: exemplars
+
+- id: du-maurier-rebecca-s1
+  tags: [literary, gothic, third_person, atmospheric, psychological]
+  source: "du Maurier, *Rebecca* (1938)"
+  license: research_fair_use
+  text_file: passages/exemplars/du-maurier-rebecca-s1.txt
+  category: exemplars
+
+- id: garcia-marquez-one-hundred-years-of-solitude-s0
+  tags: [literary, magical_realism, third_person, spanish_translation, lyric]
+  source: "Gabriel García Márquez; Gregory Rabassa, *One Hundred Years of Solitude* — auto-stubbed from EPUB metadata; please refine"
+  license: research_fair_use
+  text_file: passages/exemplars/garcia-marquez-one-hundred-years-of-solitude-s0.txt
+  category: exemplars
+
+- id: garcia-marquez-one-hundred-years-of-solitude-s1
+  tags: [literary, magical_realism, third_person, spanish_translation, lyric]
+  source: "Gabriel García Márquez; Gregory Rabassa, *One Hundred Years of Solitude* — auto-stubbed from EPUB metadata; please refine"
+  license: research_fair_use
+  text_file: passages/exemplars/garcia-marquez-one-hundred-years-of-solitude-s1.txt
+  category: exemplars
+
+- id: hamid-how-to-get-filthy-rich-in-rising-asia-s0
+  tags: [literary, second_person, direct_address, mock_self_help]
+  source: "Hamid, Mohsin, *How to Get Filthy Rich in Rising Asia: A Novel* — auto-stubbed from EPUB metadata; please refine"
+  license: research_fair_use
+  text_file: passages/exemplars/hamid-how-to-get-filthy-rich-in-rising-asia-s0.txt
+  category: exemplars
+
+- id: hamid-how-to-get-filthy-rich-in-rising-asia-s1
+  tags: [literary, second_person, direct_address, mock_self_help]
+  source: "Hamid, Mohsin, *How to Get Filthy Rich in Rising Asia: A Novel* — auto-stubbed from EPUB metadata; please refine"
+  license: research_fair_use
+  text_file: passages/exemplars/hamid-how-to-get-filthy-rich-in-rising-asia-s1.txt
+  category: exemplars
+
+- id: hempel-reasons-to-live-s0
+  tags: [literary, minimalist_anchor, compressed_image, first_person, short_fiction]
+  source: "Hempel, *Reasons to Live* (Knopf, 1985)"
+  license: research_fair_use
+  text_file: passages/exemplars/hempel-reasons-to-live-s0.txt
+  category: exemplars
+
+- id: hempel-reasons-to-live-s1
+  tags: [literary, minimalist_anchor, compressed_image, first_person, short_fiction]
+  source: "Hempel, *Reasons to Live* (Knopf, 1985)"
+  license: research_fair_use
+  text_file: passages/exemplars/hempel-reasons-to-live-s1.txt
+  category: exemplars
+
+- id: ishiguro-never-let-me-go-s0
+  tags: [literary, epistemic_faltering_witness, first_person, restrained]
+  source: "Ishiguro, *Never Let Me Go* (Faber, 2005)"
+  license: research_fair_use
+  text_file: passages/exemplars/ishiguro-never-let-me-go-s0.txt
+  category: exemplars
+
+- id: ishiguro-never-let-me-go-s1
+  tags: [literary, epistemic_faltering_witness, first_person, restrained]
+  source: "Ishiguro, *Never Let Me Go* (Faber, 2005)"
+  license: research_fair_use
+  text_file: passages/exemplars/ishiguro-never-let-me-go-s1.txt
+  category: exemplars
+
+- id: kincaid-annnie-john-s0
+  tags: [literary, second_person, direct_address, imperative, compressed]
+  source: "Jamaica Kincaid, *annnie john* — auto-stubbed from EPUB metadata; please refine"
+  license: research_fair_use
+  text_file: passages/exemplars/kincaid-annnie-john-s0.txt
+  category: exemplars
+
+- id: kincaid-annnie-john-s1
+  tags: [literary, second_person, direct_address, imperative, compressed]
+  source: "Jamaica Kincaid, *annnie john* — auto-stubbed from EPUB metadata; please refine"
+  license: research_fair_use
+  text_file: passages/exemplars/kincaid-annnie-john-s1.txt
+  category: exemplars
+
+- id: lispector-hour-of-the-star-s0
+  tags: [literary, synesthetic, cross_modal, first_person, portuguese_translation, philosophical, metafictional]
+  source: "Lispector, *The Hour of the Star* (Pontiero trans., Carcanet, 1986)"
+  license: research_fair_use
+  text_file: passages/exemplars/lispector-hour-of-the-star-s0.txt
+  category: exemplars
+
+- id: lispector-hour-of-the-star-s1
+  tags: [literary, synesthetic, cross_modal, first_person, portuguese_translation, philosophical, metafictional]
+  source: "Lispector, *The Hour of the Star* (Pontiero trans., Carcanet, 1986)"
+  license: research_fair_use
+  text_file: passages/exemplars/lispector-hour-of-the-star-s1.txt
+  category: exemplars
+
+- id: lispector-passion-according-to-gh-new-directions-paperbook-s0
+  tags: [literary, synesthetic, cross_modal, first_person, portuguese_translation, philosophical]
+  source: "Clarice Lispector, *The Passion According to G.H. (New Directions Paperbook)* — auto-stubbed from EPUB metadata; please refine"
+  license: research_fair_use
+  text_file: passages/exemplars/lispector-passion-according-to-gh-new-directions-paperbook-s0.txt
+  category: exemplars
+
+- id: lispector-passion-according-to-gh-new-directions-paperbook-s1
+  tags: [literary, synesthetic, cross_modal, first_person, portuguese_translation, philosophical]
+  source: "Clarice Lispector, *The Passion According to G.H. (New Directions Paperbook)* — auto-stubbed from EPUB metadata; please refine"
+  license: research_fair_use
+  text_file: passages/exemplars/lispector-passion-according-to-gh-new-directions-paperbook-s1.txt
+  category: exemplars
+
+- id: manguso-300-arguments-s0
+  tags: [literary, fragmentary, aphoristic, first_person]
+  source: "Manguso, *300 Arguments* (Graywolf, 2017)"
+  license: research_fair_use
+  text_file: passages/exemplars/manguso-300-arguments-s0.txt
+  category: exemplars
+
+- id: manguso-300-arguments-s1
+  tags: [literary, fragmentary, aphoristic, first_person]
+  source: "Manguso, *300 Arguments* (Graywolf, 2017)"
+  license: research_fair_use
+  text_file: passages/exemplars/manguso-300-arguments-s1.txt
+  category: exemplars
+
+- id: mccarthy-blood-meridian-s0
+  tags: [literary, maximalist, incantatory, third_person, biblical_register, western]
+  source: "McCarthy, *Blood Meridian, or the Evening Redness in the West* (Random House, 1985)"
+  license: research_fair_use
+  text_file: passages/exemplars/mccarthy-blood-meridian-s0.txt
+  category: exemplars
+
+- id: mccarthy-blood-meridian-s1
+  tags: [literary, maximalist, incantatory, third_person, biblical_register, western]
+  source: "McCarthy, *Blood Meridian, or the Evening Redness in the West* (Random House, 1985)"
+  license: research_fair_use
+  text_file: passages/exemplars/mccarthy-blood-meridian-s1.txt
+  category: exemplars
+
+- id: mccarthy-road-s0
+  tags: [literary, maximalist, incantatory, third_person, biblical_register]
+  source: "Cormac McCarthy, *The Road* — auto-stubbed from EPUB metadata; please refine"
+  license: research_fair_use
+  text_file: passages/exemplars/mccarthy-road-s0.txt
+  category: exemplars
+
+- id: mccarthy-road-s1
+  tags: [literary, maximalist, incantatory, third_person, biblical_register]
+  source: "Cormac McCarthy, *The Road* — auto-stubbed from EPUB metadata; please refine"
+  license: research_fair_use
+  text_file: passages/exemplars/mccarthy-road-s1.txt
+  category: exemplars
+
+- id: mcinerney-bright-lights-big-city-s0
+  tags: [literary, second_person, direct_address, dissociated, urban]
+  source: "Jay McInerney, *Bright Lights Big City* — auto-stubbed from EPUB metadata; please refine"
+  license: research_fair_use
+  text_file: passages/exemplars/mcinerney-bright-lights-big-city-s0.txt
+  category: exemplars
+
+- id: mcinerney-bright-lights-big-city-s1
+  tags: [literary, second_person, direct_address, dissociated, urban]
+  source: "Jay McInerney, *Bright Lights Big City* — auto-stubbed from EPUB metadata; please refine"
+  license: research_fair_use
+  text_file: passages/exemplars/mcinerney-bright-lights-big-city-s1.txt
+  category: exemplars
+
+- id: morrison-beloved-s0
+  tags: [literary, lyric_african_american_modernism, third_person, polyphonic]
+  source: "Morrison, *Beloved* (Knopf, 1987)"
+  license: research_fair_use
+  text_file: passages/exemplars/morrison-beloved-s0.txt
+  category: exemplars
+
+- id: morrison-beloved-s1
+  tags: [literary, lyric_african_american_modernism, third_person, polyphonic]
+  source: "Morrison, *Beloved* (Knopf, 1987)"
+  license: research_fair_use
+  text_file: passages/exemplars/morrison-beloved-s1.txt
+  category: exemplars
+
+- id: morrison-song-of-solomon-s0
+  tags: [literary, lyric_african_american_modernism, third_person, polyphonic]
+  source: "Morrison, *Song of Solomon* (Knopf, 1977)"
+  license: research_fair_use
+  text_file: passages/exemplars/morrison-song-of-solomon-s0.txt
+  category: exemplars
+
+- id: morrison-song-of-solomon-s1
+  tags: [literary, lyric_african_american_modernism, third_person, polyphonic]
+  source: "Morrison, *Song of Solomon* (Knopf, 1977)"
+  license: research_fair_use
+  text_file: passages/exemplars/morrison-song-of-solomon-s1.txt
+  category: exemplars
+
+- id: nabokov-lolita-s0
+  tags: [literary, synesthetic, cross_modal, ornate, first_person, unreliable_narrator]
+  source: "Nabokov, *Lolita* (Olympia Press, 1955; Putnam US ed. 1958)"
+  license: research_fair_use
+  text_file: passages/exemplars/nabokov-lolita-s0.txt
+  category: exemplars
+
+- id: nabokov-lolita-s1
+  tags: [literary, synesthetic, cross_modal, ornate, first_person, unreliable_narrator]
+  source: "Nabokov, *Lolita* (Olympia Press, 1955; Putnam US ed. 1958)"
+  license: research_fair_use
+  text_file: passages/exemplars/nabokov-lolita-s1.txt
+  category: exemplars
+
+- id: nabokov-speak-memory-s0
+  tags: [literary, synesthetic, cross_modal, ornate, first_person, memoir, synesthesia_explicit]
+  source: "Nabokov, *Speak, Memory* (Putnam, rev. ed. 1966)"
+  license: research_fair_use
+  text_file: passages/exemplars/nabokov-speak-memory-s0.txt
+  category: exemplars
+
+- id: nabokov-speak-memory-s1
+  tags: [literary, synesthetic, cross_modal, ornate, first_person, memoir, synesthesia_explicit]
+  source: "Nabokov, *Speak, Memory* (Putnam, rev. ed. 1966)"
+  license: research_fair_use
+  text_file: passages/exemplars/nabokov-speak-memory-s1.txt
+  category: exemplars
+
+- id: nelson-maggie-bluets-s0
+  tags: [literary, lyric_essay, fragmentary, autotheory, first_person, numbered_propositions, color_meditation]
+  source: "Nelson, *Bluets* (Wave Books, 2009)"
+  license: research_fair_use
+  text_file: passages/exemplars/nelson-maggie-bluets-s0.txt
+  category: exemplars
+
+- id: nelson-maggie-bluets-s1
+  tags: [literary, lyric_essay, fragmentary, autotheory, first_person, numbered_propositions, color_meditation]
+  source: "Nelson, *Bluets* (Wave Books, 2009)"
+  license: research_fair_use
+  text_file: passages/exemplars/nelson-maggie-bluets-s1.txt
+  category: exemplars
+
+- id: plath-bell-jar-s0
+  tags: [literary, confessional, first_person, midcentury_american, lucid_disintegrating]
+  source: "Plath, *The Bell Jar* (Heinemann, 1963)"
+  license: research_fair_use
+  text_file: passages/exemplars/plath-bell-jar-s0.txt
+  category: exemplars
+
+- id: plath-bell-jar-s1
+  tags: [literary, confessional, first_person, midcentury_american, lucid_disintegrating]
+  source: "Plath, *The Bell Jar* (Heinemann, 1963)"
+  license: research_fair_use
+  text_file: passages/exemplars/plath-bell-jar-s1.txt
+  category: exemplars
+
+- id: pynchon-gravitys-rainbow-s0
+  tags: [literary, maximalist, long_sentence, digressive, third_person]
+  source: "Pynchon, *Gravity's Rainbow* (Viking, 1973)"
+  license: research_fair_use
+  text_file: passages/exemplars/pynchon-gravitys-rainbow-s0.txt
+  category: exemplars
+
+- id: pynchon-gravitys-rainbow-s1
+  tags: [literary, maximalist, long_sentence, digressive, third_person]
+  source: "Pynchon, *Gravity's Rainbow* (Viking, 1973)"
+  license: research_fair_use
+  text_file: passages/exemplars/pynchon-gravitys-rainbow-s1.txt
+  category: exemplars
+
+- id: pynchon-inherent-vice-s0
+  tags: [literary, maximalist, long_sentence, digressive, third_person, noir]
+  source: "Pynchon, *Inherent Vice* (Penguin, 2009)"
+  license: research_fair_use
+  text_file: passages/exemplars/pynchon-inherent-vice-s0.txt
+  category: exemplars
+
+- id: pynchon-inherent-vice-s1
+  tags: [literary, maximalist, long_sentence, digressive, third_person, noir]
+  source: "Pynchon, *Inherent Vice* (Penguin, 2009)"
+  license: research_fair_use
+  text_file: passages/exemplars/pynchon-inherent-vice-s1.txt
+  category: exemplars
+
+- id: saramago-blindness-s0
+  tags: [literary, synesthetic, cross_modal, third_person, portuguese_translation, long_sentence, allegorical]
+  source: "Saramago, *Blindness* (Pontiero trans., Harcourt Brace, 1997)"
+  license: research_fair_use
+  text_file: passages/exemplars/saramago-blindness-s0.txt
+  category: exemplars
+
+- id: saramago-blindness-s1
+  tags: [literary, synesthetic, cross_modal, third_person, portuguese_translation, long_sentence, allegorical]
+  source: "Saramago, *Blindness* (Pontiero trans., Harcourt Brace, 1997)"
+  license: research_fair_use
+  text_file: passages/exemplars/saramago-blindness-s1.txt
+  category: exemplars
+
+- id: schulz-street-of-crocodiles-the-s0
+  tags: [literary, synesthetic, cross_modal, first_person, polish_translation, lyric]
+  source: "Bruno Schulz, *Street of Crocodiles, The* — auto-stubbed from EPUB metadata; please refine"
+  license: research_fair_use
+  text_file: passages/exemplars/schulz-street-of-crocodiles-the-s0.txt
+  category: exemplars
+
+- id: schulz-street-of-crocodiles-the-s1
+  tags: [literary, synesthetic, cross_modal, first_person, polish_translation, lyric]
+  source: "Bruno Schulz, *Street of Crocodiles, The* — auto-stubbed from EPUB metadata; please refine"
+  license: research_fair_use
+  text_file: passages/exemplars/schulz-street-of-crocodiles-the-s1.txt
+  category: exemplars
+
+- id: sebald-austerlitz-s0
+  tags: [literary, documentary_fictional, first_person, german_translation, long_sentence]
+  source: "Sebald, *Austerlitz* (Bell trans., Random House, 2001)"
+  license: research_fair_use
+  text_file: passages/exemplars/sebald-austerlitz-s0.txt
+  category: exemplars
+
+- id: sebald-austerlitz-s1
+  tags: [literary, documentary_fictional, first_person, german_translation, long_sentence]
+  source: "Sebald, *Austerlitz* (Bell trans., Random House, 2001)"
+  license: research_fair_use
+  text_file: passages/exemplars/sebald-austerlitz-s1.txt
+  category: exemplars
+
+- id: sebald-rings-of-saturn-s0
+  tags: [literary, documentary_fictional, first_person, german_translation, long_sentence]
+  source: "Sebald, *The Rings of Saturn* (Hulse trans., New Directions, 1998)"
+  license: research_fair_use
+  text_file: passages/exemplars/sebald-rings-of-saturn-s0.txt
+  category: exemplars
+
+- id: sebald-rings-of-saturn-s1
+  tags: [literary, documentary_fictional, first_person, german_translation, long_sentence]
+  source: "Sebald, *The Rings of Saturn* (Hulse trans., New Directions, 1998)"
+  license: research_fair_use
+  text_file: passages/exemplars/sebald-rings-of-saturn-s1.txt
+  category: exemplars
+
+
+# ═══ Round-8 expansion — deeper + PG-AU (2026-04-28) ═══
+# Per lab/issues/2026-04-28-corpus-author-gaps.md Phase 1 + E1/E3.
+# Includes round-6/7/8 sources mixed:
+# - PG round-6 (12 authors: Sterne/Defoe/Edgeworth/Wilde/Gaskell/
+#   Joyce-Ulysses/Lawrence/Tagore/Hemingway-In-Our-Time/Mann)
+# - Standard Ebooks round-1 (Faulkner Sound and Fury + As I Lay
+#   Dying; Hemingway Farewell to Arms — US PD 2025/2026)
+# - SCP CC-BY-SA round-1 (Stage 3 position #10 procedural register)
+# - PG round-7 (Burney; pre-1925 Woolf; Conrad/Hardy/Twain expansion;
+#   Sinclair Lewis; Trollope; Wilde; Crane Red Badge; Galsworthy;
+#   Tarkington; Pater; Carlyle; Hearn; Murasaki Genji-Waley;
+#   Flaubert Madame Bovary; Douglass+Jacobs; Emerson; Gissing;
+#   Meredith)
+# - Standard Ebooks round-2 (Woolf trilogy Mrs Dalloway + Lighthouse
+#   + Orlando; Hemingway Sun Also Rises; Faulkner Soldier's Pay)
+# - SCP round-2 (proposal form, narrative-drift, transcript-form)
+# - PG round-8 E1 (Tolstoy War and Peace, Dickens trio, Eliot
+#   expansion, Hawthorne, Sterne Sentimental Journey, Defoe
+#   Plague Year, De Quincey, Coleridge, Lamb, Hazlitt, Andreyev,
+#   Tolstoy Resurrection, Mansfield Bliss + Garden Party; plus
+#   multi-sample expansion — s2/s3/s4 for Joyce Ulysses/Proust/
+#   Dostoevsky×2/Tolstoy AK/Eliot Middlemarch/Hugo/Cervantes/
+#   Dickens BH+GE/Hardy Tess/Wharton AoI/Mann RH)
+# - PG-AU round (E3): Fitzgerald Tender Is Night + Pat Hobby;
+#   Orwell complete (Down and Out / Burmese Days / Clergyman's
+#   Daughter / Aspidistra / Shooting an Elephant / Wigan Pier /
+#   Homage to Catalonia / Coming Up for Air / Animal Farm /
+#   Politics and English / 1984); late Lawrence (Lady Chatterley /
+#   Plumed Serpent / Mornings in Mexico / Etruscan Places /
+#   Woman Who Rode Away). License pg_au_pd_research_use —
+#   PD-Australia / project research-fair-use posture.
+# - F2 SE round 3 (less-canonical): late James (Wings of the Dove,
+#   Golden Bowl, Portrait of a Lady, Washington Square); late
+#   Conrad (Victory, Chance, Under Western Eyes, Shadow Line,
+#   Arrow of Gold); Wharton Summer; Chesterton (Man Who Was
+#   Thursday, Napoleon of Notting Hill); Ford Some Do Not
+#   (Parade's End I); Sayers Lord Peter Wimsey (Whose Body,
+#   Clouds of Witness).
+# - F3 PG-AU round 2: May Sinclair (Mary Olivier, Harriett Frean,
+#   Collected Stories — pioneer of stream-of-consciousness);
+#   H.H. Richardson (Australia Felix, Maurice Guest, Getting of
+#   Wisdom — Australian modernist); Mansfield additional (German
+#   Pension, Something Childish); Lawrence late expansion
+#   (Kangaroo, Rainbow, Collected Stories, Man Who Died, Virgin
+#   and Gypsy, Fox, Ladybird).
+# Plus any fair-use manual excerpts in lab/fair-use-staging/.
+
+- id: capote-capote-truman-s0
+  tags: [literary, documentary, third_person, midcentury_american, reportorial]
+  source: "Capote, Truman, *Capote, Truman - In Cold Blood* — auto-stubbed from EPUB metadata; please refine"
+  license: research_fair_use
+  text_file: passages/exemplars/capote-capote-truman-s0.txt
+  category: exemplars
+
+- id: capote-capote-truman-s1
+  tags: [literary, documentary, third_person, midcentury_american, reportorial]
+  source: "Capote, Truman, *Capote, Truman - In Cold Blood* — auto-stubbed from EPUB metadata; please refine"
+  license: research_fair_use
+  text_file: passages/exemplars/capote-capote-truman-s1.txt
+  category: exemplars
+
+- id: garcia-marquez-love-in-the-time-of-cholera-s0
+  tags: [literary, magical_realism, third_person, spanish_translation, lyric]
+  source: "MÁRquez, Gabriel GarcÍA, *Love in the Time of Cholera* — auto-stubbed from EPUB metadata; please refine"
+  license: research_fair_use
+  text_file: passages/exemplars/garcia-marquez-love-in-the-time-of-cholera-s0.txt
+  category: exemplars
+
+- id: garcia-marquez-love-in-the-time-of-cholera-s1
+  tags: [literary, magical_realism, third_person, spanish_translation, lyric]
+  source: "MÁRquez, Gabriel GarcÍA, *Love in the Time of Cholera* — auto-stubbed from EPUB metadata; please refine"
+  license: research_fair_use
+  text_file: passages/exemplars/garcia-marquez-love-in-the-time-of-cholera-s1.txt
+  category: exemplars
+
+- id: mccarthy-suttree-s0
+  tags: [literary, maximalist, incantatory, third_person, biblical_register, southern]
+  source: "McCarthy, *Suttree* (Random House, 1979)"
+  license: research_fair_use
+  text_file: passages/exemplars/mccarthy-suttree-s0.txt
+  category: exemplars
+
+- id: mccarthy-suttree-s1
+  tags: [literary, maximalist, incantatory, third_person, biblical_register, southern]
+  source: "McCarthy, *Suttree* (Random House, 1979)"
+  license: research_fair_use
+  text_file: passages/exemplars/mccarthy-suttree-s1.txt
+  category: exemplars
+
+- id: moore-lorrie-self-help-vintage-contemporaries-s0
+  tags: [literary, second_person, direct_address, ironic, instruction_set]
+  source: "Moore, Lorrie, *Self-Help (Vintage Contemporaries)* — auto-stubbed from EPUB metadata; please refine"
+  license: research_fair_use
+  text_file: passages/exemplars/moore-lorrie-self-help-vintage-contemporaries-s0.txt
+  category: exemplars
+
+- id: moore-lorrie-self-help-vintage-contemporaries-s1
+  tags: [literary, second_person, direct_address, ironic, instruction_set]
+  source: "Moore, Lorrie, *Self-Help (Vintage Contemporaries)* — auto-stubbed from EPUB metadata; please refine"
+  license: research_fair_use
+  text_file: passages/exemplars/moore-lorrie-self-help-vintage-contemporaries-s1.txt
+  category: exemplars
+
+- id: nelson-maggie-argonauts-s0
+  tags: [literary, lyric_essay, fragmentary, autotheory, first_person, autotheory_dissident, memoir]
+  source: "Nelson, *The Argonauts* (Graywolf, 2015)"
+  license: research_fair_use
+  text_file: passages/exemplars/nelson-maggie-argonauts-s0.txt
+  category: exemplars
+
+- id: nelson-maggie-argonauts-s1
+  tags: [literary, lyric_essay, fragmentary, autotheory, first_person, autotheory_dissident, memoir]
+  source: "Nelson, *The Argonauts* (Graywolf, 2015)"
+  license: research_fair_use
+  text_file: passages/exemplars/nelson-maggie-argonauts-s1.txt
+  category: exemplars
+
+
+# ═══ Round-8 expansion — deeper + PG-AU (2026-04-28) ═══
+# Per lab/issues/2026-04-28-corpus-author-gaps.md Phase 1 + E1/E3.
+# Includes round-6/7/8 sources mixed:
+# - PG round-6 (12 authors: Sterne/Defoe/Edgeworth/Wilde/Gaskell/
+#   Joyce-Ulysses/Lawrence/Tagore/Hemingway-In-Our-Time/Mann)
+# - Standard Ebooks round-1 (Faulkner Sound and Fury + As I Lay
+#   Dying; Hemingway Farewell to Arms — US PD 2025/2026)
+# - SCP CC-BY-SA round-1 (Stage 3 position #10 procedural register)
+# - PG round-7 (Burney; pre-1925 Woolf; Conrad/Hardy/Twain expansion;
+#   Sinclair Lewis; Trollope; Wilde; Crane Red Badge; Galsworthy;
+#   Tarkington; Pater; Carlyle; Hearn; Murasaki Genji-Waley;
+#   Flaubert Madame Bovary; Douglass+Jacobs; Emerson; Gissing;
+#   Meredith)
+# - Standard Ebooks round-2 (Woolf trilogy Mrs Dalloway + Lighthouse
+#   + Orlando; Hemingway Sun Also Rises; Faulkner Soldier's Pay)
+# - SCP round-2 (proposal form, narrative-drift, transcript-form)
+# - PG round-8 E1 (Tolstoy War and Peace, Dickens trio, Eliot
+#   expansion, Hawthorne, Sterne Sentimental Journey, Defoe
+#   Plague Year, De Quincey, Coleridge, Lamb, Hazlitt, Andreyev,
+#   Tolstoy Resurrection, Mansfield Bliss + Garden Party; plus
+#   multi-sample expansion — s2/s3/s4 for Joyce Ulysses/Proust/
+#   Dostoevsky×2/Tolstoy AK/Eliot Middlemarch/Hugo/Cervantes/
+#   Dickens BH+GE/Hardy Tess/Wharton AoI/Mann RH)
+# - PG-AU round (E3): Fitzgerald Tender Is Night + Pat Hobby;
+#   Orwell complete (Down and Out / Burmese Days / Clergyman's
+#   Daughter / Aspidistra / Shooting an Elephant / Wigan Pier /
+#   Homage to Catalonia / Coming Up for Air / Animal Farm /
+#   Politics and English / 1984); late Lawrence (Lady Chatterley /
+#   Plumed Serpent / Mornings in Mexico / Etruscan Places /
+#   Woman Who Rode Away). License pg_au_pd_research_use —
+#   PD-Australia / project research-fair-use posture.
+# - F2 SE round 3 (less-canonical): late James (Wings of the Dove,
+#   Golden Bowl, Portrait of a Lady, Washington Square); late
+#   Conrad (Victory, Chance, Under Western Eyes, Shadow Line,
+#   Arrow of Gold); Wharton Summer; Chesterton (Man Who Was
+#   Thursday, Napoleon of Notting Hill); Ford Some Do Not
+#   (Parade's End I); Sayers Lord Peter Wimsey (Whose Body,
+#   Clouds of Witness).
+# - F3 PG-AU round 2: May Sinclair (Mary Olivier, Harriett Frean,
+#   Collected Stories — pioneer of stream-of-consciousness);
+#   H.H. Richardson (Australia Felix, Maurice Guest, Getting of
+#   Wisdom — Australian modernist); Mansfield additional (German
+#   Pension, Something Childish); Lawrence late expansion
+#   (Kangaroo, Rainbow, Collected Stories, Man Who Died, Virgin
+#   and Gypsy, Fox, Ladybird).
+# Plus any fair-use manual excerpts in lab/fair-use-staging/.
+
+- id: beckett-ill-seen-ill-said-s0
+  tags: [literary, modernist, minimalist, monologue, experimental, first_person, late_style, compressed]
+  source: "Beckett, *Ill Seen Ill Said* (Calder, 1981)"
+  license: research_fair_use
+  text_file: passages/exemplars/beckett-ill-seen-ill-said-s0.txt
+  category: exemplars
+
+- id: beckett-ill-seen-ill-said-s1
+  tags: [literary, modernist, minimalist, monologue, experimental, first_person, late_style, compressed]
+  source: "Beckett, *Ill Seen Ill Said* (Calder, 1981)"
+  license: research_fair_use
+  text_file: passages/exemplars/beckett-ill-seen-ill-said-s1.txt
+  category: exemplars
+
+- id: beckett-malone-dies-s0
+  tags: [literary, modernist, minimalist, monologue, experimental, first_person, fragmentary]
+  source: "Beckett, *Malone Dies* (Grove, 1956; self-translated from French 1951)"
+  license: research_fair_use
+  text_file: passages/exemplars/beckett-malone-dies-s0.txt
+  category: exemplars
+
+- id: beckett-molloy-s0
+  tags: [literary, modernist, minimalist, monologue, experimental, first_person, fragmentary]
+  source: "Beckett, *Molloy* (Grove, 1955; self-translated from French 1951)"
+  license: research_fair_use
+  text_file: passages/exemplars/beckett-molloy-s0.txt
+  category: exemplars
+
+- id: beckett-molloy-s1
+  tags: [literary, modernist, minimalist, monologue, experimental, first_person, fragmentary]
+  source: "Beckett, *Molloy* (Grove, 1955; self-translated from French 1951)"
+  license: research_fair_use
+  text_file: passages/exemplars/beckett-molloy-s1.txt
+  category: exemplars
+
+- id: beckett-molloy-s2
+  tags: [literary, modernist, minimalist, monologue, experimental, first_person, fragmentary]
+  source: "Beckett, *Molloy* (Grove, 1955; self-translated from French 1951)"
+  license: research_fair_use
+  text_file: passages/exemplars/beckett-molloy-s2.txt
+  category: exemplars
+
+- id: beckett-stirrings-still-s0
+  tags: [literary, modernist, minimalist, monologue, experimental, first_person, late_style, compressed]
+  source: "Beckett, *Stirrings Still* (Calder, 1989)"
+  license: research_fair_use
+  text_file: passages/exemplars/beckett-stirrings-still-s0.txt
+  category: exemplars
+
+- id: beckett-unnamable-s0
+  tags: [literary, modernist, minimalist, monologue, experimental, first_person, voice_from_nowhere, incantatory]
+  source: "Beckett, *The Unnamable* (Grove, 1958; self-translated from French 1953)"
+  license: research_fair_use
+  text_file: passages/exemplars/beckett-unnamable-s0.txt
+  category: exemplars
+
+- id: beckett-unnamable-s1
+  tags: [literary, modernist, minimalist, monologue, experimental, first_person, voice_from_nowhere, incantatory]
+  source: "Beckett, *The Unnamable* (Grove, 1958; self-translated from French 1953)"
+  license: research_fair_use
+  text_file: passages/exemplars/beckett-unnamable-s1.txt
+  category: exemplars
+
+- id: beckett-unnamable-s2
+  tags: [literary, modernist, minimalist, monologue, experimental, first_person, voice_from_nowhere, incantatory]
+  source: "Beckett, *The Unnamable* (Grove, 1958; self-translated from French 1953)"
+  license: research_fair_use
+  text_file: passages/exemplars/beckett-unnamable-s2.txt
+  category: exemplars
+
+- id: beckett-unnamable-s3
+  tags: [literary, modernist, minimalist, monologue, experimental, first_person, voice_from_nowhere, incantatory]
+  source: "Beckett, *The Unnamable* (Grove, 1958; self-translated from French 1953)"
+  license: research_fair_use
+  text_file: passages/exemplars/beckett-unnamable-s3.txt
+  category: exemplars
+
+- id: beckett-watt-s0
+  tags: [literary, modernist, minimalist, monologue, experimental, first_person, bureaucratic_comic, fragmentary]
+  source: "Beckett, *Watt* (Olympia Press / Grove, 1953)"
+  license: research_fair_use
+  text_file: passages/exemplars/beckett-watt-s0.txt
+  category: exemplars
+
+- id: beckett-watt-s1
+  tags: [literary, modernist, minimalist, monologue, experimental, first_person, bureaucratic_comic, fragmentary]
+  source: "Beckett, *Watt* (Olympia Press / Grove, 1953)"
+  license: research_fair_use
+  text_file: passages/exemplars/beckett-watt-s1.txt
+  category: exemplars
+
+- id: beckett-watt-s2
+  tags: [literary, modernist, minimalist, monologue, experimental, first_person, bureaucratic_comic, fragmentary]
+  source: "Beckett, *Watt* (Olympia Press / Grove, 1953)"
+  license: research_fair_use
+  text_file: passages/exemplars/beckett-watt-s2.txt
+  category: exemplars
+
+- id: beckett-watt-s3
+  tags: [literary, modernist, minimalist, monologue, experimental, first_person, bureaucratic_comic, fragmentary]
+  source: "Beckett, *Watt* (Olympia Press / Grove, 1953)"
+  license: research_fair_use
+  text_file: passages/exemplars/beckett-watt-s3.txt
+  category: exemplars
+
+- id: beckett-worstward-ho-s0
+  tags: [literary, modernist, minimalist, monologue, experimental, first_person, late_style, compressed, incantatory]
+  source: "Beckett, *Worstward Ho* (Calder, 1983)"
+  license: research_fair_use
+  text_file: passages/exemplars/beckett-worstward-ho-s0.txt
+  category: exemplars
+
+- id: beckett-worstward-ho-s1
+  tags: [literary, modernist, minimalist, monologue, experimental, first_person, late_style, compressed, incantatory]
+  source: "Beckett, *Worstward Ho* (Calder, 1983)"
+  license: research_fair_use
+  text_file: passages/exemplars/beckett-worstward-ho-s1.txt
+  category: exemplars
+
+- id: beckett-worstward-ho-s2
+  tags: [literary, modernist, minimalist, monologue, experimental, first_person, late_style, compressed, incantatory]
+  source: "Beckett, *Worstward Ho* (Calder, 1983)"
+  license: research_fair_use
+  text_file: passages/exemplars/beckett-worstward-ho-s2.txt
+  category: exemplars
+
+- id: beckett-worstward-ho-s3
+  tags: [literary, modernist, minimalist, monologue, experimental, first_person, late_style, compressed, incantatory]
+  source: "Beckett, *Worstward Ho* (Calder, 1983)"
+  license: research_fair_use
+  text_file: passages/exemplars/beckett-worstward-ho-s3.txt
+  category: exemplars
+
+- id: bolano-2666-s0
+  tags: [literary, picaresque, fragmentary, first_person, spanish_translation, maximalist, encyclopedic, third_person]
+  source: "Bolaño, *2666* (Wimmer trans., FSG, 2008)"
+  license: research_fair_use
+  text_file: passages/exemplars/bolano-2666-s0.txt
+  category: exemplars
+
+- id: bolano-2666-s1
+  tags: [literary, picaresque, fragmentary, first_person, spanish_translation, maximalist, encyclopedic, third_person]
+  source: "Bolaño, *2666* (Wimmer trans., FSG, 2008)"
+  license: research_fair_use
+  text_file: passages/exemplars/bolano-2666-s1.txt
+  category: exemplars
+
+- id: bolano-2666-s2
+  tags: [literary, picaresque, fragmentary, first_person, spanish_translation, maximalist, encyclopedic, third_person]
+  source: "Bolaño, *2666* (Wimmer trans., FSG, 2008)"
+  license: research_fair_use
+  text_file: passages/exemplars/bolano-2666-s2.txt
+  category: exemplars
+
+- id: bolano-2666-s3
+  tags: [literary, picaresque, fragmentary, first_person, spanish_translation, maximalist, encyclopedic, third_person]
+  source: "Bolaño, *2666* (Wimmer trans., FSG, 2008)"
+  license: research_fair_use
+  text_file: passages/exemplars/bolano-2666-s3.txt
+  category: exemplars
+
+- id: robinson-marilynne-gilead-s0
+  tags: [literary, lyric_essay, first_person, incantatory, meditative, epistolary, theological]
+  source: "Robinson, *Gilead* (FSG, 2004)"
+  license: research_fair_use
+  text_file: passages/exemplars/robinson-marilynne-gilead-s0.txt
+  category: exemplars
+
+- id: robinson-marilynne-gilead-s1
+  tags: [literary, lyric_essay, first_person, incantatory, meditative, epistolary, theological]
+  source: "Robinson, *Gilead* (FSG, 2004)"
+  license: research_fair_use
+  text_file: passages/exemplars/robinson-marilynne-gilead-s1.txt
+  category: exemplars
+
+- id: robinson-marilynne-gilead-s2
+  tags: [literary, lyric_essay, first_person, incantatory, meditative, epistolary, theological]
+  source: "Robinson, *Gilead* (FSG, 2004)"
+  license: research_fair_use
+  text_file: passages/exemplars/robinson-marilynne-gilead-s2.txt
+  category: exemplars
+
+- id: robinson-marilynne-gilead-s3
+  tags: [literary, lyric_essay, first_person, incantatory, meditative, epistolary, theological]
+  source: "Robinson, *Gilead* (FSG, 2004)"
+  license: research_fair_use
+  text_file: passages/exemplars/robinson-marilynne-gilead-s3.txt
+  category: exemplars
+
+- id: robinson-marilynne-housekeeping-s0
+  tags: [literary, lyric_essay, first_person, incantatory, meditative, memory_register]
+  source: "Robinson, *Housekeeping* (FSG, 1980)"
+  license: research_fair_use
+  text_file: passages/exemplars/robinson-marilynne-housekeeping-s0.txt
+  category: exemplars
+
+- id: robinson-marilynne-housekeeping-s1
+  tags: [literary, lyric_essay, first_person, incantatory, meditative, memory_register]
+  source: "Robinson, *Housekeeping* (FSG, 1980)"
+  license: research_fair_use
+  text_file: passages/exemplars/robinson-marilynne-housekeeping-s1.txt
+  category: exemplars
+
+- id: robinson-marilynne-housekeeping-s2
+  tags: [literary, lyric_essay, first_person, incantatory, meditative, memory_register]
+  source: "Robinson, *Housekeeping* (FSG, 1980)"
+  license: research_fair_use
+  text_file: passages/exemplars/robinson-marilynne-housekeeping-s2.txt
+  category: exemplars
+
+- id: robinson-marilynne-housekeeping-s3
+  tags: [literary, lyric_essay, first_person, incantatory, meditative, memory_register]
+  source: "Robinson, *Housekeeping* (FSG, 1980)"
+  license: research_fair_use
+  text_file: passages/exemplars/robinson-marilynne-housekeeping-s3.txt
+  category: exemplars

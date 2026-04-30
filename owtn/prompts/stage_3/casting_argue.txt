@@ -1,0 +1,17 @@
+CONCEPT (the Stage 1 concept this story realizes):
+{CONCEPT_JSON}
+
+STRUCTURE (the Stage 2 DAG):
+{DAG_RENDERING}
+
+ENGAGED PERSONAS (filter passed; each persona's load-bearing commitment has aesthetic latitude on this concept):
+{ENGAGED_BLOCK}
+
+TASK: For each engaged persona, build the case for casting them. Per persona, produce:
+
+- `case_for` — what the persona's first commitment specifically grips on in this concept. Cite concept features (premise, character beats, structural moves, motifs, constraints). The case must not generalize to any other concept.
+- `manifestability` — can the persona's load-bearing aesthetic actually MANIFEST as voice at the rendering level on THIS concept's bodies / actions / scenes? A persona may be engaged-in-principle (its commitment isn't foreclosed) but unmanifestable-in-practice — e.g., a "second-person addresses a body" persona on a concept where the protagonist is a transformer token has no body to address; the second-person frame collapses into one or two opening sentences then drops to third-person because the scene's content can't sustain the address. State whether the persona's commitment has scene-content to operate on, citing the concept's anchor scene, character seeds, or bench-scene material; if it doesn't, say so plainly. This is a separate question from engagement — engagement passes mean the commitment isn't foreclosed by abstract concept properties; manifestability passes mean the commitment can render as actual prose moves given the concrete content.
+- `risks` — where this persona's engagement is brittle on this concept, or where its commitment overlaps another engaged persona's.
+- `cast_role` — the voice-space region this persona would explore if cast.
+
+Output one PersonaArgument per engaged persona, in pool order.
