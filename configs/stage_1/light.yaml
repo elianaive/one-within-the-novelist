@@ -5,7 +5,7 @@
 # real-judges panel. Good for validating evolution dynamics and panel
 # judgment consistency before larger runs.
 #
-# Run with: uv run python -m owtn --config configs/stage_1/light.yaml \
+# Run with: uv run python -m owtn.stage_1 --config configs/stage_1/light.yaml \
 #           --max-eval-jobs 3 --max-proposal-jobs 2
 #
 # Expected: ~20-30 concepts, ~$4-15 total.

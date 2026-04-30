@@ -1,0 +1,87 @@
+# Casting classifier vocabulary — closed set of concept-feature tags
+#
+# Each tag describes a CONCEPT CONDITION. The casting classifier's
+# Failure-Mode-E check excludes a persona from a session whenever:
+#   - any tag in the persona's `starved_by` list matches
+#   - a tag the casting classifier identified as TRUE for the concept
+#
+# Naming convention: every tag is `concept_<verb>_<noun>` and reads as
+# "concept has this feature" — true/false about the concept itself.
+# Tag names alone disambiguate; comments are not needed in YAMLs that
+# reference the vocabulary because the tag IS the documentation.
+#
+# Per the casting architecture issue (2026-04-28-stage-3-casting-architecture.md),
+# the casting classifier reads concept JSON + structure DAG + style_hint and
+# produces a set of concept-feature tags. Persona YAMLs reference these tags
+# in their `starved_by` field with a `reason` for the casting classifier's
+# justification output.
+
+vocabulary:
+
+  # ─── LACKS group — concept is missing a feature the persona needs ─────
+  - tag: concept_lacks_human_characters
+    meaning: "Concept has no people with interior life — entities are systems, animals, or processes only."
+  - tag: concept_lacks_sensory_world
+    meaning: "Concept is abstract/conceptual; no physical environment to render."
+  - tag: concept_lacks_physical_setting
+    meaning: "Concept has no concrete location; events occur in conceptual or virtual space only."
+  - tag: concept_lacks_moral_complexity
+    meaning: "Concept has a single right answer or no contested values; nothing for calibration to weigh."
+  - tag: concept_lacks_bodily_experience
+    meaning: "Concept has no embodied dimension; entities are disembodied or purely cognitive."
+  - tag: concept_lacks_documentary_premise
+    meaning: "Concept offers nothing in-world that could be a recovered document, archive, or testimony."
+
+  # ─── REQUIRES group — concept demands something the persona can't deliver ─
+  - tag: concept_requires_lyric_register
+    meaning: "Concept demands sustained lyric/elevated prose register."
+  - tag: concept_requires_continuous_interiority
+    meaning: "Concept requires sustained access to a character's interior life."
+  - tag: concept_requires_omniscient_certainty
+    meaning: "Narrator must report definitively without hedging."
+  - tag: concept_requires_chronological_clarity
+    meaning: "Events must be presented in clear temporal order; nonlinearity forbidden."
+  - tag: concept_requires_naturalistic_realism
+    meaning: "Concept demands realist surface; formal experimentation forbidden."
+  - tag: concept_requires_continuous_prose
+    meaning: "Concept demands unbroken prose; apparatus / interruption / multi-document form forbidden."
+  - tag: concept_requires_continuous_present_tense
+    meaning: "Concept demands present-tense throughout; flashback / archival / retrospective framing forbidden."
+  - tag: concept_requires_immediate_emotional_access
+    meaning: "Reader must be granted direct access to feeling without epistemic mediation."
+  - tag: concept_requires_multi_pov
+    meaning: "Concept requires multiple co-equal point-of-view characters."
+  - tag: concept_requires_third_person_omniscient
+    meaning: "Concept demands third-person omniscient narration."
+  - tag: concept_requires_pure_narrative
+    meaning: "Concept forbids reflective / theoretical / essayistic registers; pure storytelling required."
+  - tag: concept_requires_unmediated_access
+    meaning: "Reader must be inside events directly; no editorial frame, archive, or apparatus permitted."
+
+  # ─── FORBIDS group — concept actively disallows the persona's load-bearing move ─
+  - tag: concept_forbids_interiority
+    meaning: "Concept's structural premise excludes any access to characters' inner states (e.g., the asylum-pipeline failure case)."
+  - tag: concept_forbids_apparatus
+    meaning: "Concept's diegesis cannot accommodate footnotes, redactions, found-document framing, etc."
+
+  # ─── IS / HAS group — concept's overall shape excludes the persona ────
+  - tag: concept_is_ensemble_cast
+    meaning: "Concept distributes attention across multiple co-equal characters; single-character focus forbidden."
+  - tag: concept_is_dialogue_only
+    meaning: "Concept is rendered entirely through speech."
+  - tag: concept_is_action_only
+    meaning: "Concept is pure event sequence; no reflection space."
+  - tag: concept_is_intimate_domestic_scope
+    meaning: "Concept is narrow-scope domestic; encyclopedic / panoramic mode has nothing to expand into."
+  - tag: concept_is_apolitical_domestic
+    meaning: "Concept has no social / structural / political dimension; autotheory has nothing to fuse with the personal."
+  - tag: concept_has_single_focused_arc
+    meaning: "Concept has one driving narrative line; digression / accumulation is structurally forbidden."
+  - tag: concept_has_single_unverifiable_witness
+    meaning: "Sole witness scenario; epistemic-triangulation has no source to triangulate against."
+  - tag: concept_prescribes_compression
+    meaning: "Concept's style_hint or constraints prescribe stripped / minimal prose; expansion-mode personas have nothing to expand."
+
+# When new tags are needed, add them here with the same `concept_<verb>_<noun>`
+# convention. Persona YAMLs MUST reference only tags defined in this file —
+# the casting classifier validates against this vocabulary at startup.

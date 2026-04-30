@@ -136,8 +136,10 @@ class TestAnthropicParsing:
         assert isinstance(result.content, PairwiseJudgment)
         assert result.content.novelty == "tie"
 
-    def test_forces_tool_choice_on_structured_call(self):
-        """Verify the SDK is told to force-emit the tool, not 'auto'."""
+    def test_uses_auto_tool_choice_on_structured_call(self):
+        """Tool use is always optional — schema is offered as a tool, not forced.
+        Forcing tool_choice would block extended thinking, costing the model
+        its reasoning channel under structured output."""
         from owtn.llm.providers.anthropic import AnthropicProvider
 
         tool_block = MagicMock()
@@ -160,7 +162,7 @@ class TestAnthropicParsing:
             client=client,
         )
         kw = client.messages.create.call_args.kwargs
-        assert kw["tool_choice"] == {"type": "tool", "name": "PairwiseJudgment"}
+        assert kw["tool_choice"] == {"type": "auto"}
         assert len(kw["tools"]) == 1
         assert kw["tools"][0]["name"] == "PairwiseJudgment"
 

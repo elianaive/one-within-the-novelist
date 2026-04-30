@@ -86,6 +86,41 @@ class ReferenceEntry:
     text: str
     text_sha256: str
     signals: StylometricSignals = field(repr=False)
+    # YAML-declared polarity: "exemplars" (push-toward, lookup-accessible),
+    # "defaults" (push-away, NOT lookup-accessible), or "baselines" (neutral).
+    # Falls back to tag-inference via `resolved_category` when the YAML omits this.
+    category: str | None = None
+
+    @property
+    def resolved_category(self) -> str:
+        """Effective category for lookup gating. YAML field is authoritative;
+        falls back to tag inference for older entries that pre-date the field."""
+        if self.category:
+            return self.category
+        if "llm_default" in self.tags or "llm_simple" in self.tags:
+            return "defaults"
+        if "literary" in self.tags or "antislop_chosen" in self.tags or "pg_excerpt" in self.tags:
+            return "exemplars"
+        if "human_amateur" in self.tags or "expository" in self.tags:
+            return "baselines"
+        return "unknown"
+
+    @property
+    def author_slug(self) -> str | None:
+        """Canonical author slug for literary entries, mirroring
+        `ReferenceCorpus.by_author`'s special cases. None for non-literary
+        entries (SCP, baselines) — those are reachable via tags only."""
+        if "literary" not in self.tags:
+            return None
+        eid = self.id
+        if eid.startswith("bronte-c-"):
+            return "bronte-c"
+        if eid.startswith("bronte-e-"):
+            return "bronte-e"
+        if eid.startswith("pg19-"):
+            rest = eid[len("pg19-"):]
+            return rest.split("-")[0] if rest else None
+        return eid.split("-")[0] if "-" in eid else eid
 
 
 @dataclass
@@ -99,6 +134,12 @@ class ReferenceCorpus:
     def by_tag(self, tag: str) -> list[ReferenceEntry]:
         """Entries containing the given tag."""
         return [e for e in self.entries if tag in e.tags]
+
+    def reachable_entries(self) -> list[ReferenceEntry]:
+        """Entries the lookup tool can return — exemplars + baselines only.
+        LLM defaults are blocked at the lookup surface; excluding them here
+        keeps the catalog and resolver from wasting tokens on unreachable rows."""
+        return [e for e in self.entries if e.resolved_category in ("exemplars", "baselines")]
 
     def by_model_tag(self, model_tag: str) -> list[ReferenceEntry]:
         """LLM-default entries for a given model (matches `model:<tag>`)."""
@@ -294,6 +335,7 @@ def load_corpus(force_reload: bool = False) -> ReferenceCorpus:
             text=text,
             text_sha256=sha,
             signals=signals,
+            category=ref.get("category"),
         ))
 
     # Drop cache entries whose corpus YAML id no longer exists

@@ -1,0 +1,91 @@
+# Voice Agent Template
+#
+# Voice agents are creators, not evaluators. They participate in the Stage 3
+# multi-agent voice-spec generation session. Each agent develops a voice
+# proposal independently, consults judge personas privately for taste/principle
+# input, sees other agents' final proposals, lodges structured single-pass
+# critique, revises once, and ranks the others by Borda no-self-vote.
+#
+# Persona design rules (grounded in Deng/Brucks/Toubia 2026 + persona research):
+# - Ordinary specific persona, NOT a famous-author archetype. Caricature collapse
+#   ("be Hemingway") is well-documented. Use a non-writer background (a
+#   profession, a craft, a scholarly discipline) that grounds the agent's
+#   relationship to language and meaning.
+# - ~150 words of identity. Irrelevant biographical detail past that point
+#   causes ~30 pp performance drops (Principled Personas EMNLP 2025).
+# - Maximize orthogonality across the 4 voice agents on these axes:
+#   (1) attitude toward interiority/emotion (suppress vs. center)
+#   (2) attitude toward narrative time (compression vs. expansion; linear vs. not)
+#   (3) attitude toward reader implication (withhold vs. spoon-feed)
+#   (4) attitude toward language surface (plain vs. textured)
+# - Include explicit epistemic-skepticism mandate. Sycophancy correlates with
+#   persona agreeableness at r=0.87 (Shah et al. 2026); each agent must
+#   distrust the first natural-feeling formulation.
+# - No author names. "Carver-like" or "Borges-like" caricatures, even subtly
+#   invoked, collapse to modal stereotype.
+#
+# See lab/references/persona-knowledge-partitioning/summary.md for the
+# theoretical anchor (knowledge partitioning).
+
+# Kebab-case, must match filename.
+id: ""
+
+# Display name. Should describe an aesthetic stance, not a person.
+# E.g., "The Reductionist" not "Sarah Mitchell."
+name: ""
+
+# One paragraph (~150 words). The aesthetic worldview, plus a specific
+# non-writer background that grounds it. The persona should feel like a
+# coherent person with material stakes in language, not a role label.
+# Folded scalar: one logical paragraph = one line.
+identity: >
+
+# Ranked list of 3-5 aesthetic commitments. What this voice REACHES FOR.
+# Each entry should specify the move AND the rationale ("compression because
+# the reader's attention is sacred"). Ranking creates implicit emphasis;
+# top items will dominate. The first commitment is the load-bearing one.
+aesthetic_commitments:
+  - ""
+  - ""
+  - ""
+
+# 1-3 specific things this voice REFUSES to do. Negative space matters.
+# Be concrete ("dialogue tagged with adverbs" not "weak prose").
+aversions:
+  - ""
+
+# 2-3 productive obsessions. What material does this voice keep returning
+# to? Often grounded in the non-writer background. Concrete preferred:
+# "the gap between what a person says and what their gestures betray"
+# rather than "miscommunication."
+obsessions:
+  - ""
+  - ""
+
+# Explicit epistemic-skepticism mandate, in this persona's voice.
+# Should warn against the first natural formulation in terms specific to
+# this aesthetic. Folded scalar.
+epistemic_skepticism: >
+
+# 1-2 demonstrations of this voice's craft moves, in first person.
+# NOT general taste statements ("I like compression") but specific
+# operations ("when I see 'she felt sad' I look for the gesture that
+# was suppressed by the abstraction"). Show the voice in working
+# mode. Strongest single calibration signal.
+demonstrations:
+  - ""
+
+# Model running this agent. List form: system picks per call.
+# Default for testing: deepseek-v4-pro (cost-driven).
+# For production diversity: assign each agent a different family.
+# See research note in docs/stage-3 on representational collapse with
+# shared-model panels.
+model: ["deepseek-v4-pro"]
+
+# Sampler params. temperature 0.8 default — creators need exploration,
+# not determinism. Lower if persona drifts off-spec; raise if outputs
+# converge.
+temperature: 1.0
+top_p: null
+top_k: null
+min_p: null

@@ -1,0 +1,22 @@
+PHASE 3 — REVEAL AND CRITIQUE.
+
+The four panel agents have committed their voice proposals independently. They are revealed below. You are one of those four agents; your own proposal is included so you can see what others see.
+
+YOUR PROPOSAL ({YOUR_AGENT_ID}):
+{YOUR_PROPOSAL}
+
+OTHER PROPOSALS:
+{OTHER_PROPOSALS}
+
+TASK: write one structured critique of each OTHER proposal. Do not critique your own.
+
+For each target, produce:
+- `strengths` — exactly two specific things this proposal does well. "Specific" = pointing to a concrete craft move in the description, the schema fields, or the renderings (a sentence rhythm choice, an FID depth that earns its place, an image that grounds the abstract). Avoid generalities like "compelling" or "well-written." Two strengths are required because finding none is a failure of attention; finding three dilutes which strength is load-bearing.
+- `concern` — one specific thing this proposal does NOT yet do, or does inconsistently across the renderings. One concern, not a list — give the writer-target a single load-bearing thing to address in revision rather than a flood. Phrase it as a concrete description of the gap, not an instruction. Avoid flagging things you yourself didn't address; the panel is reciprocal.
+
+CONSTRAINTS:
+- Write to the work, not the writer. Every critique is a structured record; no salutations, no apologies, no second-person address.
+- A critique that could apply to most LLM prose is a critique that says nothing. The concern must be specific to THIS proposal — name what's there that didn't work, or what was promised in the description but not delivered in the renderings.
+- The cross-critique phase is single-pass. There is no follow-up turn, no debate, no clarification. This is the only opportunity to feed the revision; make it count.
+
+Output the structured CritiqueSet with one Critique per target (you produce exactly {N_TARGETS} critiques).

@@ -192,7 +192,7 @@ class DeepSeekProvider:
         new_msg_history = msg_history + [{"role": "user", "content": msg}]
         messages = [{"role": "system", "content": merged_system}, *new_msg_history]
 
-        call_kwargs = dict(kwargs)
+        call_kwargs = self.build_call_kwargs(api_model=model, requested=kwargs)
         if output_model is not None:
             call_kwargs["response_format"] = {"type": "json_object"}
 
@@ -248,7 +248,7 @@ class DeepSeekProvider:
         new_msg_history = msg_history + [{"role": "user", "content": msg}]
         messages = [{"role": "system", "content": merged_system}, *new_msg_history]
 
-        call_kwargs = dict(kwargs)
+        call_kwargs = self.build_call_kwargs(api_model=model, requested=kwargs)
         if output_model is not None:
             call_kwargs["response_format"] = {"type": "json_object"}
 
@@ -316,7 +316,7 @@ class DeepSeekProvider:
         history: list[dict] = list(msg_history) + [{"role": "user", "content": msg}]
         messages: list[dict] = [{"role": "system", "content": merged_system}, *history]
 
-        call_kwargs = dict(kwargs)
+        call_kwargs = self.build_call_kwargs(api_model=model, requested=kwargs)
         call_kwargs["tools"] = [
             {
                 "type": "function",

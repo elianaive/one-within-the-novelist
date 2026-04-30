@@ -13,7 +13,7 @@ Ranking (tiebreaker chain per `evaluation.md`):
 2. Most dimension-level wins across all matches.
 3. Higher mean judge-reasoning length (proxy for engagement).
 
-Why a parallel module instead of reusing `owtn.evaluation.tournament`:
+Why a parallel module instead of reusing `owtn.stage_1.tournament`:
 The Stage 1 tournament is Swiss-system, takes `ConceptGenome`, and calls
 Stage 1's `pairwise.compare`. Stage 2 differs in pool size (4 fixed),
 matching topology (round-robin), input type (DAG), match function
