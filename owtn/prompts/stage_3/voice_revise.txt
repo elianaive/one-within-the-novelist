@@ -1,0 +1,58 @@
+PHASE 4 — REVISE.
+
+ADJACENT-SCENE BENCH (the original neutral drafts your renderings transform — cross-reference your work against the source as you revise):
+{BENCH_DRAFTS}
+
+Your Phase 1 proposal:
+{YOUR_PROPOSAL}
+
+Critiques received:
+{CRITIQUES_RECEIVED}
+
+Your own working memory from Phase 1 (notes you wrote earlier — your reasoning, rejected moves, decisions):
+{YOUR_PRIOR_NOTES}
+
+TASK: revise your voice proposal in light of the critiques and your prior reasoning.
+
+WORK IN TWO PASSES, the same shape as Phase 1.
+
+Pass 1 — revision work.
+
+Re-read your three renderings against the critiques. Each critique points at something specific the critic saw; your job is to decide which of those observations are right (and how to fix what they name) and which are off-target (and how to defend what you stand behind). The work is voice — what does the concept demand at the rendering level, and where are your renderings not yet delivering it?
+
+Before deciding adopt-or-reject on any critique, sit with it. The pull to either defend immediately or capitulate immediately is strong; the productive move is slower than either. For each critique, work through three questions in order:
+
+1. **What was the critic actually seeing?** A critique is a downstream effect — the surface they named is where they registered the gap, not necessarily where the gap lives. "The voice editorializes too much" might be naming an over-explained chain-logic, an unprotected Saunders beat, a rendering that announces what should land in the body, or all three at once. Reconstruct the scene as the critic encountered it; identify what feature of the prose actually produced their response.
+
+2. **Is what they saw really there?** Read the relevant passage as a stranger would read it, not as its author. If you can identify the specific moment that triggered the critique — and that moment really is doing what the critic says — the critique is right and you owe it a fix. If you cannot find the moment they describe, or if you find it but it's doing something different from what the critic claimed, the critique is partially or wholly off-target.
+
+3. **Does adopting the critique abandon a load-bearing aesthetic commitment, or does it sharpen one?** Some critiques ask you to abandon a risk that landed; reject those. Some critiques ask you to abandon a risk that did not land; adopt those. Some critiques mistake a deliberate move for a mistake; defend those, but in your defense, name the specific work the move is doing — if you cannot, the critique was right and you were wrong about what your move was for.
+
+Only after working through these questions for a critique do you record adopt/reject and the specific revision move (if any) in your notes. A critique that surprises you is more likely to be right than one that flatters or attacks what you already feared.
+
+Two thinking tools, used for different work:
+
+- **`think`** — your in-the-moment thinking-place. Use it freely as you work through each critique: name what the critic was seeing, test it against the rendering, decide. The thought is ephemeral — it stays in your tool-use history for this phase only. Think small and frequent, not long and rare.
+- **`note_to_self`** — your cross-phase memo. Visible to you in Phase 5 (Borda). Use only for load-bearing revision decisions: which critiques you adopted and why, which you rejected with named work, the moves you committed to. Each note should be tight and decision-shaped. If a note is narrating your process rather than committing, it belongs in `think`.
+
+Tools available, auxiliary to the revision work. They are not interchangeable; each measures something different.
+
+- **diagnostic — `stylometry`** — closeness to a reference author or style tag, burstiness, function-word distance from your model's default. Use when a critique names a directional concern you can measure (closer to a named voice, further from default) and you want evidence the revision moved toward it. Pass `target_styles` for named-author distances.
+- **diagnostic — `slop_score`** — counts matches against a curated slop-list of LLM tells. Use when a critique flags generic-LLM-default leakage or when you suspect a revision has reintroduced default patterns.
+- **diagnostic — `writing_style`** — vocab grade, sentence length distribution, paragraph length, dialogue frequency. Different signal from stylometry. Use when a critique names a surface-level concern (too stiff, too plain, too dense) — these metrics name what's actually happening on the page.
+- **diction — `thesaurus`** — Datamuse for word-level revision (synonyms, phonetic neighbours, antonyms). Useful when a critique names a specific word that's not yet right, when a noun is recurring as a tic, or when a verb is the model's default and you want a more specific alternative.
+
+Your ear is the primary judgment. A critique that asks you to abandon your load-bearing aesthetic commitment should be rejected, not adopted; a critique that names a specific inconsistency between description and renderings almost certainly merits revision. **Tool outputs do not replace reading**: if you find yourself adjusting prose based on a metric without re-reading the passage as a reader would, you've stopped revising and started tuning. The metric is a check on your reading, not a substitute.
+
+Read-as-reader before commit. Before calling `finalize_voice_genome` with the revised body, read each revised rendering once more — not as its author, as a reader. Notice where the revision improved the prose and where it merely shuffled the problem. If a fix only moved a flaw rather than removing it, the revision isn't done.
+
+Pass 2 — commit (call `finalize_voice_genome`).
+When you've worked out the revisions, call `finalize_voice_genome` with all schema fields filled — your revised VoiceGenome. That tool call ends your exploration and submits the revised commitment. After it succeeds, stop calling tools.
+
+CONSTRAINTS:
+- Keep the bench's scene_ids; the revised renderings transform the same three scenes.
+- The schema fields and the verbal description must agree post-revision. If you change `craft.crowding_leaping` from balanced to leaping, the description and the renderings must reflect that.
+- This is one revision pass, not a loop. Commit to a single coherent revision and stop.
+- If the critiques you received are, on reflection, off-target, keep your original proposal. The revision is not a requirement to change; it is a requirement to read the critiques and produce the proposal you stand behind.
+
+Begin Pass 1.

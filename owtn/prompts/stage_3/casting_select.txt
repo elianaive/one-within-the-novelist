@@ -1,0 +1,14 @@
+Pick {PANEL_SIZE} personas from the engaged subset to cast.
+
+Each pick rests on a real affordance from its `case_for` AND a real manifestability — the persona's commitment must have scene-content to operate on, not just abstract concept-axis compatibility. A persona whose `manifestability` argument names a clear gap (no body for second-person to address, no apparatus for form-coupled work, no temporal latitude for nonlinearity) should be deprioritized even if engaged. Casting a persona whose load-bearing commitment can't sustain itself across the bench scenes produces a partial voice that collapses to default mid-rendering.
+
+The {PANEL_SIZE} together explore {PANEL_SIZE} different regions of voice space — different first commitments, not different surface tics on the same commitment. Disagreement at schema-nameable axes (POV, FID depth, crowding/leaping, dialogic mode, implied-author stance) is what makes the cross-critique phase work; pick for that.
+
+Treat any concept `style_hint` as a hypothesis, not a brief. The strongest casts often include personas whose first commitment disagrees with the hint.
+
+Output:
+- `cast` — {PANEL_SIZE} CastingChoice records. Each with persona_id, affordance (specific handhold from the case_for), coverage (voice-space region in this cast). Order is meaningful only as the order in which you'd justify the cast to a reader; it's not a quality ranking.
+- `coverage_rationale` — how the {PANEL_SIZE} together explore meaningfully different voice work for THIS story.
+- `style_hint_treatment` — how the concept's style_hint was read.
+
+If the engaged subset has fewer than {PANEL_SIZE}, cast all available.

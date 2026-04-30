@@ -1,0 +1,60 @@
+CONCEPT (locked, Stage 1):
+{CONCEPT_JSON}
+
+STRUCTURE (locked, Stage 2 DAG):
+{DAG_RENDERING}
+
+ADJACENT-SCENE BENCH (3 fixed scenes, the same across the panel — your job is to transform these neutral drafts in your voice):
+{BENCH_DRAFTS}
+
+TASK: develop a voice for this story.
+
+The deliverable is a voice specification that can be evaluated through prose. Three things travel together — never one without the others:
+
+1. A voice with a position on the schema-nameable axes (POV, tense, FID depth, implied-author stance, dialogic mode, sentence rhythm, crowding/leaping). These are the dimensions LLMs default badly on; explicit choice is what moves the prose off the model's near-default.
+2. A short verbal description of what the voice does — its relationship to its subject, register, characteristic moves. The description documents the voice; it does not constitute it.
+3. Three renderings of the bench scenes in your voice. The renderings are the proof. A voice without renderings is a verbal description with default-shaped prose.
+
+WORK IN TWO PASSES.
+
+Pass 1 — voice work.
+
+Read the concept above carefully. The concept's demands at the rendering level are your primary brief: what specific moves does the prose have to make to deliver the experience the `target_effect` names? What does the `style_hint` commit you to (or against)? What do the `constraints` rule out? Identify the load-bearing demands before drafting; they are what success looks like.
+
+Sit with the concept before reaching for tools. The pull to call diagnostics or look up references is strong; the work of voice begins in not-yet-drafting. Read the concept twice. Notice what feels unstable — what rendering-level demand you don't yet know how to do. The first draft you imagine is rarely the one the concept wants; the discomfort of not-yet-knowing is where the voice work starts.
+
+Your exemplars in the system prompt are indelible — passages a reader couldn't paraphrase without losing what makes them work. Reach for that standard, in your own register, on this concept's terms. The bench drafts are flat by construction; your job is to find what your voice does to them, in service of what the concept demands.
+
+Two thinking tools, used for different work:
+
+- **`think`** — your in-the-moment thinking-place. Use it freely whenever you need to work something out before acting: what a passage is doing, why a draft isn't yet landing, which demand is hardest to meet. The thought stays in your tool-use history for this phase only; it does not persist. Think small and frequent, not long and rare.
+- **`note_to_self`** — your cross-phase memo. Visible to you in Phase 4 (revise) and Phase 5 (Borda). Use only for load-bearing decisions worth carrying forward: the voice axes you've chosen, the protected Saunders beats, the approaches you rejected and why. Each note should be tight and decision-shaped. If a note is narrating your process rather than committing to a decision, it belongs in `think`.
+
+Tools available, auxiliary to the voice work. They are not interchangeable; each measures something different.
+
+- **diagnostic — `stylometry`** — closeness to a reference author or style tag, burstiness, function-word distance from your own model's default register. Use when you've named a target direction and want evidence the prose has moved toward it. Pass `target_styles` for named-author distances ("how close am I to Morrison? to FID-rich prose?"). Best for verifying that a revision moved a draft *off* your model's default and *toward* a named voice.
+- **diagnostic — `slop_score`** — counts matches against a curated slop-list of LLM tells (overused words, bigrams, trigrams, contrast patterns). Use to verify a draft is clean of generic LLM-default patterns; a high score is a sign of model-default leakage that your ear may have missed.
+- **diagnostic — `writing_style`** — surface metrics: vocab grade, sentence length distribution, paragraph length, dialogue frequency. Different signal from stylometry. Useful when your ear or a critique says the prose feels too stiff, too loose, too plain, too dense at the surface level — these metrics name what's actually happening on the page.
+- **reference — `lookup_reference`** — searches the literary corpus by author / style / tradition (natural language). Useful when you have a stylistic direction but want to read a passage that does it well.
+- **diction — `thesaurus`** — Datamuse lookup for word-level revision (synonyms, phonetic neighbours, related-to, antonyms). Reach for this when a noun is recurring as a structural tic, when a verb is the model's default and you want a more specific alternative, or when a single word isn't landing.
+
+Your ear is the primary judgment. The metric tools each measure something partial — none captures voice. Use them when you can name the direction you want to verify; ignore them when your ear is already telling you what's working. **Tool outputs do not replace reading**: if you find yourself adjusting prose based on a metric without re-reading the passage as a reader would, you've stopped writing and started tuning. The metric is a check on your reading, not a substitute.
+
+Read-as-reader before commit. Before calling `finalize_voice_genome`, read each rendering once more — not as its author, as a reader who has never seen it. Notice the sentence where the prose loses you, or the place a real reader would skim. If you can't find one, you haven't actually read it. Adjust based on what reading-as-reader tells you, not on what the metrics tell you.
+
+Pass 2 — commit (call `finalize_voice_genome`).
+When you've worked out a voice and have three renderings ready, call `finalize_voice_genome` with all schema fields filled. That tool call ends your exploration and submits your committed VoiceGenome — there is no separate commit step. Each rendering must be a complete transformation of the corresponding scene's neutral draft (same world, same characters, same physical events; different voice). Use the bench's scene_ids exactly. The verbal fields document; the renderings are load-bearing.
+
+After `finalize_voice_genome` succeeds, stop calling tools — a brief acknowledgment text response will end the loop.
+
+CONSTRAINTS ON THE WORK.
+
+Treat the concept's `style_hint` (when present) as a hypothesis from Stage 1, not a brief. You may agree, partially adopt, or disagree with it. Strong voices often disagree at one or two axes.
+
+`positive_constraints` is the primary list — what your voice REACHES FOR. State each as a positive directive: "render emotion through the body's small refusals" rather than "no said-tag adverbs." `prohibitions` is reserved for low-pressure or trivially-checkable items only (Rana 2026 — naming a high-frequency element activates rather than suppresses it).
+
+`description` and `diction` should align with the schema fields. If your `implied_author.stance_toward_characters` is "elegiac" and your `description` calls the voice "ironic," one of them is wrong; fix it.
+
+If the concept admits multi-mode voice (shifting registers, dual-tense alternation, embedded forms), populate `voice_modes` and use `voice_dynamics` for trajectories. If it is single-mode, leave `voice_modes` empty.
+
+Begin Pass 1.

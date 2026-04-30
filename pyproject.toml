@@ -36,8 +36,12 @@ markers = ["live_api: tests requiring real API calls (require API keys, cost mon
 [dependency-groups]
 dev = [
     "dspy-ai>=3.2.0",
+    "mobi>=0.4.1",
+    "pdfplumber>=0.11.9",
+    "pypdf>=6.10.2",
     "pytest",
     "pytest-asyncio",
+    "rarfile>=4.2",
     "ruff",
 ]
 

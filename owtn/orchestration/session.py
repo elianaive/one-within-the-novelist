@@ -127,13 +127,25 @@ def session_log_path(*parts: str) -> Path | None:
 
 def _yaml_safe(value: Any) -> Any:
     """Render multi-line strings with literal-block style (matches
-    call_logger). Recurses into nested dicts/lists."""
+    call_logger). Coerce numpy/pandas scalars to Python builtins —
+    yaml.dump can't represent them otherwise. Recurses into nested
+    dicts/lists."""
     if isinstance(value, str) and ("\n" in value or len(value) > 120):
         return _LiteralStr(value)
     if isinstance(value, dict):
         return {k: _yaml_safe(v) for k, v in value.items()}
     if isinstance(value, list):
         return [_yaml_safe(v) for v in value]
+    # numpy / pandas scalars: type from a non-builtin module + .item() method
+    if (
+        hasattr(value, "item")
+        and not isinstance(value, (str, bytes, list, tuple, dict))
+        and type(value).__module__ != "builtins"
+    ):
+        try:
+            return value.item()
+        except Exception:
+            return value
     return value
 
 

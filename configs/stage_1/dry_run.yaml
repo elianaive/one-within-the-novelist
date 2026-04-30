@@ -1,6 +1,6 @@
 # Stage 1: Dry Run — Minimal config to prove the evolution loop works.
 #
-# Run with: uv run python -m owtn --config configs/stage_1/dry_run.yaml
+# Run with: uv run python -m owtn.stage_1 --config configs/stage_1/dry_run.yaml
 #
 # 2 generations, 2 islands, 1 judge. Cheap models throughout.
 # Self-critic on the generator validates the critique-revise plumbing.

@@ -406,7 +406,7 @@ class TestRunnerPopulationBriefLifecycle:
     async def test_compute_population_brief_stores_on_runner_and_sampler(
         self, monkeypatch
     ):
-        from owtn import runner as runner_mod
+        from owtn.stage_1 import runner as runner_mod
 
         async def fake_compute(**kwargs):
             return ("FAKE CONTEXT BLOCK", "FAKE DIRECTIONS BLOCK")
@@ -444,7 +444,7 @@ class TestRunnerPopulationBriefLifecycle:
 
     @pytest.mark.asyncio
     async def test_compute_skipped_when_run_brief_model_none(self, monkeypatch):
-        from owtn import runner as runner_mod
+        from owtn.stage_1 import runner as runner_mod
 
         called = {"n": 0}
 

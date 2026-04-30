@@ -1,0 +1,47 @@
+CONCEPT (the Stage 1 concept this story realizes):
+{CONCEPT_JSON}
+
+STRUCTURE (the Stage 2 DAG that the prose stage will write through):
+{DAG_RENDERING}
+
+TASK: Pick three "alternative-universe" scenes for this story.
+
+An AU scene is a moment in the same fictional world, with the same characters, that is NOT a beat in the DAG. It does not advance the plot. It would never appear in the final story. It exists to test voice on terrain the story itself does not commit to.
+
+The three AU scenes must place DISTINCT DEMANDS on voice. A voice that can render one scene well but breaks down on a different demand is a partial voice; the bench is here to surface that. What counts as a distinct demand is concept-dependent — pick demands that matter for THIS story rather than fitting it into a generic register triad. Some demand axes you may draw on, not exhaustive and not required:
+
+- tonal range (low-tension descriptive vs. high-intensity)
+- dialogue-driven interaction vs. private interior
+- public/social vs. intimate/two-person
+- action vs. contemplation
+- physical/bodily vs. cognitive/abstract
+- sensory density (loaded with specifics vs. spare)
+- speed of cognition (slow registration vs. rapid recognition)
+- pace of disclosure (immediate vs. withholding)
+
+PROCESS — work in two passes:
+
+Pass 1 — brainstorm.
+List five-to-eight candidate AU moments. For each, write one sentence on what physically happens, and one phrase naming the demand that scene would place on voice. Cast a wide net. Include candidates whose demands feel obviously different from one another, but also include candidates that feel adjacent to others on your list — you'll cull those next. The brainstorm is the work; the model often produces its strongest candidates after the first three.
+
+Pass 2 — pick.
+From the brainstorm, choose the three scenes whose demands diverge most. The three you keep should be ones where a voice strong on demand A might be brittle on demand B and unable to reach demand C — that's the bench's value. Discard candidates whose demands restate another candidate's demand in different costumes (three quiet domestic moments all test the same demand even if the surfaces differ).
+
+Pass 3 — voice-latitude check.
+For each of your three picks, name two genuinely distinct voice approaches that would each be a legitimate handling of that scene. Different POV, different rhythm, different stance — any axes that produce two readers' encounters with the prose that would feel different on the page. If you can articulate two distinct legitimate handlings, the scene admits voice work. If you can only articulate one — if the scene's content forces a particular sequence of beats that any voice would have to follow ("she types the value, presses tab, types the next value, presses tab") — the scene is OVER-DETERMINED and gives voice nowhere to operate. **Replace any over-determined scene with a different brainstorm candidate.** This pass is the load-bearing guard: a scene whose only valid rendering is a fixed beat sequence is not a voice test, it's a voice null.
+
+The articulation of "two distinct legitimate handlings" stays in your reasoning trace; it does not need to enter the structured output. The structured output only needs the three demand fields per scene.
+
+For each of the three picked scenes, produce:
+
+1. **scene_id** — short kebab-case slug, two-or-more characters (e.g. "morning-kitchen", "argument-at-door", "after-the-news"). Distinct across the three.
+
+2. **synopsis** — 2-3 sentences. Same world, same characters; what physically happens, what objects are present, who speaks if anyone. Concrete enough that a drafter could render it without inventing characters or settings.
+
+3. **demand** — what specifically about voice this scene stresses. Phrase it as the demand on the voice, not a description of the scene. "Render slow domestic time without filler" rather than "the scene is slow." "Hold a third-person camera close to a character lying about something they want to be believed" rather than "the scene has lying."
+
+4. **why_distinct** — one sentence on what this demand is testing that the OTHER two are NOT testing. This is the cross-demand justification. If you can articulate the distinction without paraphrasing the demand itself, the bench coheres.
+
+After the three scenes, produce a final **bench_rationale** field: 2-3 sentences explaining how the three demands together cover meaningfully different voice load conditions for THIS story. Name the aspects of voice each demand tests; that naming is where the bench's coherence becomes legible to downstream judges.
+
+Return only the three picked scenes and the bench_rationale via the schema fields. The brainstorm pass and the voice-latitude check stay in your reasoning trace.

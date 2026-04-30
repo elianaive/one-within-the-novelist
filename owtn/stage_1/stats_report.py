@@ -5,7 +5,7 @@ YAML logs, programs.sqlite, champions/, tournament.json — and emits a
 structured summary appended to ``evolution_run.log`` plus ``stats.json``.
 
 Can be invoked directly on any historical run:
-    uv run python -m owtn.stats_report results/run_<ts>/stage_1
+    uv run python -m owtn.stage_1.stats_report results/run_<ts>/stage_1
 """
 
 from __future__ import annotations

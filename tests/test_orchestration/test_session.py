@@ -152,6 +152,33 @@ async def test_session_writes_log_tree(cast, empty_registry, tmp_path):
     assert phase_2_path.exists()
 
 
+def test_yaml_safe_coerces_numpy_scalars(tmp_path):
+    """Cost values come back from pricing as numpy scalars (DataFrame
+    multiplication). _yaml_safe must coerce them to Python builtins so
+    yaml.dump doesn't raise 'cannot represent an object'."""
+    pytest.importorskip("numpy")
+    import numpy as np
+
+    from owtn.orchestration.session import write_yaml
+
+    path = tmp_path / "out.yaml"
+    write_yaml(path, {
+        "cost_np": np.float64(0.123456),
+        "tokens_np": np.int64(42),
+        "list_with_np": [np.float32(1.5), 2, "ok"],
+        "nested": {"inner_np": np.float64(7.89)},
+    })
+
+    assert path.exists()
+    raw = path.read_text()
+    # yaml.dump succeeded — file is parseable
+    parsed = yaml.safe_load(raw)
+    assert parsed["cost_np"] == pytest.approx(0.123456)
+    assert parsed["tokens_np"] == 42
+    assert parsed["list_with_np"][0] == pytest.approx(1.5)
+    assert parsed["nested"]["inner_np"] == pytest.approx(7.89)
+
+
 @pytest.mark.asyncio
 async def test_no_log_tree_when_session_log_dir_unset(cast, empty_registry, tmp_path):
     state = SessionState.new(cast)

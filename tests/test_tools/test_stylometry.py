@@ -252,35 +252,35 @@ class TestLookupExemplar:
         from owtn.tools import lookup_exemplar
         # synthetic corpus has lit-1, lit-2 entries (literary)
         r = lookup_exemplar("lit", n=2, corpus=synthetic_corpus)
-        assert r["kind"] == "author"
+        assert r["match"] == "authors_only"
         assert r["n_returned"] == 2
         assert all(p["category"] == "exemplars" for p in r["passages"])
 
     def test_lookup_by_tag(self, synthetic_corpus):
         from owtn.tools import lookup_exemplar
         r = lookup_exemplar("literary", n=5, corpus=synthetic_corpus)
-        assert r["kind"] == "tag"
+        assert r["match"] == "tags_only"
         # Both lit-1 and lit-2 carry the "literary" tag
         assert r["n_returned"] == 2
 
     def test_lookup_by_exact_id(self, synthetic_corpus):
         from owtn.tools import lookup_exemplar
         r = lookup_exemplar("lit-1", n=1, corpus=synthetic_corpus)
-        assert r["kind"] == "id"
+        assert r["match"] == "id"
         assert r["passages"][0]["id"] == "lit-1"
 
     def test_lookup_blocks_default(self, synthetic_corpus):
         from owtn.tools import lookup_exemplar
         # llm-sonnet-1 is in the synthetic corpus with llm_default tag
         r = lookup_exemplar("llm-sonnet-1", n=1, corpus=synthetic_corpus)
-        assert r["kind"] == "blocked"
+        assert r["match"] == "blocked"
         assert r["n_returned"] == 0
-        assert "defaults" in r["note"].lower()
+        assert "default" in r["note"].lower()
 
     def test_lookup_unknown(self, synthetic_corpus):
         from owtn.tools import lookup_exemplar
         r = lookup_exemplar("totally-nonexistent-thing", corpus=synthetic_corpus)
-        assert r["kind"] == "not_found"
+        assert r["match"] == "none"
 
     def test_lookup_truncates_long_passages(self, synthetic_corpus):
         from owtn.tools import lookup_exemplar

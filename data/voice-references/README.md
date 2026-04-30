@@ -83,10 +83,23 @@ A third wave (2026-04-28) widened the corpus further:
 This dataset choice — real samples from established corpora rather than
 synthesized prose — matches the project's "use real datasets" discipline.
 
-## Final corpus stats (after round-6, 2026-04-28)
+## Final corpus stats (after round-9 F-rounds, 2026-04-28)
 
-- **520 reference entries, ~378k words** (started at 21, grew through rounds:
-  21 → 54 → 93 → 202 → 224 → 266 → 520)
+- **809 reference entries** (started at 21, grew through rounds:
+  21 → 54 → 93 → 202 → 224 → 266 → 520 → 549 → 589 → 668 → 752 → **809**)
+- Round-9 F-rounds added 57 entries: F2 SE round 3 (37 — late James,
+  late Conrad, Wharton, Chesterton, Ford, Sayers); F3 PG-AU round 2 (20
+  — May Sinclair, H.H. Richardson, more Mansfield, late Lawrence). F1
+  Wikisource was a dead end for the explicit Hemingway *In Our Time* 1925
+  gap.
+- Round-8 (E1+E3) added 84 entries: PG round-8 deeper (59 — new works +
+  multi-sample expansion of long canonicals); PG-AU (25 — full Orwell
+  canon, late Fitzgerald, late Lawrence under death+50 jurisdiction).
+- Round-7 broader breadth added 79 entries via three more pipelines:
+  PG round-7 (54), Standard Ebooks round-2 (16), SCP round-2 (9).
+- Round-6 gap-fill added 40 entries via three Phase-1 pipelines:
+  PG round-6 breadth (26), Standard Ebooks (6), SCP CC-BY-SA (8).
+- **520 reference entries, ~378k words** (round-5 baseline)
 - **342 LLM-default samples spanning 90 distinct model tags across 17
   organizations**:
     - Anthropic (49) — Sonnet 4.6, Opus 4.6/4.5/4.1/4, Sonnet 4.5, Opus/Sonnet
@@ -183,13 +196,155 @@ synthesized prose — matches the project's "use real datasets" discipline.
   Wodehouse, O. Henry, Twain stories, Dickens stories, Gogol Dead Souls,
   Goncharov Oblomov, Turgenev Fathers and Children, Doyle Valley of Fear).
 
+## Round-9 — F-rounds: more SE + more PG-AU (2026-04-28)
+
+User request: "push further". Three sub-rounds; F1 Wikisource was a
+dead end (its *In Our Time* is just the 1924 vignettes already in
+corpus via PG 61085).
+
+- **F2 Standard Ebooks round 3** (`extract_standard_ebooks_round3.py`,
+  37 entries): Late Henry James (*Wings of the Dove* + *Golden Bowl* +
+  *Portrait of a Lady* + *Washington Square*); late Conrad (*Victory*,
+  *Chance*, *Under Western Eyes*, *Shadow Line*, *Arrow of Gold*);
+  Wharton *Summer*; Chesterton *Man Who Was Thursday* + *Napoleon of
+  Notting Hill* (comic-philosophical-allegorical register); Ford
+  *Some Do Not* (Parade's End I); Sayers Lord Peter Wimsey detective
+  fiction (*Whose Body*, *Clouds of Witness*).
+- **F3 PG-AU round 2** (`extract_pg_australia_round2.py`, 20 entries):
+  May Sinclair *Mary Olivier* + *Harriett Frean* + *Collected Stories*
+  — pioneer of stream-of-consciousness, distinct early-modernist woman
+  writer the corpus completely lacked. H.H. Richardson *Australia
+  Felix* + *Maurice Guest* + *Getting of Wisdom* — Australian modernist.
+  Mansfield additional (*In a German Pension* + *Something Childish*).
+  Lawrence late expansion (*Kangaroo*, *Rainbow*, *Collected Stories*,
+  *Man Who Died*, *Virgin and the Gypsy*, *Fox*, *Ladybird*).
+
+After round 9: James 7 → 16; Conrad 10 → 23; Lawrence 11 → 21;
+Mansfield 5 → 7; new authors Chesterton (5), Sayers (4), May Sinclair
+(4), H.H. Richardson (4), Ford (1 → 4). Validation: literary
+classification cosine 89.9% (slight dip from 90.5% — expected when
+adding genuinely-distinct registers that widen the literary centroid).
+
+## Round-8 — E1 deeper + E3 PG-AU (2026-04-28)
+
+**E1 (`extract_pg_round8_deeper.py`, 59 entries):** Two passes —
+- *New works:* Tolstoy *War and Peace* + *Resurrection*, Dickens
+  *David Copperfield* + *Tale of Two Cities* + *Oliver Twist*, Eliot
+  *Silas Marner* + *Adam Bede* + *Mill on the Floss*, Hawthorne
+  *Blithedale Romance* + *Marble Faun*, Sterne *Sentimental Journey*,
+  Defoe *Plague Year*, De Quincey *Confessions*, Coleridge *Biographia
+  Literaria*, Lamb *Works*, Hazlitt *Table Talk*, Andreyev *Seven Who
+  Were Hanged*, Mansfield *Bliss* + *Garden Party*.
+- *Multi-sample expansion:* s2/s3/s4 added for Joyce *Ulysses* (now 5
+  samples spanning Calypso / Eumaeus / Oxen of the Sun / Wandering
+  Rocks / Penelope), Proust *Swann's Way* (3), Dostoevsky *Crime and
+  Punishment* (3) + *Brothers Karamazov* (4), Tolstoy *Anna Karenina*
+  (4), Eliot *Middlemarch* (3), Hugo *Les Misérables* (4), Cervantes
+  *Don Quixote* (3), Dickens *Bleak House* (4) + *Great Expectations*
+  (3), Hardy *Tess* (3), Wharton *Age of Innocence* (3), Mann *Royal
+  Highness* (3). Closes the round-13 single-work-centroid concern.
+
+**E3 PG-AU (`extract_pg_australia.py`, 25 entries):** Death+50
+jurisdiction unlocks for in-US-copyright-but-PD-AU works.
+- *What unlocked:* Fitzgerald *Tender Is the Night* + *Pat Hobby
+  Stories*; the **full Orwell canon** (*Down and Out*, *Burmese Days*,
+  *A Clergyman's Daughter*, *Aspidistra*, *Shooting an Elephant*,
+  *Wigan Pier*, *Homage to Catalonia*, *Coming Up for Air*, *Animal
+  Farm*, *Politics and the English Language*, *1984*); late D.H.
+  Lawrence (*Lady Chatterley's Lover*, *Plumed Serpent*, *Mornings in
+  Mexico*, *Etruscan Places*, *Woman Who Rode Away*).
+- *What didn't unlock:* PG-AU is effectively frozen at death-1955 due
+  to the 2005 Australian copyright extension. Hemingway, Faulkner,
+  Steinbeck, Aldous Huxley, McCullers, O'Connor, Plath all NOT on
+  PG-AU. Faded Page (Canada) is JS-driven and apparently doesn't host
+  these specific Americans either. Standard Ebooks (rounds 1-2) was
+  already the canonical-modernist post-1925 unlock; PG-AU mostly fills
+  the political/satirical Orwell gap.
+- License tag `pg_au_pd_research_use` — PD-Australia + project's
+  research-fair-use posture for US-copyright works.
+
+After round 8: Orwell 0 → 16 entries (the issue's Tier 2 request);
+Dickens 4 → 15; Lawrence 5 → 11; Tolstoy 4 → 10; Dostoevsky 3 → 9;
+Joyce *Ulysses* alone has 5 samples (the most volatile-register work
+is now properly centered). Validation: literary classification cosine
+**90.5%** (third consecutive improvement: 89.2 → 89.8 → 90.5).
+
+## Round-7 broader breadth (2026-04-28)
+
+User request: "more data from those locations." Three more automated rounds
+following the round-6 pattern.
+
+- **PG round 7** (`extract_pg_round7_more.py`, 54 entries): Burney *Evelina*,
+  pre-1925 Woolf (*Voyage Out* + *Night and Day* + *Jacob's Room*), Conrad
+  expansion (*Heart of Darkness*, *Lord Jim*, *Nostromo*, *Secret Agent*,
+  *Mirror of the Sea*), Hardy expansion (*Jude*, *Mayor of Casterbridge*,
+  *Far from the Madding Crowd*), Twain (*Huck Finn*, *Connecticut Yankee*,
+  *Mysterious Stranger*), Sinclair Lewis (*Main Street*, *Babbitt*),
+  Trollope (*Barchester Towers*, *Way We Live Now*), Wilde (*Lord Arthur
+  Savile's Crime*, *Intentions*), Crane *Red Badge of Courage*, Galsworthy
+  *Forsyte Saga*, Tarkington *Magnificent Ambersons*, Pater *Marius the
+  Epicurean*, Carlyle *Sartor Resartus*, Hearn *In Ghostly Japan*, Murasaki
+  *Tale of Genji* + *Sacred Tree* (Waley trans), Flaubert *Madame Bovary*,
+  Douglass + Jacobs slave narratives, Emerson *Essays*, Gissing *New Grub
+  Street*, Meredith *Diana of the Crossways*.
+- **Standard Ebooks round 2** (`extract_standard_ebooks_round2.py`, 16
+  entries): The post-1925 Woolf trilogy (*Mrs Dalloway* / *To the Lighthouse*
+  / *Orlando*), Hemingway *The Sun Also Rises*, Faulkner *Soldiers' Pay*.
+  Closes the explicit Woolf gap from the issue.
+- **SCP round 2** (`extract_scp_round2.py`, 9 entries): SCP-001 proposals
+  (Clef / Ball / djkaktus), SCP-093, SCP-2000, SCP-1981, SCP-1762, SCP-2935,
+  SCP-5000. Diversifies into proposal-form, narrative-drift, transcript-form,
+  tale-adjacent SCP modes.
+
+After round 7: Woolf 1 → 17 entries; Conrad 1 → 10; Hardy 2 → 8; Hemingway
+0 → 7; Faulkner 0 → 7. Validation: literary classification 89.8%/85.4% (up
+from 89.2%/83.6%); Austen author-discrimination rank ordering preserved.
+
+## Round-6 author-gap fill (2026-04-28)
+
+Per `lab/issues/2026-04-28-corpus-author-gaps.md`. Three automated Phase-1
+pipelines:
+
+- **Pipeline A — PG round 6 breadth** (`extract_pg_round6_breadth.py`, 26
+  entries): Sterne *Tristram Shandy*, Defoe *Robinson Crusoe* + *Moll
+  Flanders*, Edgeworth *Castle Rackrent*, Wilde *Dorian Gray* + *De
+  Profundis*, Gaskell *Cranford* + *North and South*, Joyce *Ulysses*
+  multi-sample (Calypso / Eumaeus / mid-text), Lawrence *Women in Love* +
+  *The Lost Girl*, Tagore *Sadhana*, Hemingway *In Our Time* (PG 61085 —
+  the minimalist anchor finally captured), Mann *Death in Venice* (Burke
+  trans, PG 66073) + *Royal Highness*.
+- **Pipeline B — Standard Ebooks** (`extract_standard_ebooks.py`, 6
+  entries): Faulkner *Sound and the Fury* + *As I Lay Dying* (US PD Jan
+  2025/2026 but not on PG.org); Hemingway *A Farewell to Arms* (PD Jan
+  2025). XHTML extracted from `github.com/standardebooks/<slug>/src/epub/text/`.
+- **Pipeline D — SCP Foundation CC-BY-SA** (`extract_scp.py`, 8 entries):
+  SCP-173, SCP-049, SCP-682, SCP-2317, SCP-3008, SCP-914, SCP-1730,
+  SCP-2718. Procedural-bureaucratic / institutional-voice register for
+  Stage 3 position #10. License `cc_by_sa_3_0`; per-entry attribution in
+  YAML `source` field.
+
+**Phase 2 manual fair-use staging** — 39 author dirs stubbed at
+`lab/fair-use-staging/<author>/` with canonical `_meta.json` for B1-B8
+curation batches (Carver, Hempel, Davis, McCarthy, Pynchon, DFW, Borges,
+Nabokov, Kincaid, Moore, Calvino, Hamid, Nelson, Rankine, Manguso, Tao
+Lin, Moshfegh, Lispector, Saramago, Schulz, Morrison, O'Connor, Mann,
+Ishiguro, Hurston, Saunders, Boyer, Koestenbaum, hooks, Bulgakov, Babel,
+Sebald, Knausgård, Krasznahorkai, Tanizaki). User pastes excerpts (≤500
+words target / 600 hard cap), runs `extract_fair_use_excerpts.py` →
+`append_corpus_entries.py` → `rebuild_cache()`. See
+`lab/fair-use-staging/README.md` for the workflow.
+
+**Phase 4 deferred** — Sonnet 4.6 n=30 centroid when Sonnet joins
+production writer pool.
+
 ## Acknowledged gaps
 
 - **Contemporary literary minimalist/maximalist** (Carver, McCarthy,
   Pynchon, DFW, Hempel, Davis, Strout) — no public corpus exists; copyright
-  intact. Per the deep-research finding, manual fair-use excerpting is the
-  only legal path. Skipped for v1; the canonical pre-1929 literary +
-  antislop-DPO pairs cover the high-end literary register reasonably.
+  intact. Phase 2 of `2026-04-28-corpus-author-gaps.md` ships the manual
+  fair-use staging path (`lab/fair-use-staging/`); user-paced curation when
+  ready. Hemingway iceberg-register and Faulkner stream-of-consciousness
+  now both anchored via round 6.
 - **Free indirect discourse-annotated English corpus** doesn't exist
   publicly (closest analog: the German Brunner et al. 2019). Hand-tagging
   passages from Joyce-Portrait / Lawrence / Mansfield / Forster (all

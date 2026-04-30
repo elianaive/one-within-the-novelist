@@ -11,7 +11,7 @@ from owtn.prompts.stage_1.registry import (
     filter_genesis_eligible,
     is_genesis_eligible,
 )
-from owtn.runner import _build_shinka_configs
+from owtn.stage_1.runner import _build_shinka_configs
 
 
 NON_GENESIS = {"inversion", "compost", "crossover"}

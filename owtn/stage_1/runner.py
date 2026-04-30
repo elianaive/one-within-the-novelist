@@ -26,7 +26,6 @@ from shinka.launch import LocalJobConfig
 from shinka.llm import extract_between
 
 from owtn.evaluation.pairwise import compare as pairwise_compare
-from owtn.evaluation.tournament import run_tournament
 from owtn.llm.call_logger import llm_context, llm_log_dir
 from owtn.models.stage_1.concept_genome import ConceptGenome
 from owtn.models.stage_1.config import StageConfig
@@ -37,7 +36,8 @@ from owtn.prompts.stage_1.registry import (
     filter_genesis_eligible,
     load_registry,
 )
-from owtn.state_logger import snapshot_generation
+from owtn.stage_1.state_logger import snapshot_generation
+from owtn.stage_1.tournament import run_tournament
 
 logger = logging.getLogger(__name__)
 
@@ -589,7 +589,7 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
         # End-of-run statistics report — judge diagnostics, cost breakdown,
         # evolution dynamics. Appended to evolution_run.log + stats.json.
         try:
-            from owtn.stats_report import write_stats
+            from owtn.stage_1.stats_report import write_stats
             write_stats(Path(self.results_dir))
         except Exception as e:
             logger.warning("Failed to write stats report: %s", e)

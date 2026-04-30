@@ -1,0 +1,29 @@
+# Stage 3 light config — production-leaning; larger panel, more iterations.
+#
+# Cost ~$3-4 per (concept, structure) pair with panel_size 6. Use this when
+# you want the panel's diversity to actually matter — 4 agents reach
+# Condorcet ties more often than 6.
+
+stage_3:
+  adjacent_scene:
+    picker_model: claude-sonnet-4-6
+    drafter_model: claude-sonnet-4-6
+    picker_max_attempts: 3
+    draft_word_cap: 400
+    picker_reasoning_effort: medium
+
+  casting:
+    caster_model: claude-sonnet-4-6
+    panel_size: 6
+    reasoning_effort: medium
+
+  voice_session:
+    generator_model: deepseek-v4-pro
+    phase_1:
+      explore_max_iters: 35
+    phase_4:
+      explore_max_iters: 25
+    commit_sampler:
+      temperature: 0.6
+      max_tokens: 16384
+    analytical_reasoning_effort: medium

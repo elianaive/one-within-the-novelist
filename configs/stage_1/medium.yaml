@@ -5,7 +5,7 @@
 # evolution dynamics. Self-critic on the generator (critique-revise
 # cycle on every generation/genesis/mutation).
 #
-# Run with: uv run python -m owtn --config configs/stage_1/medium.yaml \
+# Run with: uv run python -m owtn.stage_1 --config configs/stage_1/medium.yaml \
 #           --max-eval-jobs 5 --max-proposal-jobs 4
 #
 # Expected: ~50-80 concepts, ~$30-80 total (self-critic adds ~2x
