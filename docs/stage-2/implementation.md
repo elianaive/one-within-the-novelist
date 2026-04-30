@@ -59,7 +59,7 @@ owtn/
 - `owtn/llm/` — reused as-is
 - `owtn/judging/` — reused; verify `tier_b.py` handles the DAG rendering path without Stage-2-specific logic
 - `owtn/evaluation/pairwise.py` — dual-ordering + per-criterion voting unchanged; Stage 2 calls it with different prompts/rubrics
-- `owtn/evaluation/tournament.py` — reused for within-concept round-robin
+- `owtn/stage_1/tournament.py` — reused for within-concept round-robin
 - `owtn/models/judge.py` — unchanged
 
 **Net new infrastructure:**
@@ -736,7 +736,7 @@ This is logging-only in v1. No automatic response. Review after first real run.
 Components that need small additions to support Stage 2:
 
 - `owtn/evaluation/pairwise.py`: add support for the Stage 2 rubric format if it diverges from Stage 1's. If not, no change.
-- `owtn/evaluation/tournament.py`: confirm it supports round-robin mode for small pools.
+- `owtn/stage_1/tournament.py`: confirm it supports round-robin mode for small pools.
 - `owtn/judging/personas.py`: no change.
 - `owtn/llm/client.py`: if Stage 2 introduces new model routing (e.g., cheap rollout model), add routing rules.
 

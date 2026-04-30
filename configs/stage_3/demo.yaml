@@ -1,0 +1,53 @@
+# Stage 3 demo config — single (concept, structure) pair, full voice session.
+#
+# Cost ~$1.50-$2.00 for a 4-agent panel on a Stage-1 concept paired with a
+# real Stage-2 DAG. Use this for end-to-end smoke tests; bump
+# `voice_session.phase_*.explore_max_iters` when iterating on a concept that
+# stresses the agents (long bench scenes, dense thematic constraints).
+
+stage_3:
+  # ─── Adjacent-scene bench ─────────────────────────────────────────────
+  # The picker reasons across multiple passes (brainstorm → pick →
+  # voice-latitude check); medium reasoning effort lets it think before
+  # committing to three scene picks. The drafter is denotative and doesn't
+  # itself need reasoning.
+  adjacent_scene:
+    picker_model: claude-sonnet-4-6
+    drafter_model: claude-sonnet-4-6
+    picker_max_attempts: 3
+    draft_word_cap: 400
+    picker_reasoning_effort: medium
+
+  # ─── Voice-panel casting ──────────────────────────────────────────────
+  # Three-call flow (classify, argue per persona, select top-N). Each call
+  # benefits from reasoning — classification is selection-under-constraint,
+  # arguments build per-persona case + risk + cast_role, selection picks
+  # for orthogonal coverage.
+  casting:
+    caster_model: claude-sonnet-4-6
+    panel_size: 4
+    reasoning_effort: medium
+
+  # ─── Voice session ────────────────────────────────────────────────────
+  # `generator_model` is the LLM voice agents run on for Phase 1 / Phase 4
+  # explore loops AND Phase 3 / Phase 5 analytical commits. Overrides the
+  # persona-level `model` field. DeepSeek-v4-pro is the default development
+  # generator (reasoning + cheap-enough cost for long tool-use loops).
+  #
+  # phase_1 / phase_4 explore_max_iters caps how many tool-use rounds the
+  # agent gets before the tool-use nudge fallback fires. Phase 4's budget
+  # is smaller because revision is more constrained than initial development.
+  #
+  # commit_sampler overrides temperature + max_tokens for the prose-bearing
+  # finalize_voice_genome call. Reasoning stays disabled (per project memory:
+  # "thinking mode is more detached / unhelpful for prose").
+  voice_session:
+    generator_model: deepseek-v4-pro
+    phase_1:
+      explore_max_iters: 30
+    phase_4:
+      explore_max_iters: 22
+    commit_sampler:
+      temperature: 0.6
+      max_tokens: 16384
+    analytical_reasoning_effort: medium

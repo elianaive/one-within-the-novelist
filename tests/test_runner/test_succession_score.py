@@ -5,7 +5,7 @@ See `lab/issues/2026-04-18-champion-succession-score-bug.md`.
 
 from __future__ import annotations
 
-from owtn.runner import _SUCCESSION_EPS, _challenger_succession_score
+from owtn.stage_1.runner import _SUCCESSION_EPS, _challenger_succession_score
 
 
 class TestChallengerSuccessionScore:

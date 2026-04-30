@@ -6,7 +6,7 @@ evo_config.llm_kwargs as parallel lists indexed by model position. See
 from __future__ import annotations
 
 from owtn.models.stage_1.config import StageConfig
-from owtn.runner import _build_shinka_configs
+from owtn.stage_1.runner import _build_shinka_configs
 
 
 def _load(path: str = "configs/stage_1/dry_run.yaml") -> StageConfig:

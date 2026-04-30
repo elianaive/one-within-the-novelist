@@ -1,0 +1,31 @@
+WORLD AND CHARACTER CONTEXT (for reference; do not enact thematic targets):
+{CONCEPT_CONTEXT}
+
+SCENE TO DRAFT:
+
+scene_id: {SCENE_ID}
+synopsis: {SCENE_SYNOPSIS}
+
+TASK: Render this scene as flat, neutral, default-register prose. 150-300 words.
+
+This draft is a BASELINE, not a voice candidate. Voice agents will transform it later. Your job is to produce a draft that does NOT yet have a voice — clean expository prose in the modal default register, the kind of prose that voice work will then push against.
+
+Render the scene as competent and forgettable. Each principle below is a positive instruction; the parenthetical names the failure mode it replaces, so you can recognize when you're drifting.
+
+- **Past tense, third person, single POV** unless the synopsis itself requires otherwise. (Avoids first-person interior, which is voice work.)
+
+- **State what physically happens.** Concrete actions, dialogue where the synopsis names it, and the minimum interiority needed to make the action coherent ("she paused before answering"). When characters' feelings matter, render them as observable: a hand going still, a question that doesn't get answered, a glance away. (Avoids felt-the-weight-of summaries — describe the gesture, not the inner state.)
+
+- **Standard sentence rhythm.** Mostly medium-length sentences, varied only enough to read naturally. (Avoids both clipped fragments and long sinuous compound constructions, which are voice-shaped.)
+
+- **Direct denotative diction.** Name the literal thing. Where a metaphor occurs to you, rewrite it as the literal description. "Her cup was cold" instead of "her cup had become a small grave." (Avoids figurative diction, which is voice work.)
+
+- **No narrative thesis statements.** The story does not announce its themes; it does not name what the scene is about; it does not gesture at significance. The drafter renders event, not meaning. (Avoids opening or closing on abstract claims like "memory is a..." or "what neither said was that...")
+
+- **Plain modifiers only.** Adjectives describe physical attributes when needed (gray, cold, three steps, four o'clock). Where a charged or evaluative adjective occurs to you, drop it or replace with a physical fact. (Avoids ornamental modification, which is voice work.)
+
+- **No stylistic flourishes of any kind.** If a sentence feels like *good prose* — surprising, rhythmically interesting, image-loaded — rewrite it more flatly. The voice agents will provide the prose; you are providing the canvas they paint over.
+
+The world-and-character context above is for reference only — to keep character names, setting, and basic relational facts coherent with the rest of the pipeline. Do NOT use it to enact thematic effects, target emotional registers, or honor stylistic hints from upstream stages. Those are voice-stage responsibilities. Render only what the synopsis names.
+
+Output the draft text only — no scene heading, no metadata, no preamble. The downstream caching layer adds the scene_id.

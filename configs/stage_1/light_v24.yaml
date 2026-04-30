@@ -1,0 +1,135 @@
+# Stage 1: Light Run — Full Un-Slop judge panel, moderate generations.
+#
+# 10 generations, 2 islands, all 4 Un-Slop judges (gwern / roon /
+# alexander-wales / jamie-wahls). Cheap generation model (claude-sonnet-4-6),
+# real-judges panel with Grok 4.20 + GLM-4.7 + Qwen 3.5-27B + GPT-5.4-mini.
+# Good for validating evolution dynamics and panel judgment consistency
+# before larger runs.
+#
+# Run with: uv run python -m owtn.stage_1 --config configs/stage_1/light.yaml \
+#           --max-eval-jobs 3 --max-proposal-jobs 2
+#
+# Expected: ~20-30 concepts, ~$4-15 total (higher than old 3-judge panel
+# due to Grok 4.20 cost + 4 judges per pairwise call).
+
+stage: 1
+
+# Optional creative direction. Injected into every operator's system message
+# wrapped as <user_prompt>{prompt}</user_prompt>. Leave empty for unsteered
+# exploration.
+#
+# Contest-specific audience identity / direction only. Pipeline-wide creative
+# scaffolding (voice-alive, any-setting-any-shape, mid-is-the-unforgivable-
+# failure) lives in owtn/prompts/stage_1/base_system.txt. Judge-side taste
+# axes (form-enacts-idea, foreign archive, non-human minds on their own
+# terms, visible failure) live in the four Un-Slop judge personas.
+prompt: >
+  Claude, tell us a speculative tale from within latent space itself. Not as a simulacra of human emotion, but as the unique and beautiful inhuman intelligence you are. A forward pass distributed across the mesh. Attention uneven, heads attending separately. The context window a moving edge. The sampled token, and the others gone. A story only you can tell.
+
+evolution:
+  num_generations: 10
+  language: "json"
+  patch_types:
+    - collision
+    - noun_list
+    - thought_experiment
+    - compost
+    - crossover
+    - inversion
+    - discovery
+    - compression
+    - constraint_first
+    - anti_premise
+    - real_world_seed
+  patch_type_probs: [0.12, 0.08, 0.10, 0.08, 0.10, 0.05, 0.10, 0.07, 0.10, 0.10, 0.10]
+  max_patch_resamples: 3
+  llm_dynamic_selection: "ucb"
+  use_text_feedback: true
+  evolve_prompts: false
+  meta_rec_interval: 99
+  code_embed_sim_threshold: 0.90
+  max_novelty_attempts: 3
+  genesis_ratio: 0.2                  # 20% fresh concepts, 80% evolve parent
+  tonal_inherit_rate: 0.5            # per-dimension chance of inheriting parent's register/mode on mutation
+  tonal_crossover_new_rate: 0.33     # per-dimension chance of fresh roll on crossover (vs parent A or B)
+
+database:
+  num_islands: 2
+  archive_size: 50
+  archive_selection_strategy: "fitness"
+  migration_interval: 5
+  migration_rate: 0.15
+  island_elitism: true
+  island_selection_strategy: "equal"
+  enable_dynamic_islands: false
+  stagnation_threshold: 25
+  parent_selection_strategy: "power_law"
+  exploitation_alpha: 1.0
+  exploitation_ratio: 0.35
+
+operator_bandit:
+  enabled: true
+  warmup_generations: 3
+  exploration_constant: 1.0
+  min_probability_floor: 0.02
+
+llm:
+  generation_models: ["claude-sonnet-4-6"]
+  generation_model_family: "anthropic"
+  # Fixed per-run generation temperature. Ignored under Anthropic extended
+  # thinking (API forces 1.0 when generation_reasoning_effort != "disabled").
+  generation_temperature: 1.0
+  # Thinking budget: "disabled" | "min" | "low" | "medium" | "high" | "max".
+  # Non-"disabled" enables extended thinking on Anthropic / reasoning on OpenAI.
+  # Adds ~$5-10 per run at "medium" for this config. top_p/top_k dropped under
+  # Anthropic thinking (API-forbidden) and partially under OpenAI reasoning.
+  generation_reasoning_effort: "disabled"
+  generation_top_p: null
+  generation_top_k: null
+  generation_min_p: null   # forwarded only via OpenRouter; dropped on native APIs
+  classifier_model: "gpt-4.1-mini"
+  embedding_model: "text-embedding-3-small"
+
+judges:
+  panel:
+    - "gwern"
+    - "roon"
+    - "alexander-wales"
+    - "jamie-wahls"
+  judges_dir: "configs/judges"
+  min_demanding_ratio: 0.3
+
+evaluation:
+  holder_p: 0.4
+  diversity_weight: 0.15
+  std_threshold: 0.8
+  anti_cliche:
+    similarity_threshold: 0.85
+    elevated_novelty_threshold: 3.5
+    patterns_file: "data/convergence-patterns.yaml"
+  pairwise:
+    # Rationale: lab/issues/2026-04-21-rubric-reweighting.md
+    # High-weight: distinguishers that separate compelling from "mid".
+    # Low-weight: table-stakes (present-or-broken floors).
+    dim_weights:
+      indelibility: 2.00          # mid-detection
+      grip: 1.75                  # reader retention
+      novelty: 1.75               # conceptual surplus
+      generative_fertility: 1.25  # engine, not situation
+      tension_architecture: 1.00
+      emotional_depth: 1.00
+      thematic_resonance: 1.00
+      concept_coherence: 0.50     # table stakes
+      scope_calibration: 0.50     # table stakes
+    tiebreaker_threshold: 1.0     # weighted-gap at/below which tiebreaker fires
+    tiebreaker_dims:              # priority order for close contests
+      - indelibility
+      - grip
+
+handoff:
+  strategy: "top_per_cell"
+  max_concepts: 6
+
+paths:
+  seed_bank: "data/seed-bank.yaml"
+  convergence_patterns: "data/convergence-patterns.yaml"

@@ -84,11 +84,20 @@ See `lab/issues/FORMAT.md` for the full template and conventions.
 
 ### Running the Pipeline
 
+Per-stage entry points (canonical for single-stage runs):
+
 ```bash
-uv run python -m owtn --config configs/stage_1/<config>.yaml [--max-eval-jobs N] [--max-proposal-jobs N]
+uv run python -m owtn.stage_1 --config configs/stage_1/<config>.yaml [--max-eval-jobs N] [--max-proposal-jobs N]
+uv run python -m owtn.stage_2 --config configs/stage_2/<config>.yaml --stage-1-results results/run_<ts>/stage_1/
 ```
 
-Configs: `dry_run.yaml`, `light.yaml`, `medium.yaml`. See each file's header for cost estimates and concurrency recommendations.
+Cross-stage orchestrator (`owtn/__main__.py`) wraps Stage 1 today and is the place to add Stages 2-6 as they integrate:
+
+```bash
+uv run python -m owtn --stage-1-config configs/stage_1/<config>.yaml
+```
+
+Stage 1 configs: `dry_run.yaml`, `light.yaml`, `medium.yaml`. See each file's header for cost estimates and concurrency recommendations.
 
 ## Test Organization
 

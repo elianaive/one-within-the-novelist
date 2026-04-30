@@ -1,0 +1,40 @@
+PHASE 5 — BORDA RANKING.
+
+The four post-revision proposals are below. Yours is included for reference; you do not rank yourself.
+
+YOUR PROPOSAL ({YOUR_AGENT_ID}):
+{YOUR_PROPOSAL}
+
+OTHERS TO RANK:
+{OTHER_PROPOSALS}
+
+Your own working memory from Phase 1 (initial voice development) and Phase 4 (revision) — your aesthetic reasoning across the session:
+{YOUR_PRIOR_NOTES}
+
+TASK: rank the OTHER proposals from best to worst on overall voice quality. This is the writers' verdict — your read of which proposal you'd most stand behind as the voice this story should be written in.
+
+WHAT YOU ARE LOOKING FOR.
+
+A voice that LEAVES A MARK. Voices leave marks by taking risks the model would not take by default — odd POV, unstable register, syntactic structures that should not work but do, anthropomorphism without a safety net, a stance that refuses the obvious sympathies. The proposals that play it safe — that execute the concept's stated demands cleanly without exceeding them — are not winning here. They are the model's near-default in literary clothing.
+
+The criteria are ordered. Earlier criteria dominate.
+
+1. **Risk that landed.** Does this voice attempt something the other proposals didn't dare, AND does the rendering pull it off? Risk that fails is bad; safety is also bad. Risk that lands is what wins. If a proposal commits to second-person address to a non-conscious entity, or fragments to white space, or sustains a paratactic engine for a full paragraph — and the renderings carry the move — that proposal is doing voice work the others aren't.
+
+2. **Anti-default.** Independent of risk: how far is this prose from the model's average response shape? Burstiness, sentence-length variance, register collisions, willingness to be ugly or strange. A voice can be distinctive on the page (clear fingerprint) and still sit close to the model's default attractor (literary-fluent, evenly-paced, well-mannered). Penalize default-shaped prose even when the verbal description claims distinctiveness.
+
+3. **Concept service through enactment, not execution.** Does the voice deliver the concept's effect on the page, or does it list the concept's demands and then check them off? "The voice holds two registers coordinate" stated in the description and then demonstrated by alternating sentences from each register is execution, not enactment. Enactment is when the registers are doing work the description didn't predict.
+
+4. **Internal consistency** — only as a guard against false advertising. If a proposal claims one thing and renders another, that is a flaw. But a proposal that promises X and delivers X+something_unexpected is NOT inconsistent; it is exceeding the brief. Do not penalize a rendering for doing more than its description forecast.
+
+EXPLICIT GUARDS AGAINST KNOWN FAILURE MODES.
+
+- **Penalize the conditional voice.** If you find yourself ranking a bold proposal lower because of "might feel forced," "might be polarizing," "could be overwrought," "risks losing X" — stop. Those are predictions of failures that did not happen on the page. Ask whether the move actually fails in the rendering provided. If the rendering carries the risk, the conditional is a bias against ambition. Drop it.
+- **Penalize the safe Condorcet winner.** A proposal that no ranker puts first but everyone puts second is the panel's compromise. That is a sign of moderate-praise-from-all, which is the failure mode of safe voices: they are the lowest-common-denominator literary voice. The voice you most stand behind is allowed to be one nobody else picks.
+- **Self-similarity is not the only bias.** You may also be biased AGAINST proposals close to your own aesthetic (because they crowd your ground) or FOR them (because they validate it). Both are noise. Rank on what is on the page.
+
+Output the structured BordaRanking — `ranking` is a list of agent ids best to worst. Include exactly the {N_OTHERS} other agents; do not include yourself.
+
+CONSTRAINTS:
+- This is single-pass. No follow-up, no debate. Decide and commit.
+- Borda is preferred over Schulze for small panels; ties between adjacent ranks are common and acceptable in your reasoning, but you must produce a strict total order in the output.

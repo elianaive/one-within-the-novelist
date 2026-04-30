@@ -227,11 +227,12 @@ class AnthropicProvider:
         new_msg_history = msg_history + [
             {"role": "user", "content": [{"type": "text", "text": msg}]}
         ]
-        call_kwargs = self._prepare_call_kwargs(kwargs, output_model)
+        call_kwargs, extra_headers = self._prepare_call_kwargs(model, kwargs, output_model)
         response = client.messages.create(
             model=model,
             system=_build_system(system_msg, system_prefix),
             messages=new_msg_history,
+            extra_headers=extra_headers,
             **call_kwargs,
         )
         return self._build_result(
@@ -260,11 +261,12 @@ class AnthropicProvider:
         new_msg_history = msg_history + [
             {"role": "user", "content": [{"type": "text", "text": msg}]}
         ]
-        call_kwargs = self._prepare_call_kwargs(kwargs, output_model)
+        call_kwargs, extra_headers = self._prepare_call_kwargs(model, kwargs, output_model)
         response = await client.messages.create(
             model=model,
             system=_build_system(system_msg, system_prefix),
             messages=new_msg_history,
+            extra_headers=extra_headers,
             **call_kwargs,
         )
         return self._build_result(
@@ -273,19 +275,32 @@ class AnthropicProvider:
         )
 
     def _prepare_call_kwargs(
-        self, kwargs: dict, output_model: Optional[Type[BaseModel]]
-    ) -> dict:
-        """Inject the forced-tool-use payload when output_model is set.
+        self,
+        api_model: str,
+        kwargs: dict,
+        output_model: Optional[Type[BaseModel]],
+    ) -> tuple[dict, Optional[dict]]:
+        """Translate generic kwargs (reasoning_effort, max_tokens, temperature)
+        into Anthropic shape via `build_call_kwargs`, then attach the tool
+        payload when output_model is set.
 
-        Forced tool use can't combine with extended thinking — drop the
-        `thinking` kwarg so callers don't accidentally request both."""
-        out = dict(kwargs)
+        Tool use is always optional (`tool_choice: auto`) so the model has a
+        real reasoning channel and we never force it to skip thinking. With a
+        single tool + clear prompt the model almost always calls it; the
+        existing `_extract_tool_input` raise-path handles the rare miss.
+
+        Returns (call_kwargs, extra_headers). `extra_headers` carries the
+        interleaved-thinking beta header when thinking is enabled.
+        """
+        out = self.build_call_kwargs(api_model=api_model, requested=kwargs)
         out.setdefault("max_tokens", ANTHROPIC_DEFAULT_MAX_TOKENS)
         if output_model is not None:
-            out.pop("thinking", None)
             out["tools"] = [_structured_output_tool(output_model)]
-            out["tool_choice"] = {"type": "tool", "name": output_model.__name__}
-        return out
+            out["tool_choice"] = {"type": "auto"}
+        extra_headers: Optional[dict] = None
+        if out.get("thinking"):
+            extra_headers = {"anthropic-beta": "interleaved-thinking-2025-05-14"}
+        return out, extra_headers
 
     def _build_result(
         self,
@@ -300,7 +315,13 @@ class AnthropicProvider:
     ) -> QueryResult:
         if output_model is not None:
             content = _extract_tool_input(response, output_model)
+            # Pull the thinking block when extended thinking is enabled — the
+            # response carries it alongside the tool_use under tool_choice=auto.
             thought = ""
+            for block in response.content:
+                if block.type == "thinking":
+                    thought = block.thinking
+                    break
             new_msg_history.append(
                 {"role": "assistant", "content": [{"type": "text", "text": str(content)}]}
             )
@@ -351,7 +372,7 @@ class AnthropicProvider:
         tool_use/tool_result rounds.
         """
         client = client or self._async()
-        call_kwargs = dict(kwargs)
+        call_kwargs = self.build_call_kwargs(api_model=model, requested=kwargs)
         call_kwargs.setdefault("max_tokens", ANTHROPIC_DEFAULT_MAX_TOKENS)
         # Translate neutral {name, description, parameters} → Anthropic's
         # {name, description, input_schema}. Allows the orchestrator to stay
@@ -364,6 +385,9 @@ class AnthropicProvider:
             }
             for t in tools
         ]
+        extra_headers: Optional[dict] = None
+        if call_kwargs.get("thinking"):
+            extra_headers = {"anthropic-beta": "interleaved-thinking-2025-05-14"}
 
         history: list[dict] = list(msg_history) + [
             {"role": "user", "content": [{"type": "text", "text": msg}]}
@@ -382,6 +406,7 @@ class AnthropicProvider:
                 model=model,
                 system=_build_system(system_msg, system_prefix),
                 messages=list(history),
+                extra_headers=extra_headers,
                 **call_kwargs,
             )
             costs = get_anthropic_costs(response, model)

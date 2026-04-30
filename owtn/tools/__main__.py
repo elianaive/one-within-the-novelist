@@ -2,9 +2,10 @@
 
 Usage:
     uv run python -m owtn.tools analyze --passage P.txt --caller-model M
-    uv run python -m owtn.tools lookup --target austen --n 2
+    uv run python -m owtn.tools lookup --query austen --n 2
     uv run python -m owtn.tools slop --passage P.txt
     uv run python -m owtn.tools style --passage P.txt
+    uv run python -m owtn.tools thesaurus --word happy --mode means_like
     uv run python -m owtn.tools rebuild-cache
 """
 
@@ -17,6 +18,7 @@ from pathlib import Path
 from .lookup_exemplar import lookup_exemplar
 from .slop_score import slop_score
 from .stylometry import rebuild_cache, stylometry
+from .thesaurus import MODE_TO_PARAM, thesaurus
 from .writing_style import writing_style
 
 
@@ -33,9 +35,12 @@ def main() -> None:
     p_run.add_argument("--target-styles", nargs="+", default=None,
                        help="Optional author/tag tokens to compute style distances for")
 
-    p_lookup = sub.add_parser("lookup", help="Retrieve passages from exemplars or baselines")
-    p_lookup.add_argument("--target", required=True,
-                          help="Author slug, style tag, or entry id")
+    p_lookup = sub.add_parser(
+        "lookup",
+        help="Retrieve passages from exemplars or baselines (deterministic key lookup)",
+    )
+    p_lookup.add_argument("--query", required=True,
+                          help="Entry id, author slug, or tag (no NL — this is the deterministic path)")
     p_lookup.add_argument("--n", type=int, default=2,
                           help="How many passages to return (default 2)")
     p_lookup.add_argument("--max-words", type=int, default=400,
@@ -50,6 +55,14 @@ def main() -> None:
     p_style.add_argument("--passage", required=True, help="Path to passage text file")
     p_style.add_argument("--compare-to", nargs="+", default=None,
                         help="One or more reference passage files to compare against")
+
+    p_thes = sub.add_parser("thesaurus", help="Query Datamuse for diction work")
+    p_thes.add_argument("--word", required=True, help="Query word")
+    p_thes.add_argument("--mode", default="means_like",
+                        choices=sorted(MODE_TO_PARAM),
+                        help="Lookup mode (default: means_like)")
+    p_thes.add_argument("--max", type=int, default=20,
+                        help="Max results to return (default 20)")
 
     sub.add_parser("rebuild-cache", help="Rebuild the stylometric signal cache")
 
@@ -73,7 +86,7 @@ def main() -> None:
         return
 
     if args.cmd == "lookup":
-        result = lookup_exemplar(args.target, n=args.n, max_words=args.max_words)
+        result = lookup_exemplar(args.query, n=args.n, max_words=args.max_words)
         print(json.dumps(result, indent=2))
         return
 
@@ -90,6 +103,11 @@ def main() -> None:
         compare_to = ([Path(p).read_text(encoding="utf-8") for p in args.compare_to]
                       if args.compare_to else None)
         report = writing_style(passage, compare_to=compare_to)
+        print(json.dumps(report.to_dict(), indent=2))
+        return
+
+    if args.cmd == "thesaurus":
+        report = thesaurus(args.word, mode=args.mode, max_results=args.max)
         print(json.dumps(report.to_dict(), indent=2))
         return
 

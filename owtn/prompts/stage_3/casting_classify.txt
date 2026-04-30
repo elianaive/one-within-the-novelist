@@ -1,0 +1,14 @@
+CONCEPT (the Stage 1 concept this story realizes):
+{CONCEPT_JSON}
+
+STRUCTURE (the Stage 2 DAG):
+{DAG_RENDERING}
+
+VOCABULARY (each tag asks one yes/no question about THIS concept):
+{VOCABULARY_BLOCK}
+
+TASK: For each vocabulary tag, decide TRUE or FALSE for this concept and give a one-sentence reason citing concept content.
+
+A tag is TRUE only when the concept forecloses the property — when `concept_lacks_sensory_world` is TRUE, no persona dependent on physical detail can operate. Default to FALSE; mark TRUE only on genuine foreclosure.
+
+Output one classification per vocabulary tag, in vocabulary order, with `tag`, `is_true`, and `reason`.

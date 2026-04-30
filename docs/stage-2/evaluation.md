@@ -278,7 +278,7 @@ See `judges.md` for the full adaptation discussion and the open question about j
 Stage 2 reuses the Stage 1 pairwise infrastructure directly:
 
 - `owtn/evaluation/pairwise.py` — dual-ordering, per-dimension voting, majority aggregation.
-- `owtn/evaluation/tournament.py` — tournament mechanics (we'll use its round-robin mode for the within-concept tournament).
+- `owtn/stage_1/tournament.py` — tournament mechanics (we'll use its round-robin mode for the within-concept tournament).
 - `owtn/evaluation/prompts.py` — judge prompt assembly, adapted for Stage 2's rubric and base system message.
 
 The only Stage-2-specific additions are:
