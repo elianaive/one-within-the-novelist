@@ -18,7 +18,11 @@ values plus the per-bucket median + p90 from the calibration corpus so
 the agent can interpret each scalar against concrete anchors.
 
 Metric definitions (matching slop-score upstream where applicable):
-- `vocab_level`: Flesch-Kincaid grade level. Heuristic syllable count.
+- `vocab_level`: mean syllables per word (heuristic syllable count). The
+  vocabulary term of the Flesch-Kincaid formula, isolated from the
+  sentence-length term — so this metric reads pure vocab sophistication
+  even when the prose's sentence segmentation is far from the corpus
+  median (e.g. one-sentence incantatory paragraphs).
 - `avg_sentence_length`: words per sentence (spaCy sentence segmentation).
 - `avg_paragraph_length`: words per paragraph (split on \\n\\s*\\n).
 - `dialogue_frequency`: dialogue spans per 1000 characters of text.
@@ -37,14 +41,20 @@ from owtn.judging.tier_a.preprocessing import extract_dialogue, get_nlp, get_par
 # at lab/scripts/writing_style_calibration_sweep.py. Rerun and update if
 # the corpus or metric definitions change.
 REFERENCE_DISTRIBUTION: dict[str, dict[str, dict[str, float]]] = {
+    # vocab_level = mean syllables per word. Bucket medians cluster tightly
+    # in [1.31, 1.43] — vocabulary sophistication, measured purely, is a
+    # weak register discriminator. Most of the register signal that the
+    # earlier FK-grade vocab_level appeared to carry was actually the
+    # sentence-length term; that signal has moved to avg_sentence_length
+    # where it belongs.
     "vocab_level": {
-        "human_literary":       {"median":  9.27, "p90": 16.03},
-        "human_amateur":        {"median":  6.12, "p90": 10.67},
-        "frontier_llm_default": {"median":  4.41, "p90":  7.05},
-        "older_llm_default":    {"median":  7.99, "p90": 11.33},
+        "human_literary":       {"median": 1.36, "p90": 1.50},
+        "human_amateur":        {"median": 1.36, "p90": 1.52},
+        "frontier_llm_default": {"median": 1.31, "p90": 1.42},
+        "older_llm_default":    {"median": 1.43, "p90": 1.59},
     },
     "avg_sentence_length": {
-        "human_literary":       {"median": 21.89, "p90": 38.06},
+        "human_literary":       {"median": 20.52, "p90": 37.89},
         "human_amateur":        {"median": 12.84, "p90": 24.00},
         "frontier_llm_default": {"median": 11.15, "p90": 15.95},
         "older_llm_default":    {"median": 16.40, "p90": 23.83},
@@ -53,21 +63,21 @@ REFERENCE_DISTRIBUTION: dict[str, dict[str, dict[str, float]]] = {
         # Note: p90s are noisy here — some literary excerpts are single
         # long paragraphs, inflating the upper tail. Median is the reliable
         # anchor for this metric.
-        "human_literary":       {"median": 94.83, "p90": 614.0},
-        "human_amateur":        {"median": 48.20, "p90": 368.0},
-        "frontier_llm_default": {"median": 49.88, "p90":  75.20},
-        "older_llm_default":    {"median": 55.71, "p90": 752.0},
+        "human_literary":       {"median": 102.45, "p90": 614.0},
+        "human_amateur":        {"median":  48.20, "p90": 368.0},
+        "frontier_llm_default": {"median":  49.88, "p90":  75.20},
+        "older_llm_default":    {"median":  55.71, "p90": 752.0},
     },
     "dialogue_frequency": {
-        "human_literary":       {"median":  1.54, "p90":  5.02},
-        "human_amateur":        {"median":  1.80, "p90":  4.44},
-        "frontier_llm_default": {"median":  2.73, "p90":  5.71},
-        "older_llm_default":    {"median":  1.60, "p90":  5.04},
+        "human_literary":       {"median": 1.41, "p90": 5.26},
+        "human_amateur":        {"median": 1.80, "p90": 4.44},
+        "frontier_llm_default": {"median": 2.73, "p90": 5.71},
+        "older_llm_default":    {"median": 1.60, "p90": 5.04},
     },
 }
 
 CORPUS_SIZES = {
-    "human_literary": 203,
+    "human_literary": 572,
     "human_amateur": 13,
     "frontier_llm_default": 34,
     "older_llm_default": 339,
@@ -97,15 +107,17 @@ def _count_syllables(word: str) -> int:
     return len(groups) if groups else 1
 
 
-def _flesch_kincaid_grade(words: list[str], n_sentences: int) -> float:
-    """Standard FK grade level: 0.39·(W/S) + 11.8·(Syl/W) − 15.59."""
-    if not words or n_sentences == 0:
+def _mean_syllables_per_word(words: list[str]) -> float:
+    """Mean syllables per word — the vocabulary term of FK, isolated.
+
+    Sentence-length-independent on purpose: this prevents passages whose
+    sentence segmentation departs from the calibration corpus (e.g.
+    one-sentence incantatory paragraphs) from registering false vocab
+    sophistication via the FK formula's W/S term.
+    """
+    if not words:
         return 0.0
-    total_syl = sum(_count_syllables(w) for w in words)
-    avg_syl = total_syl / len(words)
-    avg_wps = len(words) / n_sentences
-    grade = 0.39 * avg_wps + 11.8 * avg_syl - 15.59
-    return max(0.0, grade)
+    return sum(_count_syllables(w) for w in words) / len(words)
 
 
 # ─── Placement helpers ────────────────────────────────────────────────────
@@ -182,27 +194,29 @@ def _interpretation(
     pl = metrics["avg_paragraph_length"]
     df = metrics["dialogue_frequency"]
 
-    # Vocab level — thresholds keyed to bucket medians (frontier 4.4,
-    # amateur 6.1, older 8.0, literary 9.3).
-    if vl < 4.4:
+    # Vocab level — mean syllables/word. Bucket medians cluster tightly
+    # (frontier 1.31, amateur 1.36, literary 1.36, older 1.43); the metric
+    # is a weak register discriminator on its own. Thresholds are keyed
+    # to where the candidate sits relative to the cluster.
+    if vl < 1.25:
         parts.append(
-            f"Vocab {vl:.1f} (FK grade) is at or below frontier-LLM-default "
-            f"median (4.4) — vocabulary is elementary."
+            f"Vocab {vl:.2f} syllables/word is below all bucket medians "
+            f"— diction is monosyllabic / clipped."
         )
-    elif vl < 7.0:
+    elif vl < 1.40:
         parts.append(
-            f"Vocab {vl:.1f} (FK grade) is in human-amateur / older-LLM "
-            f"territory — vocabulary is plain."
+            f"Vocab {vl:.2f} syllables/word is at human-literary / amateur "
+            f"/ frontier-LLM medians — modal range."
         )
-    elif vl < 11.0:
+    elif vl < 1.55:
         parts.append(
-            f"Vocab {vl:.1f} (FK grade) is at human-literary median or "
-            f"approaching it — vocabulary is mid-to-sophisticated."
+            f"Vocab {vl:.2f} syllables/word is above human medians, near "
+            f"older-LLM default — Latinate / specialist diction."
         )
     else:
         parts.append(
-            f"Vocab {vl:.1f} (FK grade) is above human-literary median "
-            f"(9.3) — vocabulary is sophisticated."
+            f"Vocab {vl:.2f} syllables/word is above all bucket p90s "
+            f"except older-LLM — heavily polysyllabic / formal register."
         )
 
     # Sentence length — bucket medians 11.2/12.8/16.4/21.9.
@@ -352,7 +366,7 @@ def writing_style(
     n_chars = len(passage)
 
     metrics = {
-        "vocab_level": round(_flesch_kincaid_grade(words, n_sentences), 2),
+        "vocab_level": round(_mean_syllables_per_word(words), 3),
         "avg_sentence_length": round(n_words / n_sentences, 2) if n_sentences else 0.0,
         "avg_paragraph_length": round(n_words / n_paragraphs, 2),
         "dialogue_frequency": round((len(dialogues) / n_chars) * 1000, 2) if n_chars else 0.0,

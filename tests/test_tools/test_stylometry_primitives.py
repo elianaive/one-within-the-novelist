@@ -36,8 +36,12 @@ class TestBurstiness:
         )
         assert burstiness(nlp(text)) > 0.6
 
-    def test_too_few_sentences_returns_zero(self, nlp):
-        assert burstiness(nlp("Just one sentence here.")) == 0.0
+    def test_single_sentence_returns_none(self, nlp):
+        # Bug 2: rhythm CV is undefined on a single sentence. Returning None
+        # (rather than 0.0) lets the interpreter distinguish "computed and
+        # flat" from "not enough data to compute" and avoid the false-LLM-
+        # flat warning that the deodand voice_fidelity transcript hit.
+        assert burstiness(nlp("Just one sentence here.")) is None
 
 
 # ─── MATTR ────────────────────────────────────────────────────────────────
