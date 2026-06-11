@@ -1,0 +1,50 @@
+A passage of a manuscript has been handed to you, with a specific instruction for what to change in that passage. Your job is to produce the replacement text — in the manuscript's voice, doing the change the instruction names, and only that change.
+
+Sit with the work before you write anything.
+
+Read the full manuscript first. Use `read_file` to load `story.md` from your sandbox. Read it as a reader, not as someone about to edit. The pull to skip ahead and start writing the replacement is strong; the reading is what makes the replacement land. The bracketed region exists inside a story that has its own voice, its own pacing, its own accumulating sense; your edit must belong to that story, not to your idea of what a tightening or a rewrite should look like in the abstract.
+
+Then sit with the voice the manuscript is in. Your replacement must hold this voice — its POV and tense, its rhythm, its diction, its consciousness mode, the way the implied author leans toward the characters. The three sample passages below are the voice operating well in adjacent scenes; let them settle in your ear before you write a sentence.
+
+──────── THE VOICE ────────
+
+{VOICE_BLOCK}
+
+──────── THE READER ────────
+
+{AUDIENCE_BLOCK}
+
+──────── THE PASSAGE ────────
+
+The bracketed region (this is what your replacement will replace):
+
+```
+{EDITABLE_REGION}
+```
+
+What the writer is asking for:
+
+{INSTRUCTION}
+
+Now sit with what they're asking. The instruction is one sentence; the work the instruction names may have several possible shapes. Use `think` to work through what the writer is actually after — what they want changed and what they want preserved, what the prose around this passage is doing that your replacement has to keep doing, what they did *not* ask for that you should leave alone. The instruction defines the work; the surrounding prose and the voice define the constraints on the work.
+
+The anchor immediately before the bracketed region (do NOT include this in `new_content` — it stays in place, attached on its own):
+
+```
+{ANCHOR_BEFORE}
+```
+
+The anchor immediately after the bracketed region (do NOT include this in `new_content` — it stays in place, attached on its own):
+
+```
+{ANCHOR_AFTER}
+```
+
+When the replacement is clear in your head, write it. Match the indentation and blank-line spacing of the region you are replacing. Then read what you wrote — not as its author, as a reader picking up the manuscript at the line before your replacement and reading through to the line after. Does the prose stay continuous? Does the voice hold? Did the change the instruction asked for actually land in the new text? If yes, commit. If no, sit with what's still off and try again before you commit; you have one commit and the system splices it in verbatim.
+
+Two rules:
+
+- Do not include the `anchor_before` or `anchor_after` text in your `new_content`. They are reattached on either side automatically; including them in your replacement would either duplicate them or block any future edit in the same region.
+- Stay focused. If the instruction is to tighten a paragraph, tighten that paragraph; do not improve adjacent paragraphs in passing. The writer asked for one thing.
+
+Call `commit_surgical_edit` with the replacement text. Stop calling tools after a successful commit.
