@@ -7,9 +7,11 @@ stage_2:
   phase_3_iterations: 1
   k_candidates_per_expansion: 3
 
-  # UCB / D-UCB
+  # UCB / D-UCB. discount_gamma is currently plumbed but ucb_score uses UCB1;
+  # see lab/issues/2026-04-26-stage-2-mcts-bit-comparison.md for the deferred
+  # D-UCB wiring. rechallenge_* are pairwise-only; unimplemented today.
   exploration_constant: 0.5
-  discount_gamma: 1.0   # Phase 5 ships UCB1; Phase 7 will introduce 0.93 + rechallenge
+  discount_gamma: 1.0
   rechallenge_interval: 25
   rechallenge_top_pct: 0.10
 
@@ -33,7 +35,9 @@ stage_2:
   scoring_mode: scalar
   scoring_rollout_composition: rollout_reward
   scoring_handoff_composition: handoff_rescore
-  scoring_handoff_top_k: 5
+
+  # Scalar-mode tree-brief summarizer cadence: re-run every N rollouts.
+  scalar_brief_re_summarize_every: 5
 
   # Tiered judge wiring (used only when scoring_mode == pairwise_champion)
   full_panel_on_promotion: true
@@ -44,14 +48,17 @@ stage_2:
   # rollout via the same expansion model as the search; cheap-judge fires
   # after each accepted step; halt on non-improvement. min_partial_size
   # skips the walk for small partials where it can't discriminate.
-  simulate_rollouts: true
+  # PAIRWISE-ONLY: the simulator calls cheap_judge_compare against a
+  # champion DAG, which scalar mode doesn't have. simulate_rollouts=true
+  # under scoring_mode=scalar logs a warning at config load and is ignored.
+  simulate_rollouts: false
   simulation_max_steps: 3
   simulation_min_partial_size: 0
 
-  # Panel composition. cheap_judge_id must be one of full_panel_ids.
+  # Panel composition. cheap_judge_id is required only for
+  # scoring_mode=pairwise_champion; scalar mode leaves it unset.
   judges:
     full_panel_ids: [gwern, roon, alexander-wales, jamie-wahls]
-    cheap_judge_id: roon
 
   # Presets
   presets:

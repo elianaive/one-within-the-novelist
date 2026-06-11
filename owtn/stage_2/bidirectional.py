@@ -186,7 +186,13 @@ def make_phase_filtered_expand_fn(
         valid = [a for a in proposed if action_valid_for_phase(a, ctx, dag)]
         dropped = len(proposed) - len(valid)
         if dropped:
-            logger.info(
+            # ≥80% drop almost always means the LLM is fabricating node IDs
+            # rather than binding to the ones in the rendered DAG — i.e. the
+            # whole expansion is dead and silent. Surface at WARNING so it
+            # doesn't sit hidden among the per-iteration INFO churn.
+            level = logging.WARNING if dropped / len(proposed) >= 0.8 else logging.INFO
+            logger.log(
+                level,
                 "%s phase: dropped %d/%d actions for phase-rule violations",
                 ctx.phase, dropped, len(proposed),
             )

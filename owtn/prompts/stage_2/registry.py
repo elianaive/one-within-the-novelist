@@ -49,8 +49,31 @@ def load_seed_motif_template() -> str:
 
 def load_champion_brief_system() -> str:
     """System prompt for the per-tree champion-brief summarizer
-    (Stage 2 lineage equivalent)."""
+    (Stage 2 lineage equivalent — pairwise scoring path)."""
     return _load("champion_brief.txt")
+
+
+def load_champion_brief_scalar_system() -> str:
+    """System prompt for the scalar-mode tree-brief summarizer.
+
+    Different rhetorical frame from the pairwise variant: the input is a
+    stream of independently-scored rollouts (no opponent, absolute rubric
+    scores), so the prompt teaches the model to read score + reasoning
+    together as the signal rather than head-to-head dimension outcomes.
+    """
+    return _load("champion_brief_scalar.txt")
+
+
+def load_champion_brief_scalar_lineage_system() -> str:
+    """System prompt for the scalar-mode per-leaf lineage brief.
+
+    Distinct from the tree variant: only the rollouts whose DAG is a
+    structural ancestor of the current expansion target are summarized,
+    and the prompt frames the input as a trajectory (oldest → newest) so
+    the model produces advice scoped to "the next beat in THIS path"
+    rather than "patterns across the whole tree."
+    """
+    return _load("champion_brief_scalar_lineage.txt")
 
 
 def build_seed_motif_prompt(concept: ConceptGenome) -> tuple[str, str]:
@@ -218,6 +241,43 @@ def build_expansion_prompt(
         .replace("{DAG_RENDERING}", dag_rendering)
         .replace("{PACING_HINT}", pacing_hint or "(no preset hint)")
         .replace("{CHAMPION_BRIEF}", champion_brief)
+    )
+    return system_msg, user_msg
+
+
+def load_tier3_system() -> str:
+    """System prompt for the Tier 3 concept-demand verdict call.
+    See `docs/stage-2/evaluation.md` §Tier 3."""
+    return _load("tier3_concept_demands.txt")
+
+
+def build_tier3_prompt(
+    concept: ConceptGenome,
+    dag_rendering: str,
+    concept_demands: list[str],
+) -> tuple[str, str]:
+    """Assemble (system_msg, user_msg) for one Tier 3 verdict call.
+
+    The system prompt is the verdict-vocabulary contract. The user message
+    bundles the concept fields, the rendered DAG, and the numbered demand
+    list. Verdicts are returned in input order.
+    """
+    system_msg = load_tier3_system()
+    fields = concept.to_prompt_fields()
+    demand_block = "\n".join(f"{i + 1}. {d}" for i, d in enumerate(concept_demands))
+    user_msg = (
+        "CONCEPT\n"
+        f"premise: {fields['premise']}\n"
+        f"target_effect: {fields['target_effect']}\n"
+        f"thematic_engine: {fields['thematic_engine']}\n"
+        f"anchor_scene ({fields['anchor_role']}): {fields['anchor_sketch']}\n"
+        f"constraints:\n{fields['constraints'] or '(none)'}\n"
+        "\n"
+        "STRUCTURE (incident-encoded outline)\n"
+        f"{dag_rendering}\n"
+        "\n"
+        "CONCEPT_DEMANDS (verdict each, in order)\n"
+        f"{demand_block}\n"
     )
     return system_msg, user_msg
 

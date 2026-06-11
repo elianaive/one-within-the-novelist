@@ -37,7 +37,7 @@ from owtn.models.stage_2.dag import DAG, Node
 from owtn.models.stage_2.handoff import Stage1Winner, Stage2HandoffManifest
 from owtn.stage_2.orchestration import run_concept
 from owtn.stage_2.archive import Stage2Archive
-from owtn.stage_2.runner import run_stage_2
+from owtn.stage_2.runner import load_stage_1_winners, run_stage_2
 from tests.conftest import HILLS_GENOME
 
 
@@ -159,10 +159,16 @@ class TestRunConceptIntegration:
 
         # Each expansion call returns a single causal beat downstream of
         # whatever the latest beat is, naming the new beat by call count.
+        # `captured_pacing_hints` records the hint each call received so the
+        # assertions below can verify run_bidirectional → expand_factory →
+        # propose_actions_via_llm threads the preset's expansion_hint
+        # through (regression: earlier code defaulted them all to "").
         call_count = [0]
+        captured_pacing_hints: list[str] = []
 
         async def fake_propose(*args, **kwargs):
             call_count[0] += 1
+            captured_pacing_hints.append(kwargs.get("pacing_hint", ""))
             return [_add_beat_action(f"beat_{call_count[0]}")]
 
         # Cheap judge always returns "challenger wins" → backprop = 0.7,
@@ -230,6 +236,22 @@ class TestRunConceptIntegration:
         assert outputs[0].concept_id == winner.program_id
         # Archive received both presets (advancing + non-advancing).
         assert len(archive.cells) >= 1
+        # Pacing hints reached the expansion call. At least one forward or
+        # backward expansion fired with a non-empty hint matching one of
+        # the two light-tier presets' written `expansion_hint`s.
+        from owtn.models.stage_2.pacing import get_preset
+        expected = {
+            get_preset("cassandra_ish").expansion_hint,
+            get_preset("randy_ish").expansion_hint,
+        }
+        forward_backward_hints = [h for h in captured_pacing_hints if h]
+        assert forward_backward_hints, (
+            "no expansion call received a non-empty pacing hint; "
+            "tree_runtime → run_bidirectional plumbing regressed"
+        )
+        assert set(forward_backward_hints).issubset(expected), (
+            "captured pacing hints don't match the light-tier preset hints"
+        )
 
 
 # ----- Full run_stage_2 end-to-end -----
@@ -252,6 +274,84 @@ def _write_fake_stage_1_directory(stage_1_dir: Path) -> None:
     }
     (champions_dir / "island_0.json").write_text(json.dumps(champion))
     # tournament.json is optional — Stage1Winner.from_champion_file handles its absence.
+
+
+# ----- Handoff ordering -----
+
+
+def _write_island_champion(champions_dir: Path, island_idx: int, pid: str) -> None:
+    champions_dir.mkdir(parents=True, exist_ok=True)
+    (champions_dir / f"island_{island_idx}.json").write_text(json.dumps({
+        "id": pid,
+        "code": json.dumps(HILLS_GENOME),
+        "metadata": {
+            "patch_type": "collision",
+            "affective_register": "JOY",
+            "literary_mode": "REALIST",
+        },
+        "combined_score": 0.85,
+    }))
+
+
+class TestLoadStage1WinnersOrdering:
+    """Stage 1→2 handoff orders by Swiss tournament rank (best first), so
+    `--max-concepts N` slices the top N. Champions without a rank (no
+    tournament happened) sort last."""
+
+    def test_loads_in_tournament_rank_order_not_island_order(self, tmp_path: Path):
+        stage_1_dir = tmp_path / "stage_1"
+        champions = stage_1_dir / "champions"
+        # Island indices [0,1,2,3] but tournament ranks intentionally shuffled:
+        # island_0 → rank 3, island_1 → rank 1 (winner), island_2 → rank 4, island_3 → rank 2.
+        _write_island_champion(champions, 0, "pid_island0")
+        _write_island_champion(champions, 1, "pid_island1")
+        _write_island_champion(champions, 2, "pid_island2")
+        _write_island_champion(champions, 3, "pid_island3")
+        (stage_1_dir / "tournament.json").write_text(json.dumps([
+            {"rank": 1, "program_id": "pid_island1", "wins": 3, "losses": 0, "buchholz": 6, "matches": []},
+            {"rank": 2, "program_id": "pid_island3", "wins": 2, "losses": 1, "buchholz": 5, "matches": []},
+            {"rank": 3, "program_id": "pid_island0", "wins": 1, "losses": 2, "buchholz": 4, "matches": []},
+            {"rank": 4, "program_id": "pid_island2", "wins": 0, "losses": 3, "buchholz": 3, "matches": []},
+        ]))
+
+        winners = load_stage_1_winners(stage_1_dir)
+
+        assert [w.program_id for w in winners] == [
+            "pid_island1", "pid_island3", "pid_island0", "pid_island2",
+        ]
+        assert [w.tournament_rank for w in winners] == [1, 2, 3, 4]
+
+    def test_falls_back_to_island_order_when_tournament_absent(self, tmp_path: Path):
+        """No tournament.json (e.g. fewer than 2 island survivors) → ranks
+        are all None and stable filename order (island index) is preserved."""
+        stage_1_dir = tmp_path / "stage_1"
+        champions = stage_1_dir / "champions"
+        _write_island_champion(champions, 0, "pid_island0")
+        _write_island_champion(champions, 1, "pid_island1")
+
+        winners = load_stage_1_winners(stage_1_dir)
+
+        assert [w.program_id for w in winners] == ["pid_island0", "pid_island1"]
+        assert [w.tournament_rank for w in winners] == [None, None]
+
+    def test_unranked_champions_sort_last(self, tmp_path: Path):
+        """Pathological: tournament.json exists but is missing one of the
+        island champions. The unranked one goes last; ranked ones come first
+        in rank order."""
+        stage_1_dir = tmp_path / "stage_1"
+        champions = stage_1_dir / "champions"
+        _write_island_champion(champions, 0, "pid_island0")  # no rank
+        _write_island_champion(champions, 1, "pid_island1")  # rank 2
+        _write_island_champion(champions, 2, "pid_island2")  # rank 1
+        (stage_1_dir / "tournament.json").write_text(json.dumps([
+            {"rank": 1, "program_id": "pid_island2", "wins": 2, "losses": 0, "buchholz": 4, "matches": []},
+            {"rank": 2, "program_id": "pid_island1", "wins": 1, "losses": 1, "buchholz": 3, "matches": []},
+        ]))
+
+        winners = load_stage_1_winners(stage_1_dir)
+
+        assert [w.program_id for w in winners] == ["pid_island2", "pid_island1", "pid_island0"]
+        assert [w.tournament_rank for w in winners] == [1, 2, None]
 
 
 class TestRunStage2Integration:
