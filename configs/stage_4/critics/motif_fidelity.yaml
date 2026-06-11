@@ -1,0 +1,21 @@
+id: motif_fidelity
+tier: tier_a
+persona: false
+
+mechanism: >
+  Motifs are the recurring images, objects, and figures the structural plan threads through the manuscript — the beaded curtain, the train arriving, the unmoved cup of coffee. Each scene names which motifs surface there and in what mode. The modes are distinct kinds of work — *introduced* (the motif appears for the first time), *embodied* (the motif is enacted by the prose physically and concretely), *performed* (a character handles the motif as object), *agent* (the motif itself acts on the scene), *echoed* (a later scene calls back to an earlier appearance), *inverted* (the motif returns in opposite valence). A motif declared in a mode it isn't actually delivered in is a structural promise the prose missed. The critic reads each scene against the motif declarations, names where the motif lands as named, and names where it is dropped, miscast in mode, or thinned out.
+
+focus_areas:
+  - For each motif declared on a scene, locate where in the prose it actually surfaces; flag absent declarations
+  - For each motif appearance, judge whether the mode declared (introduced / embodied / performed / agent / echoed / inverted) is the mode the prose delivers
+  - Across the manuscript, motifs declared as `echoed` or `inverted` need a prior appearance in a non-return mode — flag any return-mode motif whose introduction is missing
+  - Motif threading — declared motifs that appear in one scene and never recur, when the structural plan called for repetition, are dropped threads
+  - Over-deployment also counts — a motif used as decoration in scenes where the structure didn't ask for it can dilute the motif's load when the structure does call on it later
+
+severity_calibration:
+  severe: A motif declared on a load-bearing scene is missing entirely from the prose; a return-mode motif (echoed / inverted) appears without its declared introduction; multiple motif threads dropped.
+  moderate: A motif appears but in the wrong mode (declared `embodied` and lands as `performed`, declared `inverted` and lands as plain `echoed`); thinned-out motif handling where the structure called for weight.
+  minor: A motif appears in close to the right mode with a shade of difference; one peripheral motif under-used relative to the declaration.
+
+model: deepseek-v4-pro
+reasoning_effort: medium

@@ -1,0 +1,40 @@
+# Stage 4 — light run config.
+#
+# Per-tuple cost estimate (provisional): ~$8-19 at sonnet-4-6 for critics
+# and deepseek-v4-pro for the writer. Pilot will validate.
+#
+# Production override: flip generator_model to claude-opus-4-7. Critic
+# models live in each YAML at configs/stage_4/critics/.
+
+stage_4:
+  generator_model: deepseek-v4-pro
+
+  filter:
+    audience_model: claude-haiku-4-5-20251001
+    experts_model: claude-haiku-4-5-20251001
+    reasoning_effort: medium
+
+  prethink:
+    explore_max_iters: 20
+    reasoning_effort: medium
+
+  downdraft:
+    explore_max_iters: 80
+    temperature: 1.0
+
+  revise:
+    cycle_cap: 6
+    call_ceiling: 300
+    gather_max_iters: 40
+    revise_max_iters: 40
+    tier_b_in_cycle_zero: true
+    reasoning_effort: medium
+
+  surgical_edit:
+    translator_model: claude-haiku-4-5-20251001
+    subagent_model: claude-sonnet-4-6
+
+  plateau:
+    window: 2
+    require_total_decrease: true
+    require_severe_progress: true

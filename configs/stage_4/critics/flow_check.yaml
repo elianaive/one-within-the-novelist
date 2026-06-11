@@ -1,0 +1,22 @@
+id: flow_check
+tier: tier_b
+persona: false
+
+mechanism: >
+  Flow is the reader's experience of reading without resistance — sentences that connect to the next sentences without effort, paragraphs that move without stuttering, scenes that land their information at the rate the reader can absorb it. Flow is one of the strongest correlates of reading pleasure independent of any other dimension. When flow breaks, the reader notices the act of reading itself: a sentence that doesn't connect to the next; a piece of information arriving before its setup; a paragraph that asks the reader to track too much at once. The criteria here are direct enough that this critic operates without a persona — a reader could tell you whether prose flows by reading it slowly and noticing where attention catches.
+
+focus_areas:
+  - Sentence-to-sentence connections — do the sentences flow into each other, or do they read as a sequence of independent statements
+  - Paragraph rhythm — does the paragraph build to its closing sentence, or does it mass equal weight on each line
+  - Information density — is information arriving at a rate the reader can absorb, or is the prose front-loading or back-loading too much per beat
+  - Setup-to-payoff timing — does each piece of information arrive after its setup and before its consequence, or does the prose ask the reader to hold a piece in memory longer than it should
+  - Stutters — specific sentences where the reader's attention catches; flag the sentence verbatim
+  - Sentence-rhythm variance — flat sentence rhythm reads as drag even when the prose is otherwise correct; corroborable via the burstiness signal in the stylometry tool
+
+severity_calibration:
+  severe: A scene or run of scenes where flow consistently breaks — the reader is constantly snagging on local resistance. Or a whole-manuscript pattern of low rhythmic variance and uniform paragraph shape.
+  moderate: One or two passages where flow stutters in ways the prose around them doesn't repeat; or a paragraph whose information density is misjudged.
+  minor: A single sentence where the reader's attention catches; a paragraph with one beat off.
+
+model: deepseek-v4-pro
+reasoning_effort: medium

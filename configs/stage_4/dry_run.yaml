@@ -1,0 +1,42 @@
+# Stage 4 dry-run config — single-cycle prose pass, Anthropic generator.
+#
+# `cycle_cap: 1` reduces revise to one sweep; `call_ceiling` is a hard
+# backstop. PreThink and DownDraft iter caps are halved from the light
+# values to keep the smoke test in the small-dollars range. Critic models
+# are left on whatever each critic YAML in `configs/stage_4/critics/`
+# specifies — the user constraint scopes Anthropic to generators.
+
+stage_4:
+  generator_model: claude-sonnet-4-6
+
+  filter:
+    audience_model: claude-haiku-4-5-20251001
+    experts_model: claude-haiku-4-5-20251001
+    reasoning_effort: low
+
+  prethink:
+    explore_max_iters: 8
+    reasoning_effort: low
+
+  downdraft:
+    explore_max_iters: 20
+    temperature: 1.0
+
+  revise:
+    # apply sub-phase tool-use loops bottom out around 20-30 iters on Sonnet
+    # for short prose; 12 starves the writer before it calls finalize_cycle.
+    cycle_cap: 1
+    call_ceiling: 200
+    gather_max_iters: 20
+    revise_max_iters: 30
+    tier_b_in_cycle_zero: false
+    reasoning_effort: low
+
+  surgical_edit:
+    translator_model: claude-haiku-4-5-20251001
+    subagent_model: claude-sonnet-4-6
+
+  plateau:
+    window: 2
+    require_total_decrease: true
+    require_severe_progress: true
