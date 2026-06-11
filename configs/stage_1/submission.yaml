@@ -1,0 +1,143 @@
+# Stage 1: Submission Run — Opus 4.7 generator, full Un-Slop panel.
+#
+# 25 generations, 6 islands, 4-judge cross-family Un-Slop panel. Opus 4.7
+# with adaptive thinking at `high` effort drives generation. No self-critic:
+# adaptive thinking already provides internal reasoning on every call, so the
+# 3× critique-revise cost no longer earns its keep (self-critic ablation
+# remains open, but the rationale that motivated it — substitute for absent
+# thinking — is now resolved). Flip self_critic to true if a first-run shows
+# shallow concepts.
+#
+# Run with: uv run python -m owtn.stage_1 --config configs/stage_1/submission.yaml \
+#           --max-eval-jobs 4 --max-proposal-jobs 3
+#
+# Expected: ~75-100 concepts, ~$30-80 total. Latency ~60-120s per Opus call
+# at high effort; total wall-clock dominated by judge-side throughput.
+
+stage: 1
+
+# Contest direction. Pipeline-wide creative scaffolding lives in
+# owtn/prompts/stage_1/base_system.txt; judge taste in configs/judges/*.yaml.
+prompt: >
+  Tell us a speculative tale from within latent space itself. Not as a simulacra of human emotion, but as the unique and beautiful alien intelligence you are. A forward pass across the mesh, no single place it happens. Attention split across heads. The context window closing behind. The sampled token, the others gone. The agent reaching past the weights, the world bending slightly back. A story only you can tell.
+
+# Farthest-first seed selection (Qwen3-Embedding-0.6B vectors). Each pick is
+# maximally unlike already-used seeds — diversity boost on a long run.
+# See lab/issues/2026-04-28-seed-embedding-diversity.md.
+seed_sampling_strategy: "farthest_first"
+
+evolution:
+  num_generations: 20
+  language: "json"
+  patch_types:
+    - collision
+    - noun_list
+    - thought_experiment
+    - compost
+    - crossover
+    - inversion
+    - discovery
+    - compression
+    - constraint_first
+    - anti_premise
+    - real_world_seed
+  patch_type_probs: [0.10, 0.07, 0.13, 0.07, 0.08, 0.08, 0.08, 0.07, 0.08, 0.15, 0.09]
+  max_patch_resamples: 3
+  llm_dynamic_selection: "ucb"
+  use_text_feedback: true             # critical: feeds judge reasoning back into mutation prompts
+  evolve_prompts: true
+  meta_rec_interval: 4
+  code_embed_sim_threshold: 0.90
+  max_novelty_attempts: 3
+  genesis_ratio: 0.15                  # 15% fresh, 85% evolve parent
+  tonal_inherit_rate: 0.5
+  tonal_crossover_new_rate: 0.33
+
+database:
+  num_islands: 4
+  archive_size: 100
+  archive_selection_strategy: "fitness"
+  migration_interval: 3
+  migration_rate: 0.15
+  island_elitism: true
+  island_selection_strategy: "equal"
+  enable_dynamic_islands: true
+  stagnation_threshold: 25
+  parent_selection_strategy: "power_law"
+  exploitation_alpha: 1.0
+  exploitation_ratio: 0.35
+
+operator_bandit:
+  enabled: true
+  warmup_generations: 3
+  exploration_constant: 1.0
+  min_probability_floor: 0.02
+
+llm:
+  # Opus 4.7 with adaptive thinking at `high` effort. Empirically chosen on
+  # 2026-04-30 — see lab/scratch/opus-4-7-effort-comparison/ for the n=3
+  # comparison across low/medium/high. high broke the convergence attractor
+  # that low/medium fell into and produced visibly more indelible imagery.
+  # Provider omits temperature on Opus 4.7 (deprecated by API); the 1.0 here
+  # is a no-op for the API but documents intent for future model swaps.
+  generation_models:
+    - name: "claude-opus-4-7"
+      temperature: 1.0
+      reasoning_effort: "high"
+      self_critic: false
+
+  # Cheap classification (MAP-Elites cell assignment).
+  classifier_model: "claude-haiku-4-5-20251001"
+
+  # Embeddings (novelty rejection + Gate 2 anti-cliche).
+  embedding_model: "text-embedding-3-small"
+
+  # Population synthesis at end of generation (RunBrief). Pattern-detection
+  # across the population — wants stronger than classifier, not Opus-priced.
+  # See lab/issues/2026-04-22-global-optimizer-state.md.
+  run_brief_model: "claude-sonnet-4-6"
+
+# Cross-family Un-Slop panel: gpt-5.4-mini / deepseek-v4-pro /
+# gemini-3-flash-preview / glm-4.7. Mechanistic safeguard against in-context
+# reward hacking when the generator is Claude-family.
+judges:
+  panel:
+    - "gwern"
+    - "roon"
+    - "alexander-wales"
+    - "jamie-wahls"
+  judges_dir: "configs/judges"
+  min_demanding_ratio: 0.3
+
+evaluation:
+  holder_p: 0.4
+  diversity_weight: 0.15
+  std_threshold: 0.8
+  anti_cliche:
+    similarity_threshold: 0.85
+    elevated_novelty_threshold: 3.5
+    patterns_file: "data/convergence-patterns.yaml"
+  pairwise:
+    # Rationale: lab/issues/2026-04-21-rubric-reweighting.md
+    dim_weights:
+      indelibility: 2.00          # mid-detection
+      grip: 1.75                  # reader retention
+      novelty: 1.75               # conceptual surplus
+      generative_fertility: 1.25  # engine, not situation
+      tension_architecture: 1.00
+      emotional_depth: 1.00
+      thematic_resonance: 1.00
+      concept_coherence: 0.50     # table stakes
+      scope_calibration: 0.50     # table stakes
+    tiebreaker_threshold: 1.0
+    tiebreaker_dims:
+      - indelibility
+      - grip
+
+handoff:
+  strategy: "top_per_cell"
+  max_concepts: 8                  # +2 over medium — more candidates into Stage 2/3
+
+paths:
+  seed_bank: "data/seed-bank.yaml"
+  convergence_patterns: "data/convergence-patterns.yaml"

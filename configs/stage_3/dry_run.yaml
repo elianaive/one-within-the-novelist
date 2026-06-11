@@ -1,0 +1,33 @@
+# Stage 3 dry-run config — minimum viable voice session, Anthropic generators.
+#
+# Smallest legal panel (2 personas) and tightest phase budgets to keep the
+# end-to-end smoke test cheap. Picker/drafter/caster all on Haiku; voice
+# generator on Sonnet because the explore-loop reasoning genuinely benefits
+# from a stronger model and Haiku tends to terminate the loop too early.
+
+stage_3:
+  adjacent_scene:
+    picker_model: claude-haiku-4-5-20251001
+    drafter_model: claude-haiku-4-5-20251001
+    picker_max_attempts: 2
+    draft_word_cap: 250
+    picker_reasoning_effort: low
+
+  casting:
+    # Casting is multi-stage (classify → per-persona argue → select). The
+    # argue step trips Haiku — it sometimes emits an empty tool input.
+    # Sonnet handles the per-persona reasoning reliably.
+    caster_model: claude-sonnet-4-6
+    panel_size: 2
+    reasoning_effort: low
+
+  voice_session:
+    generator_model: claude-sonnet-4-6
+    phase_1:
+      explore_max_iters: 8
+    phase_4:
+      explore_max_iters: 6
+    commit_sampler:
+      temperature: 0.6
+      max_tokens: 8192
+    analytical_reasoning_effort: low

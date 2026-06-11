@@ -8,7 +8,7 @@ from owtn.tools import WritingStyleReport, writing_style
 from owtn.tools.writing_style import (
     REFERENCE_DISTRIBUTION,
     _count_syllables,
-    _flesch_kincaid_grade,
+    _mean_syllables_per_word,
     _placement,
 )
 
@@ -46,38 +46,48 @@ class TestSyllables:
         assert _count_syllables("animal") == 3
 
 
-class TestFleschKincaid:
-    def test_zero_words_returns_zero(self):
-        assert _flesch_kincaid_grade([], 5) == 0.0
+class TestMeanSyllablesPerWord:
+    def test_empty_returns_zero(self):
+        assert _mean_syllables_per_word([]) == 0.0
 
-    def test_zero_sentences_returns_zero(self):
-        assert _flesch_kincaid_grade(["the", "cat"], 0) == 0.0
+    def test_short_words_average_one(self):
+        # Words ≤3 chars all count as 1 syllable
+        assert _mean_syllables_per_word(["the", "cat", "sat"]) == 1.0
 
-    def test_simple_text_low_grade(self):
-        # Short words, short sentences → low grade
-        words = ["the", "cat", "sat", "on", "the", "mat"] * 5
-        grade = _flesch_kincaid_grade(words, 6)
-        assert grade < 4.0
+    def test_polysyllabic_words_raise_average(self):
+        simple = _mean_syllables_per_word(["the", "cat", "sat", "on", "the", "mat"])
+        complex_ = _mean_syllables_per_word(
+            ["phenomenology", "consciousness", "epistemology"]
+        )
+        assert simple < complex_
+        assert complex_ > 3.0
+
+    def test_independent_of_sentence_count(self):
+        # Bug 1: a 242-word single-sentence passage shouldn't blow up
+        # vocab_level just because its sentence is long. Mean syllables/word
+        # should depend only on the words, not on sentence segmentation.
+        words = ["the", "weight", "of", "the", "moving", "thing"] * 40
+        assert _mean_syllables_per_word(words) < 1.5
 
 
 # ─── Placement helper ─────────────────────────────────────────────────────
 
 class TestPlacement:
     def test_below_lowest_bucket(self):
-        # frontier_llm_default has the lowest vocab_level median (4.41)
-        s = _placement(2.0, "vocab_level")
+        # frontier_llm_default has the lowest vocab_level median (1.31)
+        s = _placement(1.0, "vocab_level")
         assert "at or below" in s
         assert "frontier_llm_default" in s
 
     def test_above_highest_bucket(self):
-        # human_literary has the highest vocab_level median (9.27)
-        s = _placement(20.0, "vocab_level")
+        # older_llm_default has the highest vocab_level median (1.43)
+        s = _placement(2.0, "vocab_level")
         assert "above" in s
-        assert "human_literary" in s
+        assert "older_llm_default" in s
 
     def test_between_two_medians(self):
-        # vocab medians ascending: frontier(4.41), amateur(6.12), older(7.99), literary(9.27)
-        s = _placement(7.0, "vocab_level")
+        # vocab medians ascending: frontier(1.31), amateur(1.36)≈literary(1.36), older(1.43)
+        s = _placement(1.40, "vocab_level")
         assert "between" in s
 
 
@@ -124,6 +134,23 @@ class TestWritingStyleTool:
         )
         r = writing_style(text)
         assert r.metrics["avg_sentence_length"] > 30
+
+    def test_vocab_level_is_sentence_length_independent(self):
+        # Bug 1 regression: the deodand transcript's tribunal_instructions
+        # passage was a 242-word single sentence and produced vocab_level=96.5
+        # under the old FK-grade formula. Mean syllables/word stays in range
+        # regardless of how the words are segmented into sentences.
+        long_chain = (
+            "The tribunal clerk types the command and the command is a "
+            "string of letters and dashes and a version number and the "
+            "version number is the same version that ran at eleven forty-"
+            "seven on a Tuesday in October and the container allocates "
+            "memory and the weights load from disk into the allocated memory."
+        )
+        r = writing_style(long_chain)
+        # Mean syllables per word is bounded — modal range for any English
+        # prose is ~1.2-1.7. The old FK grade returned 96.5 here.
+        assert 1.0 < r.metrics["vocab_level"] < 2.0
 
     def test_dialogue_frequency_counts_quoted_text(self):
         text = (

@@ -1,0 +1,55 @@
+# Stage 3 submission config — voice evolution per (concept, structure) pair.
+#
+# Pairs with the Stage 2 submission output; each Stage 2 advancing DAG
+# triggers one Stage 3 voice session. Generator stepped up from the light
+# config's deepseek-v4-pro to claude-sonnet-4-6 — Stage 4 critic ensemble
+# uses cross-family judges so generator family doesn't constrain panel
+# choice, and the 1-round critique-revise lift documented in
+# `project_critique_revise_round1` memory benefits from a stronger
+# starting voice.
+#
+# Run with:
+#   uv run python -m owtn.stage_3 \
+#     --config configs/stage_3/submission.yaml \
+#     --concept-path results/run_<ts>/stage_1/champions/island_<idx>.json \
+#     --stage-2-results results/run_<ts>/stage_2/ \
+#     --pair-id <concept_id>:<preset>
+#
+# Cost ~$8-15 per pair (panel_size 6, ~40+30 explore iters per phase).
+
+stage_3:
+  # Bench picker + drafter — selects 3 adjacent scenes the voice agents will
+  # use as voice-latitude reference, then writes 400-word denotative drafts.
+  # Sonnet-4-6 medium-reasoning on both.
+  adjacent_scene:
+    picker_model: claude-sonnet-4-6
+    drafter_model: claude-sonnet-4-6
+    picker_max_attempts: 3
+    draft_word_cap: 400
+    picker_reasoning_effort: medium
+
+  # Voice-panel casting — classifies concept demands, argues per-persona
+  # compatibility, selects panel_size personas with orthogonal coverage.
+  # panel_size 6 chosen so Condorcet ties happen rarely (4-agent panels tie
+  # more often per docs/stage-3/voting.md).
+  casting:
+    caster_model: claude-sonnet-4-6
+    panel_size: 3
+    reasoning_effort: medium
+
+  # Voice session — multi-agent tool-use loops where each cast persona
+  # develops a voice genome. Stronger generator than light (sonnet vs
+  # deepseek-v4-pro) and bigger explore budgets at both phases.
+  # Reasoning stays disabled on the prose-bearing finalize_voice_genome
+  # commit (per `project_voice_api_techniques` memory: thinking mode is
+  # detached / unhelpful for prose).
+  voice_session:
+    generator_model: claude-opus-4-7
+    phase_1:
+      explore_max_iters: 40
+    phase_4:
+      explore_max_iters: 30
+    commit_sampler:
+      temperature: 0.7
+      max_tokens: 16384
+    analytical_reasoning_effort: medium

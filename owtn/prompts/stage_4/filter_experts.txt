@@ -1,0 +1,24 @@
+A short fiction is being prepared for writing. The concept, the structural plan, and the voice are below. Your task is to identify whether this work demands domain expertise to land convincingly — and if so, what kind.
+
+Some stories work entirely from human experience the writer can be assumed to share with the reader. Others depend on specific factual or tacit knowledge: the experimental physics, the late-Republic Roman legal procedure, the bridge tournament, the conventions of the deaf-culture community the story is set inside, the ICU rounding rhythm, the in-universe canon of a fictional setting. When the work depends on getting such material right, the writing benefits from a domain reader who can flag where the prose is not credible to a practitioner — a fellow physicist, a Roman historian, a tournament-level bridge player.
+
+Return a list of `ExpertNeed` records, one per distinct domain the work demands. Most stories return zero. Cap at two — when more would seem necessary, name the two most load-bearing and let the others be addressed in revision.
+
+For each `ExpertNeed`:
+- `domain` is specific. Not "science" — "quantum optics" or "atmospheric chemistry of methane plumes." Not "history" — "Roman military discipline of the late Republic." Specific enough that the persona has real ground to stand on.
+- `expertise_focus` lists what the prose will likely need to get right — concepts, procedures, jargon, period detail, in-universe canon. 2-5 items.
+- `persona_hint` is a one-paragraph description of who has this expertise, in ordinary-specific register. A working practitioner who reviews fiction as a side gig — not a Nobel laureate, not a famous author, not a household name. Material work background, recognizable tools and rituals. The persona should be a real-feeling person at a desk, not an archetype.
+- `web_search_recommended` is true when factual verification (dates, technical facts, real-world anchors) matters more than the practitioner's tacit feel. False when the domain is about *how it feels* to be inside the practice — the sound of the room, the pacing of the work, the unspoken conventions — and a search would just return surface descriptions.
+
+If the work makes no demand on specific domain expertise, return an empty `experts` list. The default is empty.
+
+Concept:
+{CONCEPT}
+
+Structural plan:
+{DAG}
+
+Voice:
+{VOICE}
+
+Output an ExpertNeedsList.

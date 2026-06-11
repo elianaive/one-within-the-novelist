@@ -178,13 +178,15 @@ class ReferenceCorpus:
         )
 
     def aggregate_signals(self, entries: list[ReferenceEntry]) -> dict[str, float]:
-        """Mean of scalar signals across entries."""
+        """Mean of scalar signals across entries. Burstiness skips entries
+        with undefined rhythm (single-sentence passages)."""
         if not entries:
             return {"n_samples": 0}
         n = len(entries)
+        bursts = [e.signals.burstiness for e in entries if e.signals.burstiness is not None]
         return {
             "n_samples": n,
-            "burstiness": sum(e.signals.burstiness for e in entries) / n,
+            "burstiness": sum(bursts) / len(bursts) if bursts else None,
             "mattr": sum(e.signals.mattr for e in entries) / n,
             "word_count_mean": sum(e.signals.word_count for e in entries) / n,
         }

@@ -25,7 +25,10 @@ from owtn.optimizer.lineage_brief import (
     get_or_compute_brief,
     render_lineage_brief,
     render_raw_fallback,
+    render_scalar_raw_fallback,
+    render_scalar_tree_brief,
     summarize_lineage,
+    summarize_scalar_tree,
 )
 from owtn.optimizer.population_brief import (
     PopulationBrief,
@@ -53,7 +56,6 @@ _STAGE_1_LINEAGE_PLACEHOLDERS = {
         "\"italicized final image.\""
     ),
     "subject_noun": "concept",
-    "output_schema_name": "LineageBrief",
 }
 
 
@@ -61,11 +63,47 @@ def _load_lineage_prompt_template() -> str:
     return (_OPTIMIZER_DIR / "lineage_prompt.txt").read_text()
 
 
-def _stage_1_lineage_system_prompt() -> str:
-    prompt = _load_lineage_prompt_template()
-    for key, value in _STAGE_1_LINEAGE_PLACEHOLDERS.items():
-        prompt = prompt.replace("{" + key + "}", value)
-    return prompt
+def _render_prompt_frame(run_prompt: str) -> str:
+    """Frame block injected when the run was given a user prompt; without it
+    the summarizer reads prompt-required convergence as drift to escape. See
+    `lab/issues/2026-04-30-prompt-aware-optimizer.md`."""
+    if not run_prompt or not run_prompt.strip():
+        return ""
+    return (
+        "## Frame: the run is constrained by the user prompt\n\n"
+        "The run was given this user prompt:\n\n"
+        f"<user_prompt>\n{run_prompt.strip()}\n</user_prompt>\n\n"
+        "Treat the prompt as a **non-negotiable frame**, not as drift to "
+        "escape. Patterns that recur because the prompt requires them are "
+        "**correct convergence on the user's intent**, not population drift, "
+        "and must NOT be flagged as drift, attractor signature, or things a "
+        "successor should differ on. Drift means narrowing **within** the "
+        "prompt's frame — same dramatic structures, imagery palette, "
+        "persona-types, voice register, or formal container that the prompt "
+        "does not require. Counter-examples and exploration directions you "
+        "produce must still satisfy the user's prompt. If a counter-example "
+        "would only work by leaving the prompt's frame, it is not a valid "
+        "counter-example — find one inside the frame instead."
+    )
+
+
+def _resolve_placeholders(template: str, placeholders: dict[str, str]) -> str:
+    out = template
+    for key, value in placeholders.items():
+        out = out.replace("{" + key + "}", value)
+    if placeholders.get("prompt_frame", "") == "":
+        # Collapse the placeholder's blank-line pair so an empty frame
+        # doesn't leave a triple blank.
+        out = out.replace("\n\n\n\n", "\n\n")
+    return out
+
+
+def _stage_1_lineage_system_prompt(run_prompt: str = "") -> str:
+    placeholders = {
+        **_STAGE_1_LINEAGE_PLACEHOLDERS,
+        "prompt_frame": _render_prompt_frame(run_prompt),
+    }
+    return _resolve_placeholders(_load_lineage_prompt_template(), placeholders)
 
 
 def _stage_1_format_self(genome: dict) -> str:
@@ -85,16 +123,17 @@ async def compute_stage_1_lineage_brief(
     self_genome: dict,
     private_metrics: dict,
     classifier_model: str,
+    run_prompt: str = "",
 ) -> tuple[str, dict | None]:
-    """Stage 1 entry point. Drop-in replacement for the old
-    `owtn.evaluation.feedback.get_or_compute_brief` call — fills the Stage 1
-    placeholders and supplies the concept-genome formatter.
-    """
+    """Stage 1 entry point: fills Stage 1 placeholders and supplies the
+    concept-genome formatter. `run_prompt` (the user-supplied creative
+    direction, `Stage1Config.prompt`) renders as a frame block when set;
+    without it the summarizer reads prompt-required convergence as drift."""
     return await get_or_compute_brief(
         self_genome=self_genome,
         private_metrics=private_metrics,
         classifier_model=classifier_model,
-        system_prompt=_stage_1_lineage_system_prompt(),
+        system_prompt=_stage_1_lineage_system_prompt(run_prompt),
         format_self=_stage_1_format_self,
     )
 
@@ -222,6 +261,197 @@ async def compute_stage_2_champion_brief(
     return rendered, (len(full_panel_critiques), brief)
 
 
+# --- Lineage subject for per-leaf scalar briefs ---------------------------
+#
+# Distinct from TREE_SUBJECT: when the brief is scoped to one MCTS path
+# (only rollouts whose DAG is a structural ancestor of the current target),
+# the noun shifts from "the tree" to "this path / trajectory" so the
+# summarizer's wording matches the narrower scope.
+
+LINEAGE_PATH_SUBJECT = BriefSubject(
+    upper="THIS PATH",
+    narrative="this path",
+    block_qualifier=" partial",  # "THIS PATH partial:" introduces each ancestor DAG
+    seed_placeholder="Initial path — no ancestor rollouts yet.",
+)
+
+
+def lineage_records_for_target(
+    rollout_records: list[Any], target_dag: dict,
+) -> list[Any]:
+    """Filter `rollout_records` to those whose DAG is a structural ancestor
+    of `target_dag`.
+
+    A rollout's DAG is an ancestor of `target_dag` iff its node-id set is a
+    subset of `target_dag`'s and its edge set is a subset. MCTS only ever
+    grows a partial — it never removes nodes or edges within a single
+    bidirectional run — so structural prefix === ancestry by construction.
+
+    Returns records sorted ancestor-first (smallest DAG first), so the
+    summarizer reads them as a trajectory.
+    """
+    target_node_ids = {n["id"] for n in target_dag.get("nodes", [])}
+    target_edges = frozenset(
+        (e["src"], e["dst"], e["type"])
+        for e in target_dag.get("edges", [])
+    )
+
+    matched = []
+    for record in rollout_records:
+        dag = record.dag
+        node_ids = {n["id"] for n in dag.get("nodes", [])}
+        if not node_ids.issubset(target_node_ids):
+            continue
+        edges = frozenset(
+            (e["src"], e["dst"], e["type"])
+            for e in dag.get("edges", [])
+        )
+        if not edges.issubset(target_edges):
+            continue
+        matched.append(record)
+
+    matched.sort(key=lambda r: (len(r.dag.get("nodes", [])), len(r.dag.get("edges", []))))
+    return matched
+
+
+# --- Stage 2 scalar tree-brief adapter ------------------------------------
+#
+# Parallel to `compute_stage_2_champion_brief` but consumes scalar rollout
+# records instead of pairwise match critiques. Same `LineageBrief` output,
+# same `(count, brief)` cache shape, different summarizer prompt + input
+# rendering. The pairwise and scalar paths never run on the same tree (the
+# mode is a Stage2Config field), so they share `TreeBriefState`'s cache slot.
+
+
+def _stage_2_load_scalar_system_prompt() -> str:
+    from owtn.prompts.stage_2.registry import load_champion_brief_scalar_system
+    return load_champion_brief_scalar_system()
+
+
+async def compute_stage_2_scalar_tree_brief(
+    *,
+    rollout_records: list[Any],
+    cached_count: int | None,
+    cached_brief: "LineageBrief | None",
+    classifier_model: str,
+    re_summarize_every: int = 5,
+    force_resummarize: bool = False,
+) -> tuple[str, "tuple[int, LineageBrief] | None"]:
+    """Stage 2 scalar-mode entry point. Mirrors `compute_stage_2_champion_brief`:
+    callers supply records + cache, get back rendered text + optional new
+    cache payload.
+
+    `rollout_records` is a list of `ScoredRolloutRecord` (from
+    `owtn.stage_2.champion_brief`); typed as `list[Any]` here to keep this
+    module from importing the stage_2 package (the stage_2 package depends
+    on this one, not the reverse).
+
+    Returns:
+        (rendered_text, new_cache_or_None) where new_cache is `(count, brief)`
+        when the summarizer fired, or None when the cache was fresh / the
+        summarizer failed (raw fallback in `rendered_text`).
+
+    Behavior mirrors `compute_stage_2_champion_brief`:
+    - Cold start: seed placeholder, no LLM call.
+    - Cache fresh: re-render from cached brief, no new cache payload.
+    - Cache stale or `force_resummarize`: fire summarizer, return new
+      render + cache.
+    - Summarizer failure: raw fallback render, None cache.
+    """
+    if not rollout_records:
+        return TREE_SUBJECT.seed_placeholder, None
+
+    scored = [(r.score, r.reasoning, r.dag) for r in rollout_records]
+
+    if not force_resummarize and cached_count is not None:
+        delta = len(rollout_records) - cached_count
+        if delta < re_summarize_every and cached_brief is not None:
+            rendered = render_scalar_tree_brief(cached_brief, scored, TREE_SUBJECT)
+            return rendered, None
+
+    try:
+        brief = await summarize_scalar_tree(
+            scored_rollouts=scored,
+            classifier_model=classifier_model,
+            system_prompt=_stage_2_load_scalar_system_prompt(),
+            format_dag=_stage_2_format_dag_for_match,
+            subject=TREE_SUBJECT,
+        )
+    except Exception as e:  # noqa: BLE001 — never crash callers on summarizer failure
+        logger.warning(
+            "Stage 2 scalar tree-brief summarizer failed (%s); using raw fallback.", e,
+        )
+        return render_scalar_raw_fallback(scored, TREE_SUBJECT), None
+
+    rendered = render_scalar_tree_brief(brief, scored, TREE_SUBJECT)
+    return rendered, (len(rollout_records), brief)
+
+
+# --- Stage 2 scalar lineage-brief adapter ---------------------------------
+#
+# Phase B of the scalar brief feedback loop. Scope is one MCTS path: only
+# the rollouts whose DAG is a structural ancestor of the current expansion
+# target. Same `LineageBrief` output shape as the tree adapter; different
+# subject wording, different system prompt, and per-leaf cache keyed by the
+# ancestor record count for that target.
+
+
+def _stage_2_load_scalar_lineage_system_prompt() -> str:
+    from owtn.prompts.stage_2.registry import load_champion_brief_scalar_lineage_system
+    return load_champion_brief_scalar_lineage_system()
+
+
+async def compute_stage_2_scalar_lineage_brief(
+    *,
+    lineage_records: list[Any],
+    cached_count: int | None,
+    cached_brief: "LineageBrief | None",
+    classifier_model: str,
+) -> tuple[str, "tuple[int, LineageBrief] | None"]:
+    """Per-leaf lineage brief: same shape as the tree adapter but scoped to
+    a single trajectory.
+
+    Caller pre-filters `lineage_records` (via `lineage_records_for_target`)
+    so this function doesn't need to know about the target DAG. Cache is
+    one slot per target — caller is responsible for keying it on the
+    target's identity.
+
+    Caching behavior is simpler than the tree adapter's: there's no
+    `re_summarize_every` cadence — the lineage is small and changes
+    infrequently (only when a new beat is committed on this path), so we
+    re-summarize whenever the ancestor count grew.
+
+    Returns:
+        (rendered_text, new_cache_or_None) — same convention as the tree
+        adapter. None for new_cache means cache hit or summarizer failed.
+    """
+    if not lineage_records:
+        return LINEAGE_PATH_SUBJECT.seed_placeholder, None
+
+    scored = [(r.score, r.reasoning, r.dag) for r in lineage_records]
+
+    if cached_count == len(lineage_records) and cached_brief is not None:
+        rendered = render_scalar_tree_brief(cached_brief, scored, LINEAGE_PATH_SUBJECT)
+        return rendered, None
+
+    try:
+        brief = await summarize_scalar_tree(
+            scored_rollouts=scored,
+            classifier_model=classifier_model,
+            system_prompt=_stage_2_load_scalar_lineage_system_prompt(),
+            format_dag=_stage_2_format_dag_for_match,
+            subject=LINEAGE_PATH_SUBJECT,
+        )
+    except Exception as e:  # noqa: BLE001
+        logger.warning(
+            "Stage 2 scalar lineage-brief summarizer failed (%s); using raw fallback.", e,
+        )
+        return render_scalar_raw_fallback(scored, LINEAGE_PATH_SUBJECT), None
+
+    rendered = render_scalar_tree_brief(brief, scored, LINEAGE_PATH_SUBJECT)
+    return rendered, (len(lineage_records), brief)
+
+
 # --- Stage 1 population adapter -------------------------------------------
 
 _STAGE_1_POPULATION_PLACEHOLDERS = {
@@ -237,15 +467,16 @@ _STAGE_1_POPULATION_PLACEHOLDERS = {
 }
 
 
-def _stage_1_population_system_prompt(judge_names: list[str]) -> str:
-    prompt = (_OPTIMIZER_DIR / "population_prompt.txt").read_text()
+def _stage_1_population_system_prompt(
+    judge_names: list[str], run_prompt: str = "",
+) -> str:
+    template = (_OPTIMIZER_DIR / "population_prompt.txt").read_text()
     placeholders = {
         **_STAGE_1_POPULATION_PLACEHOLDERS,
         "judge_names": ", ".join(judge_names) if judge_names else "(unknown panel)",
+        "prompt_frame": _render_prompt_frame(run_prompt),
     }
-    for key, value in placeholders.items():
-        prompt = prompt.replace("{" + key + "}", value)
-    return prompt
+    return _resolve_placeholders(template, placeholders)
 
 
 def _stage_1_gather_lineage_briefs(db: Any) -> list[tuple[str, str, dict]]:
@@ -316,26 +547,26 @@ async def compute_stage_1_population_brief(
     db: Any,
     run_brief_model: str,
     judge_names: list[str],
+    run_prompt: str = "",
 ) -> tuple[str, str] | None:
-    """Run the Stage 1 population summarizer end-to-end.
+    """Run the Stage 1 population summarizer end-to-end. Reads cached
+    `LineageBrief`s from the DB, dispatches the call, and returns two
+    markdown blocks `(population_context, exploration_directions)` placed
+    at different positions in the mutation prompt by `build_operator_prompt`.
 
-    Reads all programs' cached `LineageBrief`s from the DB, formats them as
-    the summarizer input, fills the Stage 1 placeholders on the generic
-    prompt, dispatches the call, and returns two rendered markdown blocks:
-    `(population_context, exploration_directions)`. The two blocks are placed
-    at different positions in the mutation prompt — see the instruction-
-    sandwich wiring in `build_operator_prompt`.
+    `run_prompt` (`Stage1Config.prompt`) renders as a frame block; without
+    it the summarizer reads prompt-required convergence as drift and produces
+    exploration_directions that push mutators away from the user's prompt.
 
-    Returns None if there are no lineage briefs yet (early run) or if the
-    summarizer call fails — callers should treat that as "no population
-    signal this generation."
+    Returns None when there are no lineage briefs yet or when the summarizer
+    fails — callers treat that as "no population signal this generation."
     """
     entries = _stage_1_gather_lineage_briefs(db)
     if not entries:
         return None
 
     user_msg = _format_stage_1_population_user_msg(entries)
-    system_prompt = _stage_1_population_system_prompt(judge_names)
+    system_prompt = _stage_1_population_system_prompt(judge_names, run_prompt)
     summarizer = PopulationBriefSummarizer(model_name=run_brief_model)
     try:
         brief = await summarizer.summarize(

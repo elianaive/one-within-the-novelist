@@ -54,7 +54,7 @@ priority: "primary"
 # model that isn't itself fluent-but-empty.
 # (No :nitro suffix — :nitro's fastest-provider routing stalls silently
 # under this workload.)
-model: ["z-ai/glm-4.7-20251222"]
+model: ["gpt-5.4-mini"]
 
 temperature: 0.0
 top_p: null

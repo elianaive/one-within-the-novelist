@@ -109,6 +109,34 @@ class TestPopulationPromptPlaceholders:
         prompt = _stage_1_population_system_prompt(judge_names=["gwern"])
         assert "MAX 3" in prompt or "max 3" in prompt.lower()
 
+    def test_empty_run_prompt_omits_frame_block(self):
+        prompt = _stage_1_population_system_prompt(
+            judge_names=["gwern"], run_prompt="",
+        )
+        assert "user_prompt" not in prompt
+        assert "non-negotiable frame" not in prompt
+        assert "\n\n\n\n" not in prompt
+
+    def test_non_empty_run_prompt_renders_frame_block(self):
+        run_prompt = "Tell us a speculative tale from within latent space."
+        prompt = _stage_1_population_system_prompt(
+            judge_names=["gwern"], run_prompt=run_prompt,
+        )
+        assert run_prompt in prompt
+        assert "non-negotiable frame" in prompt
+        assert "<user_prompt>" in prompt
+        # Frame must come AFTER the judge-attribution paragraph and BEFORE
+        # the "Your output has four fields" output spec, so the model reads
+        # role → frame → output spec.
+        assert prompt.index("gwern") < prompt.index("<user_prompt>")
+        assert prompt.index("<user_prompt>") < prompt.index("Your output has four fields")
+
+    def test_population_prompt_omits_json_object_trailer(self):
+        """Lockfile guard — see TestLineagePromptHasNoSchemaTrailer."""
+        prompt = _stage_1_population_system_prompt(judge_names=["gwern"])
+        assert "Respond with a single JSON object" not in prompt
+        assert "Respond with a JSON object" not in prompt
+
 
 class TestGatherLineageBriefs:
     def test_skips_programs_without_cache(self):
@@ -420,6 +448,7 @@ class TestRunnerPopulationBriefLifecycle:
             stage_config=SimpleNamespace(
                 llm=SimpleNamespace(run_brief_model="fake-model"),
                 judges=SimpleNamespace(panel=["gwern", "wahls"]),
+                prompt="",
             ),
             db=object(),
             prompt_sampler=SimpleNamespace(

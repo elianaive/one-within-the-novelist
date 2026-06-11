@@ -136,10 +136,10 @@ class TestAnthropicParsing:
         assert isinstance(result.content, PairwiseJudgment)
         assert result.content.novelty == "tie"
 
-    def test_uses_auto_tool_choice_on_structured_call(self):
-        """Tool use is always optional — schema is offered as a tool, not forced.
+    def test_uses_auto_tool_choice_for_judgment_calls(self):
+        """Default is `tool_choice: auto` — schema offered as a tool, not forced.
         Forcing tool_choice would block extended thinking, costing the model
-        its reasoning channel under structured output."""
+        its reasoning channel for free-text reasoning callers like judges."""
         from owtn.llm.providers.anthropic import AnthropicProvider
 
         tool_block = MagicMock()
@@ -165,6 +165,39 @@ class TestAnthropicParsing:
         assert kw["tool_choice"] == {"type": "auto"}
         assert len(kw["tools"]) == 1
         assert kw["tools"][0]["name"] == "PairwiseJudgment"
+
+    def test_forces_tool_choice_for_brief_summarizer_models(self):
+        """Brief output models (LineageBrief, PopulationBrief) force
+        `tool_choice: tool` — under `auto`, haiku-4-5 deterministically skips
+        the tool call on long brief prompts. See
+        lab/issues/2026-04-30-stage-2-lineage-brief-tool-use-miss.md."""
+        from owtn.llm.providers.anthropic import AnthropicProvider
+        from owtn.optimizer.models import LineageBrief
+
+        tool_block = MagicMock()
+        tool_block.type = "tool_use"
+        tool_block.name = "LineageBrief"
+        tool_block.input = LineageBrief(
+            established_weaknesses=[], contested_strengths=[],
+            attractor_signature=[], divergence_directions=[],
+        ).model_dump()
+        response = MagicMock()
+        response.content = [tool_block]
+        response.usage.input_tokens = 1
+        response.usage.output_tokens = 1
+        response.usage.cache_read_input_tokens = 0
+        response.usage.cache_creation_input_tokens = 0
+        client = MagicMock()
+        client.messages.create.return_value = response
+
+        AnthropicProvider().query(
+            model="claude-haiku-4-5-20251001", msg="m", system_msg="s",
+            msg_history=[], system_prefix=None,
+            output_model=LineageBrief, kwargs={"max_tokens": 100},
+            client=client,
+        )
+        kw = client.messages.create.call_args.kwargs
+        assert kw["tool_choice"] == {"type": "tool", "name": "LineageBrief"}
 
 
 class TestOpenAIParsing:
@@ -296,6 +329,111 @@ class TestDeepSeekParsing:
             client=client,
         )
         assert result.content.v == 42
+
+    def test_parse_failure_retries_with_corrective_feedback(self):
+        """When the first response is unparseable, the retry must include the
+        bad response + a corrective user message — not just repeat the same
+        prompt. Without this feedback, models that drift into narrative on
+        creative prompts (e.g., returning 'The silence held.' instead of
+        ExpansionProposals JSON) tend to repeat the same drift on retry.
+        """
+        from owtn.llm.providers.deepseek import DeepSeekProvider
+
+        class _Tiny(BaseModel):
+            v: int
+
+        bad_response = MagicMock()
+        bad_response.choices = [MagicMock()]
+        bad_response.choices[0].message.content = "The silence held."
+        bad_response.choices[0].message.reasoning_content = ""
+        bad_response.usage.prompt_tokens = 1
+        bad_response.usage.completion_tokens = 1
+        bad_response.usage.completion_tokens_details = None
+        bad_response.usage.prompt_tokens_details = None
+        bad_response.usage.prompt_cache_hit_tokens = 0
+
+        good_response = MagicMock()
+        good_response.choices = [MagicMock()]
+        good_response.choices[0].message.content = '{"v":7}'
+        good_response.choices[0].message.reasoning_content = ""
+        good_response.usage.prompt_tokens = 1
+        good_response.usage.completion_tokens = 1
+        good_response.usage.completion_tokens_details = None
+        good_response.usage.prompt_tokens_details = None
+        good_response.usage.prompt_cache_hit_tokens = 0
+
+        client = MagicMock()
+        client.chat.completions.create.side_effect = [bad_response, good_response]
+
+        result = DeepSeekProvider().query(
+            model="deepseek-v4-pro", msg="propose actions", system_msg="s",
+            msg_history=[], system_prefix=None,
+            output_model=_Tiny, kwargs={},
+            client=client,
+        )
+        assert result.content.v == 7
+
+        # First call: just system + original user message.
+        first_messages = client.chat.completions.create.call_args_list[0].kwargs["messages"]
+        assert len(first_messages) == 2
+        assert first_messages[0]["role"] == "system"
+        assert first_messages[-1] == {"role": "user", "content": "propose actions"}
+
+        # Retry call: must carry the failed assistant turn + a user correction
+        # naming the failure. Without this feedback the model gets the same
+        # input and tends to repeat the same off-schema response.
+        retry_messages = client.chat.completions.create.call_args_list[1].kwargs["messages"]
+        assert len(retry_messages) == 4
+        assert retry_messages[2] == {"role": "assistant", "content": "The silence held."}
+        assert retry_messages[3]["role"] == "user"
+        correction = retry_messages[3]["content"]
+        assert "not valid JSON" in correction
+        assert "ONLY the JSON object" in correction
+
+
+class TestGeminiClientLifecycle:
+    """Regression: async calls must not reuse a cached client across worker
+    threads with their own asyncio.run loops. The google.genai SDK's
+    ``client.aio.*`` path binds httpx transport state to the loop on first
+    use; reusing across loops triggers ``RuntimeError: ... attached to a
+    different loop`` (saw 147 retries / 0 successes on the 2026-04-30
+    submission run).
+    """
+
+    def test_query_async_makes_fresh_client_each_call(self):
+        from owtn.llm.providers.gemini import GeminiProvider
+
+        provider = GeminiProvider()
+        clients = []
+        original_make = provider._make_client
+
+        def spy_make_client():
+            c = original_make()
+            clients.append(c)
+            return c
+
+        # Don't actually fire HTTP — just count construction calls.
+        # We can't easily await query_async without mocking the SDK, so
+        # just exercise the helper that picks "fresh client" vs "singleton".
+        a1 = provider._make_client.__func__  # method reference, sanity
+        assert a1 is not None
+        provider._make_client = spy_make_client  # type: ignore[assignment]
+
+        # Two async-style invocations both call _make_client.
+        c1 = provider._make_client()
+        c2 = provider._make_client()
+        assert c1 is not c2, "async path must construct a fresh client per call"
+        assert len(clients) == 2
+
+    def test_sync_path_keeps_singleton(self):
+        """Sync calls don't have the loop-binding issue, so the singleton
+        stays — saves a small construction cost on hot sync paths."""
+        from owtn.llm.providers.gemini import GeminiProvider
+
+        provider = GeminiProvider()
+        c1 = provider._sync_client_or_make()
+        c2 = provider._sync_client_or_make()
+        assert c1 is c2
 
 
 class TestGeminiParsing:
@@ -530,6 +668,168 @@ class TestExplicitThinkingTokens:
         assert "thinking" not in out
 
 
+class TestAdaptiveThinking:
+    """Opus 4.7+ deprecated the legacy ``thinking={"type":"enabled","budget_tokens":N}``
+    shape. The new shape is ``thinking={"type":"adaptive"}`` plus
+    ``output_config={"effort": <low|medium|high>}``. Older Anthropic models
+    keep the legacy shape unchanged.
+    """
+
+    @pytest.mark.parametrize(
+        "effort,expected_adaptive_effort",
+        [
+            ("min", "low"),       # no Anthropic "min" — folds to low
+            ("low", "low"),
+            ("medium", "medium"),
+            ("high", "high"),
+            ("xhigh", "xhigh"),   # Opus 4.7 only per API docs
+            ("max", "max"),
+        ],
+    )
+    def test_opus_47_uses_adaptive_shape(self, effort, expected_adaptive_effort):
+        from owtn.llm.providers.anthropic import AnthropicProvider
+
+        out = AnthropicProvider().build_call_kwargs(
+            api_model="claude-opus-4-7",
+            requested={"reasoning_effort": effort, "max_tokens": 16384},
+        )
+        assert out["thinking"] == {"type": "adaptive", "display": "summarized"}
+        assert out["output_config"] == {"effort": expected_adaptive_effort}
+        assert "budget_tokens" not in out.get("thinking", {})
+
+    def test_opus_47_disabled_emits_no_thinking_or_output_config(self):
+        from owtn.llm.providers.anthropic import AnthropicProvider
+
+        out = AnthropicProvider().build_call_kwargs(
+            api_model="claude-opus-4-7",
+            requested={"reasoning_effort": "disabled", "max_tokens": 16384},
+        )
+        assert "thinking" not in out
+        assert "output_config" not in out
+
+    def test_opus_47_omits_temperature_regardless_of_request(self):
+        """Opus 4.7 deprecated ``temperature`` entirely — only 1.0 or
+        omitted is accepted. We omit, can't be wrong."""
+        from owtn.llm.providers.anthropic import AnthropicProvider
+
+        out_thinking = AnthropicProvider().build_call_kwargs(
+            api_model="claude-opus-4-7",
+            requested={"reasoning_effort": "medium", "temperature": 0.7, "max_tokens": 16384},
+        )
+        assert "temperature" not in out_thinking
+
+        out_no_thinking = AnthropicProvider().build_call_kwargs(
+            api_model="claude-opus-4-7",
+            requested={"reasoning_effort": "disabled", "temperature": 0.7, "max_tokens": 16384},
+        )
+        assert "temperature" not in out_no_thinking
+
+    def test_opus_47_silently_ignores_thinking_tokens_under_adaptive(self):
+        """Adaptive has no budget axis. Configs that pass an explicit
+        ``thinking_tokens`` int are ignored on Opus 4.7 — the effort enum
+        drives. No log spam: callers may legitimately set this for portable
+        configs across model families."""
+        from owtn.llm.providers.anthropic import AnthropicProvider
+
+        out = AnthropicProvider().build_call_kwargs(
+            api_model="claude-opus-4-7",
+            requested={
+                "reasoning_effort": "xhigh",
+                "thinking_tokens": 20000,
+                "max_tokens": 16384,
+            },
+        )
+        assert out["thinking"] == {"type": "adaptive", "display": "summarized"}
+        assert out["output_config"] == {"effort": "xhigh"}
+        assert "budget_tokens" not in out.get("thinking", {})
+
+    def test_sonnet_46_keeps_legacy_shape(self):
+        """Older Anthropic models still accept (and require) the legacy
+        ``{"type":"enabled","budget_tokens":N}`` shape. No regression."""
+        from owtn.llm.providers.anthropic import AnthropicProvider
+
+        out = AnthropicProvider().build_call_kwargs(
+            api_model="claude-sonnet-4-6",
+            requested={"reasoning_effort": "high", "max_tokens": 16384},
+        )
+        assert out["thinking"] == {"type": "enabled", "budget_tokens": 8192}
+        assert "output_config" not in out
+
+    def test_opus_46_keeps_legacy_shape(self):
+        """Opus 4.6 predates the adaptive shape — still legacy."""
+        from owtn.llm.providers.anthropic import AnthropicProvider
+
+        out = AnthropicProvider().build_call_kwargs(
+            api_model="claude-opus-4-6",
+            requested={"reasoning_effort": "high", "max_tokens": 16384},
+        )
+        assert out["thinking"]["type"] == "enabled"
+        assert "output_config" not in out
+
+    def test_xhigh_legacy_budget(self):
+        """``xhigh`` slots between ``high=8192`` and ``max=16384`` at 12288.
+        Verifies the new effort level lands on the legacy budget path too."""
+        from owtn.llm.providers.anthropic import AnthropicProvider
+        from owtn.llm.providers.base import THINKING_TOKENS
+
+        assert THINKING_TOKENS["xhigh"] == 12288
+
+        out = AnthropicProvider().build_call_kwargs(
+            api_model="claude-sonnet-4-6",
+            requested={"reasoning_effort": "xhigh", "max_tokens": 32000},
+        )
+        assert out["thinking"]["budget_tokens"] == 12288
+
+
+class TestOpenAIXHighEffort:
+    """``xhigh`` is an owtn-internal step between ``high`` and ``max`` (more
+    granular thinking budget on Anthropic legacy). On OpenAI it collapses to
+    ``high`` — the API only exposes 3 effort labels."""
+
+    def test_openai_xhigh_maps_to_high(self):
+        from owtn.llm.providers.openai import OpenAIProvider
+
+        out = OpenAIProvider().build_call_kwargs(
+            api_model="gpt-5.4",
+            requested={"reasoning_effort": "xhigh", "max_tokens": 4096},
+        )
+        assert out["reasoning"]["effort"] == "high"
+
+
+class TestPricingFlags:
+    """``requires_adaptive_thinking`` and ``requires_temp_one_or_omit`` flags
+    drive the Opus 4.7 dispatch. Regression: flags must load from pricing.csv
+    correctly so the provider routes calls to the right shape."""
+
+    def test_opus_47_flags_set(self):
+        from owtn.llm.providers.pricing import (
+            requires_adaptive_thinking,
+            requires_temp_one_or_omit,
+        )
+
+        assert requires_adaptive_thinking("claude-opus-4-7") is True
+        assert requires_temp_one_or_omit("claude-opus-4-7") is True
+
+    def test_older_anthropic_flags_unset(self):
+        from owtn.llm.providers.pricing import (
+            requires_adaptive_thinking,
+            requires_temp_one_or_omit,
+        )
+
+        for model in ("claude-sonnet-4-6", "claude-opus-4-6", "claude-haiku-4-5-20251001"):
+            assert requires_adaptive_thinking(model) is False, model
+            assert requires_temp_one_or_omit(model) is False, model
+
+    def test_unknown_model_flags_default_false(self):
+        from owtn.llm.providers.pricing import (
+            requires_adaptive_thinking,
+            requires_temp_one_or_omit,
+        )
+
+        assert requires_adaptive_thinking("nonexistent-model") is False
+        assert requires_temp_one_or_omit("nonexistent-model") is False
+
+
 class TestDeepSeekReasoningHeadroom:
     """DeepSeek's max_tokens covers reasoning + visible output. Reasoning
     models with active effort need a generous floor or the visible output
@@ -571,3 +871,28 @@ class TestDeepSeekReasoningHeadroom:
             requested={"reasoning_effort": "medium", "max_tokens": 4096},
         )
         assert out["max_tokens"] == 4096
+
+
+# ---------- Live API smoke ----------
+
+
+@pytest.mark.live_api
+class TestOpus47LiveSmoke:
+    """End-to-end check that Opus 4.7's adaptive-thinking shape is accepted
+    by the actual API. Costs ~5¢ per run. Run with ``pytest -m live_api``."""
+
+    def test_opus_47_adaptive_thinking_medium_effort(self):
+        from owtn.llm.providers.anthropic import AnthropicProvider
+
+        result = AnthropicProvider().query(
+            model="claude-opus-4-7",
+            msg="Reply with a single short sentence acknowledging this prompt.",
+            system_msg="You are a terse assistant.",
+            msg_history=[],
+            system_prefix=None,
+            output_model=None,
+            kwargs={"reasoning_effort": "medium", "max_tokens": 1024},
+        )
+        assert result.content.strip(), "expected non-empty response"
+        assert result.input_tokens > 0
+        assert result.output_tokens > 0

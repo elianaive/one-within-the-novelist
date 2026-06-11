@@ -506,6 +506,7 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
         from owtn.optimizer.adapters import compute_stage_1_lineage_brief
 
         classifier_model = self.stage_config.llm.classifier_model
+        run_prompt = self.stage_config.prompt or ""
 
         # Challenger: brief reflects the single just-completed match,
         # already attached to result.private_metrics["match_critiques"].
@@ -514,6 +515,7 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
                 self_genome=challenger_genome.model_dump(),
                 private_metrics=result.private_metrics,
                 classifier_model=classifier_model,
+                run_prompt=run_prompt,
             )
             if payload is not None:
                 result.private_metrics["lineage_brief_cache"] = payload
@@ -537,6 +539,7 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
                     self_genome=champion_genome.model_dump(),
                     private_metrics=champ_pm,
                     classifier_model=classifier_model,
+                    run_prompt=run_prompt,
                 )
                 if payload is not None:
                     self.db.set_lineage_brief_threadsafe(
@@ -627,6 +630,7 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
                 db=self.db,
                 run_brief_model=model,
                 judge_names=list(self.stage_config.judges.panel),
+                run_prompt=self.stage_config.prompt or "",
             )
         except Exception as e:
             logger.warning("Population brief computation failed: %s", e)
@@ -659,6 +663,7 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
         import json
 
         classifier_model = self.stage_config.llm.classifier_model
+        run_prompt = self.stage_config.prompt or ""
 
         self.db.cursor.execute(
             "SELECT id, code, private_metrics FROM programs WHERE correct = 1"
@@ -692,6 +697,7 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
                     self_genome=self_genome,
                     private_metrics=pm,
                     classifier_model=classifier_model,
+                    run_prompt=run_prompt,
                 )
             except Exception as e:
                 logger.warning(
@@ -1063,11 +1069,16 @@ class ConceptEvolutionRunner(ShinkaEvolveRunner):
             exec_fname = f"{island_dir}/main.{self.lang_ext}"
             await write_file_async(exec_fname, code)
 
-            # Evaluate.
+            # Evaluate. Forward `island_idx` so the eval function can take
+            # the per-island champion lock — without it, `_evaluate_with_pairwise`
+            # raises and this island's seed never becomes a champion.
             loop = asyncio.get_event_loop()
             try:
                 results, rtime = await loop.run_in_executor(
-                    None, self.scheduler.run, exec_fname, island_results,
+                    None,
+                    lambda: self.scheduler.run(
+                        exec_fname, island_results, island_idx=island_idx,
+                    ),
                 )
                 logger.info(
                     f"  Island {island_idx} concept evaluated in {rtime:.2f}s"

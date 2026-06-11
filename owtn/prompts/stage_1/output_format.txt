@@ -66,6 +66,4 @@ The chosen form, compressed to a single paragraph of its essence. Not the three-
 
 anchor_scene is required; its `role` must be exactly one of "climax", "reveal", "pivot". character_seeds are objects with "label" and "sketch" (optional: "wound", "fear", "lie", "want", "need"). All other optional fields are plain strings. Use the <NAME>, <DESCRIPTION>, and <CODE> delimiters exactly as shown.
 
-The entire genome must be written in stylized prose. The medium is the message.
-
 The underlying concept ought be best fit for a 5-8,000 word long short story.

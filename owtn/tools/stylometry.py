@@ -35,11 +35,13 @@ FUNCTION_POS: frozenset[str] = frozenset({
 })
 
 
-def burstiness(doc) -> float:
+def burstiness(doc) -> float | None:
     """Coefficient of variation (stdev / mean) of sentence length in words.
 
     Higher = more variable rhythm. <0.4 is LLM-flat; >0.4 is human-like;
-    >0.6 is rich variation.
+    >0.6 is rich variation. Returns None when the passage has fewer than
+    two sentences — variation is undefined there, and reporting 0.0 would
+    be indistinguishable from "computed and flat" downstream.
     """
     lengths = [
         sum(1 for t in sent if not t.is_punct and not t.is_space)
@@ -47,10 +49,10 @@ def burstiness(doc) -> float:
     ]
     lengths = [n for n in lengths if n > 0]
     if len(lengths) < 2:
-        return 0.0
+        return None
     mean = sum(lengths) / len(lengths)
     if mean == 0:
-        return 0.0
+        return None
     variance = sum((n - mean) ** 2 for n in lengths) / len(lengths)
     return math.sqrt(variance) / mean
 
@@ -188,8 +190,9 @@ def function_word_burrows_delta(
 
 @dataclass
 class StylometricSignals:
-    """Raw stylometric signals for a single passage."""
-    burstiness: float
+    """Raw stylometric signals for a single passage. `burstiness` is None
+    when the passage has fewer than two sentences (rhythm CV is undefined)."""
+    burstiness: float | None
     mattr: float
     fw_distribution: dict[str, float] = field(repr=False)
     word_count: int
@@ -219,8 +222,11 @@ def near_default(
 ) -> bool:
     """A candidate is "near default" if its burstiness is below the LLM-flat
     floor AND its function-word distance from the supplied baseline is
-    below the meaningful-divergence threshold. Thresholds are heuristic
-    starting points; calibrate from pilot data."""
+    below the meaningful-divergence threshold. Returns False when burstiness
+    is undefined (single-sentence passage) — can't claim near-default on
+    rhythm we couldn't measure."""
+    if signals.burstiness is None:
+        return False
     return (
         signals.burstiness < burstiness_floor
         and fw_distance_from_baseline < fw_cosine_floor
@@ -260,7 +266,7 @@ class StylometricToolReport:
 
 def _signals_to_compact(sig: StylometricSignals) -> dict:
     return {
-        "burstiness": round(sig.burstiness, 4),
+        "burstiness": round(sig.burstiness, 4) if sig.burstiness is not None else None,
         "mattr": round(sig.mattr, 4),
         "word_count": sig.word_count,
         "sentence_count": sig.sentence_count,
@@ -335,8 +341,16 @@ def _interpretation(
     """
     parts: list[str] = []
 
-    # Burstiness — strongest signal, hard threshold
-    if candidate.burstiness < 0.4:
+    # Burstiness — strongest signal, hard threshold. Skipped when the
+    # passage is one sentence (rhythm CV is undefined; saying "LLM-flat"
+    # would be an artifact, not a finding).
+    if candidate.burstiness is None:
+        parts.append(
+            f"Burstiness is undefined — passage has {candidate.sentence_count} "
+            f"sentence; rhythm signal not applicable here. Sample a longer "
+            f"window if you want a rhythm read."
+        )
+    elif candidate.burstiness < 0.4:
         parts.append(
             f"Burstiness {candidate.burstiness:.2f} is below the 0.4 floor — "
             f"sentence rhythm reads as LLM-flat. Vary sentence length."
@@ -413,12 +427,13 @@ def _interpretation(
     return " ".join(parts)
 
 
-def stylometry(
+async def stylometry(
     passage: str,
     caller_model: str | None = None,
     neutral_baseline: str | None = None,
-    target_styles: list[str] | None = None,
+    style_queries: list[str] | None = None,
     corpus: ReferenceCorpus | None = None,
+    style_resolutions: list | None = None,
 ) -> StylometricToolReport:
     """Compute stylometric signals on `passage` and return them alongside
     aggregate references for positioning.
@@ -434,19 +449,17 @@ def stylometry(
             is computed as the primary "departure from default" signal.
             Stage 3 orchestrator passes this when sessions exist; standalone
             tool calls omit it.
-        target_styles: Optional list of named author or style tags. For each,
-            the report adds the candidate's function-word distance from that
-            author/style centroid. Resolution order per element:
-              1. Author slug match (e.g. "austen" → all austen-* entries).
-                 Use this for per-author distance.
-              2. Tag match (e.g. "free_indirect_discourse", "gothic",
-                 "russian", "minimalist") — uses any literary entry carrying
-                 that tag.
-            Unknown tokens are reported as `"not_found"`.
-            Useful for "how close am I to Austen / FID-rich / gothic?"
-            framing in voice-agent revision loops.
+        style_queries: Optional list of natural-language style queries
+            ("Morrison's incantatory mode", "free indirect discourse",
+            "minimalist Carver register"). Each query is routed through
+            the same haiku resolver `lookup_reference` uses; the report
+            adds the candidate's function-word distance from each resolved
+            cluster, plus the resolver's interpretation/note.
         corpus: Optional pre-loaded corpus (for testing). Defaults to the
             module-level singleton from `corpus.load_corpus()`.
+        style_resolutions: Optional pre-built LookupResolution per query,
+            for tests that want to skip the resolver LLM call. Length must
+            match `style_queries`. Production callers leave it None.
 
     Returns:
         StylometricToolReport with candidate signals, references, and
@@ -507,43 +520,15 @@ def stylometry(
             "note": "model not in reference corpus; falling back to LLM centroid",
         }
 
-    # ─── Author / style distance (opt-in via target_styles) ──────────
-    style_distances: dict | None = None
-    if target_styles:
-        style_distances = {}
-        for token in target_styles:
-            # Try author lookup first
-            ents = corpus.by_author(token)
-            kind = "author"
-            if not ents:
-                # Fall back to literary-tag lookup
-                ents = [e for e in corpus.by_tag(token) if "literary" in e.tags]
-                kind = "tag"
-            if not ents:
-                style_distances[token] = {"status": "not_found", "note":
-                    f"no author or literary-tag entries match {token!r}"}
-                continue
-            sc = corpus.aggregate_fw_distribution(ents)
-            spread = corpus.intra_cluster_spread(ents)
-            cos = function_word_cosine_distance(cand_fw, sc)
-            delta = function_word_burrows_delta(cand_fw, sc, mfw) if mfw else 0.0
-            entry = {
-                "kind": kind,
-                "n_samples": len(ents),
-                "fw_cosine": round(cos, 4),
-                "fw_delta": round(delta, 4),
-                "intra_dist_p95": round(spread["intra_dist_p95"], 4),
-                "calibration_reliable": spread["calibration_reliable"],
-                "burstiness": round(sum(e.signals.burstiness for e in ents) / len(ents), 4),
-            }
-            # Calibrated departure ratio: cos within style's intra-cluster p95
-            # the style's own intra-cluster spread? Closer than p95 = the
-            # candidate is plausibly inside that style's natural variance.
-            p95 = spread["intra_dist_p95"]
-            if p95 > 0:
-                entry["distance_ratio_vs_p95"] = round(cos / p95, 2)
-            style_distances[token] = entry
-        references["style_distances"] = style_distances
+    # ─── Style distances via NL resolver (opt-in) ────────────────────
+    if style_queries:
+        references["style_distances"] = await _build_style_distances(
+            queries=style_queries,
+            cand_fw=cand_fw,
+            corpus=corpus,
+            mfw=mfw,
+            resolutions=style_resolutions,
+        )
 
     notes = _interpretation(
         candidate_sig,
@@ -562,6 +547,76 @@ def stylometry(
         references=references,
         interpretation_notes=notes,
     )
+
+
+async def _build_style_distances(
+    *,
+    queries: list[str],
+    cand_fw: dict[str, float],
+    corpus: ReferenceCorpus,
+    mfw: dict[str, dict[str, float]],
+    resolutions: list | None,
+) -> dict:
+    """Resolve each NL query through the haiku resolver and compute the
+    candidate's function-word distance from the resolved cluster.
+
+    `resolutions` (test-only) lets tests skip the LLM call by passing a
+    pre-built LookupResolution per query.
+    """
+    from ._lookup_resolver import resolve_query_async
+    from .lookup_exemplar import _entries_for
+
+    out: dict = {}
+    for i, query in enumerate(queries):
+        resolution = resolutions[i] if resolutions and i < len(resolutions) else None
+        if resolution is None:
+            resolution = await resolve_query_async(query, corpus=corpus)
+
+        resolved_authors = list(resolution.authors)
+        resolved_tags = list(resolution.tags)
+        base = {
+            "match": resolution.match,
+            "interpretation": resolution.interpretation,
+            "resolved_authors": resolved_authors,
+            "resolved_tags": resolved_tags,
+            "note": resolution.note,
+        }
+        if resolution.match == "none":
+            out[query] = base
+            continue
+
+        ents = _entries_for(
+            corpus=corpus,
+            authors=resolved_authors,
+            tags=resolved_tags,
+            mode=resolution.match,
+        )
+        if not ents:
+            out[query] = {**base, "note": (resolution.note + " (no entries matched the resolved keys).").strip()}
+            continue
+
+        sc = corpus.aggregate_fw_distribution(ents)
+        spread = corpus.intra_cluster_spread(ents)
+        cos = function_word_cosine_distance(cand_fw, sc)
+        delta = function_word_burrows_delta(cand_fw, sc, mfw) if mfw else 0.0
+        bursts = [e.signals.burstiness for e in ents if e.signals.burstiness is not None]
+        entry = {
+            **base,
+            "n_samples": len(ents),
+            "fw_cosine": round(cos, 4),
+            "fw_delta": round(delta, 4),
+            "intra_dist_p95": round(spread["intra_dist_p95"], 4),
+            "calibration_reliable": spread["calibration_reliable"],
+            "burstiness": round(sum(bursts) / len(bursts), 4) if bursts else None,
+        }
+        # Calibrated departure ratio: closer than the cluster's own intra-
+        # cluster p95 means the candidate is plausibly inside that style's
+        # natural variance.
+        p95 = spread["intra_dist_p95"]
+        if p95 > 0:
+            entry["distance_ratio_vs_p95"] = round(cos / p95, 2)
+        out[query] = entry
+    return out
 
 
 # ─── Re-export of corpus rebuild for the CLI ─────────────────────────────

@@ -18,12 +18,22 @@ import argparse
 import json
 import sys
 from pathlib import Path
-from typing import Any
+from typing import Any, Literal
 
 from pydantic import BaseModel, Field, ValidationError
 
 from owtn.models.stage_1.concept_genome import ConceptGenome
 from owtn.models.stage_2.dag import DAG
+
+
+# Tier 3 (concept-demand fidelity) per-demand record. Set on `Stage2Output`
+# so Stage 3 sees per-demand verdicts and can compensate for `partial`
+# verdicts at voice / prose time (`docs/stage-2/evaluation.md` §Tier 3).
+# Defined here so the model layer stays free of evaluation-layer imports.
+class ConceptDemandVerdict(BaseModel):
+    demand: str
+    verdict: Literal["satisfied", "partial", "failed"]
+    rationale: str
 
 
 class Stage1Winner(BaseModel):
@@ -109,6 +119,10 @@ class Stage2Output(BaseModel):
     stage_1_forwarded: Stage1Winner
     mcts_reward: float
     adaptation_permissions: list[str] = Field(default_factory=list)
+    # Tier 3 verdicts populated when the DAG had non-empty concept_demands
+    # AND a classifier model was configured. Empty list when Tier 3 was
+    # skipped (no demands, no classifier model, or LLM failure).
+    concept_demand_results: list[ConceptDemandVerdict] = Field(default_factory=list)
 
 
 class Stage2HandoffManifest(BaseModel):

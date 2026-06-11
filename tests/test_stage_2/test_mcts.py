@@ -628,6 +628,49 @@ class TestParallelRun:
             assert child.visits == 1
             assert child.pending_visits == 0
 
+    def test_slow_expand_does_not_starve_iter_budget(self) -> None:
+        """Regression: a slow expand_fn must not let spinning workers burn the
+        iter budget on noop iterations. With 4 workers and a 0.5s expand_fn,
+        the leading worker takes ~0.5s; the other 3 see expansion_in_flight
+        and would previously consume completed=1,2,3 in microseconds before
+        the cache was populated, exiting at completed>=n with only 1 child
+        instantiated. After the fix, only rollout-producing iters count,
+        so all 4 cached children get expanded and rolled out."""
+        seed = _seed_dag()
+        actions = [_make_add_beat(f"branch_{i}") for i in range(4)]
+        expand_started = asyncio.Event()
+        expand_release = asyncio.Event()
+
+        async def slow_expand(dag: DAG) -> list[Action]:
+            expand_started.set()
+            await expand_release.wait()
+            return actions
+
+        mcts = MCTS(
+            seed,
+            expand_fn=slow_expand,
+            rollout_fn=_constant_rollout(0.5),
+            config=MCTSConfig(parallel_workers=4, virtual_loss=1.0, seed=42),
+        )
+
+        async def driver():
+            run_task = asyncio.create_task(mcts.run(4))
+            # Wait until the leading worker is actually inside expand_fn so
+            # the other 3 have time to enter their noop-spin path.
+            await expand_started.wait()
+            await asyncio.sleep(0.1)  # let spinners hit the noop backoff
+            expand_release.set()
+            await run_task
+
+        asyncio.run(driver())
+        # All 4 cached actions should have been instantiated as children and
+        # rolled out — pre-fix this would have been just 1.
+        assert len(mcts.root.children) == 4
+        assert mcts.root.visits == 4
+        for child in mcts.root.children:
+            assert child.visits == 1
+            assert child.pending_visits == 0
+
     def test_sequential_behavior_unchanged_when_workers_one(self) -> None:
         """parallel_workers=1 is the legacy path; virtual loss never kicks in
         because pending_visits stays 0 between select and backprop."""

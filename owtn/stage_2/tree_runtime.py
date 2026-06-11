@@ -39,6 +39,7 @@ from owtn.models.judge import JudgePersona
 from owtn.models.stage_1.concept_genome import ConceptGenome
 from owtn.models.stage_2.config import Stage2Config
 from owtn.models.stage_2.dag import DAG
+from owtn.models.stage_2.pacing import get_preset
 from owtn.stage_2.bidirectional import (
     PhaseContext,
     forward_phase_context,
@@ -47,8 +48,10 @@ from owtn.stage_2.bidirectional import (
 from owtn.stage_2.champion_brief import (
     TreeBriefState,
     get_or_compute_brief,
+    get_or_compute_scalar_brief,
+    get_or_compute_scalar_lineage_brief,
     record_full_panel_critique,
-    record_rollout_reasoning,
+    record_rollout_outcome,
 )
 from owtn.stage_2.mcts import MCTSConfig, RolloutFn
 from owtn.stage_2.operators import make_expand_factory
@@ -79,7 +82,7 @@ def _make_rollout_fn(
     cheap_judge: JudgePersona,
     full_panel: list[JudgePersona] | None,
     rejection_backprop: float,
-    classifier_model: str,
+    classifier_model: str | None,
     state: TreeRuntimeState,
     simulator: SimulatorFn | None = None,
 ) -> RolloutFn:
@@ -135,22 +138,66 @@ def _make_rollout_fn_scalar(
     *,
     scorer: Scorer,
     state: TreeBriefState,
+    classifier_model: str | None,
+    re_summarize_every: int,
 ) -> RolloutFn:
     """Build the scalar-mode MCTS rollout closure.
 
     Each rollout: score the partial DAG absolutely via `scorer.score()`. The
     scorer's aggregate IS the backprop reward — no champion comparison, no
-    promotion gate. Rollout reasoning is recorded into the tree's brief state
-    for cadence-based summarization (full-panel critiques don't fire in
-    scalar mode because there's no full panel).
+    promotion gate. The (score, reasoning, dag) triple is recorded for the
+    scalar-mode brief; the summarizer fires on a count-cadence so the next
+    expansion call sees feedback distilled from prior rollouts.
+
+    `classifier_model` is the summarizer model. When None, the brief loop is
+    skipped entirely — useful for tests and degenerate configs that don't
+    have a classifier model wired up.
     """
     async def rollout(challenger: DAG) -> float:
         card = await scorer.score(challenger)
-        if card.raw_responses:
-            record_rollout_reasoning(state, card.raw_responses[0])
+        reasoning = card.raw_responses[0] if card.raw_responses else ""
+        record_rollout_outcome(
+            state,
+            score=card.aggregate,
+            reasoning=reasoning,
+            dag=challenger.model_dump(),
+        )
+        if classifier_model is not None:
+            await _maybe_refresh_scalar_brief(
+                state, classifier_model=classifier_model,
+                re_summarize_every=re_summarize_every,
+            )
         return card.aggregate
 
     return rollout
+
+
+async def _maybe_refresh_scalar_brief(
+    state: TreeBriefState, *,
+    classifier_model: str,
+    re_summarize_every: int,
+) -> None:
+    """Trigger the scalar tree-brief summarizer when cadence has elapsed.
+
+    Single-flight via `summarize_in_flight`: concurrent rollouts (Stage 2
+    runs MCTS workers in parallel) only fire one summarizer at a time per
+    tree. Failures are swallowed inside `compute_stage_2_scalar_tree_brief`
+    (raw fallback render is written into cache instead).
+    """
+    cached = state.cached_count or 0
+    if len(state.rollout_records) - cached < re_summarize_every:
+        return
+    if state.summarize_in_flight:
+        return
+    state.summarize_in_flight = True
+    try:
+        await get_or_compute_scalar_brief(
+            state,
+            classifier_model=classifier_model,
+            re_summarize_every=re_summarize_every,
+        )
+    finally:
+        state.summarize_in_flight = False
 
 
 def _build_critique_record(
@@ -213,9 +260,9 @@ async def run_one_preset_tree(
     concept: ConceptGenome,
     preset: str,
     config: Stage2Config,
-    cheap_judge: JudgePersona,
+    cheap_judge: JudgePersona | None,
     full_panel: list[JudgePersona] | None,
-    classifier_model: str,
+    classifier_model: str | None,
 ) -> TournamentEntry:
     """Run forward + backward + Phase 3 for one preset; return a tournament entry.
 
@@ -225,21 +272,44 @@ async def run_one_preset_tree(
     phases share the state, so brief accumulation is continuous across them.
     """
     state = TreeRuntimeState(running_champion=seed_dag)
+    is_scalar = config.scoring_mode == "scalar"
 
-    def brief_fetcher() -> str:
-        # Sync read of the cached render; the brief is updated lazily by
-        # `evaluate_rollout` recording critiques + the runner triggering
-        # re-summarize. For this Phase 9 wiring, the brief stays stale
-        # within a phase — Phase 7+ rechallenge fires after promotions
-        # to re-summarize on demand. In scalar mode the brief sources from
-        # rollout reasoning instead of full-panel critiques.
-        return state.brief_state.cached_render or "(brief not yet available)"
+    async def brief_fetcher(target_dag: DAG) -> str:
+        """Render the expansion-prompt brief for `target_dag`.
 
+        Pairwise mode returns the tree-level cached render (refreshed by
+        the rollout closure on promotions). Scalar mode stacks a per-leaf
+        lineage brief above the tree-wide brief — the lineage is the
+        higher-signal block (records from this trajectory only) and goes
+        first; the tree summary backstops with cross-branch patterns.
+        """
+        tree_render = state.brief_state.cached_render or "(no tree-wide signal yet)"
+        if not is_scalar or classifier_model is None:
+            return tree_render
+
+        lineage_render = await get_or_compute_scalar_lineage_brief(
+            state.brief_state,
+            target_dag=target_dag.model_dump(),
+            classifier_model=classifier_model,
+        )
+        return (
+            "## Trajectory leading to this partial\n\n"
+            f"{lineage_render}\n\n"
+            "---\n\n"
+            "## Tree-wide patterns\n\n"
+            f"{tree_render}"
+        )
+
+    # `config.expansion_reasoning_effort` defaults to "low" — load-bearing
+    # for DeepSeek reasoning models, which fabricate node IDs without CoT
+    # and lose every proposed action at the phase filter. Strong non-DeepSeek
+    # models (Opus 4.7, Sonnet 4.6) can override to "disabled" via the YAML.
     expand_factory = make_expand_factory(
         concept=concept,
         brief_fetcher=brief_fetcher,
         model_name=config.expansion_model,
         k=config.k_candidates_per_expansion,
+        reasoning_effort=config.expansion_reasoning_effort,
     )
     # Refinement uses a separate factory that injects per-DAG topology
     # context (which nodes sit upstream vs. downstream of the anchor) so
@@ -251,41 +321,53 @@ async def run_one_preset_tree(
         extra_context_fn=render_topology_context,
         model_name=config.expansion_model,
         k=config.k_candidates_per_expansion,
+        reasoning_effort=config.expansion_reasoning_effort,
     )
-    # Bounded simulation gate: when enabled, build a per-tree simulator that
-    # walks up to s_max forward extensions per rollout. Each extension is a
-    # single beat addition, judge-filtered (only accepted on reward
-    # improvement), with the walk halting on non-improvement — so the
-    # extension model only needs to propose a reasonable single beat per
-    # step. We build a SEPARATE expand_factory for simulation parameterized
-    # by `simulation_model` (default: classifier_model, the cheap one) since
-    # search-tier reasoning isn't needed for one judge-filtered step. The
-    # FORWARD-phase context is used regardless of the calling phase —
-    # simulation projects forward toward a complete-enough state for the
-    # cheap-judge to discriminate, not about respecting add-direction.
-    simulator = None
-    if config.simulate_rollouts:
-        sim_expand_factory = make_expand_factory(
-            concept=concept,
-            brief_fetcher=brief_fetcher,
-            model_name=config.simulation_model,
-            k=config.k_candidates_per_expansion,
-        )
-        anchor_id = next(n.id for n in seed_dag.nodes if n.role)
-        forward_ctx = forward_phase_context(anchor_id=anchor_id, pacing_hint="")
-        simulator = make_simulator(
-            cheap_judge=cheap_judge,
-            expand_fn=sim_expand_factory(forward_ctx),
-            s_max=config.simulation_max_steps,
-            min_partial_size=config.simulation_min_partial_size,
-        )
     if config.scoring_mode == "scalar":
+        # Scalar rollout calls scorer.score() directly; no simulator, no
+        # cheap_judge — the legacy pairwise plumbing is short-circuited.
+        # The brief-feedback loop fires from inside the rollout closure on
+        # a count-cadence; classifier_model is the summarizer model.
         scorer = build_scorer_from_config(
             config.scoring_rollout_composition,
             render_stage2_partial,
         )
-        rollout_fn = _make_rollout_fn_scalar(scorer=scorer, state=state.brief_state)
+        rollout_fn = _make_rollout_fn_scalar(
+            scorer=scorer,
+            state=state.brief_state,
+            classifier_model=classifier_model,
+            re_summarize_every=config.scalar_brief_re_summarize_every,
+        )
     else:
+        # Stage2Config validator guarantees cheap_judge is set in pairwise mode.
+        assert cheap_judge is not None
+        # Bounded simulation gate: when enabled, build a per-tree simulator that
+        # walks up to s_max forward extensions per rollout. Each extension is a
+        # single beat addition, judge-filtered (only accepted on reward
+        # improvement), with the walk halting on non-improvement — so the
+        # extension model only needs to propose a reasonable single beat per
+        # step. We build a SEPARATE expand_factory for simulation parameterized
+        # by `simulation_model` (default: classifier_model, the cheap one) since
+        # search-tier reasoning isn't needed for one judge-filtered step. The
+        # FORWARD-phase context is used regardless of the calling phase —
+        # simulation projects forward toward a complete-enough state for the
+        # cheap-judge to discriminate, not about respecting add-direction.
+        simulator = None
+        if config.simulate_rollouts:
+            sim_expand_factory = make_expand_factory(
+                concept=concept,
+                brief_fetcher=brief_fetcher,
+                model_name=config.simulation_model,
+                k=config.k_candidates_per_expansion,
+            )
+            anchor_id = next(n.id for n in seed_dag.nodes if n.role)
+            forward_ctx = forward_phase_context(anchor_id=anchor_id, pacing_hint="")
+            simulator = make_simulator(
+                cheap_judge=cheap_judge,
+                expand_fn=sim_expand_factory(forward_ctx),
+                s_max=config.simulation_max_steps,
+                min_partial_size=config.simulation_min_partial_size,
+            )
         rollout_fn = _make_rollout_fn(
             concept=concept,
             cheap_judge=cheap_judge,
@@ -304,6 +386,12 @@ async def run_one_preset_tree(
         virtual_loss=config.mcts_virtual_loss,
     )
 
+    # Each preset bakes a written `expansion_hint` (rise-then-relief, long
+    # recoveries, stochastic, discrete waves) that the expansion prompt
+    # substitutes into `{PACING_HINT}`. Without this lookup the hint
+    # propagates as an empty string end-to-end and the prompt renders
+    # "(no preset hint)" regardless of which preset is active.
+    preset_hint = get_preset(preset).expansion_hint
     bidirectional_result = await run_bidirectional(
         seed_dag,
         expand_factory=expand_factory,
@@ -311,6 +399,8 @@ async def run_one_preset_tree(
         config=mcts_config,
         forward_iterations=config.iterations_per_phase,
         backward_iterations=config.iterations_per_phase,
+        forward_pacing_hint=preset_hint,
+        backward_pacing_hint=preset_hint,
     )
 
     refined, refinement_metrics = await run_refinement(

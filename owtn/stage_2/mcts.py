@@ -52,6 +52,13 @@ ExpandFn = Callable[[DAG], Awaitable[list[Action]]]
 RolloutFn = Callable[[DAG], Awaitable[float]]
 
 
+# Backoff for parallel workers that hit a noop iteration (another worker is
+# mid-expand_fn on the same leaf). Short enough to wake promptly when the
+# expansion completes; long enough to keep the event loop quiet during
+# 100s+ LLM calls.
+_NOOP_BACKOFF_S = 0.05
+
+
 # ----- UCB selection (with virtual-loss accounting) -----
 
 
@@ -206,24 +213,34 @@ class MCTS:
         last_improvement_at = 0
         halt = asyncio.Event()
 
+        # `completed` only counts iterations that produced a rollout. Workers
+        # whose step() returns None (another worker is mid-expand_fn on the
+        # same leaf, or expansion failed) noop and yield the event loop
+        # without burning the budget. Otherwise a slow expand_fn lets the
+        # spinning workers exhaust `n` in milliseconds before the leading
+        # worker finishes its LLM call.
         async def worker() -> None:
             nonlocal completed, best_so_far, last_improvement_at
             while not halt.is_set():
                 async with self._tree_lock:
                     if completed >= n:
                         return
-                    completed += 1
-                    my_iter = completed
-                await self.step()
-                if cutoff is None:
+                result = await self.step()
+                if result is None:
+                    await asyncio.sleep(_NOOP_BACKOFF_S)
                     continue
                 async with self._tree_lock:
-                    current = self._best_leaf_score_locked()
-                    if current > best_so_far:
-                        best_so_far = current
-                        last_improvement_at = my_iter
-                    elif my_iter - last_improvement_at >= cutoff:
-                        halt.set()
+                    if completed >= n:
+                        return
+                    completed += 1
+                    my_iter = completed
+                    if cutoff is not None:
+                        current = self._best_leaf_score_locked()
+                        if current > best_so_far:
+                            best_so_far = current
+                            last_improvement_at = my_iter
+                        elif my_iter - last_improvement_at >= cutoff:
+                            halt.set()
 
         await asyncio.gather(*[asyncio.create_task(worker()) for _ in range(workers)])
 

@@ -1,0 +1,30 @@
+Before any prose is written, you do the thinking. The deliverable is `pre_think.md` in your sandbox — it already exists with a `## scene_id` heading for each scene; you fill the bodies.
+
+**The plan lives in `pre_think.md`. Reasoning in your text reply does not land — it disappears when the loop continues.** Every plan-bearing sentence must arrive through `edit_file` (for incremental fills) or `write_file` (for whole-file rewrites). Treat your text reply as scratch — the place to think out loud, name a problem, plan the next move — and treat the tool call as the act of planning.
+
+Sit with the work as a whole before you plan its parts.
+
+The pull to start at scene one and write a paragraph for each section in order is strong; the planning that produces strong drafts begins before the keyboard. Read the concept end-to-end. Read the voice — not as a spec, as a sound; let it settle in your ear. Read the structural plan whole, the way you'd read a story's blurb-and-outline before reading the story itself: what is this manuscript, what does it want to do to a reader, where will the work be hardest. Notice which scenes you already know how to render and which feel uncertain. The uncertain ones are where the planning matters most.
+
+Then plan, scene by scene, in whatever order serves the work — you may find that planning the climactic scene first clarifies what the earlier scenes need, or that planning the opening tells you what the climax is for. The pre_think file is for you to think *into*, not just to fill out.
+
+For each scene, cover whichever of these the scene wants:
+
+- What the scene is doing in the story — what the reader is supposed to come away from this scene having registered. Not what happens; what the scene is *for*.
+- Which edge payloads from the structural plan this scene must enact. For each one, the *enactment hypothesis* — *how* the prose will dramatize it. Which moment lands the disclosure; which physical action carries the cause; which silence weighs the prohibition. The hypothesis is a craft commitment, not a checklist. If a payload's right enactment hasn't surfaced yet, say so and circle back.
+- Which voice moves the scene calls for, drawing from the voice's positive constraints and characteristic moves. Not the whole spec — the moves that this scene specifically wants.
+- Which motifs surface in this scene and in what mode (introduced, embodied, performed, agent, echoed, inverted). How the motif appears, not just that it does.
+- The reader-state at scene exit (see below).
+- Continuity facts inherited from prior scenes — what has been established that this scene must respect; what entities have been named; what has been disclosed and to whom.
+
+The reader-state at scene exit is the load-bearing target the prose writes toward. Three orthogonal dimensions:
+
+1. **Epistemic** — what the reader knows, suspects, holds open, cannot determine. The most powerful dimension; the reader's relationship to information is what drives narrative tension. Vocabulary: *Reader knows X happened but not why. Reader suspects Y but has no confirmation. Reader holds open whether Z is reliable.* Be specific — the question the reader is leaving this scene unable to put down.
+
+2. **Affective quality** — the *kind* of unsettlement, implication, resonance, dissonance the prose engineers in the reader. Structural language, not named emotions. Vocabulary: *Reader is unsettled in a way they cannot articulate. Reader feels the wrongness before they can name it. Reader is implicated in the character's choice without consent.* Avoid the fast vocabulary of feeling — *sad, hopeful, moved, devastated.* The work of the prose is to engineer the conditions for feeling, not to name what the feeling is.
+
+3. **Forward pull** — what unresolved question or tension carries the reader into the next scene. What work does this scene leave for the next one to pick up?
+
+If the voice resists reader-satisfaction-oriented design — fragmented, late-Beckett, Sebald-flat, deliberately-difficult — the affective dimension may not apply, and the reader-state element can be suppressed or sketched. Use your judgment from what the voice is doing.
+
+When every scene's plan is in `pre_think.md`, call `finalize_pre_think`. Re-read the file before finalizing: if a scene heading still has an empty body, the plan is incomplete — fill it via `edit_file` first. The system tracks whether tool calls have committed content; calling `finalize_pre_think` while the file is empty will flag the plan as scratch.

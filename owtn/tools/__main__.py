@@ -12,6 +12,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import asyncio
 import json
 from pathlib import Path
 
@@ -32,8 +33,8 @@ def main() -> None:
                        help="Short model tag, e.g. sonnet-4-6")
     p_run.add_argument("--neutral", default=None,
                        help="Optional path to a neutral-baseline text file")
-    p_run.add_argument("--target-styles", nargs="+", default=None,
-                       help="Optional author/tag tokens to compute style distances for")
+    p_run.add_argument("--style-queries", nargs="+", default=None,
+                       help="Optional NL style queries (e.g. \"Morrison's incantatory mode\")")
 
     p_lookup = sub.add_parser(
         "lookup",
@@ -76,12 +77,12 @@ def main() -> None:
     if args.cmd == "analyze":
         passage = Path(args.passage).read_text(encoding="utf-8")
         neutral = Path(args.neutral).read_text(encoding="utf-8") if args.neutral else None
-        report = stylometry(
+        report = asyncio.run(stylometry(
             passage,
             caller_model=args.caller_model,
             neutral_baseline=neutral,
-            target_styles=args.target_styles,
-        )
+            style_queries=args.style_queries,
+        ))
         print(json.dumps(report.to_dict(), indent=2))
         return
 

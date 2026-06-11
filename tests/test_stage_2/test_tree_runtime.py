@@ -358,18 +358,29 @@ class TestRolloutClosureScalar:
                     raw_responses=["because reasons"],
                 )
 
-        rollout = _make_rollout_fn_scalar(scorer=FakeScorer(), state=state.brief_state)
+        # classifier_model=None disables the brief loop — the cadence helper
+        # is exercised in TestScalarBriefRefresh.
+        rollout = _make_rollout_fn_scalar(
+            scorer=FakeScorer(), state=state.brief_state, classifier_model=None,
+            re_summarize_every=5,
+        )
         reward = asyncio.run(rollout(challenger))
 
         assert reward == pytest.approx(0.625)
         # No champion mutation
         assert state.running_champion is seed
-        # Reasoning fed to the brief queue
-        assert state.brief_state.rollout_reasonings == ["because reasons"]
+        # Outcome fed to the brief queue with score + reasoning + DAG
+        assert len(state.brief_state.rollout_records) == 1
+        record = state.brief_state.rollout_records[0]
+        assert record.score == pytest.approx(0.625)
+        assert record.reasoning == "because reasons"
+        assert record.dag["concept_id"] == challenger.concept_id
         # No full-panel critiques recorded
         assert state.brief_state.full_panel_critiques == []
 
-    def test_no_reasoning_skips_brief_recording(self) -> None:
+    def test_no_reasoning_records_empty_string(self) -> None:
+        """A scorer with no raw_responses still produces a record (the score
+        itself is signal); reasoning falls through as empty string."""
         seed = _seed_dag()
         state = TreeRuntimeState(running_champion=seed)
 
@@ -382,6 +393,71 @@ class TestRolloutClosureScalar:
                     judge_label="silent", raw_responses=[],
                 )
 
-        rollout = _make_rollout_fn_scalar(scorer=SilentScorer(), state=state.brief_state)
+        rollout = _make_rollout_fn_scalar(
+            scorer=SilentScorer(), state=state.brief_state, classifier_model=None,
+            re_summarize_every=5,
+        )
         asyncio.run(rollout(seed))
-        assert state.brief_state.rollout_reasonings == []
+        assert len(state.brief_state.rollout_records) == 1
+        assert state.brief_state.rollout_records[0].reasoning == ""
+
+    def test_brief_refresh_fires_on_cadence(self) -> None:
+        """When `classifier_model` is set, the rollout closure triggers the
+        scalar tree-brief summarizer once the count of records since last
+        cache crosses `re_summarize_every`. Earlier rollouts don't fire."""
+        from owtn.optimizer.models import LineageBrief
+
+        seed = _seed_dag()
+        state = TreeRuntimeState(running_champion=seed)
+
+        class FakeScorer:
+            rubric = None
+
+            async def score(self, artifact):
+                return ScoreCard(
+                    dim_scores={"x": 1.0}, aggregate=0.5, n_calls=1,
+                    judge_label="f", raw_responses=["r"],
+                )
+
+        canned = LineageBrief(
+            established_weaknesses=["w"],
+            contested_strengths=["c"],
+            attractor_signature=["a"],
+            divergence_directions=["d"],
+        )
+
+        class _FakeResult:
+            content = canned
+            cost = 0.0
+            input_tokens = 0
+            output_tokens = 0
+            thinking_tokens = 0
+            cache_read_tokens = 0
+            cache_creation_tokens = 0
+            thought = ""
+            model_name = "dummy"
+
+        call_count = [0]
+
+        async def fake_query(**kwargs):
+            call_count[0] += 1
+            return _FakeResult()
+
+        rollout = _make_rollout_fn_scalar(
+            scorer=FakeScorer(), state=state.brief_state,
+            classifier_model="dummy", re_summarize_every=3,
+        )
+
+        async def driver():
+            with patch("owtn.optimizer.lineage_brief.query_async", side_effect=fake_query):
+                # First two rollouts: under threshold, no summarize.
+                await rollout(seed)
+                await rollout(seed)
+                assert call_count[0] == 0
+                # Third rollout crosses threshold (3 records since cached_count=0).
+                await rollout(seed)
+                assert call_count[0] == 1
+
+        asyncio.run(driver())
+        assert state.brief_state.cached_count == 3
+        assert state.brief_state.cached_brief is canned

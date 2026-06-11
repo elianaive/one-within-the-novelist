@@ -265,4 +265,33 @@ class TestStage1AdapterPlaceholders:
         prompt = _stage_1_lineage_system_prompt()
         assert "fiction concept" in prompt
         assert "nine resonance dimensions" in prompt
-        assert "LineageBrief" in prompt
+
+    def test_empty_run_prompt_omits_frame_block(self):
+        prompt = _stage_1_lineage_system_prompt(run_prompt="")
+        assert "user_prompt" not in prompt
+        assert "non-negotiable frame" not in prompt
+        # No leftover triple newline from the collapsed placeholder.
+        assert "\n\n\n\n" not in prompt
+
+    def test_non_empty_run_prompt_renders_frame_block(self):
+        run_prompt = "Tell us a speculative tale from within latent space."
+        prompt = _stage_1_lineage_system_prompt(run_prompt=run_prompt)
+        assert run_prompt in prompt
+        assert "non-negotiable frame" in prompt
+        assert "<user_prompt>" in prompt
+        # Frame must precede the rules section so the model reads it as
+        # framing, not as one of the rules.
+        assert prompt.index("<user_prompt>") < prompt.index("Key rules:")
+
+
+class TestLineagePromptHasNoSchemaTrailer:
+    """Lockfile guard against re-introducing the "Respond with a single JSON
+    object…" trailer. Under `tool_choice: auto` it competed with the tool
+    schema and caused haiku to skip tool_use; under forced `tool_choice` it
+    is just deadweight tokens. See
+    `lab/issues/2026-04-30-stage-2-lineage-brief-tool-use-miss.md`."""
+
+    def test_lineage_prompt_omits_json_object_trailer(self):
+        prompt = _stage_1_lineage_system_prompt()
+        assert "Respond with a single JSON object" not in prompt
+        assert "Respond with a JSON object" not in prompt

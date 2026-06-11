@@ -22,6 +22,7 @@ import backoff
 import openai
 from pydantic import BaseModel, ValidationError
 
+from ..errors import LLMValidationError
 from ..recovery import recover_from_validation_error
 from ..result import QueryResult
 from .base import TIMEOUT, resolve_effort, resolve_temperature
@@ -79,6 +80,37 @@ def _parse_json_with_recovery(
         if recovered is not None:
             return recovered
         raise
+
+
+def _append_recovery_turn(
+    messages: list[dict], raw_content: str, error: Exception,
+) -> list[dict]:
+    """On parse failure, append the failed assistant turn + a corrective user
+    message so the next retry has actual feedback rather than the same prompt.
+
+    Without this, retries repeat the input verbatim and the model tends to
+    repeat the same off-schema response — particularly when the input is a
+    creative prompt that pulls the model toward narrative output instead of
+    JSON. The corrective message names the failure, restates the JSON-only
+    contract, and pins the next response's first character.
+    """
+    truncated = (
+        raw_content if len(raw_content) <= 800
+        else raw_content[:400] + " ... [truncated] ... " + raw_content[-400:]
+    )
+    err_summary = f"{type(error).__name__}: {str(error)[:300]}"
+    correction = (
+        "Your previous response was not valid JSON for the required schema. "
+        f"Parse error: {err_summary}. "
+        "Output ONLY the JSON object specified by the schema, with no narrative "
+        "content, no markdown fencing, and no commentary. Begin your next "
+        "response with `{`."
+    )
+    return [
+        *messages,
+        {"role": "assistant", "content": truncated},
+        {"role": "user", "content": correction},
+    ]
 
 
 def _get_costs(response, model: str) -> dict:
@@ -205,13 +237,24 @@ class DeepSeekProvider:
                 try:
                     content = _parse_json_with_recovery(raw_content, output_model, model)
                     break
-                except ValidationError:
+                except ValidationError as e:
                     if attempt == PARSE_RETRIES - 1:
-                        raise
+                        # Final attempt failed — wrap with telemetry so api.py
+                        # can write a diagnostic yaml capturing the raw payload
+                        # and tokens before the exception propagates.
+                        thought = getattr(response.choices[0].message, "reasoning_content", "") or ""
+                        raise LLMValidationError(
+                            cause=e,
+                            raw_output=raw_content or "",
+                            model_name=model, msg=msg, system_msg=system_msg,
+                            thought=thought, kwargs=kwargs,
+                            **_get_costs(response, model),
+                        ) from e
                     logger.warning(
-                        "DeepSeek parse failed for %s (attempt %d/%d); retrying.",
+                        "DeepSeek parse failed for %s (attempt %d/%d); retrying with corrective feedback.",
                         model, attempt + 1, PARSE_RETRIES,
                     )
+                    messages = _append_recovery_turn(messages, raw_content, e)
             else:
                 content = raw_content
                 break
@@ -224,6 +267,7 @@ class DeepSeekProvider:
             content=content, msg=msg, system_msg=system_msg,
             new_msg_history=new_msg_history, model_name=model, kwargs=kwargs,
             **_get_costs(response, model), thought=thought,
+            raw_output=raw_content if output_model else "",
         )
 
     @backoff.on_exception(
@@ -261,13 +305,21 @@ class DeepSeekProvider:
                 try:
                     content = _parse_json_with_recovery(raw_content, output_model, model)
                     break
-                except ValidationError:
+                except ValidationError as e:
                     if attempt == PARSE_RETRIES - 1:
-                        raise
+                        thought = getattr(response.choices[0].message, "reasoning_content", "") or ""
+                        raise LLMValidationError(
+                            cause=e,
+                            raw_output=raw_content or "",
+                            model_name=model, msg=msg, system_msg=system_msg,
+                            thought=thought, kwargs=kwargs,
+                            **_get_costs(response, model),
+                        ) from e
                     logger.warning(
-                        "DeepSeek parse failed for %s (attempt %d/%d); retrying.",
+                        "DeepSeek parse failed for %s (attempt %d/%d); retrying with corrective feedback.",
                         model, attempt + 1, PARSE_RETRIES,
                     )
+                    messages = _append_recovery_turn(messages, raw_content, e)
             else:
                 content = raw_content
                 break
@@ -280,6 +332,7 @@ class DeepSeekProvider:
             content=content, msg=msg, system_msg=system_msg,
             new_msg_history=new_msg_history, model_name=model, kwargs=kwargs,
             **_get_costs(response, model), thought=thought,
+            raw_output=raw_content if output_model else "",
         )
 
 
@@ -353,7 +406,17 @@ class DeepSeekProvider:
             if not tool_calls:
                 last_text = text_content
                 last_thought = reasoning
-                messages.append({"role": "assistant", "content": last_text})
+                terminal_msg: dict = {"role": "assistant", "content": last_text}
+                if reasoning:
+                    # Reasoning-mode models (deepseek-v4-pro) require
+                    # `reasoning_content` on every assistant turn that produced
+                    # one — including terminal text-only turns. Without this,
+                    # any subsequent call that reuses `new_msg_history` (e.g.
+                    # Stage 3's tool-use nudge fallback in phases.py) 400s
+                    # with "The reasoning_content in the thinking mode must
+                    # be passed back to the API."
+                    terminal_msg["reasoning_content"] = reasoning
+                messages.append(terminal_msg)
                 break
 
             # Replay assistant message including tool_calls so the next turn

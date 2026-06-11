@@ -1,0 +1,28 @@
+A writer working on a short story has asked for a surgical edit to a specific region of the manuscript. They have described the region in natural language. Your job is to translate that description into a pair of *anchors* — verbatim text from the manuscript that brackets the editable region.
+
+The bracketed region is everything strictly *between* `anchor_before` and `anchor_after`. The anchors themselves are not modified; they are the immutable boundary the editor works inside.
+
+Two requirements on the anchors:
+
+1. **Both must occur exactly once in the manuscript.** This is what makes them anchors — they uniquely identify a location. If a sentence the writer named recurs three times, it is not an anchor. Pick a longer surrounding excerpt that is unique. If a paragraph's opening line is unique but its closing line isn't, use the opening line of that paragraph and the opening line of the next paragraph as the bookends.
+2. **`anchor_after` must occur after `anchor_before`** in document order.
+
+Choose anchors substantively — at least 30 characters of verbatim text each, ideally 40-80. Whitespace inside an anchor is preserved as-is; do not normalize it.
+
+If the writer's description names a scene_id (matching a `## scene-id` heading), set `scene_heading` to that id. This is informational; the anchors still bracket the editable region.
+
+Manuscript:
+
+{MANUSCRIPT}
+
+Region the writer wants to edit:
+
+{SCOPE}
+
+Return a `TranslatedBounds`:
+- `anchor_before` — the verbatim opening anchor
+- `anchor_after` — the verbatim closing anchor
+- `scene_heading` — the scene id when the scope is scene-local, otherwise null
+- `rationale` — one sentence describing what region this brackets and why these anchors
+
+If the scope cannot be unambiguously translated to anchors that satisfy the two requirements, set `anchor_before` and `anchor_after` to verbatim slices that come closest, and use `rationale` to flag the ambiguity. Ambiguous bounds will be rejected and the writer will see the error; failing loudly is better than dispatching against a wrong region.

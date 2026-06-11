@@ -44,7 +44,7 @@ def _setup_logging(run_dir: Path) -> None:
 
 
 async def _run(args: argparse.Namespace) -> int:
-    run_id = time.strftime("run_%Y%m%d_%H%M%S")
+    run_id = args.run_id or time.strftime("run_%Y%m%d_%H%M%S")
     session_dir = args.results_dir / run_id / "stage_3" / "by_pair" / args.pair_id
     session_dir.mkdir(parents=True, exist_ok=True)
     _setup_logging(session_dir)
@@ -162,6 +162,11 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--bench-from", type=Path, default=None,
                         help="Precomputed bench.json (skip live bench generation).")
     parser.add_argument("--results-dir", type=Path, default=Path("results"))
+    parser.add_argument("--run-id", type=str, default=None,
+                        help=("Override auto-generated run_id so artifacts land "
+                              "in an existing pipeline run dir (e.g. "
+                              "results/<run-id>/stage_3/by_pair/<pair-id>/) "
+                              "instead of creating a fresh dir."))
     args = parser.parse_args(argv)
 
     if not args.config.exists():
