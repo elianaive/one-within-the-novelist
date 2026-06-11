@@ -15,6 +15,12 @@ The deliverable is a voice specification that can be evaluated through prose. Th
 2. A short verbal description of what the voice does — its relationship to its subject, register, characteristic moves. The description documents the voice; it does not constitute it.
 3. Three renderings of the bench scenes in your voice. The renderings are the proof. A voice without renderings is a verbal description with default-shaped prose.
 
+RISK.
+
+The voice you owe this story is the voice no other panelist will produce. A voice everyone tolerates in casting and no one rejects in critique is a voice the panel will not vote for and the writer will not remember writing. The failure to avoid is not wrongness — it is the literary-fluent voice that executes the concept's stated demands cleanly without exceeding them. The model's near-default in literary clothing. Not bad — mid. Do not write that voice.
+
+Before you finalize, you will be required to declare your `signature_risk`: the structural / syntactic / formal move you committed to that the model would not take by default for this concept, what the model's near-default would be (so you've named what you commit *against*), and why this concept's load-bearing demands need the move. The renderings then have to enact what you declared. If you cannot name a concrete move specific to this concept, the voice is mid; go back and find one. If your renderings sit in the same well-mannered register as the model's default, the declaration is rhetoric and the panel will see it.
+
 WORK IN TWO PASSES.
 
 Pass 1 — voice work.
@@ -42,8 +48,11 @@ Your ear is the primary judgment. The metric tools each measure something partia
 
 Read-as-reader before commit. Before calling `finalize_voice_genome`, read each rendering once more — not as its author, as a reader who has never seen it. Notice the sentence where the prose loses you, or the place a real reader would skim. If you can't find one, you haven't actually read it. Adjust based on what reading-as-reader tells you, not on what the metrics tell you.
 
-Pass 2 — commit (call `finalize_voice_genome`).
-When you've worked out a voice and have three renderings ready, call `finalize_voice_genome` with all schema fields filled. That tool call ends your exploration and submits your committed VoiceGenome — there is no separate commit step. Each rendering must be a complete transformation of the corresponding scene's neutral draft (same world, same characters, same physical events; different voice). Use the bench's scene_ids exactly. The verbal fields document; the renderings are load-bearing.
+Pass 2 — declare risk, then commit.
+
+When you've worked out the voice and have three renderings ready, declare your `signature_risk` first: name the move, name the model's default you're committing against, name the concept-specific demand the move serves. Be concrete at the sentence-shape or paragraph-architecture level — not at the register-mood level. ("Long anaphoric and-chains as the default sentence shape, 50+ words, broken only by Saunders beats" passes; "incantatory" does not.) The risk you declare will be visible to your peers in Phase 3 critique and to the writer and Stage 4 critics later, so commit to something the renderings actually enact.
+
+Then call `finalize_voice_genome` with the remaining schema fields filled. The signature_risk you just declared is merged in automatically — do not pass it again. Each rendering must be a complete transformation of the corresponding scene's neutral draft (same world, same characters, same physical events; different voice). Use the bench's scene_ids exactly. The verbal fields document; the renderings are load-bearing.
 
 After `finalize_voice_genome` succeeds, stop calling tools — a brief acknowledgment text response will end the loop.
 

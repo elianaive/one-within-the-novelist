@@ -20,6 +20,8 @@ from owtn.models.stage_3 import (
 
 def _minimal_genome(**overrides) -> dict:
     """Smallest valid genome fields. Tests override what they care about."""
+    from owtn.models.stage_3 import SignatureRisk
+
     base = dict(
         pair_id="c_test_struct_0",
         agent_id="the-reductionist",
@@ -42,6 +44,23 @@ def _minimal_genome(**overrides) -> dict:
             "Render emotion through the body's small refusals; no said-tag adverbs.",
         ],
         prohibitions=[],
+        signature_risk=SignatureRisk(
+            move=(
+                "Default sentence ends on a noun-clause object stripped of "
+                "qualifiers; refuse the model's reflex to tail off into "
+                "feeling-words."
+            ),
+            model_default_alternative=(
+                "Sentences that close on adverbs of feeling — softly, gently, "
+                "carefully — the model's default register for emotionally "
+                "weighted scenes."
+            ),
+            concept_demand_justification=(
+                "The story's emotional weight arrives in what the body "
+                "withholds; sentences that close on a feeling-adverb name "
+                "what the prose is meant to leave for the reader to assemble."
+            ),
+        ),
         renderings=[
             Rendering(
                 scene_id=f"scene-{i}",
