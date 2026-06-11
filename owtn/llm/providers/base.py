@@ -36,7 +36,9 @@ from ..result import QueryResult
 from .pricing import (
     has_fixed_temperature,
     is_reasoning_model,
+    requires_adaptive_thinking,
     requires_reasoning,
+    requires_temp_one_or_omit,
 )
 
 
@@ -50,6 +52,7 @@ THINKING_TOKENS = {
     "low": 2048,
     "medium": 4096,
     "high": 8192,
+    "xhigh": 12288,
     "max": 16384,
 }
 
@@ -106,7 +109,14 @@ def resolve_temperature(
 ) -> Optional[float]:
     """Force temp=1.0 when the model has think_temp_fixed=1 AND reasoning
     is active. Anthropic extended-thinking and OpenAI reasoning models
-    rejection-fail on any other temperature."""
+    rejection-fail on any other temperature.
+
+    Models flagged ``requires_temp_one_or_omit`` (e.g. Opus 4.7+) reject any
+    temperature value at all — the parameter is deprecated for them. Return
+    ``None`` so the caller omits the field entirely.
+    """
+    if requires_temp_one_or_omit(api_model):
+        return None
     if has_fixed_temperature(api_model) and effort != "disabled":
         return 1.0
     return requested_temp

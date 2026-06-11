@@ -116,7 +116,7 @@ def sample_model_kwargs(
             kwargs_dict["reasoning"] = {"effort": None}
         elif r_effort == "min":
             kwargs_dict["reasoning"] = {"effort": "low"}
-        elif r_effort == "max":
+        elif r_effort in ("xhigh", "max"):
             kwargs_dict["reasoning"] = {"effort": "high"}
         else:
             kwargs_dict["reasoning"] = {"effort": r_effort}
@@ -160,23 +160,19 @@ def sample_model_kwargs(
             kwargs_dict["reasoning_effort"] = r_effort
 
     # 4.c) SET: max_tokens for Anthropic or Bedrock reasoning effort.
-    # Explicit `thinking_tokens` int wins over the THINKING_TOKENS[r_effort]
-    # mapping; fall back to the mapping when not specified.
+    # Pass primitives through (`reasoning_effort`, `thinking_tokens`) — the
+    # provider's `build_call_kwargs` constructs the right per-model shape
+    # (legacy `thinking={"type":"enabled",...}` for Sonnet 4.6 / Opus 4.6,
+    # adaptive `thinking={"type":"adaptive","display":"summarized"}` plus
+    # `output_config.effort` for Opus 4.7+). Constructing the shape here
+    # would skip the model-specific dispatch.
     elif provider in ("anthropic", "bedrock") and is_reasoning_model(api_model_name):
         kwargs_dict["max_tokens"] = min(mt_val, 64000)
-        ceiling = kwargs_dict["max_tokens"]
+        if r_effort != "disabled":
+            kwargs_dict["reasoning_effort"] = r_effort
         explicit_tt = _pick(thinking_tokens)
-        budget: Optional[int] = None
         if explicit_tt is not None:
-            budget = explicit_tt if explicit_tt < ceiling else 1024
-        elif r_effort != "disabled":
-            t = THINKING_TOKENS[r_effort]
-            budget = t if t < ceiling else 1024
-        if budget is not None:
-            kwargs_dict["thinking"] = {
-                "type": "enabled",
-                "budget_tokens": budget,
-            }
+            kwargs_dict["thinking_tokens"] = explicit_tt
 
     # 4.d) SET: max_tokens for all other models
     else:
@@ -191,7 +187,15 @@ def sample_model_kwargs(
     # extended thinking (both forbidden when thinking.type=enabled).
     openai_family = provider in ("openai", "openrouter", "azure_openai")
     openai_reasoning = openai_family and is_reasoning_model(api_model_name)
-    anthropic_thinking = "thinking" in kwargs_dict
+    # Anthropic forbids top_p/top_k under extended thinking. We now emit
+    # `reasoning_effort` (primitive) for Anthropic instead of the legacy
+    # `thinking` dict, so the previous `"thinking" in kwargs_dict` check
+    # would always be False. Detect "thinking is on" via reasoning_effort.
+    anthropic_thinking = (
+        provider in ("anthropic", "bedrock")
+        and is_reasoning_model(api_model_name)
+        and kwargs_dict.get("reasoning_effort", "disabled") != "disabled"
+    )
 
     top_p_val = _pick(top_p)
     top_k_val = _pick(top_k)

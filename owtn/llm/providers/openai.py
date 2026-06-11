@@ -18,6 +18,7 @@ import backoff
 import openai
 from pydantic import BaseModel, ValidationError
 
+from ..errors import LLMValidationError
 from ..recovery import recover_from_validation_error
 from ..result import QueryResult
 from .base import TIMEOUT, resolve_effort, resolve_temperature
@@ -59,10 +60,35 @@ class _RecoveredResponseStub:
     usage = _Usage()
 
 
-def _parse_with_retry(call_fn, output_model: Type[BaseModel], model: str):
+def _raw_text_from_response(response) -> str:
+    """Best-effort extraction of the model's literal output text from a
+    Responses API response. Used to populate the diagnostic raw_output on
+    successful structured calls (the JSON the model emitted before
+    Pydantic parsing) and on validation failures.
+    """
+    if response is None:
+        return ""
+    try:
+        return response.output[0].content[0].text or ""
+    except Exception:
+        try:
+            return response.output[1].content[0].text or ""
+        except Exception:
+            return ""
+
+
+def _parse_with_retry(
+    call_fn, output_model: Type[BaseModel], model: str,
+    *, msg: str, system_msg: str, kwargs_for_log: dict,
+):
     """Run a structured-output call with automatic recovery for known failure
     modes (Kimi `[EOS]` suffix, malformed keys). Retries up to PARSE_RETRIES.
+
+    On final failure, raises LLMValidationError carrying the last response's
+    raw text + token/cost telemetry so api.py can write a diagnostic yaml.
     """
+    last_response = None
+    last_error: Exception | None = None
     for attempt in range(PARSE_RETRIES):
         if attempt > 0:
             logger.warning("Retrying structured parse for %s: attempt %d/%d", model, attempt + 1, PARSE_RETRIES)
@@ -71,24 +97,34 @@ def _parse_with_retry(call_fn, output_model: Type[BaseModel], model: str):
         except ValidationError as e:
             recovered = recover_from_validation_error(e, output_model, model)
             if recovered is not None:
-                return _RecoveredResponseStub(), recovered
+                return _RecoveredResponseStub(), recovered, ""
             logger.warning(
                 "OpenAI/OpenRouter parse raised unrecoverable ValidationError for %s "
                 "(attempt %d/%d); retrying.", model, attempt + 1, PARSE_RETRIES,
             )
+            last_error = e
             continue
+        last_response = response
         content = response.output_parsed
         if content is not None:
-            return response, content
+            return response, content, _raw_text_from_response(response)
         logger.warning(
             "OpenAI/OpenRouter parse returned None for %s (attempt %d/%d); retrying.",
             model, attempt + 1, PARSE_RETRIES,
         )
-    raise ValueError(f"Structured parse failed after {PARSE_RETRIES} attempts for model {model}.")
+        last_error = ValueError("output_parsed=None")
+    raise _wrap_openai_validation_failure(
+        last_response, last_error, model, msg, system_msg, kwargs_for_log,
+    )
 
 
-async def _parse_with_retry_async(call_fn, output_model: Type[BaseModel], model: str):
-    """Async variant of _parse_with_retry."""
+async def _parse_with_retry_async(
+    call_fn, output_model: Type[BaseModel], model: str,
+    *, msg: str, system_msg: str, kwargs_for_log: dict,
+):
+    """Async variant of _parse_with_retry. Same telemetry-on-failure contract."""
+    last_response = None
+    last_error: Exception | None = None
     for attempt in range(PARSE_RETRIES):
         if attempt > 0:
             logger.warning("Retrying structured parse for %s: attempt %d/%d", model, attempt + 1, PARSE_RETRIES)
@@ -97,20 +133,60 @@ async def _parse_with_retry_async(call_fn, output_model: Type[BaseModel], model:
         except ValidationError as e:
             recovered = recover_from_validation_error(e, output_model, model)
             if recovered is not None:
-                return _RecoveredResponseStub(), recovered
+                return _RecoveredResponseStub(), recovered, ""
             logger.warning(
                 "OpenAI/OpenRouter parse raised unrecoverable ValidationError for %s "
                 "(attempt %d/%d); retrying.", model, attempt + 1, PARSE_RETRIES,
             )
+            last_error = e
             continue
+        last_response = response
         content = response.output_parsed
         if content is not None:
-            return response, content
+            return response, content, _raw_text_from_response(response)
         logger.warning(
             "OpenAI/OpenRouter parse returned None for %s (attempt %d/%d); retrying.",
             model, attempt + 1, PARSE_RETRIES,
         )
-    raise ValueError(f"Structured parse failed after {PARSE_RETRIES} attempts for model {model}.")
+        last_error = ValueError("output_parsed=None")
+    raise _wrap_openai_validation_failure(
+        last_response, last_error, model, msg, system_msg, kwargs_for_log,
+    )
+
+
+def _wrap_openai_validation_failure(
+    last_response, last_error, model: str, msg: str, system_msg: str, kwargs_for_log: dict,
+) -> LLMValidationError:
+    """Build the LLMValidationError carrying raw payload + token telemetry
+    after _parse_with_retry exhausts its attempts. If the last attempt was
+    a hard ValidationError the call may have no usable response stub; cost
+    fields fall back to zeros there.
+    """
+    cause = last_error or ValueError(
+        f"Structured parse failed after {PARSE_RETRIES} attempts for model {model}."
+    )
+    raw_output = _raw_text_from_response(last_response)
+    if last_response is not None:
+        try:
+            cost_results = get_openai_costs(last_response, model)
+        except Exception:
+            cost_results = {
+                "input_tokens": 0, "output_tokens": 0, "thinking_tokens": 0,
+                "input_cost": 0.0, "output_cost": 0.0, "cost": 0.0,
+                "cache_read_tokens": 0,
+            }
+    else:
+        cost_results = {
+            "input_tokens": 0, "output_tokens": 0, "thinking_tokens": 0,
+            "input_cost": 0.0, "output_cost": 0.0, "cost": 0.0,
+            "cache_read_tokens": 0,
+        }
+    return LLMValidationError(
+        cause=cause,
+        raw_output=raw_output,
+        model_name=model, msg=msg, system_msg=system_msg,
+        kwargs=kwargs_for_log, **cost_results,
+    )
 
 
 def _backoff_handler(details):
@@ -229,7 +305,15 @@ class OpenAIProvider:
         reasoning_active = reasoning and effort != "disabled"
 
         if reasoning_active:
-            api_effort = "low" if effort == "min" else ("high" if effort == "max" else effort)
+            # OpenAI exposes 3 effort labels (low/medium/high). owtn's enum
+            # has 6: min/low/medium/high/xhigh/max. min collapses to low;
+            # high/xhigh/max collapse to high.
+            if effort == "min":
+                api_effort = "low"
+            elif effort in ("xhigh", "max"):
+                api_effort = "high"
+            else:
+                api_effort = effort
             out["reasoning"] = {"effort": api_effort}
 
         temp = resolve_temperature(api_model, requested.get("temperature"), effort)
@@ -263,16 +347,18 @@ class OpenAIProvider:
         merged_system = _merge_prefix(system_msg, system_prefix)
         input_msgs = [{"role": "system", "content": merged_system}, *new_msg_history]
 
+        raw_output = ""
         if output_model is None:
             response = client.responses.create(model=model, input=input_msgs, **kwargs)
             content, thought = _extract_text_and_thought(response)
             new_msg_history.append({"role": "assistant", "content": content})
         else:
-            response, content = _parse_with_retry(
+            response, content, raw_output = _parse_with_retry(
                 lambda: client.responses.parse(
                     model=model, input=input_msgs, text_format=output_model, **kwargs,
                 ),
                 output_model=output_model, model=model,
+                msg=msg, system_msg=system_msg, kwargs_for_log=kwargs,
             )
             thought = ""
             new_msg_history.append({"role": "assistant", "content": str(content)})
@@ -281,7 +367,7 @@ class OpenAIProvider:
         return QueryResult(
             content=content, msg=msg, system_msg=system_msg,
             new_msg_history=new_msg_history, model_name=model, kwargs=kwargs,
-            **cost_results, thought=thought,
+            **cost_results, thought=thought, raw_output=raw_output,
         )
 
     @backoff.on_exception(
@@ -306,16 +392,18 @@ class OpenAIProvider:
         merged_system = _merge_prefix(system_msg, system_prefix)
         input_msgs = [{"role": "system", "content": merged_system}, *new_msg_history]
 
+        raw_output = ""
         if output_model is None:
             response = await client.responses.create(model=model, input=input_msgs, **kwargs)
             content, thought = _extract_text_and_thought(response)
             new_msg_history.append({"role": "assistant", "content": content})
         else:
-            response, content = await _parse_with_retry_async(
+            response, content, raw_output = await _parse_with_retry_async(
                 lambda: client.responses.parse(
                     model=model, input=input_msgs, text_format=output_model, **kwargs,
                 ),
                 output_model=output_model, model=model,
+                msg=msg, system_msg=system_msg, kwargs_for_log=kwargs,
             )
             thought = ""
             new_msg_history.append({"role": "assistant", "content": str(content)})
@@ -324,7 +412,7 @@ class OpenAIProvider:
         return QueryResult(
             content=content, msg=msg, system_msg=system_msg,
             new_msg_history=new_msg_history, model_name=model, kwargs=kwargs,
-            **cost_results, thought=thought,
+            **cost_results, thought=thought, raw_output=raw_output,
         )
 
 
