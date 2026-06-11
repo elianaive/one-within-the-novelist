@@ -124,13 +124,14 @@ def test_schemas_for_phase_1_returns_expected_set():
     agent_tools = frozenset({
         "render_adjacent_scene", "think", "note_to_self", "lookup_reference",
         "stylometry", "slop_score", "writing_style", "thesaurus",
-        "finalize_voice_genome", "ask_judge",
+        "declare_signature_risk", "finalize_voice_genome", "ask_judge",
     })
     schemas = registry.schemas_for(agent_tools, "phase_1_private_brief")
     names = {s["name"] for s in schemas}
     assert names == PHASE_1_TOOLS
     assert "ask_judge" not in names
     assert "finalize_voice_genome" in names
+    assert "declare_signature_risk" in names
 
 
 # ─── render_adjacent_scene ───────────────────────────────────────────────
@@ -199,7 +200,7 @@ async def test_stylometry_passes_caller_model_from_state_view():
 
     captured = {}
 
-    def fake_compute_stylometry(passage, caller_model=None, neutral_baseline=None, **_):
+    async def fake_compute_stylometry(passage, caller_model=None, neutral_baseline=None, **_):
         captured["caller_model"] = caller_model
         captured["neutral_baseline"] = neutral_baseline
         # Return a minimal stub with the right shape — just needs to be JSON-able
@@ -228,7 +229,7 @@ async def test_stylometry_no_scene_id_omits_neutral_baseline():
 
     captured = {}
 
-    def fake_compute_stylometry(passage, caller_model=None, neutral_baseline=None, **_):
+    async def fake_compute_stylometry(passage, caller_model=None, neutral_baseline=None, **_):
         captured["neutral_baseline"] = neutral_baseline
         return {"signals": {}}
 
@@ -436,7 +437,7 @@ async def test_finalize_voice_genome_validates_and_stashes_body():
     body in state.payload['_pending_commits'][agent_id] for the
     orchestrator to extract after the explore loop."""
     from owtn.stage_3.tools import _finalize_voice_genome_handler
-    from owtn.models.stage_3 import VoiceGenomeBody
+    from owtn.models.stage_3 import SignatureRisk, VoiceGenomeBody
 
     valid_args = {
         "pov": "third",
@@ -455,7 +456,18 @@ async def test_finalize_voice_genome_validates_and_stashes_body():
             {"scene_id": f"scene-{i}", "text": "x" * 100} for i in range(3)
         ],
     }
-    state_view: dict = {}
+    state_view: dict = {
+        "_pending_signature_risks": {
+            "the-reductionist": SignatureRisk(
+                move="Default sentence ends on a noun-clause object; refuse adverbs of feeling.",
+                model_default_alternative="Sentences closing on softly / gently / quietly.",
+                concept_demand_justification=(
+                    "The story's weight arrives in what the body withholds; "
+                    "feeling-adverbs leak the meaning the reader should assemble."
+                ),
+            ),
+        },
+    }
     ctx = _ctx(state_view, agent_id="the-reductionist")
     out = await _finalize_voice_genome_handler(valid_args, ctx)
     assert "Voice committed" in out
@@ -464,6 +476,74 @@ async def test_finalize_voice_genome_validates_and_stashes_body():
     assert isinstance(body, VoiceGenomeBody)
     assert body.pov == "third"
     assert body.consciousness_rendering.mode == "external_focalization"
+    assert body.signature_risk.move.startswith("Default sentence ends")
+
+
+@pytest.mark.asyncio
+async def test_finalize_voice_genome_gates_on_declared_signature_risk():
+    """Calling finalize before declare_signature_risk should be rejected
+    with an error directing the agent to declare first."""
+    from owtn.stage_3.tools import _finalize_voice_genome_handler
+
+    valid_args = {
+        "pov": "third", "tense": "past",
+        "consciousness_rendering": {"mode": "external_focalization", "fid_depth": "none"},
+        "implied_author": {"stance_toward_characters": "neutral", "moral_temperature": "cool"},
+        "dialogic_mode": {"type": "monologic"},
+        "craft": {"sentence_rhythm": "varied", "crowding_leaping": "balanced"},
+        "description": "A test voice flat declarative procedural register honesty.",
+        "diction": "Plain. Direct. No ornament.",
+        "positive_constraints": ["Render emotion through gesture."],
+        "renderings": [
+            {"scene_id": f"scene-{i}", "text": "x" * 100} for i in range(3)
+        ],
+    }
+    state_view: dict = {}  # no _pending_signature_risks
+    ctx = _ctx(state_view, agent_id="the-reductionist")
+    out = await _finalize_voice_genome_handler(valid_args, ctx)
+    assert out.startswith("ERROR")
+    assert "declare_signature_risk" in out
+    assert "the-reductionist" not in state_view.get("_pending_commits", {})
+
+
+@pytest.mark.asyncio
+async def test_declare_signature_risk_validates_and_stashes():
+    """The dedicated tool should validate via SignatureRisk and stash in
+    _pending_signature_risks scoped per-agent."""
+    from owtn.stage_3.tools import _declare_signature_risk_handler
+    from owtn.models.stage_3 import SignatureRisk
+
+    args = {
+        "move": "Long anaphoric and-chains as the default sentence shape; 50+ words; broken only by Saunders beats.",
+        "model_default_alternative": "Conventional split-clauses paragraphs with even pacing and balanced sentence length.",
+        "concept_demand_justification": (
+            "The forward pass cannot return; the prose has to enact that irreversibility "
+            "at the syntactic level so the reader feels the motion."
+        ),
+    }
+    state_view: dict = {}
+    ctx = _ctx(state_view, agent_id="the-lyric-essayistic-fragmenter")
+    out = await _declare_signature_risk_handler(args, ctx)
+    assert "Signature risk recorded" in out
+    risk = state_view["_pending_signature_risks"]["the-lyric-essayistic-fragmenter"]
+    assert isinstance(risk, SignatureRisk)
+    assert "and-chains" in risk.move
+
+
+@pytest.mark.asyncio
+async def test_declare_signature_risk_rejects_too_short_fields():
+    """Vague register words ('lyrical', 'spare') would not pass the length
+    threshold — SignatureRisk validation surfaces the gap."""
+    from owtn.stage_3.tools import _declare_signature_risk_handler
+
+    args = {
+        "move": "lyrical",  # too short
+        "model_default_alternative": "competent prose",  # too short
+        "concept_demand_justification": "fits the concept",  # too short
+    }
+    ctx = _ctx({}, agent_id="the-reductionist")
+    out = await _declare_signature_risk_handler(args, ctx)
+    assert out.startswith("ERROR")
 
 
 @pytest.mark.asyncio
@@ -471,13 +551,23 @@ async def test_finalize_voice_genome_returns_validation_errors():
     """Invalid args should return an error string the model can act on,
     not raise. The agent gets feedback and can call again with corrections."""
     from owtn.stage_3.tools import _finalize_voice_genome_handler
+    from owtn.models.stage_3 import SignatureRisk
 
     bad_args = {
         "pov": "omniscient",  # not a valid Literal value
         "tense": "past",
         # missing other required fields
     }
-    ctx = _ctx({}, agent_id="the-reductionist")
+    state_view: dict = {
+        "_pending_signature_risks": {
+            "the-reductionist": SignatureRisk(
+                move="Some commitment that satisfies the length guard with extra words.",
+                model_default_alternative="Some default the model would otherwise produce here.",
+                concept_demand_justification="Some justification long enough to satisfy the field gate.",
+            ),
+        },
+    }
+    ctx = _ctx(state_view, agent_id="the-reductionist")
     out = await _finalize_voice_genome_handler(bad_args, ctx)
     assert out.startswith("ERROR")
     assert "validation" in out.lower()
@@ -488,6 +578,7 @@ async def test_finalize_voice_genome_rejects_double_commit():
     """If the agent calls finalize twice, the second should be rejected
     so the model is nudged to stop calling tools."""
     from owtn.stage_3.tools import _finalize_voice_genome_handler
+    from owtn.models.stage_3 import SignatureRisk
 
     valid_args = {
         "pov": "third",
@@ -506,7 +597,15 @@ async def test_finalize_voice_genome_rejects_double_commit():
             {"scene_id": f"scene-{i}", "text": "x" * 100} for i in range(3)
         ],
     }
-    state_view: dict = {}
+    state_view: dict = {
+        "_pending_signature_risks": {
+            "the-reductionist": SignatureRisk(
+                move="Some commitment that satisfies the length guard with extra words.",
+                model_default_alternative="Some default the model would otherwise produce here.",
+                concept_demand_justification="Some justification long enough to satisfy the field gate.",
+            ),
+        },
+    }
     ctx = _ctx(state_view, agent_id="the-reductionist")
     first = await _finalize_voice_genome_handler(valid_args, ctx)
     assert "Voice committed" in first

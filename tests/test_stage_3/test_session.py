@@ -103,6 +103,8 @@ def _bench() -> AdjacentSceneBench:
 
 
 def _voice_body() -> VoiceGenomeBody:
+    from owtn.models.stage_3 import SignatureRisk
+
     text = (
         "She set the cup down and did not look up. "
         "He waited a long time before he spoke. The kitchen was cold."
@@ -124,6 +126,14 @@ def _voice_body() -> VoiceGenomeBody:
         ),
         diction="Plain declarative; no figurative ornament.",
         positive_constraints=["Render emotion through the body's small refusals."],
+        signature_risk=SignatureRisk(
+            move="Default sentence ends on a noun-clause object; no feeling-adverbs.",
+            model_default_alternative="Sentences closing on softly / quietly / carefully.",
+            concept_demand_justification=(
+                "The story's weight arrives in what the body withholds; "
+                "adverbs at sentence-end leak the meaning the reader should assemble."
+            ),
+        ),
         renderings=[
             Rendering(scene_id=f"scene-{i}", text=text) for i in range(3)
         ],
@@ -149,13 +159,18 @@ async def test_run_voice_session_end_to_end_mocked(tmp_path: Path):
 
     async def fake_explore(**kwargs):
         # Phase 1 + Phase 4 explore loops commit via dispatch, simulating the
-        # agent's finalize_voice_genome tool call landing during exploration.
+        # agent's declare_signature_risk + finalize_voice_genome tool calls
+        # landing during exploration.
         sysprompt = kwargs.get("system_msg", "")
         if "Reductionist" in sysprompt:
             agent_id = "the-reductionist"
         else:
             agent_id = "the-temporal-collagist"
-        await kwargs["dispatch"]("finalize_voice_genome", _voice_body().model_dump())
+        body = _voice_body()
+        await kwargs["dispatch"]("declare_signature_risk", body.signature_risk.model_dump())
+        finalize_args = body.model_dump()
+        finalize_args.pop("signature_risk", None)
+        await kwargs["dispatch"]("finalize_voice_genome", finalize_args)
         return _FakeResult("done", history=[], cost=0.01)
 
     async def fake_query(**kwargs):
