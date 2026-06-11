@@ -23,6 +23,12 @@ dependencies = [
     # ShinkaEvolve (local fork)
     "shinka-evolve",
     "sacrebleu>=2.6.0",
+    # Web fetch (domain_expert critics' fetch_page tool)
+    "trafilatura>=1.12",
+    # spaCy small English model — used by Tier-A preprocessing, slop_score,
+    # and stylometry. Models are not auto-installed with spacy; pin the
+    # wheel so `uv sync` keeps it in the venv.
+    "en-core-web-sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl",
 ]
 
 [project.optional-dependencies]
@@ -51,3 +57,9 @@ shinka-evolve = { path = "lib/shinka-evolve", editable = true }
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[tool.hatch.metadata]
+# Required so `en-core-web-sm @ <url>` direct-reference dependency is
+# accepted by hatchling. spaCy models are not on PyPI; pinning the wheel
+# URL is the standard pattern.
+allow-direct-references = true

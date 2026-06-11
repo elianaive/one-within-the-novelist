@@ -30,6 +30,7 @@ from .session import (
     write_yaml,
 )
 from .tools import ToolContext, ToolRegistry, ToolSpec
+from .transcript import format_transcript, summarize_tool_calls, write_transcript
 
 __all__ = [
     "Agent",
@@ -38,11 +39,14 @@ __all__ = [
     "ToolContext",
     "ToolRegistry",
     "ToolSpec",
+    "format_transcript",
     "push_llm_context",
     "run_session",
     "session_log_dir",
     "session_log_path",
+    "summarize_tool_calls",
     "write_phase_trace",
     "write_session_manifest",
+    "write_transcript",
     "write_yaml",
 ]

@@ -9,6 +9,19 @@ import yaml
 from owtn.tools import _corpus as corpus_module
 from owtn.tools._corpus import ReferenceCorpus, ReferenceEntry, load_corpus
 from owtn.tools import StylometricToolReport, stylometry
+from owtn.tools._lookup_resolver import LookupResolution
+
+
+def _resolution(**overrides) -> LookupResolution:
+    base = {
+        "interpretation": "test",
+        "authors": [],
+        "tags": [],
+        "match": "none",
+        "note": "test note",
+    }
+    base.update(overrides)
+    return LookupResolution(**base)
 
 
 # ─── Test corpus fixture (small synthetic) ────────────────────────────────
@@ -160,9 +173,10 @@ class TestCacheInvalidation:
 
 # ─── stylometry() tool surface ────────────────────────────────────────────
 
+@pytest.mark.asyncio
 class TestStylometryTool:
-    def test_returns_report_with_required_fields(self, synthetic_corpus):
-        report = stylometry(
+    async def test_returns_report_with_required_fields(self, synthetic_corpus):
+        report = await stylometry(
             "She walked. He waited. The room held its breath.",
             corpus=synthetic_corpus,
         )
@@ -175,8 +189,8 @@ class TestStylometryTool:
         assert "human_literary_centroid" in report.references
         assert report.interpretation_notes
 
-    def test_caller_model_known_includes_own_default(self, synthetic_corpus):
-        report = stylometry(
+    async def test_caller_model_known_includes_own_default(self, synthetic_corpus):
+        report = await stylometry(
             "Some prose here. More prose follows.",
             caller_model="sonnet-test",
             corpus=synthetic_corpus,
@@ -185,8 +199,8 @@ class TestStylometryTool:
         assert report.references["caller_model_default"]["model"] == "sonnet-test"
         assert report.references["caller_model_default"]["n_samples"] == 2
 
-    def test_caller_model_unknown_falls_back(self, synthetic_corpus):
-        report = stylometry(
+    async def test_caller_model_unknown_falls_back(self, synthetic_corpus):
+        report = await stylometry(
             "Some prose here.",
             caller_model="not-in-corpus",
             corpus=synthetic_corpus,
@@ -194,8 +208,8 @@ class TestStylometryTool:
         assert "fw_cosine_from_own_model_default" not in report.candidate
         assert report.references["caller_model_default"]["n_samples"] == 0
 
-    def test_neutral_baseline_adds_distance(self, synthetic_corpus):
-        report = stylometry(
+    async def test_neutral_baseline_adds_distance(self, synthetic_corpus):
+        report = await stylometry(
             "She walked. He waited. The room held its breath.",
             neutral_baseline="The man and the woman walked into the room together.",
             corpus=synthetic_corpus,
@@ -203,8 +217,8 @@ class TestStylometryTool:
         assert "fw_cosine_from_neutral_baseline" in report.candidate
         assert 0.0 <= report.candidate["fw_cosine_from_neutral_baseline"] <= 1.0
 
-    def test_response_under_token_budget(self, synthetic_corpus):
-        report = stylometry(
+    async def test_response_under_token_budget(self, synthetic_corpus):
+        report = await stylometry(
             "Some test prose. " * 20,
             caller_model="sonnet-test",
             corpus=synthetic_corpus,
@@ -213,14 +227,14 @@ class TestStylometryTool:
         as_json = json.dumps(report.to_dict())
         assert len(as_json.encode("utf-8")) < 4096
 
-    def test_to_dict_serializes_cleanly(self, synthetic_corpus):
-        report = stylometry("Test prose here.", corpus=synthetic_corpus)
+    async def test_to_dict_serializes_cleanly(self, synthetic_corpus):
+        report = await stylometry("Test prose here.", corpus=synthetic_corpus)
         d = report.to_dict()
         # Must be JSON-serializable
         json.dumps(d)
 
-    def test_caller_model_includes_calibration_fields(self, synthetic_corpus):
-        report = stylometry(
+    async def test_caller_model_includes_calibration_fields(self, synthetic_corpus):
+        report = await stylometry(
             "Some test prose.",
             caller_model="sonnet-test",
             corpus=synthetic_corpus,
@@ -235,8 +249,8 @@ class TestStylometryTool:
         # synthetic_corpus has 2 sonnet samples; calibration is unreliable
         assert own["calibration_reliable"] is False
 
-    def test_interpretation_uses_calibrated_thresholds(self, synthetic_corpus):
-        report = stylometry(
+    async def test_interpretation_uses_calibrated_thresholds(self, synthetic_corpus):
+        report = await stylometry(
             "She walked. He waited. The room held its breath.",
             caller_model="sonnet-test",
             corpus=synthetic_corpus,
@@ -245,6 +259,23 @@ class TestStylometryTool:
         assert "advisory" in report.interpretation_notes.lower() \
             or "only" in report.interpretation_notes.lower() \
             or "calibration" in report.interpretation_notes.lower()
+
+    async def test_burstiness_undefined_for_single_sentence(self, synthetic_corpus):
+        # Bug 2: a one-sentence passage has undefined rhythm CV. Earlier
+        # behavior returned burstiness=0.0 and prompted "Vary sentence
+        # length" — opposite of what an incantatory voice wants.
+        long_chain = (
+            "The clerk types and the command loads and the weights load "
+            "from disk into the allocated memory and the loading takes "
+            "several seconds and during those seconds the clerk looks at "
+            "her monitor and does not look at the commissioner and the "
+            "commissioner is in the room"
+        )
+        report = await stylometry(long_chain, corpus=synthetic_corpus)
+        assert report.candidate["burstiness"] is None
+        notes = report.interpretation_notes.lower()
+        assert "undefined" in notes or "not applicable" in notes
+        assert "vary sentence length" not in notes
 
 
 class TestLookupExemplar:
@@ -291,33 +322,71 @@ class TestLookupExemplar:
         assert "[…]" in p["text"]
 
 
-class TestStyleDistances:
-    def test_target_styles_returns_distances(self, synthetic_corpus):
-        # synthetic corpus has lit-1 + lit-2 entries with literary tag
-        report = stylometry(
-            "Some prose here.",
-            target_styles=["minimalist", "literary"],
-            corpus=synthetic_corpus,
-        )
-        sd = report.references.get("style_distances")
-        assert sd is not None
-        assert "literary" in sd
-        assert "fw_cosine" in sd["literary"]
-        assert "fw_delta" in sd["literary"]
-        assert "intra_dist_p95" in sd["literary"]
-        assert sd["literary"]["kind"] == "tag"
+@pytest.mark.asyncio
+class TestStyleQueries:
+    """Bug 3: style_queries goes through the haiku NL resolver. Tests
+    pre-build the LookupResolution per query to skip the LLM call."""
 
-    def test_target_style_unknown_marks_not_found(self, synthetic_corpus):
-        report = stylometry(
+    async def test_resolved_tag_returns_distances(self, synthetic_corpus):
+        # synthetic corpus has lit-1 + lit-2 with the "literary" tag
+        report = await stylometry(
             "Some prose here.",
-            target_styles=["nonexistent-author-xxxx"],
+            style_queries=["the literary register"],
+            style_resolutions=[_resolution(
+                tags=["literary"], match="tags_only",
+                interpretation="literary tag",
+            )],
             corpus=synthetic_corpus,
         )
         sd = report.references["style_distances"]
-        assert sd["nonexistent-author-xxxx"]["status"] == "not_found"
+        assert "the literary register" in sd
+        entry = sd["the literary register"]
+        assert entry["match"] == "tags_only"
+        assert "fw_cosine" in entry
+        assert "fw_delta" in entry
+        assert entry["resolved_tags"] == ["literary"]
 
-    def test_target_styles_omitted_no_section(self, synthetic_corpus):
-        report = stylometry("Some prose here.", corpus=synthetic_corpus)
+    async def test_resolved_intersect_falls_through_to_authors(self, synthetic_corpus):
+        # synthetic_corpus has no author slugs, so intersect always returns
+        # nothing — falls to empty set, surfaces note about no entries.
+        report = await stylometry(
+            "Some prose here.",
+            style_queries=["minimalist + literary"],
+            style_resolutions=[_resolution(
+                tags=["minimalist"], match="tags_only",
+                interpretation="minimalist tag",
+            )],
+            corpus=synthetic_corpus,
+        )
+        sd = report.references["style_distances"]
+        entry = sd["minimalist + literary"]
+        assert entry["resolved_tags"] == ["minimalist"]
+        assert entry["match"] == "tags_only"
+
+    async def test_unresolved_query_surfaces_note(self, synthetic_corpus):
+        # Bug 3 transcript failure: agent passed "fid_rich" — the resolver
+        # would translate it to "free_indirect_discourse", but in this
+        # synthetic corpus that tag doesn't exist so match=none. The point
+        # is the response surfaces the resolver's note, not a bare
+        # "not_found".
+        report = await stylometry(
+            "Some prose here.",
+            style_queries=["fid_rich"],
+            style_resolutions=[_resolution(
+                match="none",
+                interpretation="agent meant free_indirect_discourse",
+                note="this corpus has no FID-tagged entries; closest: lyric",
+            )],
+            corpus=synthetic_corpus,
+        )
+        sd = report.references["style_distances"]
+        entry = sd["fid_rich"]
+        assert entry["match"] == "none"
+        assert "free_indirect_discourse" in entry["interpretation"]
+        assert "no FID-tagged entries" in entry["note"]
+
+    async def test_style_queries_omitted_no_section(self, synthetic_corpus):
+        report = await stylometry("Some prose here.", corpus=synthetic_corpus)
         assert "style_distances" not in report.references
 
 
