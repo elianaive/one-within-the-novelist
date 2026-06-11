@@ -252,88 +252,72 @@ fixed constraint that the prose must honor.
 
 ---
 
-## Stage 4: Prose Evolution
+## Stage 4: Prose Generation
 
-**What is being evolved:** The actual written text — scene by scene, following
-the structure DAG, in the locked voice.
+**Status (2026-04-29):** Architecture scoped. Detailed spec at `docs/stage-4/overview.md`. The earlier population-evolution framing (multiple prose variants per node, mutation operators on prose, top-N advance) has been replaced by a single-agent + critic-ensemble architecture; what's preserved are the evaluation criteria below.
 
-**The genome:** Prose for each node in the structure graph. This could be the
-text itself, or the prompt/instructions used to generate prose for each node.
-Evolving the *instructions* rather than the *text* is often more efficient: a
-mutation to the instruction ("make the subtext more opaque," "cut the last
-paragraph," "rewrite the dialogue with more interruptions") generates a new
-text variant.
+**What is produced:** A finished short story (5-10k words across ~8-15 scenes) as a markdown manuscript file. One prose per (concept, structure, voice) tuple; cross-candidate work moves to Stage 6 if multiple candidates are produced upstream.
 
-**Generalized story state:**
+**Architecture (high level):**
 
-Instead of character-specific state tracking, the system maintains a flexible
-state store that tracks whatever the story needs. What gets tracked depends on
-what kind of story emerged from Stages 1–2:
+A single agent runs through three orchestration phases. The manuscript lives on disk as `story.md`; the agent uses generic file tools (Claude-Code-shape) to read, write, and edit. Voice spec + 3 renderings cached as system-prefix block.
 
-- **Character state** (for character-driven stories): emotions, goals,
-  relationship shifts, what they know, what they've decided
-- **Reader knowledge state** (for reveal stories): what the reader knows vs.
-  what is true, the dramatic irony gap, what has been disclosed and what remains
-  hidden
-- **Concept development state** (for thought-experiment stories): what
-  implications have been explored, what remains, how the reader's understanding
-  of the premise has evolved
-- **Voice constraint state** (for compression pieces): what constraints have been
-  honored, what tension has been built through what's unsaid
+- **Phase 1 — PreThink.** Free-form per-scene planning in natural language. Includes the reader-state model at scene exits: epistemic state (what reader knows / suspects / holds open), affective quality (structural not declarative), forward pull. Voice-mode-gated.
+- **Phase 2 — DownDraft.** Per-scene write-prose-to-file in topological order with a read-as-reader micro-loop after each scene write (per `voice_revise.txt`'s pattern: generic `think` tool + prompt instruction to read as reader, not author).
+- **Phase 3 — Revise.** Cycled sub-phases: (A) gather critiques from Tier A (mandatory) + Tier B (selective) + dynamic domain_expert critics; (B) apply revisions, dispatching surgical-edit subagents for surgical work. Plateau detection via issue counts + severity tags. Cap ~6 cycles; hard LLM call ceiling 30-50.
 
-The state accumulates as scenes are generated. Each new scene has access to the
-full state so far, preventing the drift and inconsistency that plagues AI
-long-form generation. But the state isn't prescriptive — it doesn't force the
-next scene to do anything specific. It's context, not instruction.
+**Critic suite:**
 
-**Scene generation:**
+Tier A (fidelity, mandatory after every draft commit): `voice_fidelity` (Stage 3 winning persona returns as critic with metric tools), `payload_enactment`, `continuity`, `motif_fidelity`.
 
-For each node in the structure DAG, generation is conditioned on:
-1. The structure node's payload (what this scene unit should accomplish)
-2. The locked voice specification (how it should sound)
-3. The accumulated story state (what has happened so far)
-4. The overall concept and target effect (what this is all building toward)
+Tier B (resonance, agent-invoked, all fire at default budgets): 11 critics mapping to the 10 Resonance Dimensions in `docs/judging/overview.md` plus three cross-cutting cognitive operations (specificity_grounding, defamiliarization, reader_implication).
 
-Multiple prose variants are generated per node. The population at this stage
-is a set of complete or near-complete drafts.
+Conditional `domain_expert` factory: pre-stage filter call returns 0-2 ExpertNeed specs at setup; runtime-instantiated critic with web_search access for fact verification on technical / historical / cultural / canon-specific work.
 
-**Mutation operators:**
+**Architectural invariants:**
 
-- Style shifts within the voice spec's range (more compressed, more expansive)
-- Dialogue rewrites (add imperfection, subtext, interruption)
-- Hemingway iceberg passes: generate full context/backstory for a scene, then
-  cut to only what's essential — the authority of the omitted material remains
-- Carver cuts: radical compression. Remove entire paragraphs. What survives?
-- Detail substitution: swap generic descriptions for specific, concrete ones
-- Perspective shifts: retell the same scene beat from a different focal point
+- Cross-family critics (generator on Claude family → critics on DeepSeek/Gemini family) as ICRH safeguard
+- No writer-persona for the agent; voice spec is the aesthetic commitment
+- Manuscript file is the single source of truth for prose state
 
-**Evaluation criteria:**
+**Evaluation criteria (the dimensions on which the prose is judged):**
 
-- **Transportation / immersion** (does the prose pull the reader in?)
-- **Flow / pacing** (does it maintain momentum without rushing or dragging?)
-- **Anti-slop** (Tier 1 regex + Tier 2 NLP checks run on every candidate)
-- **Voice adherence** (does the prose match the locked voice spec?)
-- **Show vs. tell** (is emotion demonstrated through action and detail, not
-  stated?)
-- **Payload enactment (not gesture)** (for each Stage 2 edge incoming to this
-  scene's source node: did the prose *enact* the payload, or merely gesture at
-  it? A scene where a character says "they see everything at once, I guess"
-  gestures at `entails: Heptapods perceive all time at once`. A scene that
-  demonstrates that perception through the reader's own realization *enacts*
-  it. See `lab/references/cosop/summary.md` for the failure mode Wales named
-  "eliding." Goal-field propagation discipline — why this matters and how to
-  wrap payloads for prose generation — is in `docs/prompting-guide.md`
-  §"Goals Cannot Ride in Plaintext.")
-- **Sentence-level craft** (burstiness, lexical diversity, rhythm variation)
-- **State consistency** (does this scene contradict established state?)
+The Tier B resonance critics operationalize these:
 
-**Exit condition:** Top N complete drafts advance to refinement.
+- **Transportation / immersion** (Green & Brock 2000)
+- **Flow / pacing** (Thissen et al. — strongest predictor of reading pleasure)
+- **Voice fidelity** (matches voice spec + renderings; metric ensemble grounded)
+- **Payload enactment (not gesture)** — for each Stage 2 edge with a payload, the prose must *enact*, not state. Goal-field wrapping per `docs/prompting-guide.md` §"Goals Cannot Ride in Plaintext."
+- **Specificity grounding** (Saunders, Paivio dual-coding) — concrete sensory anchors; no decorative detail
+- **Tension / curiosity** (Brewer & Lichtenstein; Loewenstein) — withheld-information mechanics
+- **Emotional peaks** (Reagan et al. 2016; Leong et al. 2025) — set up and earned, not arbitrary
+- **Causal inevitability** (Chen & Bornstein TiCS 2024) — surprises feel inevitable in retrospect
+- **Ending quality** (Kahneman peak-end) — endings disproportionately determine memory of whole
+- **Signature image / memorability** (Mar story superiority) — the indelible image
+- **Defamiliarization** (Shklovsky) — making the familiar strange
+- **Reader implication** (Sebald/Saunders complicity)
+- **Irreducible remainder** — what can't be paraphrased away
+- **Continuity** — entities, established facts, story_constraints, character_arcs
+
+**Exit condition:** Plateau detected (issue count + severity tags), cycle cap hit (~6), call ceiling hit (30-50), or agent calls `finalize_stage_4()`. Final manuscript hands off to Stage 5/6 (whose roles are open — see Stage 5 below).
+
+**See `docs/stage-4/overview.md` for the full architecture.**
 
 ---
 
 ## Stage 5: Refinement
 
-**What is being evolved:** Full stories under editorial pressure — critique,
+**Status (2026-04-29):** Stage 5's role is being reassessed. Stage 4's expanded architecture (Phase 3 critic-revise loop with 15 critics + surgical-edit subagents + plateau detection) has effectively absorbed most of what Stage 5 was originally designed to do. The remaining Stage 5 description below is the original design; in v1, Stage 5 may be:
+
+- **Absorbed into Stage 4** — gone entirely
+- **Retained for harder, more aggressive macro revision** — kill darlings, structural restructure, possibly Stage-2 re-entry (Lamott's "broader category" revision beyond Stage 4's mid-level work)
+- **Repurposed for cross-candidate work** — if multiple Stage 4 candidates per tuple are generated, Stage 5 selects/aggregates among them (work that was originally Stage 6's)
+
+This is a genuine open architectural question; resolution depends on pilot signal from Stage 4's revise loop. The original Stage 5 design (below) is preserved as documentation of what the modules could look like if Stage 5 is retained as a macro-revision stage.
+
+---
+
+**What was originally being evolved:** Full stories under editorial pressure — critique,
 revision, compression.
 
 This is not open-ended evolution. Research (Self-Refine, NeurIPS 2023; CritiCS,
