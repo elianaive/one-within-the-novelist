@@ -1,0 +1,51 @@
+# Stage 4 critic-persona template — schema reference for new critics.
+#
+# A critic checks one specific cognitive/literary mechanism on the
+# manuscript and returns observations, never rewrites. Persona-driven
+# critics open with a research-register mechanism description and an
+# ordinary-specific identity (no famous-author archetypes); criteria-
+# direct critics skip the identity and exemplars (the criteria carry
+# the work without persona scaffolding).
+#
+# Token hygiene: prose fields use folded scalars (`>`); lists use one
+# bullet per item, no hard-wrapping. Files in this directory are loaded
+# directly into LLM system prompts.
+#
+# Model assignment respects the cross-family ICRH safeguard: in prod
+# (generator=Opus) critics run on DeepSeek; in dev (generator=DeepSeek)
+# critics override to Claude. The YAML default is the prod choice; the
+# session config overrides for dev runs.
+
+# Required fields:
+
+# id: critic-id-kebab-case
+# tier: tier_a | tier_b
+# persona: true | false           # persona-driven vs criteria-direct
+#
+# mechanism: >                    # research register; what cognitive/
+#   literary thing this critic     # literary thing this checks
+#   checks
+#
+# focus_areas:                    # at least one bullet
+#   - first observation focus
+#   - second observation focus
+#
+# model: deepseek-v4-pro          # default; session config can override
+# reasoning_effort: medium
+
+# Optional fields:
+
+# name: The Friendly Display Name  # may be empty for non-persona critics
+#
+# identity: >                     # prose paragraph for persona-driven
+#   the developmental-editor       # critics; empty when persona=false
+#   archetype, ordinary-specific
+#
+# severity_calibration:           # guides severe/moderate/minor tagging
+#   severe: "..."
+#   moderate: "..."
+#   minor: "..."
+#
+# exemplars:                      # passages where the dim operates well;
+#   - id: passage-id              # resolved against
+#     note: what this exemplifies # data/voice-references/passages/

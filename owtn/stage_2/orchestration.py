@@ -23,6 +23,7 @@ from __future__ import annotations
 import asyncio
 import logging
 
+from owtn.evaluation.stage_2_tier3 import evaluate_concept_demands
 from owtn.llm.call_logger import llm_context
 from owtn.models.judge import JudgePersona
 from owtn.models.stage_2.config import Stage2Config
@@ -30,7 +31,7 @@ from owtn.models.stage_2.handoff import Stage1Winner, Stage2Output
 from owtn.stage_2.archive import Stage2Archive
 from owtn.stage_2.handoff import build_handoff_for_concept
 from owtn.stage_2.operators import seed_root
-from owtn.stage_2.tournament import run_within_concept_tournament
+from owtn.stage_2.tournament import TournamentEntry, run_within_concept_tournament
 from owtn.stage_2.tree_runtime import run_one_preset_tree
 
 
@@ -42,9 +43,9 @@ async def run_concept(
     winner: Stage1Winner,
     config: Stage2Config,
     config_tier: str,
-    cheap_judge: JudgePersona,
+    cheap_judge: JudgePersona | None,
     full_panel: list[JudgePersona] | None,
-    classifier_model: str,
+    classifier_model: str | None,
     archive: Stage2Archive,
 ) -> list[Stage2Output]:
     """Run Stage 2 for one Stage 1 concept. Returns advancing handoff outputs.
@@ -101,13 +102,43 @@ async def run_concept(
     ]
     entries = await asyncio.gather(*preset_tasks)
 
-    if config.scoring_mode == "scalar":
+    # Tier 3: verdict each preset's final terminal against `concept_demands`.
+    # Skipped without warning when the seed DAG has no demands (the common
+    # case). Failed verdicts demote the entry below all-satisfied entries
+    # in both pairwise and scalar ranking — see `TournamentEntry.sort_key`
+    # and `rescore_entries_scalar`.
+    await asyncio.gather(*[
+        _apply_tier3(entry, concept=winner.genome, classifier_model=classifier_model)
+        for entry in entries
+    ])
+
+    use_panel_handoff = (
+        config.handoff_via_panel
+        and len(entries) >= 2
+        and full_panel is not None
+        and len(full_panel) > 0
+    )
+    if use_panel_handoff:
+        # Hybrid: scalar-mode rollouts (cheap + fast — MCTS averages over the
+        # scorer's leniency-saturation noise on visit counts) but the full
+        # judge-panel tournament for cross-preset handoff (low volume, high
+        # stakes — leniency-saturation directly distorts ranking when 4 of 8
+        # dims pin near 18). Off by default; set `handoff_via_panel: true`.
+        ranked = await run_within_concept_tournament(
+            entries,
+            concept=winner.genome,
+            panel=full_panel,
+        )
+    elif config.scoring_mode == "scalar":
         from owtn.stage_2.scalar_handoff import rescore_entries_scalar
         ranked = await rescore_entries_scalar(
             list(entries),
             composition_name=config.scoring_handoff_composition,
         )
     elif len(entries) >= 2:
+        # Pairwise-champion path: Stage2Config validator guarantees
+        # cheap_judge is set whenever scoring_mode != "scalar".
+        assert cheap_judge is not None
         ranked = await run_within_concept_tournament(
             entries,
             concept=winner.genome,
@@ -140,6 +171,23 @@ def _select_presets(config: Stage2Config, tier: str) -> list[str]:
     if tier == "heavy":
         return list(config.presets.heavy)
     raise ValueError(f"unknown config tier: {tier!r}")
+
+
+async def _apply_tier3(
+    entry: TournamentEntry,
+    *,
+    concept,
+    classifier_model: str | None,
+) -> None:
+    """Run Tier 3 against `entry.dag`; populate the demand-failure flag and
+    verdict list on the entry. No-op for entries whose DAG has no demands."""
+    result = await evaluate_concept_demands(
+        entry.dag,
+        concept=concept,
+        classifier_model=classifier_model,
+    )
+    entry.concept_demand_failed = result.failed
+    entry.concept_demand_verdicts = list(result.verdicts)
 
 
 _DEFAULT_TARGET_WORD_COUNT = 3000

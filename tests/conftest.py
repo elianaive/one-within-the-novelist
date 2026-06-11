@@ -101,3 +101,28 @@ def uniform_pairwise_cfg():
         tiebreaker_threshold=0.0,
         tiebreaker_dims=[],
     )
+
+
+# ─── Stage 3 / Stage 4 helpers ──────────────────────────────────────────────
+
+
+def _signature_risk_for_test():
+    """Minimal-valid SignatureRisk for tests that construct VoiceGenome
+    artifacts directly (i.e. without going through Phase 1 production flow).
+    Each field clears its min-length gate; specific test concerns can
+    override via `replace`."""
+    from owtn.models.stage_3 import SignatureRisk
+    return SignatureRisk(
+        move=(
+            "Default sentence ends on a noun-clause object; refuse the "
+            "model's reflex to tail off into adverbs of feeling."
+        ),
+        model_default_alternative=(
+            "Sentences that close on softly / gently / quietly — the "
+            "default register for emotionally weighted scenes."
+        ),
+        concept_demand_justification=(
+            "The story's weight arrives in what the body withholds; "
+            "feeling-adverbs leak the meaning the reader should assemble."
+        ),
+    )

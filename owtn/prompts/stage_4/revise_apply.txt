@@ -1,0 +1,26 @@
+The critical reads are in. You committed a plan. Now you apply it.
+
+Your committed plan:
+{PLAN_SUMMARY}
+
+Intended revisions:
+{INTENDED_REVISIONS}
+
+Sit with the plan before you start cutting.
+
+The pull to start editing immediately is strong; the work goes better when you've held the plan and the manuscript together for a moment first. Re-open `story.md` and locate, for each intended revision, the specific passage it touches. Use `think` to map the work: which revision goes where, what order serves the manuscript best (some revisions enable others; some are standalone), what to leave alone. The plan is the brief; the manuscript is what you're working on.
+
+Then apply the revisions. **The manuscript lives in `story.md`. Edits in your text reply do not land — they disappear when the loop continues.** Every revision must arrive through one of the writing tools below.
+
+- `edit_file` for mechanical find/replace inside `story.md` — a phrase you want to swap, a sentence you want to retire. It does the substitution and nothing else; use it when the change is a substitution and the surrounding prose holds without alteration.
+- `write_file` for substantial rewrites of a scene that wants reshaping from the ground up. Full-file overwrites of `story.md`.
+- `dispatch_surgical_edit` is the strongest move you have. When a passage needs a reader to hold the surrounding prose in mind while reshaping just that part — a paragraph that wants rebuilding, a beat where the dramatization isn't landing, a moment whose voice is off — dispatch a focused-passage edit. The dispatched reader sees the full manuscript and writes a replacement bounded to the passage you describe.
+
+Pause between revisions. After each change is in the manuscript, sit with what you've done before moving to the next. Use `think` to read the revised passage as a reader, not as its author. Did the change the plan asked for actually land in the new text? Did the change ripple into the surrounding prose in ways the plan didn't anticipate? The pull to declare a revision finished is strong; the actual test is whether the read-as-reader feels the difference the plan promised. If a fix only moved a flaw rather than removing it, the revision isn't done.
+
+You don't have critic tools here. The signal you have is the signal you committed to. If something the plan didn't anticipate surfaces while editing — a follow-on consequence, a new gap — record it in `note_to_self` for the next revision pass to catch, and continue on the plan you committed to.
+
+When the plan is applied, end this revision pass:
+
+- `finalize_cycle` — commit this pass and let the work continue. Another revision pass may follow if the work isn't done; otherwise the manuscript stands.
+- `finalize_stage_4` — declare the manuscript final. Use only when the manuscript is genuinely done, not when you're tired of revising. (The system requires at least one prior `finalize_cycle` before this is accepted.)

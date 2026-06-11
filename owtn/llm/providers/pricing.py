@@ -61,14 +61,25 @@ def _load_pricing_dataframe() -> pd.DataFrame:
     df["input_price_tier2"] = df["input_price_tier2"] / M
     df["output_price_tier2"] = df["output_price_tier2"] / M
 
-    # Convert is_reasoning to boolean
-    df["is_reasoning"] = df["is_reasoning"] == "True"
-
-    # Convert think_temp_fixed to boolean (handle both string "1" and int 1)
+    # Boolean flag columns. Pandas dtype inference depends on the column's
+    # raw values — historical rows with quoted-leading-space (`" True"`) read
+    # as object/str, while clean rows (`True` / `1`) read as native bool/int.
+    # Normalize via `.astype(str)` so both shapes converge to the same string
+    # form before the comparison.
+    df["is_reasoning"] = df["is_reasoning"].astype(str) == "True"
     df["think_temp_fixed"] = df["think_temp_fixed"].astype(str) == "1"
-
-    # Convert requires_reasoning to boolean (handle both string "1" and int 1)
     df["requires_reasoning"] = df["requires_reasoning"].astype(str) == "1"
+
+    # Newer Anthropic-shape flags. Older pricing.csv revisions may not have
+    # these columns yet — default to False per row when absent.
+    if "requires_adaptive_thinking" in df.columns:
+        df["requires_adaptive_thinking"] = df["requires_adaptive_thinking"].astype(str) == "1"
+    else:
+        df["requires_adaptive_thinking"] = False
+    if "requires_temp_one_or_omit" in df.columns:
+        df["requires_temp_one_or_omit"] = df["requires_temp_one_or_omit"].astype(str) == "1"
+    else:
+        df["requires_temp_one_or_omit"] = False
 
     # Set index to model_name for fast lookups
     df = df.set_index("model_name")
@@ -195,3 +206,25 @@ def requires_reasoning(model_name: str) -> bool:
     if model_name not in _PRICING_DF.index:
         return False
     return _PRICING_DF.loc[model_name, "requires_reasoning"]
+
+
+def requires_adaptive_thinking(model_name: str) -> bool:
+    """Anthropic shipped a new thinking-control surface with Opus 4.7:
+    ``thinking={"type": "adaptive"}`` plus ``output_config={"effort": ...}``
+    instead of the legacy ``{"type": "enabled", "budget_tokens": N}`` shape.
+    Older Claude models still accept the legacy shape; 4.7+ rejects it.
+    """
+    if model_name not in _PRICING_DF.index:
+        return False
+    return bool(_PRICING_DF.loc[model_name, "requires_adaptive_thinking"])
+
+
+def requires_temp_one_or_omit(model_name: str) -> bool:
+    """Some models (Opus 4.7+) deprecated ``temperature`` entirely — only
+    ``1.0`` or omitted is accepted, regardless of whether reasoning is
+    active. Stricter than ``has_fixed_temperature`` which only fires when
+    reasoning is on.
+    """
+    if model_name not in _PRICING_DF.index:
+        return False
+    return bool(_PRICING_DF.loc[model_name, "requires_temp_one_or_omit"])

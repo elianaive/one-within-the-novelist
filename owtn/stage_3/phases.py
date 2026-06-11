@@ -170,128 +170,15 @@ def _format_transcript(
     msg_history: list[dict],
     final_output: str | None = None,
 ) -> str:
-    """Render an agent's full LLM chain (system + user + assistant + tool
-    results) as a Markdown chat transcript — readable like a chatbot history.
-
-    Tool-use loops collapse to one composite QueryResult in the LLM call log,
-    which hides the back-and-forth. This helper reads the full
-    `new_msg_history` (which DOES contain every turn, including assistant
-    `tool_calls` and `tool` results) and renders it as a flat markdown
-    document under `<session_log_dir>/agents/<id>/<phase>.transcript.md`.
-
-    `final_output`, if provided, is appended as the last assistant turn —
-    useful when the structured-commit response isn't already in the
-    msg_history (Phase 1/4 explore→commit shape).
-    """
-    import json as _json
-
-    parts: list[str] = [f"# {title}", ""]
-
-    # System prompt — collapsed by default since it's long; surface a
-    # truncated preview plus the full text in a fenced block for readability.
-    parts.append("## System")
-    parts.append("")
-    parts.append("```")
-    parts.append(system_msg.strip())
-    parts.append("```")
-    parts.append("")
-
-    turn = 0
-    for msg in msg_history:
-        role = msg.get("role")
-        if role == "user":
-            turn += 1
-            parts.append(f"## Turn {turn} — User")
-            parts.append("")
-            content = msg.get("content", "")
-            if isinstance(content, list):
-                # Multi-block content (anthropic shape) — flatten
-                content = "\n\n".join(
-                    str(b.get("text", b)) if isinstance(b, dict) else str(b)
-                    for b in content
-                )
-            parts.append(str(content).strip())
-            parts.append("")
-
-        elif role == "assistant":
-            turn += 1
-            parts.append(f"## Turn {turn} — Assistant")
-            parts.append("")
-            # Reasoning content (deepseek `reasoning_content`, anthropic
-            # extended-thinking `thinking` blocks). Surface in a collapsed-
-            # looking block so a reader can scan past it but it's there.
-            reasoning = msg.get("reasoning_content") or ""
-            if reasoning and str(reasoning).strip():
-                parts.append("> **reasoning:**")
-                parts.append("> ")
-                for ln in str(reasoning).strip().split("\n"):
-                    parts.append(f"> {ln}")
-                parts.append("")
-            text = msg.get("content") or ""
-            if isinstance(text, list):
-                text = "\n\n".join(
-                    str(b.get("text", b)) if isinstance(b, dict) else str(b)
-                    for b in text
-                )
-            if text and str(text).strip():
-                parts.append(str(text).strip())
-                parts.append("")
-            for tc in msg.get("tool_calls") or []:
-                fn = tc.get("function", {}) if isinstance(tc, dict) else {}
-                name = fn.get("name", "?")
-                args_raw = fn.get("arguments", "")
-                try:
-                    args = _json.loads(args_raw) if args_raw else {}
-                    args_pretty = _json.dumps(args, indent=2, ensure_ascii=False)
-                except Exception:
-                    args_pretty = args_raw
-                parts.append(f"### → tool call: `{name}`")
-                parts.append("")
-                parts.append("```json")
-                parts.append(args_pretty)
-                parts.append("```")
-                parts.append("")
-
-        elif role == "tool":
-            tcid = msg.get("tool_call_id", "?")
-            parts.append(f"### ← tool result (`{tcid}`)")
-            parts.append("")
-            content = msg.get("content", "")
-            if not isinstance(content, str):
-                content = str(content)
-            # Tool results are JSON-shaped; preserve as a fenced block.
-            # Cap individual results at 32k chars to keep the transcript
-            # readable when corpus lookups return very large passage dumps.
-            parts.append("```")
-            parts.append(content.strip()[:32000])
-            if len(content) > 32000:
-                parts.append(f"... [{len(content) - 32000} more chars truncated]")
-            parts.append("```")
-            parts.append("")
-
-    if final_output is not None:
-        # Display the final artifact for human readability, but as a
-        # separate section — NOT a turn. For tool-call commits the
-        # finalize_voice_genome call is already in the message history
-        # above; appending it as "Turn N+1 (structured commit)" would
-        # fabricate a turn that didn't happen.
-        parts.append("---")
-        parts.append("")
-        parts.append("## Final committed artifact")
-        parts.append("")
-        if isinstance(final_output, str):
-            text = final_output
-        else:
-            try:
-                text = _json.dumps(final_output, indent=2, ensure_ascii=False, default=str)
-            except Exception:
-                text = str(final_output)
-        parts.append("```")
-        parts.append(text.strip())
-        parts.append("```")
-        parts.append("")
-
-    return "\n".join(parts)
+    """Stage-3 wrapper around the shared transcript renderer. Kept as a
+    private name so existing call sites don't move."""
+    from owtn.orchestration.transcript import format_transcript as _shared
+    return _shared(
+        title=title,
+        system_msg=system_msg,
+        msg_history=msg_history,
+        final_output=final_output,
+    )
 
 
 def _write_transcript(
@@ -323,6 +210,32 @@ def _write_transcript(
         path.write_text(md, encoding="utf-8")
     except Exception as e:
         logger.warning("failed to write transcript %s: %s", path, e)
+
+
+def _canonicalize_ranking(ranking: list[str], expected: set[str]) -> list[str]:
+    """Restore canonical persona-id prefixes that DeepSeek occasionally
+    strips from structured-output rankings.
+
+    The Borda prompt renders agent ids with the canonical `the-` prefix
+    (e.g. `the-document-archivist`), but DeepSeek's response sometimes
+    drops it, returning bare names like `document-archivist`. The Borda
+    aggregator keys off canonical ids, so a bare-name response would fail
+    the expected-set check and crash the phase.
+
+    Re-canonicalizes by mapping each returned id to an expected id whose
+    canonical form ends with the returned id (after `-`). Returns the
+    list with prefixes restored where unambiguous; leaves entries
+    untouched otherwise — the caller's set-equality check then surfaces
+    the mismatch.
+    """
+    by_suffix: dict[str, str] = {}
+    for canonical in expected:
+        # Match against the full id and any suffix after a `-`.
+        by_suffix[canonical] = canonical
+        if "-" in canonical:
+            suffix = canonical.split("-", 1)[1]
+            by_suffix.setdefault(suffix, canonical)
+    return [by_suffix.get(rid, rid) for rid in ranking]
 
 
 @dataclass
@@ -412,22 +325,31 @@ class PrivateBriefPhase:
                 # or diagnostics, just commit. Switching to structured-output
                 # mode here triggers DeepSeek failure under long thinking-mode
                 # msg_history.
-                finalize_only = [
-                    s for s in tool_schemas if s["name"] == "finalize_voice_genome"
+                # Allow `declare_signature_risk` too: finalize gates on it,
+                # so if the agent exhausted explore without either step, the
+                # nudge needs both available. The agent calls declare first
+                # (one turn) then finalize (one turn).
+                commit_only = [
+                    s for s in tool_schemas
+                    if s["name"] in ("declare_signature_risk", "finalize_voice_genome")
                 ]
                 nudge_result = await query_async_with_tools(
                     model_name=agent.model,
                     msg=(
-                        "Your exploration budget is exhausted. Call "
-                        "`finalize_voice_genome` now with the VoiceGenome "
-                        "body based on the work above. Use the bench's "
-                        "scene_ids exactly. Do not call any other tools."
+                        "Your exploration budget is exhausted. If you have "
+                        "not yet declared `signature_risk`, declare it now "
+                        "with the move you committed to, the model's near-"
+                        "default for this concept, and the concept-specific "
+                        "demand it serves. Then call `finalize_voice_genome` "
+                        "with the rest of the schema fields. Use the bench's "
+                        "scene_ids exactly. The only available tools are "
+                        "`declare_signature_risk` and `finalize_voice_genome`."
                     ),
                     system_msg=agent.system_prompt,
                     msg_history=explore_result.new_msg_history,
-                    tools=finalize_only,
+                    tools=commit_only,
                     dispatch=dispatch,
-                    max_iters=2,
+                    max_iters=3,
                     **_commit_sampler(
                         agent.sampler,
                         temperature=self.commit_temperature,
@@ -875,7 +797,13 @@ class BordaPhase:
                     f"expected BordaRanking"
                 )
 
-            ranking = list(br.ranking)
+            # DeepSeek occasionally strips the canonical `the-` prefix from
+            # persona ids when listing them in structured output (despite the
+            # prompt rendering them with the prefix). Re-canonicalize against
+            # the expected set: any returned id that's a suffix-match of an
+            # expected id gets the prefix restored. Reject only on genuine
+            # mismatches (extra ids, missing ids, duplicates).
+            ranking = _canonicalize_ranking(list(br.ranking), expected)
             if set(ranking) != expected:
                 raise RuntimeError(
                     f"{agent.id}: Borda ranking mismatch; "

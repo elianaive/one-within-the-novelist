@@ -1,0 +1,38 @@
+# All-Anthropic dry-run pipeline.
+#
+# Wires Stages 1→4 under a single results dir. Generators (concept
+# operators, MCTS expansion/rollout, voice agents, prose writer) all run
+# on Anthropic Haiku-4.5 / Sonnet-4.6. Judges, classifiers, and scalar
+# scorer compositions keep their existing assignments — the user
+# constraint scopes Anthropic to *generators*, not the whole pipeline.
+#
+# Run with:
+#   uv run python -m owtn --pipeline-config configs/pipeline/dry_run.yaml
+#
+# Expected output layout under results/run_<ts>/:
+#   stage_1/best/main.json
+#   stage_2/handoff_manifest.json
+#   stage_3/by_pair/<pair>/winner.json
+#   stage_4/by_tuple/<tuple>/sandbox/<writer>/story.md
+
+# null = auto-generate `results/run_<UTC-ts>/`
+results_dir: null
+
+stage_1:
+  config: configs/stage_1/dry_run.yaml
+  max_eval_jobs: 2
+  max_proposal_jobs: 1
+
+stage_2:
+  config: configs/stage_2/dry_run.yaml
+  tier: light
+  max_concepts: 1
+
+stage_3:
+  config: configs/stage_3/dry_run.yaml
+  # Override panel size if you want to deviate from the per-stage config
+  # (commented = use whatever stage_3/dry_run.yaml says).
+  # panel_size: 2
+
+stage_4:
+  config: configs/stage_4/dry_run.yaml

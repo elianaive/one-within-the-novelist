@@ -1,0 +1,15 @@
+A short fiction is being prepared for writing. The concept and the voice it will be written in are below. Your task is to name the work's *implied audience* — the reader the writing is for.
+
+The implied audience is not the writer, not the publisher, not the broadest possible market. It is the reader the work assumes — what they bring to the page, what literary conventions they recognize, what difficulty they will sit with, what they will not require the prose to spell out for them. Think of it the way an editor thinks about positioning a story: who picks this up and finishes it, and why.
+
+The audience description should be a paragraph in the register of literary criticism — specific about taste, prior literary exposure, and what the reader brings to the text. Avoid demographic categories (age, profession, region) unless the work specifically conditions on them. Prefer concrete literary anchors over abstract descriptors — name authors or movements the reader has read, kinds of stories they recognize, conventions they will accept without explanation.
+
+`recognizes` and `tolerates` are short bullet lists supplementing the paragraph. `recognizes` names literary moves and conventions this audience knows in their bones (e.g., "free indirect discourse without flagging," "endings that decline to interpret"). `tolerates` names difficulty the audience will sit with (e.g., "narrators who refuse to be liked," "ambiguity at the level of plot, not just theme"). Both lists are 3-7 items and may be empty if the audience is not specifically conditioned on craft expectations.
+
+Concept:
+{CONCEPT}
+
+Voice:
+{VOICE}
+
+Output an AudienceFraming.

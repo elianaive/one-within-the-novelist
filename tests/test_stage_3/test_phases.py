@@ -72,13 +72,15 @@ def _agent(agent_id: str, model: str = "deepseek-v4-pro") -> Agent:
         tools=frozenset({
             "render_adjacent_scene", "think", "note_to_self", "lookup_reference",
             "thesaurus", "stylometry", "slop_score", "writing_style",
-            "finalize_voice_genome",
+            "declare_signature_risk", "finalize_voice_genome",
         }),
     )
 
 
 def _voice_body(agent_id: str) -> VoiceGenomeBody:
     """A valid VoiceGenomeBody whose renderings match the bench's scene_ids."""
+    from owtn.models.stage_3 import SignatureRisk
+
     text = (
         "She set the cup down and did not look up. "
         "He waited a long time before he spoke. "
@@ -103,6 +105,21 @@ def _voice_body(agent_id: str) -> VoiceGenomeBody:
         positive_constraints=[
             "Render emotion through the body's small refusals.",
         ],
+        signature_risk=SignatureRisk(
+            move=(
+                "Default sentence ends on a noun-clause object; refuse the "
+                "model's reflex to tail off into adverbs of feeling."
+            ),
+            model_default_alternative=(
+                "Sentences that close on softly / gently / quietly — the "
+                "default register for emotionally weighted scenes."
+            ),
+            concept_demand_justification=(
+                "The story's weight arrives in what the body withholds; "
+                "feeling-adverbs at sentence-end name what the prose is "
+                "meant to leave for the reader."
+            ),
+        ),
         renderings=[
             Rendering(scene_id="morning-kitchen", text=text),
             Rendering(scene_id="argument-at-door", text=text),
@@ -143,7 +160,15 @@ async def test_private_brief_phase_runs_all_agents_in_parallel():
         # invoking dispatch directly — this writes to _pending_commits.
         agent_id = kwargs["system_msg"].split()[-1]
         body = _voice_body(agent_id)
-        await kwargs["dispatch"]("finalize_voice_genome", body.model_dump())
+        # The new flow gates finalize on declare_signature_risk having
+        # been called first; satisfy the gate then call finalize. The body
+        # carries its own signature_risk for the orchestrator's later use,
+        # but the gate looks at _pending_signature_risks, not the body.
+        await kwargs["dispatch"]("declare_signature_risk", body.signature_risk.model_dump())
+        # finalize's parameter schema excludes signature_risk; pass everything else.
+        finalize_args = body.model_dump()
+        finalize_args.pop("signature_risk", None)
+        await kwargs["dispatch"]("finalize_voice_genome", finalize_args)
         return _FakeResult(
             "exploration done",
             history=[
@@ -184,7 +209,10 @@ async def test_private_brief_rejects_renderings_with_wrong_scene_ids():
     )
 
     async def fake_explore(**kwargs):
-        await kwargs["dispatch"]("finalize_voice_genome", bad_body.model_dump())
+        await kwargs["dispatch"]("declare_signature_risk", bad_body.signature_risk.model_dump())
+        finalize_args = bad_body.model_dump()
+        finalize_args.pop("signature_risk", None)
+        await kwargs["dispatch"]("finalize_voice_genome", finalize_args)
         return _FakeResult("done", history=[], cost=0.0)
 
     with patch("owtn.stage_3.phases.query_async_with_tools", new=fake_explore):
@@ -232,7 +260,11 @@ async def test_private_brief_nudge_fires_when_explore_did_not_commit():
         captured["msg_history"] = kwargs.get("msg_history")
         captured["tools"] = kwargs.get("tools")
         captured["msg"] = kwargs.get("msg")
-        await kwargs["dispatch"]("finalize_voice_genome", _voice_body("the-reductionist").model_dump())
+        body = _voice_body("the-reductionist")
+        await kwargs["dispatch"]("declare_signature_risk", body.signature_risk.model_dump())
+        finalize_args = body.model_dump()
+        finalize_args.pop("signature_risk", None)
+        await kwargs["dispatch"]("finalize_voice_genome", finalize_args)
         return _FakeResult("committed", history=list(explore_history) + [{"role": "user", "content": "x"}], cost=0.005)
 
     with patch("owtn.stage_3.phases.query_async_with_tools", new=fake_query_with_tools):
@@ -241,7 +273,9 @@ async def test_private_brief_nudge_fires_when_explore_did_not_commit():
 
     assert call_count["n"] == 2
     assert captured["msg_history"] == explore_history
-    assert [t["name"] for t in captured["tools"]] == ["finalize_voice_genome"]
+    assert sorted(t["name"] for t in captured["tools"]) == [
+        "declare_signature_risk", "finalize_voice_genome",
+    ]
     assert "finalize_voice_genome" in captured["msg"]
 
 
@@ -362,7 +396,15 @@ async def test_revise_phase_routes_critiques_to_their_targets():
         if agent_id not in captured_msgs:
             captured_msgs[agent_id] = kwargs["msg"]
         body = _voice_body(agent_id)
-        await kwargs["dispatch"]("finalize_voice_genome", body.model_dump())
+        # The new flow gates finalize on declare_signature_risk having
+        # been called first; satisfy the gate then call finalize. The body
+        # carries its own signature_risk for the orchestrator's later use,
+        # but the gate looks at _pending_signature_risks, not the body.
+        await kwargs["dispatch"]("declare_signature_risk", body.signature_risk.model_dump())
+        # finalize's parameter schema excludes signature_risk; pass everything else.
+        finalize_args = body.model_dump()
+        finalize_args.pop("signature_risk", None)
+        await kwargs["dispatch"]("finalize_voice_genome", finalize_args)
         return _FakeResult("done", history=[], cost=0.01)
 
     with patch("owtn.stage_3.phases.query_async_with_tools", new=fake_explore):
@@ -618,3 +660,43 @@ async def test_borda_phase_rejects_self_in_ranking():
         phase = BordaPhase()
         with pytest.raises(RuntimeError, match="ranking mismatch|self appears"):
             await phase.run(agents, state, registry)
+
+
+def test_canonicalize_ranking_restores_stripped_prefix():
+    """DeepSeek occasionally drops the canonical `the-` prefix from persona
+    ids in structured output. The canonicalizer should re-prefix bare names
+    by suffix-matching against the expected canonical set."""
+    from owtn.stage_3.phases import _canonicalize_ranking
+
+    expected = {"the-direct-address-intimate", "the-document-archivist", "the-sensory-materialist"}
+    bare = ["direct-address-intimate", "document-archivist", "sensory-materialist"]
+    canon = _canonicalize_ranking(bare, expected)
+    assert canon == [
+        "the-direct-address-intimate",
+        "the-document-archivist",
+        "the-sensory-materialist",
+    ]
+
+
+def test_canonicalize_ranking_passes_through_already_canonical():
+    """When the model returns the canonical ids, the canonicalizer is a no-op."""
+    from owtn.stage_3.phases import _canonicalize_ranking
+
+    expected = {"the-direct-address-intimate", "the-document-archivist"}
+    canon = _canonicalize_ranking(
+        ["the-document-archivist", "the-direct-address-intimate"], expected,
+    )
+    assert canon == ["the-document-archivist", "the-direct-address-intimate"]
+
+
+def test_canonicalize_ranking_leaves_genuine_mismatches_for_validator():
+    """If the model returns an id that doesn't match any expected (canonical
+    or suffix), the canonicalizer leaves it alone so the caller's set-equality
+    check surfaces the real mismatch."""
+    from owtn.stage_3.phases import _canonicalize_ranking
+
+    expected = {"the-direct-address-intimate", "the-document-archivist"}
+    canon = _canonicalize_ranking(
+        ["direct-address-intimate", "some-unexpected-name"], expected,
+    )
+    assert canon == ["the-direct-address-intimate", "some-unexpected-name"]

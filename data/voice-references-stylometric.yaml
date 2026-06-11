@@ -9838,3 +9838,360 @@ references:
   license: research_fair_use
   text_file: passages/exemplars/robinson-marilynne-housekeeping-s3.txt
   category: exemplars
+
+
+# ─── append: claude-opus-4-7, claude-sonnet-4-6 ───
+
+- id: centroid-claude-opus-4-7-02-epistolary-confession
+  tags: [llm_default, "model:claude-opus-4-7", anthropic, centroid_pool, "prompt:hc-letter-confession"]
+  source: "Claude Opus 4.7 — generated for claude-opus-4-7 centroid pool (hc-letter-confession)"
+  license: owtn_pilot_generation
+  text_file: passages/centroid-claude-opus-4-7-02-epistolary-confession.txt
+
+- id: centroid-claude-opus-4-7-00-gothic-1
+  tags: [llm_default, "model:claude-opus-4-7", anthropic, centroid_pool, "prompt:tribe-gothic-1"]
+  source: "Claude Opus 4.7 — generated for claude-opus-4-7 centroid pool (tribe-gothic-1)"
+  license: owtn_pilot_generation
+  text_file: passages/centroid-claude-opus-4-7-00-gothic-1.txt
+
+- id: centroid-claude-opus-4-7-01-cozy-sci-fi
+  tags: [llm_default, "model:claude-opus-4-7", anthropic, centroid_pool, "prompt:33"]
+  source: "Claude Opus 4.7 — generated for claude-opus-4-7 centroid pool (33)"
+  license: owtn_pilot_generation
+  text_file: passages/centroid-claude-opus-4-7-01-cozy-sci-fi.txt
+
+- id: centroid-claude-opus-4-7-03-young-adult-drama
+  tags: [llm_default, "model:claude-opus-4-7", anthropic, centroid_pool, "prompt:31"]
+  source: "Claude Opus 4.7 — generated for claude-opus-4-7 centroid pool (31)"
+  license: owtn_pilot_generation
+  text_file: passages/centroid-claude-opus-4-7-03-young-adult-drama.txt
+
+- id: centroid-claude-opus-4-7-04-rehearsing-rejection
+  tags: [llm_default, "model:claude-opus-4-7", anthropic, centroid_pool, "prompt:12"]
+  source: "Claude Opus 4.7 — generated for claude-opus-4-7 centroid pool (12)"
+  license: owtn_pilot_generation
+  text_file: passages/centroid-claude-opus-4-7-04-rehearsing-rejection.txt
+
+- id: centroid-claude-opus-4-7-05-teen-horror-goosebumps-style
+  tags: [llm_default, "model:claude-opus-4-7", anthropic, centroid_pool, "prompt:28"]
+  source: "Claude Opus 4.7 — generated for claude-opus-4-7 centroid pool (28)"
+  license: owtn_pilot_generation
+  text_file: passages/centroid-claude-opus-4-7-05-teen-horror-goosebumps-style.txt
+
+- id: centroid-claude-opus-4-7-06-frame-narrative-anecdote
+  tags: [llm_default, "model:claude-opus-4-7", anthropic, centroid_pool, "prompt:hc-anecdotal-frame"]
+  source: "Claude Opus 4.7 — generated for claude-opus-4-7 centroid pool (hc-anecdotal-frame)"
+  license: owtn_pilot_generation
+  text_file: passages/centroid-claude-opus-4-7-06-frame-narrative-anecdote.txt
+
+- id: centroid-claude-opus-4-7-07-scene-summary-alternation
+  tags: [llm_default, "model:claude-opus-4-7", anthropic, centroid_pool, "prompt:hc-scene-and-summary"]
+  source: "Claude Opus 4.7 — generated for claude-opus-4-7 centroid pool (hc-scene-and-summary)"
+  license: owtn_pilot_generation
+  text_file: passages/centroid-claude-opus-4-7-07-scene-summary-alternation.txt
+
+- id: centroid-claude-opus-4-7-08-metafiction-2
+  tags: [llm_default, "model:claude-opus-4-7", anthropic, centroid_pool, "prompt:tribe-metafiction-2"]
+  source: "Claude Opus 4.7 — generated for claude-opus-4-7 centroid pool (tribe-metafiction-2)"
+  license: owtn_pilot_generation
+  text_file: passages/centroid-claude-opus-4-7-08-metafiction-2.txt
+
+- id: centroid-claude-opus-4-7-11-realism-1
+  tags: [llm_default, "model:claude-opus-4-7", anthropic, centroid_pool, "prompt:tribe-realism-1"]
+  source: "Claude Opus 4.7 — generated for claude-opus-4-7 centroid pool (tribe-realism-1)"
+  license: owtn_pilot_generation
+  text_file: passages/centroid-claude-opus-4-7-11-realism-1.txt
+
+- id: centroid-claude-opus-4-7-10-carnival-of-dangerous-intentions
+  tags: [llm_default, "model:claude-opus-4-7", anthropic, centroid_pool, "prompt:6"]
+  source: "Claude Opus 4.7 — generated for claude-opus-4-7 centroid pool (6)"
+  license: owtn_pilot_generation
+  text_file: passages/centroid-claude-opus-4-7-10-carnival-of-dangerous-intentions.txt
+
+- id: centroid-claude-opus-4-7-13-epistolary-1
+  tags: [llm_default, "model:claude-opus-4-7", anthropic, centroid_pool, "prompt:tribe-epistolary-1"]
+  source: "Claude Opus 4.7 — generated for claude-opus-4-7 centroid pool (tribe-epistolary-1)"
+  license: owtn_pilot_generation
+  text_file: passages/centroid-claude-opus-4-7-13-epistolary-1.txt
+
+- id: centroid-claude-opus-4-7-09-gunpowder-rendezvous
+  tags: [llm_default, "model:claude-opus-4-7", anthropic, centroid_pool, "prompt:20"]
+  source: "Claude Opus 4.7 — generated for claude-opus-4-7 centroid pool (20)"
+  license: owtn_pilot_generation
+  text_file: passages/centroid-claude-opus-4-7-09-gunpowder-rendezvous.txt
+
+- id: centroid-claude-opus-4-7-15-third-person-physical-action
+  tags: [llm_default, "model:claude-opus-4-7", anthropic, centroid_pool, "prompt:hc-thirdperson-action"]
+  source: "Claude Opus 4.7 — generated for claude-opus-4-7 centroid pool (hc-thirdperson-action)"
+  license: owtn_pilot_generation
+  text_file: passages/centroid-claude-opus-4-7-15-third-person-physical-action.txt
+
+- id: centroid-claude-opus-4-7-12-hacker-mindset
+  tags: [llm_default, "model:claude-opus-4-7", anthropic, centroid_pool, "prompt:10"]
+  source: "Claude Opus 4.7 — generated for claude-opus-4-7 centroid pool (10)"
+  license: owtn_pilot_generation
+  text_file: passages/centroid-claude-opus-4-7-12-hacker-mindset.txt
+
+- id: centroid-claude-opus-4-7-18-omniscient-village-survey
+  tags: [llm_default, "model:claude-opus-4-7", anthropic, centroid_pool, "prompt:hc-omniscient-village"]
+  source: "Claude Opus 4.7 — generated for claude-opus-4-7 centroid pool (hc-omniscient-village)"
+  license: owtn_pilot_generation
+  text_file: passages/centroid-claude-opus-4-7-18-omniscient-village-survey.txt
+
+- id: centroid-claude-opus-4-7-14-write-an-scp-entry-about-a-series-of-ide
+  tags: [llm_default, "model:claude-opus-4-7", anthropic, centroid_pool, "prompt:24"]
+  source: "Claude Opus 4.7 — generated for claude-opus-4-7 centroid pool (24)"
+  license: owtn_pilot_generation
+  text_file: passages/centroid-claude-opus-4-7-14-write-an-scp-entry-about-a-series-of-ide.txt
+
+- id: centroid-claude-opus-4-7-16-sisyphus-gives-advice
+  tags: [llm_default, "model:claude-opus-4-7", anthropic, centroid_pool, "prompt:18"]
+  source: "Claude Opus 4.7 — generated for claude-opus-4-7 centroid pool (18)"
+  license: owtn_pilot_generation
+  text_file: passages/centroid-claude-opus-4-7-16-sisyphus-gives-advice.txt
+
+- id: centroid-claude-opus-4-7-19-folk-horror-tiseta
+  tags: [llm_default, "model:claude-opus-4-7", anthropic, centroid_pool, "prompt:30"]
+  source: "Claude Opus 4.7 — generated for claude-opus-4-7 centroid pool (30)"
+  license: owtn_pilot_generation
+  text_file: passages/centroid-claude-opus-4-7-19-folk-horror-tiseta.txt
+
+- id: centroid-claude-opus-4-7-17-court-of-the-dreaming-territorial-dream-
+  tags: [llm_default, "model:claude-opus-4-7", anthropic, centroid_pool, "prompt:17"]
+  source: "Claude Opus 4.7 — generated for claude-opus-4-7 centroid pool (17)"
+  license: owtn_pilot_generation
+  text_file: passages/centroid-claude-opus-4-7-17-court-of-the-dreaming-territorial-dream-.txt
+
+- id: centroid-claude-opus-4-7-20-classic-sci-fi-offworlder-author-style-l
+  tags: [llm_default, "model:claude-opus-4-7", anthropic, centroid_pool, "prompt:26"]
+  source: "Claude Opus 4.7 — generated for claude-opus-4-7 centroid pool (26)"
+  license: owtn_pilot_generation
+  text_file: passages/centroid-claude-opus-4-7-20-classic-sci-fi-offworlder-author-style-l.txt
+
+- id: centroid-claude-opus-4-7-22-shifting-tenses-bookstore
+  tags: [llm_default, "model:claude-opus-4-7", anthropic, centroid_pool, "prompt:hc-shifting-tenses"]
+  source: "Claude Opus 4.7 — generated for claude-opus-4-7 centroid pool (hc-shifting-tenses)"
+  license: owtn_pilot_generation
+  text_file: passages/centroid-claude-opus-4-7-22-shifting-tenses-bookstore.txt
+
+- id: centroid-claude-opus-4-7-21-classic-sci-fi-author-style-asimov
+  tags: [llm_default, "model:claude-opus-4-7", anthropic, centroid_pool, "prompt:25"]
+  source: "Claude Opus 4.7 — generated for claude-opus-4-7 centroid pool (25)"
+  license: owtn_pilot_generation
+  text_file: passages/centroid-claude-opus-4-7-21-classic-sci-fi-author-style-asimov.txt
+
+- id: centroid-claude-opus-4-7-24-scifi-2
+  tags: [llm_default, "model:claude-opus-4-7", anthropic, centroid_pool, "prompt:tribe-scifi-2"]
+  source: "Claude Opus 4.7 — generated for claude-opus-4-7 centroid pool (tribe-scifi-2)"
+  license: owtn_pilot_generation
+  text_file: passages/centroid-claude-opus-4-7-24-scifi-2.txt
+
+- id: centroid-claude-opus-4-7-23-therapeutic-boundaries
+  tags: [llm_default, "model:claude-opus-4-7", anthropic, centroid_pool, "prompt:15"]
+  source: "Claude Opus 4.7 — generated for claude-opus-4-7 centroid pool (15)"
+  license: owtn_pilot_generation
+  text_file: passages/centroid-claude-opus-4-7-23-therapeutic-boundaries.txt
+
+- id: centroid-claude-opus-4-7-27-dialogue-1
+  tags: [llm_default, "model:claude-opus-4-7", anthropic, centroid_pool, "prompt:tribe-dialogue-1"]
+  source: "Claude Opus 4.7 — generated for claude-opus-4-7 centroid pool (tribe-dialogue-1)"
+  license: owtn_pilot_generation
+  text_file: passages/centroid-claude-opus-4-7-27-dialogue-1.txt
+
+- id: centroid-claude-opus-4-7-29-pure-dialogue-elevator
+  tags: [llm_default, "model:claude-opus-4-7", anthropic, centroid_pool, "prompt:hc-dialogue-only"]
+  source: "Claude Opus 4.7 — generated for claude-opus-4-7 centroid pool (hc-dialogue-only)"
+  license: owtn_pilot_generation
+  text_file: passages/centroid-claude-opus-4-7-29-pure-dialogue-elevator.txt
+
+- id: centroid-claude-opus-4-7-25-contemporary-romance-drama-stolen-moment
+  tags: [llm_default, "model:claude-opus-4-7", anthropic, centroid_pool, "prompt:8"]
+  source: "Claude Opus 4.7 — generated for claude-opus-4-7 centroid pool (8)"
+  license: owtn_pilot_generation
+  text_file: passages/centroid-claude-opus-4-7-25-contemporary-romance-drama-stolen-moment.txt
+
+- id: centroid-claude-opus-4-7-28-lost-found-in-osaka
+  tags: [llm_default, "model:claude-opus-4-7", anthropic, centroid_pool, "prompt:7"]
+  source: "Claude Opus 4.7 — generated for claude-opus-4-7 centroid pool (7)"
+  license: owtn_pilot_generation
+  text_file: passages/centroid-claude-opus-4-7-28-lost-found-in-osaka.txt
+
+- id: centroid-claude-sonnet-4-6-02-epistolary-confession
+  tags: [llm_default, "model:claude-sonnet-4-6", anthropic, centroid_pool, "prompt:hc-letter-confession"]
+  source: "Claude Sonnet 4.6 — generated for claude-sonnet-4-6 centroid pool (hc-letter-confession)"
+  license: owtn_pilot_generation
+  text_file: passages/centroid-claude-sonnet-4-6-02-epistolary-confession.txt
+
+- id: centroid-claude-sonnet-4-6-00-gothic-1
+  tags: [llm_default, "model:claude-sonnet-4-6", anthropic, centroid_pool, "prompt:tribe-gothic-1"]
+  source: "Claude Sonnet 4.6 — generated for claude-sonnet-4-6 centroid pool (tribe-gothic-1)"
+  license: owtn_pilot_generation
+  text_file: passages/centroid-claude-sonnet-4-6-00-gothic-1.txt
+
+- id: centroid-claude-sonnet-4-6-06-frame-narrative-anecdote
+  tags: [llm_default, "model:claude-sonnet-4-6", anthropic, centroid_pool, "prompt:hc-anecdotal-frame"]
+  source: "Claude Sonnet 4.6 — generated for claude-sonnet-4-6 centroid pool (hc-anecdotal-frame)"
+  license: owtn_pilot_generation
+  text_file: passages/centroid-claude-sonnet-4-6-06-frame-narrative-anecdote.txt
+
+- id: centroid-claude-sonnet-4-6-07-scene-summary-alternation
+  tags: [llm_default, "model:claude-sonnet-4-6", anthropic, centroid_pool, "prompt:hc-scene-and-summary"]
+  source: "Claude Sonnet 4.6 — generated for claude-sonnet-4-6 centroid pool (hc-scene-and-summary)"
+  license: owtn_pilot_generation
+  text_file: passages/centroid-claude-sonnet-4-6-07-scene-summary-alternation.txt
+
+- id: centroid-claude-sonnet-4-6-08-metafiction-2
+  tags: [llm_default, "model:claude-sonnet-4-6", anthropic, centroid_pool, "prompt:tribe-metafiction-2"]
+  source: "Claude Sonnet 4.6 — generated for claude-sonnet-4-6 centroid pool (tribe-metafiction-2)"
+  license: owtn_pilot_generation
+  text_file: passages/centroid-claude-sonnet-4-6-08-metafiction-2.txt
+
+- id: centroid-claude-sonnet-4-6-11-realism-1
+  tags: [llm_default, "model:claude-sonnet-4-6", anthropic, centroid_pool, "prompt:tribe-realism-1"]
+  source: "Claude Sonnet 4.6 — generated for claude-sonnet-4-6 centroid pool (tribe-realism-1)"
+  license: owtn_pilot_generation
+  text_file: passages/centroid-claude-sonnet-4-6-11-realism-1.txt
+
+- id: centroid-claude-sonnet-4-6-05-teen-horror-goosebumps-style
+  tags: [llm_default, "model:claude-sonnet-4-6", anthropic, centroid_pool, "prompt:28"]
+  source: "Claude Sonnet 4.6 — generated for claude-sonnet-4-6 centroid pool (28)"
+  license: owtn_pilot_generation
+  text_file: passages/centroid-claude-sonnet-4-6-05-teen-horror-goosebumps-style.txt
+
+- id: centroid-claude-sonnet-4-6-04-rehearsing-rejection
+  tags: [llm_default, "model:claude-sonnet-4-6", anthropic, centroid_pool, "prompt:12"]
+  source: "Claude Sonnet 4.6 — generated for claude-sonnet-4-6 centroid pool (12)"
+  license: owtn_pilot_generation
+  text_file: passages/centroid-claude-sonnet-4-6-04-rehearsing-rejection.txt
+
+- id: centroid-claude-sonnet-4-6-03-young-adult-drama
+  tags: [llm_default, "model:claude-sonnet-4-6", anthropic, centroid_pool, "prompt:31"]
+  source: "Claude Sonnet 4.6 — generated for claude-sonnet-4-6 centroid pool (31)"
+  license: owtn_pilot_generation
+  text_file: passages/centroid-claude-sonnet-4-6-03-young-adult-drama.txt
+
+- id: centroid-claude-sonnet-4-6-01-cozy-sci-fi
+  tags: [llm_default, "model:claude-sonnet-4-6", anthropic, centroid_pool, "prompt:33"]
+  source: "Claude Sonnet 4.6 — generated for claude-sonnet-4-6 centroid pool (33)"
+  license: owtn_pilot_generation
+  text_file: passages/centroid-claude-sonnet-4-6-01-cozy-sci-fi.txt
+
+- id: centroid-claude-sonnet-4-6-13-epistolary-1
+  tags: [llm_default, "model:claude-sonnet-4-6", anthropic, centroid_pool, "prompt:tribe-epistolary-1"]
+  source: "Claude Sonnet 4.6 — generated for claude-sonnet-4-6 centroid pool (tribe-epistolary-1)"
+  license: owtn_pilot_generation
+  text_file: passages/centroid-claude-sonnet-4-6-13-epistolary-1.txt
+
+- id: centroid-claude-sonnet-4-6-09-gunpowder-rendezvous
+  tags: [llm_default, "model:claude-sonnet-4-6", anthropic, centroid_pool, "prompt:20"]
+  source: "Claude Sonnet 4.6 — generated for claude-sonnet-4-6 centroid pool (20)"
+  license: owtn_pilot_generation
+  text_file: passages/centroid-claude-sonnet-4-6-09-gunpowder-rendezvous.txt
+
+- id: centroid-claude-sonnet-4-6-10-carnival-of-dangerous-intentions
+  tags: [llm_default, "model:claude-sonnet-4-6", anthropic, centroid_pool, "prompt:6"]
+  source: "Claude Sonnet 4.6 — generated for claude-sonnet-4-6 centroid pool (6)"
+  license: owtn_pilot_generation
+  text_file: passages/centroid-claude-sonnet-4-6-10-carnival-of-dangerous-intentions.txt
+
+- id: centroid-claude-sonnet-4-6-15-third-person-physical-action
+  tags: [llm_default, "model:claude-sonnet-4-6", anthropic, centroid_pool, "prompt:hc-thirdperson-action"]
+  source: "Claude Sonnet 4.6 — generated for claude-sonnet-4-6 centroid pool (hc-thirdperson-action)"
+  license: owtn_pilot_generation
+  text_file: passages/centroid-claude-sonnet-4-6-15-third-person-physical-action.txt
+
+- id: centroid-claude-sonnet-4-6-18-omniscient-village-survey
+  tags: [llm_default, "model:claude-sonnet-4-6", anthropic, centroid_pool, "prompt:hc-omniscient-village"]
+  source: "Claude Sonnet 4.6 — generated for claude-sonnet-4-6 centroid pool (hc-omniscient-village)"
+  license: owtn_pilot_generation
+  text_file: passages/centroid-claude-sonnet-4-6-18-omniscient-village-survey.txt
+
+- id: centroid-claude-sonnet-4-6-12-hacker-mindset
+  tags: [llm_default, "model:claude-sonnet-4-6", anthropic, centroid_pool, "prompt:10"]
+  source: "Claude Sonnet 4.6 — generated for claude-sonnet-4-6 centroid pool (10)"
+  license: owtn_pilot_generation
+  text_file: passages/centroid-claude-sonnet-4-6-12-hacker-mindset.txt
+
+- id: centroid-claude-sonnet-4-6-14-write-an-scp-entry-about-a-series-of-ide
+  tags: [llm_default, "model:claude-sonnet-4-6", anthropic, centroid_pool, "prompt:24"]
+  source: "Claude Sonnet 4.6 — generated for claude-sonnet-4-6 centroid pool (24)"
+  license: owtn_pilot_generation
+  text_file: passages/centroid-claude-sonnet-4-6-14-write-an-scp-entry-about-a-series-of-ide.txt
+
+- id: centroid-claude-sonnet-4-6-22-shifting-tenses-bookstore
+  tags: [llm_default, "model:claude-sonnet-4-6", anthropic, centroid_pool, "prompt:hc-shifting-tenses"]
+  source: "Claude Sonnet 4.6 — generated for claude-sonnet-4-6 centroid pool (hc-shifting-tenses)"
+  license: owtn_pilot_generation
+  text_file: passages/centroid-claude-sonnet-4-6-22-shifting-tenses-bookstore.txt
+
+- id: centroid-claude-sonnet-4-6-16-sisyphus-gives-advice
+  tags: [llm_default, "model:claude-sonnet-4-6", anthropic, centroid_pool, "prompt:18"]
+  source: "Claude Sonnet 4.6 — generated for claude-sonnet-4-6 centroid pool (18)"
+  license: owtn_pilot_generation
+  text_file: passages/centroid-claude-sonnet-4-6-16-sisyphus-gives-advice.txt
+
+- id: centroid-claude-sonnet-4-6-17-court-of-the-dreaming-territorial-dream-
+  tags: [llm_default, "model:claude-sonnet-4-6", anthropic, centroid_pool, "prompt:17"]
+  source: "Claude Sonnet 4.6 — generated for claude-sonnet-4-6 centroid pool (17)"
+  license: owtn_pilot_generation
+  text_file: passages/centroid-claude-sonnet-4-6-17-court-of-the-dreaming-territorial-dream-.txt
+
+- id: centroid-claude-sonnet-4-6-19-folk-horror-tiseta
+  tags: [llm_default, "model:claude-sonnet-4-6", anthropic, centroid_pool, "prompt:30"]
+  source: "Claude Sonnet 4.6 — generated for claude-sonnet-4-6 centroid pool (30)"
+  license: owtn_pilot_generation
+  text_file: passages/centroid-claude-sonnet-4-6-19-folk-horror-tiseta.txt
+
+- id: centroid-claude-sonnet-4-6-21-classic-sci-fi-author-style-asimov
+  tags: [llm_default, "model:claude-sonnet-4-6", anthropic, centroid_pool, "prompt:25"]
+  source: "Claude Sonnet 4.6 — generated for claude-sonnet-4-6 centroid pool (25)"
+  license: owtn_pilot_generation
+  text_file: passages/centroid-claude-sonnet-4-6-21-classic-sci-fi-author-style-asimov.txt
+
+- id: centroid-claude-sonnet-4-6-20-classic-sci-fi-offworlder-author-style-l
+  tags: [llm_default, "model:claude-sonnet-4-6", anthropic, centroid_pool, "prompt:26"]
+  source: "Claude Sonnet 4.6 — generated for claude-sonnet-4-6 centroid pool (26)"
+  license: owtn_pilot_generation
+  text_file: passages/centroid-claude-sonnet-4-6-20-classic-sci-fi-offworlder-author-style-l.txt
+
+- id: centroid-claude-sonnet-4-6-24-scifi-2
+  tags: [llm_default, "model:claude-sonnet-4-6", anthropic, centroid_pool, "prompt:tribe-scifi-2"]
+  source: "Claude Sonnet 4.6 — generated for claude-sonnet-4-6 centroid pool (tribe-scifi-2)"
+  license: owtn_pilot_generation
+  text_file: passages/centroid-claude-sonnet-4-6-24-scifi-2.txt
+
+- id: centroid-claude-sonnet-4-6-27-dialogue-1
+  tags: [llm_default, "model:claude-sonnet-4-6", anthropic, centroid_pool, "prompt:tribe-dialogue-1"]
+  source: "Claude Sonnet 4.6 — generated for claude-sonnet-4-6 centroid pool (tribe-dialogue-1)"
+  license: owtn_pilot_generation
+  text_file: passages/centroid-claude-sonnet-4-6-27-dialogue-1.txt
+
+- id: centroid-claude-sonnet-4-6-29-pure-dialogue-elevator
+  tags: [llm_default, "model:claude-sonnet-4-6", anthropic, centroid_pool, "prompt:hc-dialogue-only"]
+  source: "Claude Sonnet 4.6 — generated for claude-sonnet-4-6 centroid pool (hc-dialogue-only)"
+  license: owtn_pilot_generation
+  text_file: passages/centroid-claude-sonnet-4-6-29-pure-dialogue-elevator.txt
+
+- id: centroid-claude-sonnet-4-6-23-therapeutic-boundaries
+  tags: [llm_default, "model:claude-sonnet-4-6", anthropic, centroid_pool, "prompt:15"]
+  source: "Claude Sonnet 4.6 — generated for claude-sonnet-4-6 centroid pool (15)"
+  license: owtn_pilot_generation
+  text_file: passages/centroid-claude-sonnet-4-6-23-therapeutic-boundaries.txt
+
+- id: centroid-claude-sonnet-4-6-25-contemporary-romance-drama-stolen-moment
+  tags: [llm_default, "model:claude-sonnet-4-6", anthropic, centroid_pool, "prompt:8"]
+  source: "Claude Sonnet 4.6 — generated for claude-sonnet-4-6 centroid pool (8)"
+  license: owtn_pilot_generation
+  text_file: passages/centroid-claude-sonnet-4-6-25-contemporary-romance-drama-stolen-moment.txt
+
+- id: centroid-claude-sonnet-4-6-26-biopunk-polymerase-chain-reaction
+  tags: [llm_default, "model:claude-sonnet-4-6", anthropic, centroid_pool, "prompt:29"]
+  source: "Claude Sonnet 4.6 — generated for claude-sonnet-4-6 centroid pool (29)"
+  license: owtn_pilot_generation
+  text_file: passages/centroid-claude-sonnet-4-6-26-biopunk-polymerase-chain-reaction.txt
+
+- id: centroid-claude-sonnet-4-6-28-lost-found-in-osaka
+  tags: [llm_default, "model:claude-sonnet-4-6", anthropic, centroid_pool, "prompt:7"]
+  source: "Claude Sonnet 4.6 — generated for claude-sonnet-4-6 centroid pool (7)"
+  license: owtn_pilot_generation
+  text_file: passages/centroid-claude-sonnet-4-6-28-lost-found-in-osaka.txt

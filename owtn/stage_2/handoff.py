@@ -132,6 +132,7 @@ def build_handoff_for_concept(
             stage_1_forwarded=stage_1_forwarded,
             mcts_reward=entry.mcts_reward,
             adaptation_permissions=perms,
+            concept_demand_results=list(entry.concept_demand_verdicts),
         ))
     return outputs, near_tie_fired
 

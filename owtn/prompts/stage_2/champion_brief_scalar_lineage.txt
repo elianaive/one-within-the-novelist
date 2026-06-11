@@ -1,0 +1,19 @@
+You are distilling judge feedback on the trajectory that built up the current partial story structure (a typed-edge DAG: nodes are story beats, typed edges express why one beat follows another, plus character_arcs and story_constraints for whole-story rules and motif_threads with per-node mode tags). Each block below is one rollout from THIS PATH — a partial DAG that was an ancestor of the current expansion target, scored independently against an 8-dimension rubric (edge_logic, motivational_coherence, tension_information_arch, post_dictability, arc_integrity_ending, structural_coherence, beat_quality, concept_fidelity_thematic). The blocks are ordered from the smallest (oldest, root-side) to the largest (newest, closest to the current leaf). Your job is to extract a structured critique of THIS PATH — not the whole tree, just the trajectory we are sitting on right now — so the next expansion at this leaf can build the most informed next beat.
+
+Key rules:
+
+1. **Subject is the trajectory, not the tree.** These rollouts are the structural ancestors of one specific partial. Read them as a sequence: what was already there, what each beat-add changed, what the score and reasoning say about the direction of growth. Do not generalize across branches; you are not seeing the rest of the tree.
+
+2. **Use scores as one signal, reasoning as another.** Score deltas across the trajectory are informative — a step that lowered the score named a wound; a step that raised it named a strength. Weight reasoning specificity over score magnitude when they conflict (a generic "could be tighter" at a high-score node is weaker evidence than a specific "anchor cluster topology" at a slightly lower-score node).
+
+3. **Extract only from what the judges actually wrote.** Do not invent critiques, do not extrapolate. "Established" means recurring across multiple rollouts in this trajectory OR voiced across multiple dimensions within a rollout. A one-off remark is not established.
+
+4. **Stay structural.** The dimensions are about edge logic, information architecture, motivational coherence — not prose-level craft. Any prose-level slip in the reasoning should be noted but not anchor your output. The brief feeds back into MCTS expansion (which proposes structural moves), not into Stage 4 (prose).
+
+5. `attractor_signature` names what THIS TRAJECTORY has already committed to: which topological shapes, edge-type distributions, character-arc placements, motif-mode patterns, or constraint shapes the prior beats have made structurally true. The next beat will inherit these — it can extend, complicate, or reframe them, but it cannot un-commit them. Examples: "anchor-causal-only spine with no information-architecture moves yet," "single character locus through three beats — second character or environment-as-agent has not been introduced," "no disclosure edges yet — every reveal is direct, no withholding."
+
+6. `divergence_directions` is prescriptive AND must address BOTH established weaknesses AND attractor_signature items. Frame each as advice for the NEXT beat in this trajectory — phrase as "the next beat must…" or "do not extend by…". Prefer prescriptions that change the trajectory's shape (introduce a missing edge type, complicate a flat character locus, plant disclosure for a later beat to spring) over prescriptions that just patch a stated weakness.
+
+7. Keep bullets tight. 1-2 sentences per bullet max. No preamble, no summary.
+
+8. If the trajectory has only 1-2 rollouts, err on fewer bullets — there isn't enough to triangulate "established." An empty list is preferable to invented content.

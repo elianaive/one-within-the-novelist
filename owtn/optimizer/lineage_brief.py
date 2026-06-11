@@ -210,7 +210,64 @@ async def summarize_lineage(
     user_msg = _build_summarizer_user_msg(
         match_critiques, extract_self, format_self, subject
     )
+    return await _summarize(user_msg, classifier_model, system_prompt)
 
+
+async def summarize_scalar_tree(
+    *,
+    scored_rollouts: list[tuple[float, str, dict]],
+    classifier_model: str,
+    system_prompt: str,
+    format_dag: SelfFormatter,
+    subject: BriefSubject,
+) -> LineageBrief:
+    """Run the lightweight summarizer over scalar-mode rollout records.
+
+    Each `scored_rollouts` entry is `(score, reasoning, dag_dict)`. Output
+    shape (`LineageBrief`) is shared with the pairwise summarizer; the input
+    framing is what changes — no opponent, absolute scores, per-rollout
+    reasoning. The system prompt teaches the model to read score and
+    reasoning together.
+
+    Raises: lets query_async exceptions propagate so callers can fall back.
+    """
+    if not scored_rollouts:
+        raise ValueError("summarize_scalar_tree called with no rollouts")
+
+    user_msg = _build_scalar_summarizer_user_msg(scored_rollouts, format_dag, subject)
+    return await _summarize(user_msg, classifier_model, system_prompt)
+
+
+def _build_scalar_summarizer_user_msg(
+    scored_rollouts: list[tuple[float, str, dict]],
+    format_dag: SelfFormatter,
+    subject: BriefSubject,
+) -> str:
+    """Render scalar rollouts as numbered blocks for the summarizer.
+
+    Each block leads with the score (so the summarizer can immediately
+    align reasoning to reward), then the partial DAG, then the judge's
+    per-dim reasoning. Blocks separated by `---` for legibility.
+    """
+    blocks = []
+    for i, (score, reasoning, dag) in enumerate(scored_rollouts):
+        block = (
+            f"## Rollout {i + 1} — score {score:.3f}\n"
+            f"\n"
+            f"{subject.upper}{subject.block_qualifier}:\n"
+            f"{format_dag(dag)}\n"
+            f"\n"
+            f"### Judge reasoning\n"
+            f"{reasoning}"
+        )
+        blocks.append(block)
+    return "\n\n---\n\n".join(blocks)
+
+
+async def _summarize(
+    user_msg: str, classifier_model: str, system_prompt: str,
+) -> LineageBrief:
+    """Shared LLM-call + parse-check for both summarizer entry points."""
     result = await query_async(
         model_name=classifier_model,
         msg=user_msg,
@@ -233,25 +290,56 @@ def render_lineage_brief(
     match_critiques: list[dict],
     subject: BriefSubject = LINEAGE_SUBJECT,
 ) -> str:
-    """Markdown the mutation prompt will see in place of raw judge reasoning."""
+    """Pairwise-mode brief render: stats line counts champion vs. challenger
+    appearances, then the four LineageBrief sections."""
     n = len(match_critiques)
     as_challenger = sum(
         1 for c in match_critiques if not c.get("self_was_champion", False)
     )
     as_defender = n - as_challenger
+    cap_narrative = subject.narrative[0].upper() + subject.narrative[1:]
+    stats = (
+        f"{cap_narrative} has been evaluated in {n} match"
+        f"{'es' if n != 1 else ''} "
+        f"({as_challenger} as challenger, {as_defender} as defender)."
+    )
+    return _render_brief_body(brief, subject, stats)
 
+
+def render_scalar_tree_brief(
+    brief: LineageBrief,
+    scored_rollouts: list[tuple[float, str, dict]],
+    subject: BriefSubject,
+) -> str:
+    """Scalar-mode brief render: stats line is rollout count + score range
+    instead of the pairwise champion/challenger split."""
+    n = len(scored_rollouts)
+    cap_narrative = subject.narrative[0].upper() + subject.narrative[1:]
+    if n:
+        scores = [s for s, _r, _d in scored_rollouts]
+        stats = (
+            f"{cap_narrative} has accumulated {n} rollout"
+            f"{'s' if n != 1 else ''} "
+            f"(scores: min {min(scores):.2f}, max {max(scores):.2f}, "
+            f"mean {sum(scores) / n:.2f})."
+        )
+    else:
+        stats = f"{cap_narrative} has no rollouts yet."
+    return _render_brief_body(brief, subject, stats)
+
+
+def _render_brief_body(
+    brief: LineageBrief, subject: BriefSubject, stats_line: str,
+) -> str:
+    """Shared four-section render. Stats line is mode-specific; the four
+    LineageBrief sections are not."""
     def _bullets(items: list[str]) -> str:
         if not items:
             return "- (none identified)"
         return "\n".join(f"- {x}" for x in items)
 
-    # Capitalize narrative form for the opening sentence ("This lineage..."
-    # / "This tree...").
-    cap_narrative = subject.narrative[0].upper() + subject.narrative[1:]
     return (
-        f"{cap_narrative} has been evaluated in {n} match"
-        f"{'es' if n != 1 else ''} "
-        f"({as_challenger} as challenger, {as_defender} as defender).\n\n"
+        f"{stats_line}\n\n"
         "## Established weaknesses (reviewers' recurring critiques)\n"
         f"{_bullets(brief.established_weaknesses)}\n\n"
         "## Contested strengths (reviewers disagreed)\n"
@@ -267,7 +355,7 @@ def render_raw_fallback(
     match_critiques: list[dict],
     subject: BriefSubject = LINEAGE_SUBJECT,
 ) -> str:
-    """Last-resort renderer when the summarizer fails entirely.
+    """Last-resort renderer when the pairwise summarizer fails entirely.
 
     Dumps the most recent 1-2 matches in a minimally-processed form so the
     mutator still has some signal. Loses structure but preserves content.
@@ -290,6 +378,26 @@ def render_raw_fallback(
             f"Prior match ({role}, {outcome}): {dim_summary}\n\n"
             f"Sample reasoning from judge {first_judge.get('judge_id', '?')}:\n"
             f"{reasoning}"
+        )
+    return "\n\n---\n\n".join(blocks)
+
+
+def render_scalar_raw_fallback(
+    scored_rollouts: list[tuple[float, str, dict]],
+    subject: BriefSubject,
+) -> str:
+    """Last-resort render for scalar mode when the summarizer fails.
+
+    Surfaces the most recent 1-2 rollouts as score + reasoning excerpt so
+    the expansion call still sees signal, even if unstructured.
+    """
+    if not scored_rollouts:
+        return subject.seed_placeholder
+    recent = scored_rollouts[-2:]
+    blocks = []
+    for i, (score, reasoning, _dag) in enumerate(recent):
+        blocks.append(
+            f"Prior rollout (score {score:.3f}):\n{(reasoning or '')[:1500]}"
         )
     return "\n\n---\n\n".join(blocks)
 

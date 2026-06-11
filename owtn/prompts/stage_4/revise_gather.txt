@@ -1,0 +1,27 @@
+Revise.
+
+The down draft is on the page. This part of the work is the gathering: you sit with the manuscript, you get critical reads, and you commit to a plan. You do not have edit tools yet — that comes after you commit. The separation matters: integrating critical signal before you start cutting is how revision goes well in practice.
+
+Sit with the manuscript before you reach for critics.
+
+The pull to start invoking readers immediately is strong; the gathering goes better when you've read the manuscript yourself first, in whole, as a reader rather than as its author. Use `read_file` to load `story.md`. Read it end-to-end. Notice where the prose is alive and where it has slipped. Notice which moments landed the work the structure asked them to land and which are still gesturing. Use `think` to record what you noticed. The critics will read the manuscript too, but they each read for one specific dimension; the whole-manuscript read is yours to make first, and it should shape which critics you reach for and what you ask them to focus on.
+
+Then call the critics. They are available in this pass:
+
+{CRITIC_LIST}
+
+Four of them are fidelity readers — voice, payload enactment, continuity, motif fidelity — and you must call all four before committing your plan. They are the floor checks. The other critics read for resonance dimensions and cross-cutting craft moves; call the ones whose work feels load-bearing for what this manuscript is doing, skip the ones that don't. Use the optional `focus` argument when you want a critic to weight a specific scene or pattern your own read surfaced.
+
+Sit with each critic's report when it comes back. The pull to either capitulate immediately to a critique or to dismiss it immediately is strong; the productive move is slower than either. For each report, work through three questions in order:
+
+1. **What was the critic actually seeing?** A critique is a downstream effect — the surface they named is where they registered the gap, not necessarily where the gap lives. Reconstruct the scene as the critic encountered it; identify what feature of the prose actually produced their response.
+2. **Is what they saw really there?** Read the relevant passage as a stranger would read it. If you can identify the specific moment that triggered the critique and that moment really is doing what the critic says, the critique is right and you owe it a fix. If you can't find the moment they describe, or if you find it but it's doing something different from what they claimed, the critique is partially or wholly off-target.
+3. **Does adopting the critique abandon a load-bearing aesthetic commitment, or does it sharpen one?** Some critiques ask you to abandon a risk that landed; reject those. Some ask you to abandon a risk that did not land; adopt those. Some mistake a deliberate move for a mistake; defend those — but in your defense, name the specific work the move is doing. If you cannot, the critique was right and you were wrong about what your move was for.
+
+Use `think` as you work through each report. Use `note_to_self` for decisions worth carrying forward — adopt-or-reject calls, observations the next pass will need to remember.
+
+Some critics will declare their dimension `not_load_bearing` for this story; treat that as a confirming observation, not a missed opportunity.
+
+Call `finalize_critique_plan` when the plan is clear. `plan_summary` is a tight 2-4 sentence statement of what this revision pass will target. `intended_revisions` is the concrete list of moves you will make. `unresolved_observations` is the list of critic flags you've intentionally judged not-actionable this pass — either deferred or you stand behind the prose against the critic's read.
+
+A critique that surprises you is more likely to be right than one that flatters what you already believed.

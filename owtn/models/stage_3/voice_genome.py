@@ -114,6 +114,57 @@ class Rendering(BaseModel):
 # ─── The genome ──────────────────────────────────────────────────────────
 
 
+class SignatureRisk(BaseModel):
+    """The structural move a voice commits to that the model would not
+    take by default for this concept. Required before `finalize_voice_genome`
+    can be called — the gate exists to surface mid-shaped voices early,
+    when the agent can still go back and find a real risk rather than
+    submitting the literary-fluent default in literary clothing.
+
+    The three fields force the agent to think across two axes:
+    1. The move itself, named at the sentence-level / structural level
+       (not as a "stance" or "register" — too abstract to verify in prose).
+    2. The model's near-default for this concept — what a competent but
+       unrisky voice would produce. Named explicitly so the agent has
+       articulated what they're committing *against*.
+    3. Why this concept demands the move. A risk that doesn't serve
+       the concept's load-bearing demands is decoration, not signature.
+    """
+    move: str = Field(
+        min_length=20,
+        description=(
+            "The structural / syntactic / formal commitment, named at the "
+            "sentence-shape or paragraph-architecture level. NOT 'incantatory' "
+            "or 'restrained' (too abstract); rather 'long anaphoric and-chains "
+            "as default sentence shape, 50+ words, broken only by Saunders "
+            "beats' or 'editorial-apparatus framing — bracketed headnotes, "
+            "footnotes, transcribed-document register'. The kind of move "
+            "another voice in the panel would not take."
+        ),
+    )
+    model_default_alternative: str = Field(
+        min_length=20,
+        description=(
+            "What a competent literary-fluent voice would do for this "
+            "concept by default — the version of this voice the model "
+            "would produce if it were not committed against it. Naming "
+            "this surfaces the gap between the move and the safe choice. "
+            "If you can't name a concrete default to commit against, the "
+            "move is either trivial or imaginary."
+        ),
+    )
+    concept_demand_justification: str = Field(
+        min_length=30,
+        description=(
+            "Why THIS concept's load-bearing demands need this specific "
+            "move (not just 'good prose'). Reference the concept's "
+            "target_effect / thematic_engine / constraints; tie the move "
+            "to a specific demand the prose has to deliver. A risk that "
+            "doesn't serve a concept-specific demand is decoration."
+        ),
+    )
+
+
 class VoiceGenomeBody(BaseModel):
     """The voice fields an agent produces — identifiers attached separately.
 
@@ -141,6 +192,8 @@ class VoiceGenomeBody(BaseModel):
 
     positive_constraints: list[str] = Field(min_length=1)
     prohibitions: list[str] = Field(default_factory=list)
+
+    signature_risk: SignatureRisk
 
     renderings: list[Rendering] = Field(min_length=3, max_length=3)
 

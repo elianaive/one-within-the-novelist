@@ -48,7 +48,10 @@ async def rescore_entries_scalar(
 
     results = await asyncio.gather(*[score_one(e) for e in entries])
 
-    by_aggregate = sorted(results, key=lambda x: -x[1].aggregate)
+    # Tier 3 demand-failed entries sink below all-satisfied entries regardless
+    # of aggregate score (per `docs/stage-2/evaluation.md` §Tier 3 tournament
+    # priority); within tier, sort by aggregate descending.
+    by_aggregate = sorted(results, key=lambda x: (int(x[0].concept_demand_failed), -x[1].aggregate))
     n = len(by_aggregate)
     for rank, (entry, card) in enumerate(by_aggregate):
         entry.mcts_reward = card.aggregate

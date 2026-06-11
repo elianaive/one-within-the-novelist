@@ -19,10 +19,23 @@ from owtn.models.stage_1.concept_genome import ConceptGenome
 from owtn.models.stage_2.dag import DAG
 from owtn.prompts.stage_2.registry import build_seed_motif_prompt, load_base_system
 from owtn.stage_2.operators import (
+    MotifSketch,
     SeedExtractionResult,
     seed_root,
 )
 from tests.conftest import HILLS_GENOME
+
+
+def _sketch(motif: str) -> MotifSketch:
+    """Construct a MotifSketch with placeholder three-sentence content.
+    Used by tests that exercise extraction-result plumbing rather than the
+    sketch content itself."""
+    return MotifSketch(
+        motif=motif,
+        introduction=f"{motif} first appears in the opening beat.",
+        transformation=f"{motif} returns with altered valence at a midpoint.",
+        climactic_action=f"{motif} drives or is driven by the climactic act.",
+    )
 
 
 @dataclass
@@ -91,7 +104,11 @@ class TestSeedRootSuccess:
         self, hills_concept: ConceptGenome,
     ) -> None:
         fake_extraction = SeedExtractionResult(
-            motif_threads=["the hills", "the beaded curtain", "the railway"],
+            motif_sketches=[
+                _sketch("the hills"),
+                _sketch("the beaded curtain"),
+                _sketch("the railway"),
+            ],
             concept_demands=[],
         )
 
@@ -123,7 +140,10 @@ class TestSeedRootSuccess:
         self, hills_concept: ConceptGenome,
     ) -> None:
         fake_extraction = SeedExtractionResult(
-            motif_threads=["the hills", "the operation never named"],
+            motif_sketches=[
+                _sketch("the hills"),
+                _sketch("the operation never named"),
+            ],
             concept_demands=[
                 "the DAG must include a beat where the not-naming becomes "
                 "structurally untenable rather than continuing as authorial "
@@ -148,7 +168,9 @@ class TestSeedRootSuccess:
     def test_anchor_role_wrapped_as_list(self, hills_concept: ConceptGenome) -> None:
         """Stage 1 emits a single-string role; seed_root wraps it as a 1-element
         list so Phase 5 expansion can append secondary roles via rewrite_beat."""
-        fake = SeedExtractionResult(motif_threads=["a", "b"], concept_demands=[])
+        fake = SeedExtractionResult(
+            motif_sketches=[_sketch("a"), _sketch("b")], concept_demands=[],
+        )
 
         async def fake_query(**kwargs):
             return _FakeQueryResult(content=fake)
@@ -244,23 +266,38 @@ class TestSeedRootFailureFallbacks:
 
 
 class TestSeedExtractionResultValidation:
-    def test_min_two_motif_threads_required(self) -> None:
+    def test_min_two_motif_sketches_required(self) -> None:
         with pytest.raises(Exception):  # Pydantic ValidationError
-            SeedExtractionResult(motif_threads=["only one"], concept_demands=[])
+            SeedExtractionResult(
+                motif_sketches=[_sketch("only one")], concept_demands=[],
+            )
 
-    def test_max_three_motif_threads(self) -> None:
+    def test_max_three_motif_sketches(self) -> None:
         with pytest.raises(Exception):
             SeedExtractionResult(
-                motif_threads=["a", "b", "c", "d"],
+                motif_sketches=[_sketch(c) for c in ("a", "b", "c", "d")],
                 concept_demands=[],
             )
 
+    def test_motif_sketch_requires_all_three_sentences(self) -> None:
+        """A sketch with empty introduction/transformation/climactic_action
+        is rejected — the three-sentence test is the contract."""
+        with pytest.raises(Exception):
+            MotifSketch(
+                motif="x", introduction="", transformation="t",
+                climactic_action="c",
+            )
+
     def test_concept_demands_default_empty(self) -> None:
-        result = SeedExtractionResult(motif_threads=["a", "b"])
+        result = SeedExtractionResult(
+            motif_sketches=[_sketch("a"), _sketch("b")],
+        )
         assert result.concept_demands == []
 
     def test_target_bucket_defaults_to_none(self) -> None:
-        result = SeedExtractionResult(motif_threads=["a", "b"])
+        result = SeedExtractionResult(
+            motif_sketches=[_sketch("a"), _sketch("b")],
+        )
         assert result.target_bucket is None
         assert result.bucket_reasoning is None
 
@@ -287,7 +324,7 @@ class TestSeedRootBucketResolution:
         self, hills_concept: ConceptGenome, bucket: str, expected_count: int,
     ) -> None:
         fake = SeedExtractionResult(
-            motif_threads=["a", "b"], concept_demands=[],
+            motif_sketches=[_sketch("a"), _sketch("b")], concept_demands=[],
             target_bucket=bucket, bucket_reasoning="test",
         )
 
@@ -307,7 +344,7 @@ class TestSeedRootBucketResolution:
         self, hills_concept: ConceptGenome,
     ) -> None:
         fake = SeedExtractionResult(
-            motif_threads=["a", "b"], concept_demands=[],
+            motif_sketches=[_sketch("a"), _sketch("b")], concept_demands=[],
             target_bucket="novella",  # not in the canonical menu
         )
 
@@ -327,7 +364,7 @@ class TestSeedRootBucketResolution:
         self, hills_concept: ConceptGenome,
     ) -> None:
         fake = SeedExtractionResult(
-            motif_threads=["a", "b"], concept_demands=[],
+            motif_sketches=[_sketch("a"), _sketch("b")], concept_demands=[],
             target_bucket=None,
         )
 
@@ -349,7 +386,7 @@ class TestSeedRootBucketResolution:
         """Backward compat: callers that don't pass `node_count_targets`
         keep the previous behavior — caller's target_node_count wins."""
         fake = SeedExtractionResult(
-            motif_threads=["a", "b"], concept_demands=[],
+            motif_sketches=[_sketch("a"), _sketch("b")], concept_demands=[],
             target_bucket="long_short",
             bucket_reasoning="big concept",
         )

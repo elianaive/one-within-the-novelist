@@ -1,0 +1,27 @@
+# run with uv run python -m owtn --pipeline-config configs/pipeline/submission.yaml
+
+# null = auto-generate `results/run_<UTC-ts>/`
+results_dir: null
+
+stage_1:
+  config: configs/stage_1/submission.yaml
+  # Concurrency from the stage_1/submission.yaml header recommendation.
+  max_eval_jobs: 4
+  max_proposal_jobs: 3
+
+stage_2:
+  config: configs/stage_2/submission.yaml
+  # `heavy` activates all 4 presets (cassandra/phoebe/randy/winston) per
+  # stage_2/submission.yaml `presets.heavy`.
+  tier: heavy
+  # null = use stage_2/submission.yaml `max_concepts_from_stage_1` (null →
+  # advance all Stage 1 island champions).
+  max_concepts: null
+
+stage_3:
+  config: configs/stage_3/submission.yaml
+  # null = use stage_3/submission.yaml `casting.panel_size` (3).
+  # panel_size: 3
+
+stage_4:
+  config: configs/stage_4/submission.yaml

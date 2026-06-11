@@ -17,17 +17,19 @@ other uses AWS credentials).
 
 from __future__ import annotations
 
+import json
 import logging
 import os
 from typing import Any, Mapping, Optional, Type
 
 import anthropic
 import backoff
-from pydantic import BaseModel
+from pydantic import BaseModel, ValidationError
 
+from ..errors import LLMValidationError
 from ..result import QueryResult
 from .base import THINKING_TOKENS, TIMEOUT, resolve_effort, resolve_temperature
-from .pricing import calculate_cost, is_reasoning_model
+from .pricing import calculate_cost, is_reasoning_model, requires_adaptive_thinking
 
 logger = logging.getLogger(__name__)
 
@@ -37,6 +39,17 @@ MAX_TIME = 600
 ANTHROPIC_DEFAULT_MAX_TOKENS = 16384
 ANTHROPIC_MAX_TOKENS_CEILING = 64000
 
+# Force `tool_choice: tool` for output models that empirically skip the
+# tool call (or emit empty tool input) under `auto` — typically when the
+# user prompt's "respond with JSON" framing competes with the tool channel.
+# See lab/issues/2026-04-30-stage-2-lineage-brief-tool-use-miss.md.
+_FORCE_TOOL_CHOICE_MODELS = {
+    "LineageBrief", "PopulationBrief",
+    # Stage 3 casting argue — empirically returns empty `arguments={}` on
+    # sonnet-4-6 under `auto`.
+    "CastingArgueOutput",
+}
+
 _RETRY_EXCEPTIONS = (
     anthropic.APIConnectionError,
     anthropic.APIStatusError,
@@ -45,32 +58,128 @@ _RETRY_EXCEPTIONS = (
 )
 
 
-def _resolve_thinking_budget(
+# Anthropic adaptive-thinking effort enum: low / medium / high / xhigh / max.
+# `xhigh` is Opus 4.7 only per the API docs (legacy adaptive models like
+# Sonnet 4.6 / Opus 4.6 only have low/medium/high/max). Today the adaptive
+# path only fires for Opus 4.7, so the full 5-level passthrough is safe; if
+# we migrate Sonnet 4.6 to adaptive in the future, xhigh will need a per-
+# model downgrade. owtn `min` has no Anthropic counterpart and folds to low.
+# Fine-grained budgets aren't expressible under adaptive — Anthropic doesn't
+# expose them. Callers that pass `thinking_tokens` explicitly to an adaptive
+# model are silently ignored on the budget axis (the effort enum still drives).
+_ADAPTIVE_EFFORT = {
+    "min": "low",
+    "low": "low",
+    "medium": "medium",
+    "high": "high",
+    "xhigh": "xhigh",
+    "max": "max",
+}
+
+
+def _resolve_thinking_blocks(
     *,
     api_model: str,
     effort: str,
     explicit_tokens: Optional[int],
     ceiling: int,
-) -> Optional[int]:
-    """Decide the thinking budget for an Anthropic call.
+) -> tuple[Optional[dict], Optional[dict]]:
+    """Decide the ``thinking`` and ``output_config`` blocks for an Anthropic call.
 
-    Returns None when thinking should be off (non-reasoning model, or
-    effort=disabled and no explicit override). Otherwise returns an int,
-    clamped below `ceiling` (Anthropic rejects budget >= max_tokens).
+    Returns ``(thinking, output_config)``. Both ``None`` means thinking off.
+    Three concrete shapes:
+
+    - ``(None, None)`` — non-reasoning model, or ``effort="disabled"`` with no
+      explicit budget override.
+    - ``({"type": "enabled", "budget_tokens": N}, None)`` — legacy path
+      (Sonnet 4.6, Haiku 4.5, Opus 4.6). Budget clamped below ``ceiling``;
+      Anthropic rejects budget ≥ max_tokens.
+    - ``({"type": "adaptive"}, {"effort": <low|medium|high>})`` — adaptive
+      path (Opus 4.7+). ``explicit_tokens`` ignored; the effort enum drives.
     """
     if not is_reasoning_model(api_model):
-        return None
+        return None, None
+
+    if requires_adaptive_thinking(api_model):
+        if effort == "disabled":
+            return None, None
+        # ``display: "summarized"`` makes adaptive thinking visible as a
+        # ``thinking`` content block on the response. Without it Opus 4.7
+        # omits thinking from response.content entirely (thinking still
+        # happens internally and is billed inside output_tokens, but our
+        # _extract_text gets thought=""). Legacy adaptive models (Sonnet 4.6,
+        # Opus 4.6) emit full thinking via the legacy budget path and don't
+        # need this knob.
+        return (
+            {"type": "adaptive", "display": "summarized"},
+            {"effort": _ADAPTIVE_EFFORT[effort]},
+        )
+
+    # Legacy budget-based path.
     if explicit_tokens is not None:
-        return explicit_tokens if explicit_tokens < ceiling else 1024
+        budget = explicit_tokens if explicit_tokens < ceiling else 1024
+        return {"type": "enabled", "budget_tokens": budget}, None
     if effort != "disabled":
         t = THINKING_TOKENS[effort]
-        return t if t < ceiling else 1024
-    return None
+        budget = t if t < ceiling else 1024
+        return {"type": "enabled", "budget_tokens": budget}, None
+    return None, None
+
+
+def _add_user_cache_marker(messages: list[dict]) -> list[dict]:
+    """Return a copy of `messages` with `cache_control: ephemeral` set on the
+    last block of the most recent user-role message, stripped from any earlier
+    user-role blocks so the request stays under Anthropic's 4-breakpoint
+    limit as history grows across tool-use iterations.
+
+    Pairing this with `_build_system`'s system-block marker creates two cache
+    breakpoints: the system entry helps calls that share system but have
+    different user msgs (judges with shared rubric); the user-msg entry
+    catches calls that share both (picker retries, voice-loop iterations).
+    Anthropic uses the largest matching prefix on read, so both engage
+    correctly.
+    """
+    last_user = -1
+    for i, m in enumerate(messages):
+        if m.get("role") == "user":
+            last_user = i
+    if last_user == -1:
+        return list(messages)
+    out: list[dict] = []
+    for i, m in enumerate(messages):
+        if m.get("role") != "user":
+            out.append(m)
+            continue
+        content = m.get("content")
+        # Normalize string content into a single text block.
+        if isinstance(content, str):
+            content = [{"type": "text", "text": content}]
+        if not isinstance(content, list):
+            out.append(m)
+            continue
+        new_blocks = []
+        for j, b in enumerate(content):
+            nb = {k: v for k, v in b.items() if k != "cache_control"}
+            if i == last_user and j == len(content) - 1:
+                nb["cache_control"] = {"type": "ephemeral"}
+            new_blocks.append(nb)
+        out.append({**m, "content": new_blocks})
+    return out
 
 
 def _build_system(system_msg: str, system_prefix: Optional[str]):
-    """Build the `system` parameter. With a prefix, returns content blocks
-    with cache_control on the prefix block; without, returns the plain string.
+    """Build the `system` parameter with `cache_control: ephemeral` on the
+    largest stable block.
+
+    With a prefix, the prefix is the cached block (system_msg is the per-call
+    suffix). Without a prefix, system_msg itself is wrapped with cache_control
+    so prompt caching engages on repeat calls. Anthropic silently no-ops
+    cache_control on prefixes below the per-model minimum (1024 tokens for
+    Sonnet+, 2048 for Haiku), so the 1.25x cache_creation surcharge only
+    applies when caching actually engages.
+
+    Empty system_msg with no prefix returns the empty string — skip the
+    content-block wrapper for truly empty calls.
     """
     if system_prefix:
         blocks = [
@@ -79,6 +188,10 @@ def _build_system(system_msg: str, system_prefix: Optional[str]):
         if system_msg:
             blocks.append({"type": "text", "text": system_msg})
         return blocks
+    if system_msg:
+        return [
+            {"type": "text", "text": system_msg, "cache_control": {"type": "ephemeral"}}
+        ]
     return system_msg
 
 
@@ -92,7 +205,10 @@ def get_anthropic_costs(response, model: str) -> dict:
     return {
         "input_tokens": input_tokens,
         "output_tokens": output_tokens,
-        "thinking_tokens": 0,  # Anthropic doesn't expose a separate thinking-token count today
+        # Anthropic folds thinking into output_tokens (no separate count in
+        # response.usage). Reporting 0 here is a logging convention — the
+        # actual thinking tokens are billed and included in output_tokens.
+        "thinking_tokens": 0,
         "input_cost": input_cost,
         "output_cost": output_cost,
         "cost": input_cost + output_cost,
@@ -124,14 +240,29 @@ def _structured_output_tool(output_model: Type[BaseModel]) -> dict:
     }
 
 
-def _extract_tool_input(response, output_model: Type[BaseModel]) -> BaseModel:
-    """Find the tool_use block in the response and parse its input."""
+def _find_tool_use_payload(response, output_model: Type[BaseModel]) -> Optional[dict]:
+    """Locate the tool_use block matching `output_model.__name__` and return
+    its raw input dict. Returns None if no matching block is found.
+
+    Defensively unwraps a one-key `{<wrapper>: {...}}` shell when the
+    wrapper key is not a field on `output_model`. Haiku-4.5 occasionally
+    emits the tool input nested under `parameter` / `parameters` / `input`
+    despite the schema being top-level; recovering the inner payload there
+    is cheaper than retrying the call.
+    """
     for block in response.content:
         if block.type == "tool_use" and block.name == output_model.__name__:
-            return output_model.model_validate(block.input)
-    raise ValueError(
-        f"Anthropic structured-output response missing tool_use for {output_model.__name__}"
-    )
+            payload = block.input
+            if (
+                isinstance(payload, dict)
+                and len(payload) == 1
+                and isinstance(next(iter(payload.values())), dict)
+            ):
+                only_key = next(iter(payload))
+                if only_key not in output_model.model_fields:
+                    payload = payload[only_key]
+            return payload
+    return None
 
 
 def _extract_text(response) -> tuple[str, str]:
@@ -173,12 +304,15 @@ class AnthropicProvider:
         return self._async_client
 
     def build_call_kwargs(self, *, api_model: str, requested: Mapping[str, Any]) -> dict:
-        """Anthropic shape: max_tokens (capped at 64k), thinking dict for
-        extended-thinking models, top_p/top_k forbidden under thinking.
+        """Anthropic shape: max_tokens (capped at 64k), ``thinking`` and
+        (for Opus 4.7+) ``output_config`` blocks for extended-thinking models,
+        top_p/top_k forbidden under thinking.
 
-        Thinking budget resolution:
-          - explicit `thinking_tokens` int wins (preferred, fine-grained)
+        Thinking-block resolution:
+          - explicit `thinking_tokens` int wins on legacy models (fine-grained)
           - else falls back to THINKING_TOKENS[reasoning_effort] for back-compat
+          - on adaptive-thinking models the effort enum drives ``output_config``
+            (``thinking_tokens`` is silently ignored — adaptive has no budget axis)
           - else thinking is off
         """
         effort = resolve_effort(api_model, requested.get("reasoning_effort", "disabled"))
@@ -190,15 +324,17 @@ class AnthropicProvider:
         if temp is not None:
             out["temperature"] = temp
 
-        budget = _resolve_thinking_budget(
+        thinking, output_config = _resolve_thinking_blocks(
             api_model=api_model,
             effort=effort,
             explicit_tokens=requested.get("thinking_tokens"),
             ceiling=out.get("max_tokens", ANTHROPIC_DEFAULT_MAX_TOKENS),
         )
-        if budget is not None:
-            out["thinking"] = {"type": "enabled", "budget_tokens": budget}
-        else:
+        if thinking is not None:
+            out["thinking"] = thinking
+        if output_config is not None:
+            out["output_config"] = output_config
+        if thinking is None:
             # top_p/top_k are forbidden when thinking is enabled.
             if (v := requested.get("top_p")) is not None:
                 out["top_p"] = v
@@ -231,7 +367,7 @@ class AnthropicProvider:
         response = client.messages.create(
             model=model,
             system=_build_system(system_msg, system_prefix),
-            messages=new_msg_history,
+            messages=_add_user_cache_marker(new_msg_history),
             extra_headers=extra_headers,
             **call_kwargs,
         )
@@ -265,7 +401,7 @@ class AnthropicProvider:
         response = await client.messages.create(
             model=model,
             system=_build_system(system_msg, system_prefix),
-            messages=new_msg_history,
+            messages=_add_user_cache_marker(new_msg_history),
             extra_headers=extra_headers,
             **call_kwargs,
         )
@@ -280,25 +416,43 @@ class AnthropicProvider:
         kwargs: dict,
         output_model: Optional[Type[BaseModel]],
     ) -> tuple[dict, Optional[dict]]:
-        """Translate generic kwargs (reasoning_effort, max_tokens, temperature)
-        into Anthropic shape via `build_call_kwargs`, then attach the tool
-        payload when output_model is set.
+        """Translate generic kwargs into Anthropic shape and attach the tool
+        payload when output_model is set. tool_choice defaults to `auto`,
+        forced only for models in `_FORCE_TOOL_CHOICE_MODELS`.
 
-        Tool use is always optional (`tool_choice: auto`) so the model has a
-        real reasoning channel and we never force it to skip thinking. With a
-        single tool + clear prompt the model almost always calls it; the
-        existing `_extract_tool_input` raise-path handles the rare miss.
-
-        Returns (call_kwargs, extra_headers). `extra_headers` carries the
-        interleaved-thinking beta header when thinking is enabled.
+        Returns (call_kwargs, extra_headers); extra_headers carries the
+        interleaved-thinking beta when thinking is enabled.
         """
         out = self.build_call_kwargs(api_model=api_model, requested=kwargs)
         out.setdefault("max_tokens", ANTHROPIC_DEFAULT_MAX_TOKENS)
         if output_model is not None:
-            out["tools"] = [_structured_output_tool(output_model)]
-            out["tool_choice"] = {"type": "auto"}
+            tool = _structured_output_tool(output_model)
+            tool["cache_control"] = {"type": "ephemeral"}
+            out["tools"] = [tool]
+            if output_model.__name__ in _FORCE_TOOL_CHOICE_MODELS:
+                out["tool_choice"] = {
+                    "type": "tool", "name": output_model.__name__,
+                }
+                # Anthropic rejects `thinking` + forced tool_choice (`Thinking
+                # may not be enabled when tool_choice forces tool use.`). The
+                # forced tool_choice is the load-bearing fix for these models
+                # (they skip the call under `auto`); thinking is the optional
+                # CoT layer. Drop thinking on these calls so the structured
+                # output succeeds.
+                out.pop("thinking", None)
+                out.pop("output_config", None)
+            else:
+                out["tool_choice"] = {"type": "auto"}
         extra_headers: Optional[dict] = None
-        if out.get("thinking"):
+        # The interleaved-thinking beta was designed for the legacy
+        # `thinking: {type: "enabled"}` shape. Adaptive thinking on Opus 4.7+
+        # has its own native interleaving and the beta header is unnecessary
+        # — sending both has been observed correlating with the model
+        # emitting legacy-XML tool-call patterns (e.g. `<function_calls>
+        # <invoke name="write_file">`) as literal text inside its thinking
+        # block instead of via the real tool API.
+        thinking_block = out.get("thinking")
+        if thinking_block and thinking_block.get("type") == "enabled":
             extra_headers = {"anthropic-beta": "interleaved-thinking-2025-05-14"}
         return out, extra_headers
 
@@ -313,8 +467,40 @@ class AnthropicProvider:
         output_model: Optional[Type[BaseModel]],
         kwargs: dict,
     ) -> QueryResult:
+        # Cost is computed before parsing — the call already happened, the
+        # tokens are billed, and we want the LLMValidationError path below
+        # to carry accurate telemetry even when validation fails.
+        cost_results = get_anthropic_costs(response, model)
+        raw_output = ""
         if output_model is not None:
-            content = _extract_tool_input(response, output_model)
+            payload = _find_tool_use_payload(response, output_model)
+            if payload is None:
+                raise LLMValidationError(
+                    cause=ValueError(
+                        f"Anthropic structured-output response missing tool_use "
+                        f"for {output_model.__name__}"
+                    ),
+                    raw_output="",
+                    model_name=model, msg=msg, system_msg=system_msg,
+                    kwargs=kwargs, **cost_results,
+                )
+            raw_output = json.dumps(payload, ensure_ascii=False, indent=2)
+            try:
+                content = output_model.model_validate(payload)
+            except ValidationError as e:
+                # Preserve the thinking block if present — useful for diagnosing
+                # whether the model reasoned its way into a bad shape.
+                thought = ""
+                for block in response.content:
+                    if block.type == "thinking":
+                        thought = block.thinking
+                        break
+                raise LLMValidationError(
+                    cause=e,
+                    raw_output=raw_output,
+                    model_name=model, msg=msg, system_msg=system_msg,
+                    thought=thought, kwargs=kwargs, **cost_results,
+                ) from e
             # Pull the thinking block when extended thinking is enabled — the
             # response carries it alongside the tool_use under tool_choice=auto.
             thought = ""
@@ -330,7 +516,6 @@ class AnthropicProvider:
             new_msg_history.append(
                 {"role": "assistant", "content": [{"type": "text", "text": content}]}
             )
-        cost_results = get_anthropic_costs(response, model)
         return QueryResult(
             content=content,
             msg=msg,
@@ -340,6 +525,7 @@ class AnthropicProvider:
             kwargs=kwargs,
             **cost_results,
             thought=thought,
+            raw_output=raw_output,
         )
 
 
@@ -385,8 +571,23 @@ class AnthropicProvider:
             }
             for t in tools
         ]
+        # Mark cache_control on the last tool definition so the tools array
+        # joins the cached prefix. Adds a 3rd breakpoint (system + tools +
+        # latest-user); cache scopes nest, so calls that share system+tools
+        # but vary user_msg still hit the tools cache. Anthropic auto-skips
+        # below per-model minimum, so small toolsets cost nothing.
+        if call_kwargs["tools"]:
+            call_kwargs["tools"][-1] = {
+                **call_kwargs["tools"][-1],
+                "cache_control": {"type": "ephemeral"},
+            }
         extra_headers: Optional[dict] = None
-        if call_kwargs.get("thinking"):
+        # See `_prepare_call_kwargs` for the rationale: the interleaved-thinking
+        # beta is for the legacy `thinking: {type: "enabled"}` shape only;
+        # adaptive thinking has native interleaving and adding the beta on
+        # top correlates with legacy-XML tool-call leakage.
+        thinking_block = call_kwargs.get("thinking")
+        if thinking_block and thinking_block.get("type") == "enabled":
             extra_headers = {"anthropic-beta": "interleaved-thinking-2025-05-14"}
 
         history: list[dict] = list(msg_history) + [
@@ -405,7 +606,7 @@ class AnthropicProvider:
             response = await client.messages.create(
                 model=model,
                 system=_build_system(system_msg, system_prefix),
-                messages=list(history),
+                messages=_add_user_cache_marker(history),
                 extra_headers=extra_headers,
                 **call_kwargs,
             )

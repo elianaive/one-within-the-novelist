@@ -73,11 +73,33 @@ _TARGET_BUCKET_TO_WORDS = {
 }
 
 
+class MotifSketch(BaseModel):
+    """One motif candidate plus a three-sentence sketch of how it could move
+    through the story.
+
+    `introduction`, `transformation`, and `climactic_action` correspond to
+    three distinct beats the motif could realize — first appearance, a return
+    with shifted valence, and a climactic firing. The three must be
+    materially different; candidates whose three sentences collapse to the
+    same situation in different verb tenses are inert and should be discarded
+    by the LLM before emission. The sketches are a thinking aid only — the
+    DAG operators at expansion time pick per-node modes from the actual beat
+    content, not from these sentences.
+    """
+    motif: str = Field(min_length=1)
+    introduction: str = Field(min_length=1)
+    transformation: str = Field(min_length=1)
+    climactic_action: str = Field(min_length=1)
+
+
 class SeedExtractionResult(BaseModel):
     """Structured output for the merged motif + concept_demand extraction call.
 
     The LLM is constrained to produce exactly this shape via `output_model`
-    on `query_async`; downstream code reads these fields directly.
+    on `query_async`; downstream code reads these fields directly. The
+    `motif_threads` field on the persisted DAG genome is *derived* from
+    `motif_sketches` here (`[s.motif for s in motif_sketches]`); the sketch
+    fields themselves are inspected in run logs but not persisted.
 
     `target_bucket` and `bucket_reasoning` were added when seed_root absorbed
     target-sizing classification — the LLM picks the natural prose-length
@@ -87,7 +109,7 @@ class SeedExtractionResult(BaseModel):
     `target_node_count`. See `lab/scripts/target_sizing_experiment.py` for
     the calibration data behind this design.
     """
-    motif_threads: list[str] = Field(min_length=2, max_length=3)
+    motif_sketches: list[MotifSketch] = Field(min_length=2, max_length=3)
     concept_demands: list[str] = Field(default_factory=list)
     target_bucket: str | None = Field(
         default=None,
@@ -196,10 +218,23 @@ async def seed_root(
             (extraction.bucket_reasoning or "(none)").replace("\n", " "),
         )
 
+    if extraction.motif_sketches:
+        logger.info(
+            "seed_root[%s]: motif sketches: %s",
+            concept_id,
+            "; ".join(
+                f"{s.motif} (intro: {s.introduction!r} | "
+                f"transform: {s.transformation!r} | "
+                f"climax: {s.climactic_action!r})"
+                for s in extraction.motif_sketches
+            ),
+        )
+
+    motif_threads = [s.motif for s in extraction.motif_sketches]
     return DAG(
         concept_id=concept_id,
         preset=preset,
-        motif_threads=list(extraction.motif_threads),
+        motif_threads=motif_threads,
         concept_demands=list(extraction.concept_demands),
         nodes=[anchor],
         edges=[],
@@ -211,10 +246,11 @@ async def seed_root(
 
 def _empty_extraction() -> SeedExtractionResult:
     """Returned when the extraction call fails entirely. Uses
-    `model_construct` to bypass the schema's `min_length=2` floor on motifs —
-    callers proceed with empty motifs/demands and the fallback target."""
+    `model_construct` to bypass the schema's `min_length=2` floor on motif
+    sketches — callers proceed with empty motifs/demands and the fallback
+    target."""
     return SeedExtractionResult.model_construct(
-        motif_threads=[], concept_demands=[],
+        motif_sketches=[], concept_demands=[],
         target_bucket=None, bucket_reasoning=None,
     )
 
@@ -364,10 +400,11 @@ def make_expand_factory(
     factory closes over the concept + model + brief fetcher; phase-specific
     bits (permitted edge types, pacing hint) come from the PhaseContext.
 
-    `brief_fetcher` is a `Callable[[], str]` — sync read of the current
-    rendered champion brief (the cached render in `TreeBriefState`). Re-read
-    on every expansion so a brief refresh between iterations propagates
-    immediately. Pass `None` to suppress brief injection (cold-start mode).
+    `brief_fetcher` is `Callable[[DAG], Awaitable[str]]` — async read of
+    the brief render targeted at the leaf being expanded. The DAG arg
+    enables per-leaf scoping (scalar-mode lineage briefs); fetchers that
+    only return a tree-level brief can ignore the arg. Pass `None` to
+    suppress brief injection entirely (cold-start mode).
 
     `extra_context_fn` is a `Callable[[DAG], str]` invoked per expansion
     to compute DAG-state-dependent prompt context (e.g., refinement passes
@@ -376,7 +413,10 @@ def make_expand_factory(
     """
     def factory(ctx) -> Awaitable[list[Action]]:  # type: ignore[return-value]
         async def expand(dag: DAG) -> list[Action]:
-            brief = brief_fetcher() if brief_fetcher is not None else "(brief not yet available)"
+            if brief_fetcher is not None:
+                brief = await brief_fetcher(dag)
+            else:
+                brief = "(brief not yet available)"
             extra_context = extra_context_fn(dag) if extra_context_fn is not None else ""
             return await propose_actions_via_llm(
                 dag,

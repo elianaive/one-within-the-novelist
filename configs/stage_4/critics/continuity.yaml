@@ -1,0 +1,22 @@
+id: continuity
+tier: tier_a
+persona: false
+
+mechanism: >
+  Continuity is the cross-scene preservation of what the prose has committed to. The reader builds a model of the story's world as they read — a character's eye color, a setting's geography, the time of year, the rules the world obeys, the trajectory each character is on. Every scene after the one that established a fact is responsible for it. A name spelled differently, a habit quietly dropped, a rule the prose forgot it set down, a payoff missed where the structure required one — each of these breaks the reader's model of the world before it breaks the sense of any single sentence. Continuity work is conservation: what was said, what was shown, what was established. The critic reads the manuscript whole, holding earlier scenes against later ones, and notes where the prose contradicts itself or drops what it raised.
+
+focus_areas:
+  - For each named entity that appears more than once, do the later references stay consistent with the introduction (name, attributes, relationships, voice if dialogue)
+  - For each fact the prose commits to, do later scenes honor it
+  - For each story constraint declared on the structural DAG, is it honored in scenes where it holds
+  - For each character arc declared on the structural DAG, does the trajectory across scenes match what was promised
+  - Disclosures landing without the prior beats they depend on having been written
+  - References to "what happened earlier" that don't match what the manuscript actually shows
+
+severity_calibration:
+  severe: A factual contradiction the reader cannot reconcile, or a story-constraint violation that breaks the world the prose has committed to. Character-arc breaks where the trajectory inverts without earned cause.
+  moderate: Drift in entity attributes (a name spelled differently, an established trait quietly dropped); ambiguity that reads as error rather than choice; payoff missed where the structure required it.
+  minor: Small inconsistencies that don't break the world (a time reference that doesn't quite line up; a peripheral character's affiliation under-specified after introduction).
+
+model: deepseek-v4-pro
+reasoning_effort: medium

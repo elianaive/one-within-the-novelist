@@ -354,8 +354,14 @@ def build_operator_prompt(
                 f"\n\n{exploration_directions}"
             )
 
-    # Prepend the run-prompt block to the user message so it's task-level.
+    # Sandwich the run-prompt block: prepend AND repeat at the very end of
+    # the user message. Empirically the model drifts off-prompt when the
+    # block only sits at the top (the long operator instructions and parent
+    # genome push it out of attention). Repeating at the end gives recency
+    # anchoring; combined with the prepend, it acts as a primacy+recency
+    # sandwich around the operator scaffold.
     if run_prompt_block:
-        user_msg = run_prompt_block.strip() + "\n\n" + user_msg
+        block = run_prompt_block.strip()
+        user_msg = block + "\n\n" + user_msg + "\n\n" + block
 
     return system_msg, user_msg

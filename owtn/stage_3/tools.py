@@ -29,7 +29,7 @@ from typing import Any, Mapping
 
 from pydantic import ValidationError
 
-from owtn.models.stage_3 import VoiceGenomeBody
+from owtn.models.stage_3 import SignatureRisk, VoiceGenomeBody
 from owtn.orchestration import ToolContext, ToolSpec
 from owtn.orchestration.session import session_log_path
 from owtn.tools.lookup_exemplar import lookup_exemplar_async
@@ -190,19 +190,19 @@ async def _stylometry_handler(
         _scene_neutral_baseline(ctx.state_view, scene_id) if scene_id else None
     )
 
-    target_styles = params.get("target_styles") or None
-    if target_styles is not None and not isinstance(target_styles, list):
-        return "ERROR: target_styles must be a list of strings"
+    style_queries = params.get("style_queries") or None
+    if style_queries is not None and not isinstance(style_queries, list):
+        return "ERROR: style_queries must be a list of strings"
 
     agent_models = ctx.state_view.get("agent_models", {}) or {}
     caller_model = agent_models.get(ctx.agent_id)
 
     try:
-        report = compute_stylometry(
+        report = await compute_stylometry(
             passage=passage,
             caller_model=caller_model,
             neutral_baseline=neutral_baseline,
-            target_styles=target_styles,
+            style_queries=style_queries,
         )
     except Exception as e:
         logger.warning("stylometry failed: %s", e)
@@ -268,6 +268,49 @@ async def _ask_judge_handler(
     )
 
 
+async def _declare_signature_risk_handler(
+    params: Mapping[str, Any], ctx: ToolContext,
+) -> str:
+    """Required pre-commit step in Phase 1. The agent names the structural
+    move it commits to that the model would not take by default for this
+    concept, what the model's near-default would be, and why the concept
+    demands the move. Stashed in state.payload so Phase 3 critique, Phase
+    5 Borda, and Stage 4 critics can all read it.
+
+    Forcing this articulation BEFORE finalize_voice_genome is the
+    intervention against mid-shaped voices: the agent has to commit to a
+    concrete risk before the description can be generated, so the
+    description gets shaped around the risk rather than wandering into
+    safe literary-fluent territory.
+    """
+    try:
+        risk = SignatureRisk.model_validate(params)
+    except ValidationError as e:
+        return (
+            f"ERROR: SignatureRisk validation failed. The fields must each "
+            f"name a concrete commitment — vague register words ('lyrical', "
+            f"'spare') do not pass the length threshold and would not be "
+            f"useful even if they did. Fix the issues and call again.\n\n{e}"
+        )
+
+    if isinstance(ctx.state_view, dict):
+        risks = ctx.state_view.setdefault("_pending_signature_risks", {})
+        if ctx.agent_id in risks:
+            return (
+                "ERROR: signature_risk already declared for this phase. "
+                "If you want to revise it, name what you'd change and why "
+                "in `think`, then call `finalize_voice_genome` with the "
+                "voice spec that follows from the declared risk."
+            )
+        risks[ctx.agent_id] = risk
+    return (
+        "Signature risk recorded. Now develop the voice and renderings "
+        "around this commitment, then call `finalize_voice_genome`. The "
+        "renderings are the proof — if they don't enact the move you "
+        "named, the panel will see the gap and rank the voice as mid."
+    )
+
+
 async def _finalize_voice_genome_handler(
     params: Mapping[str, Any], ctx: ToolContext,
 ) -> str:
@@ -276,14 +319,39 @@ async def _finalize_voice_genome_handler(
     we validate via Pydantic and stash the body in `state.payload` for the
     orchestrator to extract after the explore loop returns.
 
+    Gates on `declare_signature_risk` having been called first — submission
+    without an articulated risk is exactly the path to mid voices, and the
+    gate exists to surface that early when the agent can still go back.
+
     Tool-call shape is more reliable than structured-output for the commit
     on long explore histories — the model is already operating in tool-call
     mode and just needs to fill the schema. The agent's commitment is also
     explicit at the agent level rather than inferred by the orchestrator
     from message-position heuristics.
     """
+    declared_risk: SignatureRisk | None = None
+    if isinstance(ctx.state_view, dict):
+        risks = ctx.state_view.get("_pending_signature_risks", {})
+        declared_risk = risks.get(ctx.agent_id)
+        if declared_risk is None:
+            return (
+                "ERROR: you must call `declare_signature_risk` before "
+                "`finalize_voice_genome`. Name the structural move you are "
+                "committing to that the model would not take by default for "
+                "this concept, what the model's near-default would be, and "
+                "why the concept demands the move. Then call finalize."
+            )
+
+    # Merge the previously-declared risk into the body. The finalize schema
+    # asks the agent for everything-except-signature_risk so the field
+    # doesn't get re-typed; the handler inserts the prior commitment so the
+    # final VoiceGenomeBody still satisfies its required-field invariant.
+    merged = dict(params)
+    if declared_risk is not None and "signature_risk" not in merged:
+        merged["signature_risk"] = declared_risk.model_dump()
+
     try:
-        body = VoiceGenomeBody.model_validate(params)
+        body = VoiceGenomeBody.model_validate(merged)
     except ValidationError as e:
         # Surface the validation errors to the model so it can correct.
         return (
@@ -427,11 +495,14 @@ STYLOMETRY = ToolSpec(
         "MATTR, sentence-length CV) plus distances to centroids you can "
         "position against — this model's default, the cross-LLM centroid, "
         "the human-literary centroid, the session's neutral baseline if "
-        "you pass `scene_id`, and any named author or style tags you pass "
-        "in `target_styles` (e.g. ['morrison', 'fid_rich', 'minimalist']). "
-        "Use when you have an intentional position you want to verify a "
-        "draft is moving toward — closer to a reference author, away from "
-        "model default, at a target burstiness."
+        "you pass `scene_id`, and any natural-language style queries you "
+        "pass in `style_queries` (e.g. \"Morrison's incantatory mode\", "
+        "\"free indirect discourse\", \"minimalist Carver register\"). "
+        "Burstiness is null when the passage is a single sentence — rhythm "
+        "CV is undefined there; sample a longer window if you need a "
+        "rhythm read. Use when you have an intentional position you want "
+        "to verify a draft is moving toward — closer to a reference "
+        "author, away from model default, at a target burstiness."
     ),
     parameters={
         "type": "object",
@@ -447,15 +518,18 @@ STYLOMETRY = ToolSpec(
                     "scene becomes the baseline for fw-distance-from-baseline."
                 ),
             },
-            "target_styles": {
+            "style_queries": {
                 "type": "array",
                 "items": {"type": "string"},
                 "description": (
-                    "Optional list of named author slugs (e.g. 'morrison', "
-                    "'austen', 'sebald') or style/tradition tags (e.g. "
-                    "'fid_rich', 'gothic', 'minimalist'). The report adds "
-                    "the candidate's function-word distance to each. Unknown "
-                    "tokens are reported as 'not_found'."
+                    "Optional list of natural-language style queries — same "
+                    "shape as `lookup_reference`'s `query`. Examples: "
+                    "\"Morrison's incantatory mode\", \"Saunders' tonal-"
+                    "disjunction maximalism\", \"free indirect discourse\", "
+                    "\"second-person direct address\". Each query is "
+                    "resolved through the same haiku resolver; the report "
+                    "returns the candidate's function-word distance from the "
+                    "resolved cluster plus the resolver's interpretation/note."
                 ),
             },
         },
@@ -572,6 +646,41 @@ THESAURUS = ToolSpec(
 )
 
 
+DECLARE_SIGNATURE_RISK = ToolSpec(
+    name="declare_signature_risk",
+    description=(
+        "REQUIRED before finalize_voice_genome in Phase 1. Name the "
+        "structural / syntactic / formal move you are committing to that "
+        "the model would not take by default for this concept, what the "
+        "model's near-default would be (the literary-fluent voice this "
+        "concept would otherwise produce), and why the concept's load-"
+        "bearing demands need this specific move. The risk you name will "
+        "be visible to your peers in Phase 3 critique and to the writer "
+        "and Stage 4 critics later, so be specific. A voice without a "
+        "declared risk is mid by default; this gate exists to surface that "
+        "before the renderings get drafted."
+    ),
+    parameters=SignatureRisk.model_json_schema(),
+    handler=_declare_signature_risk_handler,
+)
+
+
+def _finalize_schema_without_signature_risk() -> dict:
+    """VoiceGenomeBody's JSON schema with the signature_risk field stripped.
+
+    The agent declares signature_risk via the dedicated tool earlier in the
+    explore loop; the finalize handler merges that prior declaration into
+    the body before validation. Asking the agent to repeat it on finalize
+    would be redundant and risk drift between the two declarations."""
+    schema = VoiceGenomeBody.model_json_schema()
+    props = dict(schema.get("properties") or {})
+    props.pop("signature_risk", None)
+    schema["properties"] = props
+    required = [r for r in (schema.get("required") or []) if r != "signature_risk"]
+    schema["required"] = required
+    return schema
+
+
 FINALIZE_VOICE_GENOME = ToolSpec(
     name="finalize_voice_genome",
     description=(
@@ -581,13 +690,14 @@ FINALIZE_VOICE_GENOME = ToolSpec(
         "same characters, same physical events; different voice). Use the "
         "bench's scene_ids exactly. The schema fields and the verbal "
         "description must agree — if they say different things, fix the "
-        "verbal description. Once you call this tool successfully, your "
-        "explore loop terminates and the orchestrator treats the args as "
-        "your committed voice spec — there is no separate commit step. "
-        "If the validation fails, you'll get an error message describing "
-        "the issues; correct and call again."
+        "verbal description. The signature_risk you declared earlier is "
+        "merged in automatically; do not pass it again. Once you call this "
+        "tool successfully, your explore loop terminates and the "
+        "orchestrator treats the args as your committed voice spec — there "
+        "is no separate commit step. If validation fails, you'll get an "
+        "error message describing the issues; correct and call again."
     ),
-    parameters=VoiceGenomeBody.model_json_schema(),
+    parameters=_finalize_schema_without_signature_risk(),
     handler=_finalize_voice_genome_handler,
 )
 
@@ -601,6 +711,7 @@ ALL_VOICE_TOOLS: list[ToolSpec] = [
     SLOP_SCORE,
     WRITING_STYLE,
     THESAURUS,
+    DECLARE_SIGNATURE_RISK,
     FINALIZE_VOICE_GENOME,
     ASK_JUDGE,
 ]
@@ -617,6 +728,7 @@ PHASE_1_TOOLS = frozenset({
     "stylometry",
     "slop_score",
     "writing_style",
+    "declare_signature_risk",
     "finalize_voice_genome",
 })
 """Phase 1 (private brief) — drafting + reference + diction lookup + metric

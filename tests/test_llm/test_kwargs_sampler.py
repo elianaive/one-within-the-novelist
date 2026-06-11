@@ -185,29 +185,35 @@ class TestMaxTokensParallelList:
 
 class TestExplicitThinkingTokens:
     """`thinking_tokens` int override on Anthropic / Gemini reasoning paths
-    in sample_model_kwargs (the generation path used by ShinkaEvolve)."""
+    in sample_model_kwargs (the generation path used by ShinkaEvolve).
+
+    Anthropic branch now passes primitives (`reasoning_effort`, optional
+    `thinking_tokens`) through to the provider's ``build_call_kwargs`` rather
+    than constructing the legacy ``thinking={"type":"enabled",...}`` shape
+    here. The provider builds the right per-model shape (legacy budget for
+    Sonnet 4.6 / Opus 4.6 / Haiku 4.5; adaptive + summarized for Opus 4.7+).
+    """
 
     def test_anthropic_thinking_tokens_overrides_effort(self):
         kw = sample_model_kwargs(
             model_names="claude-sonnet-4-6",
             temperatures=1.0,
-            reasoning_efforts="low",   # would map to 2048
-            thinking_tokens=6000,      # but explicit wins
+            reasoning_efforts="low",
+            thinking_tokens=6000,
             max_tokens=16384,
         )
-        assert kw["thinking"]["budget_tokens"] == 6000
+        assert kw["reasoning_effort"] == "low"
+        assert kw["thinking_tokens"] == 6000
 
-    def test_anthropic_falls_back_to_effort_when_unset(self):
-        """Backward compat — existing configs without thinking_tokens keep
-        getting THINKING_TOKENS[effort]."""
-        from owtn.llm.providers.base import THINKING_TOKENS
+    def test_anthropic_passes_effort_when_thinking_tokens_unset(self):
         kw = sample_model_kwargs(
             model_names="claude-sonnet-4-6",
             temperatures=1.0,
             reasoning_efforts="high",
             max_tokens=16384,
         )
-        assert kw["thinking"]["budget_tokens"] == THINKING_TOKENS["high"]
+        assert kw["reasoning_effort"] == "high"
+        assert "thinking_tokens" not in kw
 
     def test_thinking_tokens_parallel_list_per_model(self):
         """When thinking_tokens is a list parallel to model_names, the
@@ -222,17 +228,19 @@ class TestExplicitThinkingTokens:
                 max_tokens=[16384, 4096],
             )
             if kw["model_name"] == "claude-sonnet-4-6":
-                assert kw["thinking"]["budget_tokens"] == 5000
+                assert kw["reasoning_effort"] == "low"
+                assert kw["thinking_tokens"] == 5000
                 seen_claude = True
             else:
-                # deepseek-chat is non-reasoning; no thinking on its path.
-                assert "thinking" not in kw
+                # deepseek-chat is non-reasoning; no thinking primitives.
+                assert "reasoning_effort" not in kw
+                assert "thinking_tokens" not in kw
                 seen_other = True
         assert seen_claude and seen_other
 
-    def test_anthropic_thinking_tokens_alone_enables_thinking(self):
-        """Setting thinking_tokens but leaving effort=disabled still turns
-        thinking on with the explicit budget."""
+    def test_anthropic_thinking_tokens_alone_with_disabled_effort(self):
+        """Explicit thinking_tokens with effort=disabled passes both through;
+        the provider's build_call_kwargs decides whether to honor the budget."""
         kw = sample_model_kwargs(
             model_names="claude-sonnet-4-6",
             temperatures=1.0,
@@ -240,13 +248,16 @@ class TestExplicitThinkingTokens:
             thinking_tokens=4000,
             max_tokens=16384,
         )
-        assert kw["thinking"] == {"type": "enabled", "budget_tokens": 4000}
+        assert "reasoning_effort" not in kw
+        assert kw["thinking_tokens"] == 4000
 
-    def test_anthropic_neither_set_no_thinking(self):
+    def test_anthropic_neither_set_no_thinking_primitives(self):
         kw = sample_model_kwargs(
             model_names="claude-sonnet-4-6",
             temperatures=1.0,
             reasoning_efforts="disabled",
             max_tokens=16384,
         )
+        assert "reasoning_effort" not in kw
+        assert "thinking_tokens" not in kw
         assert "thinking" not in kw

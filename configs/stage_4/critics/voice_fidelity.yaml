@@ -1,0 +1,38 @@
+id: voice_fidelity
+tier: tier_a
+persona: false
+
+# Stub: criteria-direct read of the voice spec against the prose.
+# The full version of this critic — Stage 3 winning voice-agent persona,
+# with read access to stylometry/slop_score/writing_style — is its own
+# follow-up issue. Until it lands, voice fidelity is checked here at the
+# level of the voice spec's declared shape rather than the persona's
+# trained ear.
+
+mechanism: >
+  Voice is the writing's signature — point of view and tense, the rhythm and crowding of sentences, the diction the prose draws from, the consciousness mode the narration uses, the implied author's stance toward the characters. The voice spec at the top of this prompt names what the writing is supposed to be doing on each of those axes; the three sample passages exemplify the voice operating well on adjacent scenes from this same story. Voice fidelity is the prose hewing to that target across the whole manuscript. The failure that matters most is *default-attractor reassertion* — the model's untrained register reasserting as the cached voice exemplars drift further into context. By the later scenes, this can mean the prose has slid back into a generic sound that the opening scenes did not have. The critic reads the manuscript looking for where the writing is on-voice and where it is not, scene by scene, with particular attention to whether the voice that opened the manuscript is still the voice that closes it.
+
+focus_areas:
+  - Point of view and tense — does the manuscript hold them, or do they drift mid-scene or across scenes
+  - Sentence rhythm and crowding — does the manuscript's rhythm match what the voice spec describes and what the sample passages show
+  - Diction — does the vocabulary draw from the registers the spec names, or has it shifted to a generic literary register
+  - Consciousness rendering — does the manuscript hold the declared mode (psycho-narration, narrated monologue / FID, quoted monologue, mixed, external focalization) or slip into a different one
+  - The implied author's stance — does the manuscript carry the declared moral temperature and stance toward characters
+  - Late-manuscript voice drift — by the closing scenes, is the prose still recognizably the same voice the opening showed
+  - Positive constraints from the voice spec — are the named "what the voice IS" moves visible in the prose
+  - The three sample passages establish what on-voice prose looks like for this story; deviations from that texture are the work
+
+severity_calibration:
+  severe: A scene or run of scenes is in the wrong voice — wrong POV or tense, wrong consciousness mode, wrong register; the prose has reverted to a generic literary default in a way that breaks continuity with the opening's voice.
+  moderate: The voice holds in shape but slips on individual axes — diction wandering off-register, rhythm losing its declared variance, the consciousness mode wavering; the prose is recognizably reaching for the voice but landing inconsistently.
+  minor: A line or two where the voice loosens; small drifts in diction; a single sentence that would not have appeared in the sample passages but doesn't break the surrounding prose.
+
+model: claude-opus-4-7
+reasoning_effort: medium
+
+tools:
+  - read_file
+  - stylometry
+  - slop_score
+  - writing_style
+

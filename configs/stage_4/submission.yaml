@@ -1,0 +1,57 @@
+# Stage 4 submission config — Opus writer, cross-family DeepSeek critics.
+#
+# Per Stage 4 architecture: generator on Claude family → critics on
+# DeepSeek (cross-family invariant; mechanistic safeguard against
+# in-context reward hacking, arxiv 2407.04549).
+#
+# Writer (PreThink, DownDraft, Revise) on claude-opus-4-7. Filter
+# classifications stay on Haiku — they're cheap two-shot calls. Critics
+# are configured per-YAML at configs/stage_4/critics/<critic>.yaml; all
+# 15 currently use deepseek-v4-pro by default.
+#
+# Run with:
+#   uv run python -m owtn.stage_4 \
+#     --config configs/stage_4/submission.yaml \
+#     --concept-path results/run_<ts>/stage_1/concepts/<id>.json \
+#     --voice-path results/run_<ts>/stage_3/by_pair/<pair>/winner.json \
+#     --dag-path results/run_<ts>/stage_2/handoff_manifest.json \
+#     --pair-id <concept_id>:<preset>
+#
+# Estimated cost: $30-80 per (concept, structure, voice) tuple.
+# Wall clock: 60-120 min depending on revise convergence.
+
+stage_4:
+  generator_model: claude-opus-4-7
+
+  filter:
+    audience_model: claude-haiku-4-5-20251001
+    experts_model: claude-haiku-4-5-20251001
+    reasoning_effort: medium
+
+  prethink:
+    explore_max_iters: 25
+    reasoning_effort: medium
+
+  downdraft:
+    # Reasoning OFF here per project_voice_api_techniques memory — thinking
+    # mode is "more detached" / unhelpful for prose generation. The downdraft
+    # is the prose-bearing phase; we want the model lyrical, not deliberative.
+    explore_max_iters: 100
+    temperature: 1.0
+
+  revise:
+    cycle_cap: 6
+    call_ceiling: 300
+    gather_max_iters: 40
+    revise_max_iters: 40
+    tier_b_in_cycle_zero: true
+    reasoning_effort: medium
+
+  surgical_edit:
+    translator_model: claude-haiku-4-5-20251001
+    subagent_model: claude-opus-4-7
+
+  plateau:
+    window: 2
+    require_total_decrease: true
+    require_severe_progress: true
