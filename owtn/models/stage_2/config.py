@@ -11,6 +11,7 @@ Standalone CLI:
 from __future__ import annotations
 
 import argparse
+import logging
 import sys
 from pathlib import Path
 from typing import Literal
@@ -19,6 +20,9 @@ import yaml
 from pydantic import BaseModel, Field, ValidationError, model_validator
 
 from owtn.models.stage_2.pacing import PRESET_NAMES
+
+
+logger = logging.getLogger(__name__)
 
 
 PresetName = Literal["cassandra_ish", "phoebe_ish", "randy_ish", "winston_ish"]
@@ -37,17 +41,18 @@ class JudgesConfig(BaseModel):
 
     `full_panel_ids` is the panel that votes on full-panel commitment events
     (rollout confirmation, within-concept tournament, pilot head-to-head).
-    `cheap_judge_id` must be one of `full_panel_ids` — the cheap-judge call
-    samples one judge from the panel to deliver the rollout reward signal
-    cheaply, and the same identity must also appear on the full panel so
-    judge-level state stays consistent across tiers.
+    `cheap_judge_id` is the panel member used by the legacy `pairwise_champion`
+    rollout path; in `scalar` scoring mode it's unused and may be omitted.
+    When set, it must be one of `full_panel_ids` so judge-level state stays
+    consistent across tiers. The Stage2Config validator enforces presence
+    when `scoring_mode == "pairwise_champion"`.
     """
     full_panel_ids: list[str] = Field(min_length=1)
-    cheap_judge_id: str
+    cheap_judge_id: str | None = None
 
     @model_validator(mode="after")
     def _cheap_in_panel(self) -> JudgesConfig:
-        if self.cheap_judge_id not in self.full_panel_ids:
+        if self.cheap_judge_id is not None and self.cheap_judge_id not in self.full_panel_ids:
             raise ValueError(
                 f"cheap_judge_id {self.cheap_judge_id!r} not in full_panel_ids "
                 f"{self.full_panel_ids}"
@@ -92,11 +97,31 @@ class Stage2Config(BaseModel):
     mcts_parallel_workers: int = Field(default=1, ge=1)
     mcts_virtual_loss: float = Field(default=1.0, ge=0.0)
 
-    # Models — cross-family discipline enforced by config conventions, not here
+    # Models — cross-family discipline enforced by config conventions, not here.
+    # `rollout_model` is plumbed in the schema for forward-compat with the
+    # legacy pairwise_champion path but isn't consumed anywhere in `owtn/stage_2/`
+    # today; scalar mode and the active runtime use `expansion_model` only.
     expansion_model: str
-    rollout_model: str
+    rollout_model: str | None = None
     cheap_judge_model: str
     classifier_model: str | None = None  # for champion-brief summarizer + Tier 3
+
+    # Reasoning effort for expansion calls. "low" was the original hardcoded
+    # value (load-bearing for DeepSeek reasoning models — without CoT they
+    # fabricate node IDs in expansion proposals; see lab/issues/2026-04-30-
+    # stage-2-expansion-reasoning-disabled.md). Configurable here so callers
+    # using strong non-DeepSeek models (Opus 4.7, Sonnet 4.6) can drop to
+    # "disabled" if their evals show no quality cost.
+    expansion_reasoning_effort: str = "low"
+
+    # When true, cross-preset handoff selection routes through the full
+    # judge-panel pairwise tournament regardless of `scoring_mode`. Default
+    # false preserves existing scalar-mode behavior (rescore via the scalar
+    # composition). Set true to keep cheap+fast scalar scoring on rollouts
+    # while running the high-stakes per-concept handoff selection through
+    # the calibrated literary panel — fixes scalar-scorer leniency saturation
+    # at the only ranking decision that matters per concept.
+    handoff_via_panel: bool = False
 
     # Tiered judge (legacy pairwise-champion path)
     full_panel_on_promotion: bool = True
@@ -111,7 +136,11 @@ class Stage2Config(BaseModel):
     scoring_mode: Literal["pairwise_champion", "scalar"] = "pairwise_champion"
     scoring_rollout_composition: str = "rollout_reward"
     scoring_handoff_composition: str = "handoff_rescore"
-    scoring_handoff_top_k: int = Field(default=5, ge=1)
+    # Scalar-mode tree-brief summarizer cadence: re-run after every N new
+    # rollout records. Lower = the expansion prompt sees fresher distilled
+    # feedback at the cost of more summarizer calls; higher = cheaper, with
+    # the brief lagging behind recent rollouts.
+    scalar_brief_re_summarize_every: int = Field(default=5, ge=1)
 
     # Bounded MCTS rollout simulation per `mcts.md` §Simulation. When
     # enabled, each rollout walks up to `simulation_max_steps` one-step
@@ -187,6 +216,22 @@ class Stage2Config(BaseModel):
         if len(self.dimensions) != 8:
             raise ValueError(
                 f"dimensions must have exactly 8 entries (got {len(self.dimensions)})"
+            )
+        # cheap_judge_id is only needed by the pairwise_champion rollout path.
+        if self.scoring_mode == "pairwise_champion" and self.judges.cheap_judge_id is None:
+            raise ValueError(
+                "scoring_mode=pairwise_champion requires judges.cheap_judge_id"
+            )
+        # Bounded simulation is pairwise-only — `simulate_bounded` calls
+        # `cheap_judge_compare` against a champion DAG, which scalar mode
+        # doesn't have. Flipping `simulate_rollouts: true` under scalar
+        # silently no-ops; warn at config-load time so the YAML's stated
+        # intent matches the runtime's behavior.
+        if self.scoring_mode == "scalar" and self.simulate_rollouts:
+            logger.warning(
+                "Stage 2 config: simulate_rollouts=true ignored under "
+                "scoring_mode=scalar (the simulator is pairwise-only). "
+                "Set simulate_rollouts=false to silence this warning."
             )
         return self
 

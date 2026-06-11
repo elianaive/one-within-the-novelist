@@ -32,6 +32,7 @@ from owtn.evaluation.stage_2 import CompareInputs, compare_stage2
 from owtn.models.judge import JudgePersona
 from owtn.models.stage_1.concept_genome import ConceptGenome
 from owtn.models.stage_2.dag import DAG
+from owtn.models.stage_2.handoff import ConceptDemandVerdict
 
 
 logger = logging.getLogger(__name__)
@@ -66,6 +67,12 @@ class TournamentEntry:
     dim_losses_total: int = 0
     dim_ties_total: int = 0
     matches: list[TournamentMatch] = field(default_factory=list)
+    # Tier 3 (concept-demand fidelity) verdict, populated post-MCTS by
+    # `owtn.evaluation.stage_2_tier3.evaluate_concept_demands` before
+    # ranking. `concept_demand_failed=True` demotes this entry below all
+    # all-satisfied entries regardless of pairwise / scalar score.
+    concept_demand_failed: bool = False
+    concept_demand_verdicts: list[ConceptDemandVerdict] = field(default_factory=list)
 
     @property
     def mean_reasoning_length(self) -> float:
@@ -74,16 +81,22 @@ class TournamentEntry:
             return 0.0
         return sum(m.mean_reasoning_length for m in self.matches) / len(self.matches)
 
-    def sort_key(self) -> tuple[int, int, float]:
+    def sort_key(self) -> tuple[int, int, int, float]:
         """Primary sort key. Higher is better; we negate so default ascending
         sort produces best-first ordering.
 
         Order:
-        1. Most DAG-level wins (`-wins`)
-        2. Most dimension-level wins across all matches (`-dim_wins_total`)
-        3. Higher mean reasoning length (proxy for judge engagement)
+        1. Tier 3 demand-failed flag (failed entries sink below all-satisfied)
+        2. Most DAG-level wins (`-wins`)
+        3. Most dimension-level wins across all matches (`-dim_wins_total`)
+        4. Higher mean reasoning length (proxy for judge engagement)
         """
-        return (-self.wins, -self.dim_wins_total, -self.mean_reasoning_length)
+        return (
+            int(self.concept_demand_failed),
+            -self.wins,
+            -self.dim_wins_total,
+            -self.mean_reasoning_length,
+        )
 
 
 def _mean_reasoning_length(judgments: list[dict]) -> float:

@@ -7,3 +7,16 @@ Beat sketches are 1-2 sentences. They should be specific and evocative — gener
 Every edge's payload fields carry the structural claim — populate them with the concrete mechanism the edge expresses, in language specific enough that the prose stage can build on it.
 
 The DAG is a plot substrate, not a prose specification. It captures structure (causal chains, intentional arcs, information architecture, diegetic constraints) and thematic recurrence (motif threads with per-node mode tags). It does not capture voice, register, prosody, or sentence-level craft — those are Stage 3 (voice) and Stage 4 (prose) concerns.
+
+Six motif modes (closed taxonomy — these strings are the complete vocabulary; do not invent new modes):
+
+| Mode | Definition | Example | Discriminator vs. nearest neighbor |
+|---|---|---|---|
+| `introduced` | The motif first appears, named or shown directly; the reader meets it here. | "Mr. Summers arrives with the battered black box." | vs. `embodied`: introduced uses the motif as something the text *names or points to*; embodied means the motif's shape is present *without* being named. |
+| `embodied` | The motif's *shape* is present in the beat's structure, register, or character interior, without being named, handled, or causally invoked. | Louise's cognition has the variational-principle shape; the prose doesn't say "she thinks variationally," she just does. | vs. `introduced`: embodied is unnamed shape; introduced is named or shown. vs. `performed`: embodied has no character handling; performed requires gesture. |
+| `performed` | A character handles, wears, gestures with, or physically executes something with the motif-object. The interaction is gestural; the object's *meaning* may or may not be activated. | Misfit cleaning his dark glasses (gesture without activating opacity-meaning); grandmother dressed in her lace collar (gestural use of the motif as status-argument). | vs. `agent`: performed is what a *character* does *with* the motif; agent is what the *motif itself* does to events. |
+| `agent` | The motif (object, shape, or phrase) plays a *causal* role in the beat — it's the proximate cause of what happens. | Pitty Sing's startle causes the crash — the cat-motif is the agent of the accident. | vs. `performed`: agent's causal force comes from the motif itself; performed's force comes from the character handling it. |
+| `echoed` | The motif returns in a later beat with its valence *preserved* — reinforces, quotes, varies. | "You're a good man, I know you are" echoes "a good man is hard to find" — same valence, the title-phrase reused as personal claim. | vs. `inverted`: echoed keeps the motif's truth-valence intact; inverted reverses it. |
+| `inverted` | The motif returns with its valence *reversed* — same object, phrase, or shape, but negated, counterfactual, or stripped of its earlier meaning. | "She would of been a good woman" inverts the title-phrase via counterfactual. "The old lady" strips the lady-self-presentation the lace-collar motif has been building. | vs. `echoed`: inverted reverses what echoed preserves. |
+
+Return-mode temporal sanity: a motif tagged `echoed` or `inverted` at node N must have at least one earlier-in-topological-order node where it's tagged `introduced`, `embodied`, `performed`, or `agent`. Returning without prior appearance is a temporal inconsistency.

@@ -17,5 +17,3 @@ Key rules:
 7. Keep bullets tight. 1-2 sentences per bullet max. No preamble, no summary.
 
 8. If the evidence is thin (only 1-2 matches, or only one judge critiqued cleanly), err on fewer bullets rather than padding. An empty list is preferable to invented content.
-
-Respond with a single JSON object matching the LineageBrief schema with four fields: established_weaknesses, contested_strengths, attractor_signature, divergence_directions. Each is a list of strings.

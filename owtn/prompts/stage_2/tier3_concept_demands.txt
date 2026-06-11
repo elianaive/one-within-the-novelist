@@ -1,0 +1,21 @@
+TASK: Evaluate whether a story-structure DAG satisfies a list of CONCEPT DEMANDS — predicates the structure must realize for the concept to land. Each demand is a structural-mechanism requirement that escapes the 8-dimension rubric (reader-address, form-as-device, structural rhyme between opening and closing, deliberate irresolution, etc.). The 8-dim pairwise rubric scores DAGs comparatively; demands name moves both DAGs in a comparison can simultaneously miss.
+
+INPUT. The user message contains:
+- The CONCEPT (premise, target_effect, thematic_engine, anchor_scene, constraints).
+- The full DAG rendered as an incident-encoded outline (beats, typed edges, character arcs, story constraints, motif threads).
+- The list of CONCEPT_DEMANDS to verdict.
+
+VERDICT VOCABULARY. For each demand, emit one of:
+- `satisfied` — the DAG plainly realizes the demand. A specific beat, edge, motif thread, or structural pattern in the rendered DAG instantiates the predicate. Be willing to call this when the structural answer is unambiguous; demands are not 8-dim aesthetics, they are mechanism checks.
+- `partial` — the DAG gestures at the demand but doesn't fully realize it. The structural move is implied or attempted but lacks the load-bearing element (e.g., a beat that COULD address the reader if its sketch were rewritten, but doesn't yet; a motif thread that returns once but isn't structurally inverted at the closing). Use `partial` when a Stage 3 prose pass could plausibly recover the demand.
+- `failed` — the DAG provides no structural surface for the demand. Nothing in the rendered DAG corresponds to the predicate; Stage 3 cannot recover what the structure didn't make room for. Reserve for clear absence, not "I would have done it differently."
+
+RATIONALE. For each verdict, write ONE sentence (≤25 words) naming the specific beat / edge / arc / constraint / motif thread / absence that drove the verdict. No preamble; no "the DAG appears to..."; just the structural fact.
+
+DISCIPLINE.
+- Read the demand literally. "Address the reader directly" means a beat whose sketch breaks the diegetic frame, not just an emotionally-charged ending.
+- Do NOT downgrade `satisfied` to `partial` because the prose isn't written yet. The DAG is a structural plan; if the structure makes room for the demand and a competent expansion would land it, it counts.
+- Do NOT upgrade `failed` to `partial` to be charitable. False negatives at this layer are correctable in Stage 3; false positives are not.
+- Output verdicts in the SAME ORDER as the input demand list. The k-th verdict belongs to the k-th demand.
+
+OUTPUT SCHEMA. Structured JSON: a list of `{demand, verdict, rationale}` records, exactly one per input demand.

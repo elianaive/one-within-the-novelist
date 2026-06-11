@@ -1,0 +1,130 @@
+# Stage 2 submission run config — Opus expansion/rollout, full 4-preset matrix.
+#
+# Pairs with configs/stage_1/submission.yaml. The Stage 1 run produces 6
+# island champions; Stage 2 takes all of them and runs heavy-tier MCTS
+# (4 presets/concept × ~30 iters/phase) with Opus 4.7 doing the structural
+# proposing. All 6 concepts × 4 presets = 24 trees. Reasoning-effort is
+# fixed at "low" inside `tree_runtime.py` (see lab/issues/2026-04-30-stage-2-
+# expansion-reasoning-disabled.md) — adaptive thinking on Opus 4.7, low
+# budget, summarized blocks visible in saved logs.
+#
+# Run with:
+#   uv run python -m owtn.stage_2 \
+#     --config configs/stage_2/submission.yaml \
+#     --stage-1-results results/run_<ts>/stage_1/
+#
+# Estimated cost: ~$150-300 (Opus expansion + rollout × 6 concepts × 4 presets;
+# scalar scoring path keeps judge cost down vs. pairwise_champion's full panel).
+
+stage_2:
+  # MCTS budget
+  iterations_per_phase: 30
+  phase_3_iterations: 8
+  k_candidates_per_expansion: 6
+
+  # UCB1 (discount_gamma plumbed but unused; rechallenge_* pairwise-only).
+  exploration_constant: 0.5
+  discount_gamma: 1.0
+  rechallenge_interval: 25
+  rechallenge_top_pct: 0.10
+
+  # AlphaZero-style parallel workers per tree. Iter-burn race fixed and
+  # verified. Sized to `k_candidates_per_expansion` so workers can occupy
+  # each branch slot at the expansion frontier without contending for the
+  # same one.
+  mcts_parallel_workers: 6
+  mcts_virtual_loss: 1.0
+
+  # Expansion is the only LLM lever in scalar mode (rollout_model is in the
+  # schema but not consumed anywhere). Sonnet 4.6 with thinking on at the
+  # default "low" effort — adaptive reasoning, faster + cheaper than Opus,
+  # CoT preserved against the DAG-fabrication failure mode. Classifier on
+  # Haiku for cheap champion-brief summarization.
+  expansion_model: claude-sonnet-4-6
+  cheap_judge_model: gpt-5.4-mini
+  classifier_model: claude-haiku-4-5-20251001
+  simulation_model: deepseek-v4-flash
+
+  scoring_mode: scalar
+  scoring_rollout_composition: rollout_reward
+  scoring_handoff_composition: handoff_rescore
+
+  # Hybrid: scalar rollouts (cheap+fast at MCTS visit volume) + full judge
+  # panel for cross-preset handoff (the scalar scorer leniency-saturates on
+  # 4 of 8 dims, which distorts the high-stakes rank-the-finalists call).
+  handoff_via_panel: true
+
+  scalar_brief_re_summarize_every: 5
+
+  # Pairwise-mode wiring (unused under scalar; kept for safety).
+  full_panel_on_promotion: true
+  full_panel_rejection_backprop: 0.5
+  cheap_judge_agreement_alert: 0.70
+
+  # Bounded simulation is pairwise-only — leave off under scalar.
+  simulate_rollouts: false
+  simulation_max_steps: 3
+  simulation_min_partial_size: 5
+
+  judges:
+    full_panel_ids: [gwern, roon, alexander-wales, jamie-wahls]
+
+  presets:
+    light: [cassandra_ish, randy_ish]
+    medium: [cassandra_ish, phoebe_ish, randy_ish, winston_ish]
+    heavy: [cassandra_ish, phoebe_ish, randy_ish, winston_ish]
+
+  preset_params:
+    cassandra_ish:
+      min_rest_beats: 1
+      max_flat_beats: 4
+      intensity_variance: tight
+      recovery_required: true
+    phoebe_ish:
+      min_rest_beats: 3
+      max_flat_beats: 6
+      intensity_variance: tight
+      recovery_required: true
+    randy_ish:
+      min_rest_beats: 0
+      max_flat_beats: 8
+      intensity_variance: wide
+      recovery_required: false
+    winston_ish:
+      min_rest_beats: 2
+      max_flat_beats: 3
+      intensity_variance: tight
+      recovery_required: true
+
+  # Handoff: take all 6 Stage 1 island champions; advance the top 3 DAGs
+  # per concept downstream so Stage 3 has options.
+  advance_from_stage_1: all
+  max_concepts_from_stage_1: null
+  top_k_to_stage_3: 3
+  near_tie_promoted: true
+
+  dimensions:
+    - edge_logic
+    - motivational_coherence
+    - tension_information_arch
+    - post_dictability
+    - arc_integrity_ending
+    - structural_coherence
+    - beat_quality
+    - concept_fidelity_thematic
+
+  # Budget — per-concept time matches Opus latency (60-120s/expansion at low
+  # effort); 60min/concept × 6 concepts × 4 presets is the soft ceiling.
+  per_concept_time_budget_minutes: 60
+  per_phase_time_budget_minutes: 20
+  no_improvement_cutoff_iterations: 15
+
+  archive_bin_boundaries:
+    disclosure_ratio: [0.10, 0.25, 0.40, 0.55]
+    structural_density: [1.2, 1.8, 2.5, 3.2]
+
+  node_count_targets:
+    1000: [3, 5]
+    3000: [5, 8]
+    5000: [7, 12]
+    10000: [10, 18]

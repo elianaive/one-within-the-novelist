@@ -61,10 +61,15 @@ def _attach_run_log_handler(log_path: Path) -> None:
 
 
 def load_stage_1_winners(stage_1_dir: Path) -> list[Stage1Winner]:
-    """Read every champions/island_*.json from the Stage 1 directory.
+    """Read every champions/island_*.json from the Stage 1 directory and
+    return them ordered by Swiss tournament rank (best first).
 
     Each champion is one Stage 1 winner; Stage 2 runs once per winner.
-    `tournament.json` (sibling) is auto-loaded by `Stage1Winner.from_champion_file`.
+    `tournament.json` (sibling) is auto-loaded by `Stage1Winner.from_champion_file`
+    and populates `tournament_rank` on each winner. Sorting by rank means
+    that downstream `--max-concepts N` slicing keeps the best N concepts.
+    Champions with no rank (no tournament happened — fewer than 2 island
+    survivors) sort last in island-index order.
     """
     champions_dir = stage_1_dir / "champions"
     if not champions_dir.exists():
@@ -74,7 +79,10 @@ def load_stage_1_winners(stage_1_dir: Path) -> list[Stage1Winner]:
         winners.append(Stage1Winner.from_champion_file(path))
     if not winners:
         raise RuntimeError(f"no champions found in {champions_dir}")
-    logger.info("Loaded %d Stage 1 winners from %s", len(winners), champions_dir)
+    winners.sort(key=lambda w: (w.tournament_rank is None, w.tournament_rank or 0))
+    ranks = [w.tournament_rank for w in winners]
+    logger.info("Loaded %d Stage 1 winners from %s (tournament ranks: %s)",
+                len(winners), champions_dir, ranks)
     return winners
 
 
@@ -93,9 +101,9 @@ async def _run_concept_with_logging(
     winner: Stage1Winner,
     config: Stage2Config,
     config_tier: str,
-    cheap_judge: JudgePersona,
+    cheap_judge: JudgePersona | None,
     full_panel: list[JudgePersona] | None,
-    classifier_model: str,
+    classifier_model: str | None,
     archive: Stage2Archive,
 ) -> list[Stage2Output]:
     """Wrapper around `run_concept` that catches exceptions per concept so
@@ -146,6 +154,9 @@ async def run_stage_2(
     """
     if cheap_judge_id is None:
         cheap_judge_id = config.judges.cheap_judge_id
+    # cheap_judge is only used by the pairwise_champion rollout path. In scalar
+    # mode it stays None and the legacy plumbing is short-circuited downstream.
+    pairwise_mode = config.scoring_mode == "pairwise_champion"
     run_id = stage_1_dir.parent.name if stage_1_dir.parent.name.startswith("run_") else stage_1_dir.name
 
     if output_dir is None:
@@ -168,18 +179,25 @@ async def run_stage_2(
     full_panel = load_panel(judges_dir, config.judges.full_panel_ids)
     if not full_panel:
         raise RuntimeError(f"no judges loaded from {judges_dir}")
-    cheap_judge = _resolve_cheap_judge(full_panel, cheap_judge_id)
+    cheap_judge = _resolve_cheap_judge(full_panel, cheap_judge_id) if pairwise_mode and cheap_judge_id else None
 
     archive = Stage2Archive(
         disclosure_cuts=tuple(config.archive_bin_boundaries.disclosure_ratio),
         density_cuts=tuple(config.archive_bin_boundaries.structural_density),
     )
 
-    logger.info(
-        "Stage 2 run %s: %d concepts, tier=%s, cheap_judge=%s, full_panel=%s",
-        run_id, len(winners), config_tier, cheap_judge.id,
-        [j.id for j in full_panel],
-    )
+    if cheap_judge is not None:
+        logger.info(
+            "Stage 2 run %s: %d concepts, tier=%s, scoring=%s, cheap_judge=%s, full_panel=%s",
+            run_id, len(winners), config_tier, config.scoring_mode, cheap_judge.id,
+            [j.id for j in full_panel],
+        )
+    else:
+        logger.info(
+            "Stage 2 run %s: %d concepts, tier=%s, scoring=%s, full_panel=%s",
+            run_id, len(winners), config_tier, config.scoring_mode,
+            [j.id for j in full_panel],
+        )
 
     started_at = datetime.now(timezone.utc)
 
@@ -190,7 +208,7 @@ async def run_stage_2(
             config_tier=config_tier,
             cheap_judge=cheap_judge,
             full_panel=full_panel,
-            classifier_model=config.classifier_model or cheap_judge.model[0],
+            classifier_model=config.classifier_model or (cheap_judge.model[0] if cheap_judge else None),
             archive=archive,
         )
         for w in winners
