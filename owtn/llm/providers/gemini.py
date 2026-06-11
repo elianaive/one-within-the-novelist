@@ -123,21 +123,26 @@ def _extract_thoughts_and_content(response) -> tuple[str, str]:
 
 
 class GeminiProvider:
-    """Gemini provider. Singleton client; the genai.Client is used for both
-    sync (.models.generate_content) and async (.aio.models.generate_content)."""
+    """Gemini provider. Sync calls use a singleton client. Async calls build
+    a fresh client per call: the google.genai SDK's ``client.aio.*`` path
+    binds httpx transport state to the asyncio loop on first use, so reusing
+    a cached client across worker threads (each with its own ``asyncio.run``
+    loop, e.g. Stage 1 pairwise eval) raises ``RuntimeError: ... attached to
+    a different loop`` after the first loop closes. Per-call construction is
+    cheap (just an api_key + a fresh httpx client) and side-steps the bind."""
 
     name = "google"
 
     def __init__(self) -> None:
-        self._client: Optional[genai.Client] = None
+        self._sync_client: Optional[genai.Client] = None
 
     def _make_client(self) -> genai.Client:
         return genai.Client(api_key=os.environ["GEMINI_API_KEY"])
 
-    def _client_or_make(self) -> genai.Client:
-        if self._client is None:
-            self._client = self._make_client()
-        return self._client
+    def _sync_client_or_make(self) -> genai.Client:
+        if self._sync_client is None:
+            self._sync_client = self._make_client()
+        return self._sync_client
 
     def build_call_kwargs(self, *, api_model: str, requested: Mapping[str, Any]) -> dict:
         """Gemini shape: max_tokens (used as max_output_tokens at call time),
@@ -223,7 +228,7 @@ class GeminiProvider:
         kwargs: dict,
         client: Optional[genai.Client] = None,
     ) -> QueryResult:
-        client = client or self._client_or_make()
+        client = client or self._sync_client_or_make()
         merged_system = _merge_prefix(system_msg, system_prefix)
         contents = _build_contents(msg_history, msg)
         config = self._build_generation_config(
@@ -252,7 +257,10 @@ class GeminiProvider:
         kwargs: dict,
         client: Optional[genai.Client] = None,
     ) -> QueryResult:
-        client = client or self._client_or_make()
+        # Always make a fresh client for async calls — see class docstring.
+        # ``client`` arg kept for back-compat callers that pass one explicitly,
+        # but in production the lazy-singleton path is bypassed.
+        client = client or self._make_client()
         merged_system = _merge_prefix(system_msg, system_prefix)
         contents = _build_contents(msg_history, msg)
         config = self._build_generation_config(

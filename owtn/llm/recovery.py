@@ -34,10 +34,24 @@ _NUMERIC_KEY_PREFIX = re.compile(r"^\s*\d+\s*[\.\)\:]\s*")
 
 
 def clean_trailing_garbage(text: str) -> str:
-    """Strip known special-token markers and anything after the last JSON '}'.
-    Idempotent — safe to call on already-clean text.
+    """Strip known special-token markers and anything after the last JSON '}',
+    plus leading/trailing markdown fences (```json ... ```). Idempotent.
+
+    Kimi k2.5:nitro intermittently wraps structured-output responses in a
+    ```json ...``` markdown fence despite the schema being a tool/JSON
+    contract. Strip the fence before parsing.
     """
     cleaned = text.strip()
+    # Leading markdown fence: ```json (with optional newline) or just ```
+    if cleaned.startswith("```"):
+        nl = cleaned.find("\n")
+        if nl != -1:
+            cleaned = cleaned[nl + 1:].lstrip()
+        else:
+            cleaned = cleaned.lstrip("`").lstrip()
+    # Trailing markdown fence
+    if cleaned.endswith("```"):
+        cleaned = cleaned[:-3].rstrip()
     changed = True
     while changed:
         changed = False

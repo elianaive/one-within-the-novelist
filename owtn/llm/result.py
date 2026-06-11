@@ -29,6 +29,7 @@ class QueryResult:
     cache_read_tokens: int = 0
     cache_creation_tokens: int = 0
     model_posteriors: Dict[str, float] = field(default_factory=dict)
+    raw_output: str = ""  # the model's literal emission for structured calls (raw JSON before parsing)
 
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
