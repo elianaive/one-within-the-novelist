@@ -13,12 +13,10 @@ Each stage evolves a different genome under judge pressure; all four run end-to-
 
 | | Stage | What evolves |
 |---|---|---|
-| 1 | **Concept** | Premise genomes evolved on islands by a [modified ShinkaEvolve](lib/shinka-evolve) (inline pairwise evaluation, champion succession). Challengers fight the island champion across 9 dimensions; a Swiss tournament ranks the survivors. |
+| 1 | **Concept** | Premise genomes evolved on islands by a [domain modified ShinkaEvolve](lib/shinka-evolve). Challengers fight the island champion across 9 dimensions; a Swiss tournament ranks the survivors. |
 | 2 | **Structure** | Typed-edge DAGs of story beats, grown by MCTS per concept. A final check verdicts each of the concept's structural demands. |
 | 3 | **Voice** | Style genomes from a multi-agent session with deliberately constrained communication: agents draft in isolation, meet only through structured rounds of critique, revise with metric tools, and settle it by Borda vote. |
 | 4 | **Prose** | The manuscript, in an RLM (recursive language model) shape: it lives on disk rather than in context, and edits dispatch to bounded subagents. One writer agent (PreThink → draft → revise) against a 15-critic ensemble plus on-demand domain experts, until issues plateau. |
-
-Critics and judges always run on a different model family than the generator they evaluate — a mechanical guard against models flattering their own defaults.
 
 ## Running
 
